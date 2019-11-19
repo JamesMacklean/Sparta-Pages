@@ -11,6 +11,9 @@ class Pathway(models.Model):
     image_url = model.CharField(max_length=255)
     is_active = models.BooleanField(default=True)
 
+    def get_absolute_url(self):
+        return reverse('sparta-pathway', kwargs={'slug': self.slug})
+
     def __str__(self):
         return self.name
 
