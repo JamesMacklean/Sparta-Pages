@@ -18,7 +18,7 @@ class Pathway(models.Model):
 class SpartaCourse(models.Model):
     """
     """
-    course_id = models.CharField(max_length=255, unique=True)
+    course_id = models.CharField(max_length=255, null=True, blank=True)
     pathway = models.ForeignKey(
         'Pathway',
         null=True, blank=True,
