@@ -12,12 +12,12 @@ def main(request):
     return render(request, template_name, context)
 
 
-def pathway(request, pathway_name):
+def pathway(request, slug):
     """"""
     template_name = "sparta_pathway.html"
     context = {}
 
-    pathway = get_object_or_404(Pathway, slug=pathway_name)
+    pathway = get_object_or_404(Pathway, slug=slug)
 
     pathway_courses = SpartaCourse.objects.filter(is_active=True).filter(pathway=pathway)
     courses = []
