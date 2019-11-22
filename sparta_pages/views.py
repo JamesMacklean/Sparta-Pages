@@ -29,9 +29,11 @@ def pathway(request, slug):
     pathway_courses = SpartaCourse.objects.filter(is_active=True).filter(pathway=pathway)
     courses = []
     for pathway_course in pathway_courses:
+        course = {'pathway_course': pathway_courses}
         course_key = CourseKey.from_string(pathway_course.course_id)
         courseoverview = CourseOverview.get_from_id(course_key)
-        courses.append(courseoverview)
+        course['courseoverview'] = courseoverview
+        courses.append(course)
 
     context['pathway'] = pathway
     context['courses'] = courses
