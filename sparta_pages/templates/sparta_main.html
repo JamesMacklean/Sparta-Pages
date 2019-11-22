@@ -1,15 +1,64 @@
-{% extends "main_django.html" %}
+{% extends "sparta_base.html" %}
+{% load static %}
 
-{% block body %}
-{% if not user.is_authenticated %}
-<br>
-<br>
-<br>
-<br>
-{% endif %}
-<div class="bootstrap-iso">
+{% block sparta_body %}
 
-
-
+<div class="container-grid container col container-7">
+  <div class="responsive-picture picture-1 mx-auto">
+    <picture><img alt="Placeholder Picture" src="{% static 'images/sparta/sparta-logo.png' %}">
+    </picture>
+  </div>
+  <p class="paragraph paragraph-2 mx-auto"><span class="paragraph-text-1">Smarter Philippines through data analytics research and development (R&D), Training and Adoption</span><br>
+  </p>
 </div>
+
+<div class="container-grid container container-10 col">
+  <h1 class="heading-2"><span class="heading-text-2">About Project SPARTA</span>
+  </h1>
+  <p class="paragraph paragraph-3"> Project SPARTA aims to put in place the necessary online education, R&D mechanisms, and infrastructure not only to enable the industry of data science and analytics, but also to foster smart governance practices.  The projects aims  to graduate 30,000 learners on various learning pathways in the field of data science and analytics through the developed online courses within a three-year project period.</p>
+</div>
+
+<div class="container-grid container-11">
+  <div class="container-grid sd-two-cols container col">
+    <div class="container-grid container-12 container">
+      <h1 class="heading-4">Become a SPARTA Scholar</h1>
+      <div class="paragraph paragraph-1">
+        Interested applicants must first register at the official <a href="https://sparta.coursebank.ph">SPARTA Application Portal</a>. After registering and logging in at the SPARTA Portal, applicants will be required to submit personal information and eligibility documents (listed below). Once eligible, scholars may apply for Learning Pathways, each with a unique track of data analytics-related courses.
+      </div>
+      <div class="paragraph paragraph-1">
+        The following is the list of eligibility documents each applicant must submit upon registering at the portal:
+        <ul style="color: #fff;font-size: 12px;">
+          <li>Proof of Identity (i.e. a scanned image or a clear photograph of your Passport or Birth Certificate) </li>
+          <li>Proof of Education (i.e. a scanned image or a clear photograph of your Certificate of Graduation or Diploma.)</li>
+          <li>Proof of Agreement (i.e. a scanned image or a clear photograph of the signed Confirmation Form. Link to form will be available at the portal.)</li>
+        </ul>
+      </div>
+    </div>
+    <div class="container-grid container-13"><a href="https://sparta.coursebank.ph" class="btn mx-auto">Register Now</a>
+    </div>
+  </div>
+</div>
+
+{# List of Pathways Section #}
+<div class="container-grid container container-9">
+  <div class="container-grid row">
+    {% for pathway in pathways %}
+    <div class="container-grid col col-12 col-lg-4 col-xl-4 col-sm-12 col-md-6 container-1">
+      <a href="page_2.html" class="link-container mx-auto link-container-1">
+        <div class="responsive-picture picture-1">
+          <picture>
+            <img alt="{{ pathway.name }} Placeholder Picture" src="{{ pathway.image_url }}">
+          </picture>
+        </div>
+        <h1 class="heading-1">{{ pathway.name }}</h1>
+        <div class="rule rule-1"><hr></div>
+        <p class="paragraph paragraph-4">
+          <span class="paragraph-text-2">{{ pathway.short_description }}</span>
+        </p>
+      </a>
+    </div>
+    {% endblock %}
+  </div>
+</div>
+
 {% endblock %}

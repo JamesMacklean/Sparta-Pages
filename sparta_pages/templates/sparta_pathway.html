@@ -1,15 +1,37 @@
-{% extends "main_django.html" %}
+{% extends "sparta_base.html" %}
+{% load static %}
 
-{% block body %}
-{% if not user.is_authenticated %}
-<br>
-<br>
-<br>
-<br>
-{% endif %}
-<div class="bootstrap-iso">
-
-
-
+{% block sparta_body %}
+<div class="container-grid container col container-7">
+  <div class="responsive-picture picture-1 mx-auto">
+    <picture><!--[if IE 9]><video style="display: none;"><![endif]-->
+      <source srcset="{% static 'images/sparta/sparta-logo.png' %}" media="(min-width: 1200px)"><!--[if IE 9]></video><![endif]--><img alt="Sparta Logo Placeholder Picture" src="{% static 'images/sparta/sparta-logo.png' %}">
+    </picture>
+  </div>
+  <p class="paragraph paragraph-2 mx-auto"><span class="paragraph-text-1">Smarter Philippines through data analytics research and development (R&D), Training and Adoption</span><br>
+  </p>
+  <a href="https://sparta.coursebank.ph" class="btn mx-auto">Register Now</a>
 </div>
+
+<div class="container-grid container-21 container">
+  <h1 class="heading-3"><span class="heading-text-1">{{ pathway.name }}</span>
+  </h1>
+</div>
+
+<div class="container-grid container container-10 col">
+  <p class="paragraph paragraph-3"><span class="paragraph-text-3">{{ pathway.long_description }}</span>
+  </p>
+</div>
+
+
+
+<div class="container-grid container container-9">
+  {% for course in courses %}
+  <div class="container-grid container container-15">
+    <a class="link-text text-link-1" href="{% url 'about_course' course_id=course.courseoverview.id %}">{{ course.courseoverview.display_name }}</a>
+    <p class="paragraph paragraph-5">{{ course.pathway_course.long_description }}</p>
+  </div>
+  {% endfor %}
+</div>
+
 {% endblock %}
