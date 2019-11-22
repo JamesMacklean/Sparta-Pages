@@ -5,11 +5,11 @@ from django.urls import reverse
 class Pathway(models.Model):
     """
     """
-    name = model.CharField(max_length=255)
-    slug = model.SlugField(max_length=255)
+    name = models.CharField(max_length=255)
+    slug = models.SlugField(max_length=255)
     short_description = models.CharField(max_length=255, blank=True, default="")
     long_description = models.TextField(blank=True, default="")
-    image_url = model.CharField(max_length=255)
+    image_url = models.CharField(max_length=255)
     is_active = models.BooleanField(default=True)
 
     def get_absolute_url(self):
@@ -30,7 +30,7 @@ class SpartaCourse(models.Model):
     )
     short_description = models.CharField(max_length=255, blank=True, default="")
     long_description = models.TextField(blank=True, default="")
-    image_url = model.CharField(max_length=255)
+    image_url = models.CharField(max_length=255)
     is_active = models.BooleanField(default=True)
 
     def __str__(self):
