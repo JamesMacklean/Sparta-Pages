@@ -10,7 +10,7 @@ class Pathway(models.Model):
     short_description = models.CharField(max_length=255, blank=True, default="")
     long_description = models.TextField(blank=True, default="")
     image_url = models.CharField(max_length=255)
-    order = models.PositiveSmallIntegerField()
+    order = models.PositiveSmallIntegerField(default=0)
     is_active = models.BooleanField(default=True)
 
     class Meta:
@@ -35,7 +35,7 @@ class SpartaCourse(models.Model):
     short_description = models.CharField(max_length=255, blank=True, default="")
     long_description = models.TextField(blank=True, default="")
     image_url = models.CharField(max_length=255)
-    order = models.PositiveSmallIntegerField()
+    order = models.PositiveSmallIntegerField(default=0)
     is_active = models.BooleanField(default=True)
 
     class Meta:
