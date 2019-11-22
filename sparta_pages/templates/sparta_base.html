@@ -1,0 +1,30 @@
+{% extends "main_django.html" %}
+{% load static %}
+
+{% block headextra %}
+
+<link rel="stylesheet" href="{% static 'css/sparta/bootstrap4.min.css' %}">
+<link rel="stylesheet" href="{% static 'css/sparta/wireframe-theme.min.css' %}">
+<script>document.createElement( "picture" );</script>
+<script class="picturefill" async="async" src="{% static 'js/sparta/picturefill.min.js' %}"></script>
+<link rel="stylesheet" href="{% static 'css/sparta/main.css' %}">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:300,400,600,b">
+
+{% endblock %}
+
+{% block body %}
+{% if not user.is_authenticated %}
+<br>
+<br>
+<br>
+<br>
+{% endif %}
+
+{% block sparta_body %}{% endblock %}
+
+<script src="{% static 'js/sparta/jquery.min.js' %}"></script>
+<script src="{% static 'js/sparta/outofview.js' %}"></script>
+<script src="{% static 'js/sparta/popper.min.js' %}"></script>
+<script src="{% static 'js/sparta/bootstrap.min.js' %}"></script>
+
+{% endblock %}
