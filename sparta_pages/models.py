@@ -34,7 +34,7 @@ class SpartaCourse(models.Model):
     )
     short_description = models.CharField(max_length=255, blank=True, default="")
     long_description = models.TextField(blank=True, default="")
-    image_url = models.CharField(max_length=255)
+    image_url = models.CharField(max_length=255, default="https://coursebank-static-assets.s3-ap-northeast-1.amazonaws.com/sparta+black.png")
     order = models.PositiveSmallIntegerField(default=0)
     is_active = models.BooleanField(default=True)
 
