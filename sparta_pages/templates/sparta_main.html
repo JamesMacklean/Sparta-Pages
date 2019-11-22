@@ -15,7 +15,7 @@
 <div class="container-grid container container-10 col">
   <h1 class="heading-2"><span class="heading-text-2">About Project SPARTA</span>
   </h1>
-  <p class="paragraph paragraph-3"> Project SPARTA aims to put in place the necessary online education, R&D mechanisms, and infrastructure not only to enable the industry of data science and analytics, but also to foster smart governance practices.  The projects aims  to graduate 30,000 learners on various learning pathways in the field of data science and analytics through the developed online courses within a three-year project period.</p>
+  <p class="paragraph paragraph-3"> Project SPARTA aims to put in place the necessary online education, R&D mechanisms, and infrastructure not only to enable the industry of data science and analytics, but also to foster smart governance practices.  The projects aims to graduate learners on various learning pathways in the field of data science and analytics through the developed online courses within a three-year project period.</p>
 </div>
 
 <div class="container-grid container-11">
@@ -23,28 +23,25 @@
     <div class="container-grid container-12 container">
       <h1 class="heading-4">Become a SPARTA Scholar</h1>
       <div class="paragraph paragraph-1">
-        Interested applicants must first register at the official <a href="https://sparta.coursebank.ph">SPARTA Application Portal</a>. After registering and logging in at the SPARTA Portal, applicants will be required to submit personal information and eligibility documents (listed below). Once eligible, scholars may apply for Learning Pathways, each with a unique track of data analytics-related courses.
-      </div>
-      <div class="paragraph paragraph-1">
-        The following is the list of eligibility documents each applicant must submit upon registering at the portal:
-        <ul style="color: #fff;font-size: 12px;">
-          <li>Proof of Identity (i.e. a scanned image or a clear photograph of your Passport or Birth Certificate) </li>
-          <li>Proof of Education (i.e. a scanned image or a clear photograph of your Certificate of Graduation or Diploma.)</li>
-          <li>Proof of Agreement (i.e. a scanned image or a clear photograph of the signed Confirmation Form. Link to form will be available at the portal.)</li>
-        </ul>
+        Interested applicants must register at the official <a href="https://sparta.coursebank.ph" style="color: white;">SPARTA Application Portal</a>. After registering and logging in at the Portal, applicants will be required to submit personal information and eligibility documents. Once eligible, scholars may apply for Learning Pathways, each with a unique track of data analytics-related courses.
       </div>
     </div>
-    <div class="container-grid container-13"><a href="https://sparta.coursebank.ph" class="btn mx-auto">Register Now</a>
+    <div class="container-grid container-13"><a href="https://sparta.coursebank.ph" target="_blank" class="btn mx-auto">Register Now</a>
     </div>
   </div>
 </div>
 
 {# List of Pathways Section #}
+<div class="container-grid container container-10 col">
+  <h1 class="heading-2"><span class="heading-text-2">Learning Pathways</span>
+  </h1>
+  <p class="paragraph paragraph-3">Learners can take courses on various fields of data science and analytics through learning pathways. Explore the each pathway and the courses available for enrollment.</p>
+</div>
 <div class="container-grid container container-9">
   <div class="container-grid row">
     {% for pathway in pathways %}
     <div class="container-grid col col-12 col-lg-4 col-xl-4 col-sm-12 col-md-6 container-1">
-      <a href="page_2.html" class="link-container mx-auto link-container-1">
+      <a href="{% url 'sparta-pathway' slug=pathway.slug %}" class="link-container mx-auto link-container-1">
         <div class="responsive-picture picture-1">
           <picture>
             <img alt="{{ pathway.name }} Placeholder Picture" src="{{ pathway.image_url }}">
