@@ -112,17 +112,15 @@
 
 </div>
 
-<div class="container-grid container-11">
-  <div class="container-grid sd-two-cols container col">
-    <div class="container-grid container-12 container">
-      <h1 class="heading-4">Register Now for SPARTA</h1>
-      <div class="paragraph paragraph-1">
-        Interested applicants must register at the official <a href="https://sparta.coursebank.ph" style="color: white;">SPARTA Application Portal</a>. After registering and logging in at the Portal, applicants will be required to submit personal information and eligibility documents. Once eligible, scholars may apply for Learning Pathways, each with a unique track of data analytics-related courses.
-      </div>
-    </div>
-    <div class="container-grid container-13"><a href="https://sparta.coursebank.ph" target="_blank" class="btn mx-auto">Apply Here</a>
-    </div>
+<div class="container-grid container col container-7">
+  <div class="responsive-picture picture-1 mx-auto">
+    <picture><!--[if IE 9]><video style="display: none;"><![endif]-->
+      <source srcset="{% static 'images/sparta/sparta-logo.png' %}" media="(min-width: 1200px)"><!--[if IE 9]></video><![endif]--><img alt="Sparta Logo Placeholder Picture" src="{% static 'images/sparta/sparta-logo.png' %}">
+    </picture>
   </div>
+  <p class="paragraph paragraph-2 mx-auto"><span class="paragraph-text-1">Register Now to become a SPARTA Scholar and get free access to the best data science and analytics courses.</span><br>
+  </p>
+  <a href="https://sparta.coursebank.ph" target="_blank" class="btn mx-auto">Apply Here</a>
 </div>
 
 {% endblock %}
