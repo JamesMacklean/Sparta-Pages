@@ -24,18 +24,24 @@
 </div>
 
 
-<div class="container-grid container-21 container">
+<div class="container-grid container-21 container" style="font-size: 26px;font-weight: 700;">
   <h2 class="heading-3"><span class="heading-text-1">Courses</span>
   </h2>
 </div>
 
 <div class="container-grid container container-9">
-  {% for course in courses %}
-  <div class="container-grid container container-15">
-    <a class="link-text text-link-1" href="{% url 'about_course' course_id=course.courseoverview.id %}">{{ course.courseoverview.display_name }}</a>
-    <p class="paragraph paragraph-5">{{ course.pathway_course.short_description }}</p>
-  </div>
-  {% endfor %}
+  {% if courses %}
+    {% for course in courses %}
+    <div class="container-grid container container-15">
+      <a class="link-text text-link-1" href="{% url 'about_course' course_id=course.courseoverview.id %}">{{ course.courseoverview.display_name }}</a>
+      <p class="paragraph paragraph-5">{{ course.pathway_course.short_description }}</p>
+    </div>
+    {% endfor %}
+  {% else %}
+    <div class="container-grid container container-15">
+      <p class="paragraph paragraph-5">The are no courses available for this learning pathway.</p>
+    </div>
+  {% endif %}
 </div>
 
 {% endblock %}
