@@ -45,7 +45,7 @@
 
     {% for pathway in pathways %}
     <div class="container-grid col col-12 col-lg-4 col-xl-4 col-sm-12 col-md-6 pathways_container-1">
-      <a href="{}" class="link-container mx-auto link-container-1">
+      <a href="{% url 'sparta-pathway' slug=pathway.slug %}" class="link-container mx-auto link-container-1">
         <div class="container-grid {{ pathway.slug }}_image">
           <h1 class="heading-1">{{ pathway.name }}</h1>
         </div>
