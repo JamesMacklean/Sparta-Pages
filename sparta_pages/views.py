@@ -47,84 +47,84 @@ def pathway(request, slug):
     return render(request, template_name, context)
 
 
-def registration_page(request):
-    """ /sparta/register/ """
-    template_name = "sparta_register.html"
-    context = {}
-
-    return render(request, template_name, context)
-
-
-@require_POST()
-def register(request):
-    """ /sparta/register/submit/ """
-
-    return redirect('sparta-register-success')
-
-
-def register_success_page(request):
-    """ /sparta/register/success/ """
-    template_name = "sparta_register_success.html"
-    context = {}
-
-    return render(request, template_name, context)
-
-
-def sparta_profile_page(request, profile_id):
-    """ /sparta/profile/{profile_id}/ """
-    template_name = "sparta_profile.html"
-    context = {}
-
-    return render(request, template_name, context)
-
-
-def application_page(request, profile_id):
-    """ /sparta/profile/{profile_id}/apply/ """
-    template_name = "sparta_apply.html"
-    context = {}
-
-    return render(request, template_name, context)
-
-
-@require_POST()
-def apply(request, profile_id, pathway_id):
-    """ /sparta/profile/{profile_id}/apply/{pathway_id}/ """
-
-    return redirect('sparta-profile', profile_id=profile_id)
-
-
-###############
-# Admin Pages #
-###############
-
-@login_required
-def admin_main_view(request):
-    if not request.user.is_staff:
-        raise Http404
-
-    template_name = "sparta_admin.html"
-    context = {}
-
-    return render(request, template_name, context)
-
-
-@login_required
-def admin_profiles_view(request):
-    if not request.user.is_staff:
-        raise Http404
-
-    template_name = "sparta_admin_profiles.html"
-    context = {}
-
-    return render(request, template_name, context)
-
-
-@login_required
-def admin_applications_view(request):
-    if not request.user.is_staff:
-        raise Http404
-
-    template_name = "sparta_admin_applications.html"
-    context = {}
-
-    return render(request, template_name, context)
+# def registration_page(request):
+#     """ /sparta/register/ """
+#     template_name = "sparta_register.html"
+#     context = {}
+#
+#     return render(request, template_name, context)
+#
+#
+# @require_POST()
+# def register(request):
+#     """ /sparta/register/submit/ """
+#
+#     return redirect('sparta-register-success')
+#
+#
+# def register_success_page(request):
+#     """ /sparta/register/success/ """
+#     template_name = "sparta_register_success.html"
+#     context = {}
+#
+#     return render(request, template_name, context)
+#
+#
+# def sparta_profile_page(request, profile_id):
+#     """ /sparta/profile/{profile_id}/ """
+#     template_name = "sparta_profile.html"
+#     context = {}
+#
+#     return render(request, template_name, context)
+#
+#
+# def application_page(request, profile_id):
+#     """ /sparta/profile/{profile_id}/apply/ """
+#     template_name = "sparta_apply.html"
+#     context = {}
+#
+#     return render(request, template_name, context)
+#
+#
+# @require_POST()
+# def apply(request, profile_id, pathway_id):
+#     """ /sparta/profile/{profile_id}/apply/{pathway_id}/ """
+#
+#     return redirect('sparta-profile', profile_id=profile_id)
+#
+#
+# ###############
+# # Admin Pages #
+# ###############
+#
+# @login_required
+# def admin_main_view(request):
+#     if not request.user.is_staff:
+#         raise Http404
+#
+#     template_name = "sparta_admin.html"
+#     context = {}
+#
+#     return render(request, template_name, context)
+#
+#
+# @login_required
+# def admin_profiles_view(request):
+#     if not request.user.is_staff:
+#         raise Http404
+#
+#     template_name = "sparta_admin_profiles.html"
+#     context = {}
+#
+#     return render(request, template_name, context)
+#
+#
+# @login_required
+# def admin_applications_view(request):
+#     if not request.user.is_staff:
+#         raise Http404
+#
+#     template_name = "sparta_admin_applications.html"
+#     context = {}
+#
+#     return render(request, template_name, context)
