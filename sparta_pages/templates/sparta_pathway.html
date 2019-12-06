@@ -32,10 +32,11 @@
 <div class="container-grid container container-9">
   {% if courses %}
     {% for course in courses %}
-    <div class="container-grid container container-15">
-      <a class="link-text text-link-1" href="{% url 'about_course' course_id=course.courseoverview.id %}">{{ course.courseoverview.display_name }}</a>
-      <p class="paragraph paragraph-5">{{ course.pathway_course.short_description }}</p>
-    </div>
+    <!-- <div class="container-grid container container-15"> -->
+      <!-- <a class="link-text text-link-1" href="{% url 'about_course' course_id=course.courseoverview.id %}">{{ course.courseoverview.display_name }}</a> -->
+      <!-- <p class="paragraph paragraph-5">{{ course.pathway_course.short_description }}</p> -->
+    <!-- </div> -->
+      {% include "sparta_course.html" %}
     {% endfor %}
   {% else %}
     <div class="container-grid container container-15">
