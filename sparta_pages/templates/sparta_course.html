@@ -1,5 +1,5 @@
-<a class="col-9 col-sm-6 col-md-4 course-item mb-3 mx-auto px-0" href="{% url 'about_course' course_id=course.courseoverview.id %}" style="border-bottom: 3px solid #126f9a;box-shadow: 0 1px 10px 0 rgba(0,0,0,0.125),inset 0 0 0 1px rgba(255,255,255,0.75);">
-    <div class="card">
+<a class="col-9 col-sm-6 col-md-4 course-item mb-3 mx-auto px-3" href="{% url 'about_course' course_id=course.courseoverview.id %}">
+    <div class="card" style="border-bottom: 3px solid #126f9a;box-shadow: 0 1px 10px 0 rgba(0,0,0,0.125),inset 0 0 0 1px rgba(255,255,255,0.75);">
       <img class="card-img-top" src="{{ course.courseoverview.course_image_url }}">
       <div class="card-body position-relative">
         <h5 class="card-title text-bold teal line-hide-2 font-1 pb-4">{{course.courseoverview.display_name}}</h5>
