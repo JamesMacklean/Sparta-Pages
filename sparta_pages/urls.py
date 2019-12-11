@@ -5,5 +5,6 @@ from . import views
 
 urlpatterns = [
     url(r'^sparta/$', views.main, name='sparta-main'),
+    url(r'^sparta/register/$', views.register, name='sparta-main'),
     url(r'^sparta/(?P<slug>[-\w]+)/$', views.pathway, name='sparta-pathway'),
 ]
