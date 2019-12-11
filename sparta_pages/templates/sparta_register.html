@@ -8,7 +8,7 @@
 {% else %}
   <form method="post" action="{% url 'sparta-register' %}">
 {% endif %}
-    {{ form }}
+    {{ form.as_p }}
     <input type="submit" value="Submit" />
   </form>
 

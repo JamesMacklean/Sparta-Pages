@@ -131,6 +131,7 @@ def upload_to_s3(user, proof_of_education_file, proof_of_agreement_file):
 
     return {'proof_of_education_url': educ_url, 'proof_of_agreement_url': agree_url}
 
+
 def register_success_page(request):
     """ /sparta/register/success/ """
     template_name = "sparta_register_success.html"
