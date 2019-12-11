@@ -32,10 +32,6 @@
   {% if courses %}
   <div class="row mb-md-5 mb-3 mx-auto">
     {% for course in courses %}
-    <!-- <div class="container-grid container container-15"> -->
-      <!-- <a class="link-text text-link-1" href="{% url 'about_course' course_id=course.courseoverview.id %}">{{ course.courseoverview.display_name }}</a> -->
-      <!-- <p class="paragraph paragraph-5">{{ course.pathway_course.short_description }}</p> -->
-    <!-- </div> -->
       {% include "sparta_course.html" %}
     {% endfor %}
   </div>
