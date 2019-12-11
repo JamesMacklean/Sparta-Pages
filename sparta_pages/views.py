@@ -7,10 +7,15 @@ from uuid import uuid4
 import hmac
 import sha
 
+import boto
+from boto import s3
+from boto.s3.key import Key
+
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, Http404
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse
 from django.views.decorators.http import require_POST
 
 from openedx.core.djangoapps.content.course_overviews.models import CourseOverview
@@ -58,15 +63,72 @@ def pathway(request, slug):
     return render(request, template_name, context)
 
 
-def registration_page(request):
-    """ /sparta/register/ """
-    template_name = "sparta_register.html"
+def demo_registration_page(request):
+    """ /sparta/register/demo/ """
+    template_name = "sparta_register_demo.html"
     context = {
-    'AWS_S3_BUCKET_URL': "http://{}.s3.amazonaws.com/".format(settings.FILE_UPLOAD_STORAGE_BUCKET_NAME),
-    'AWS_ACCESS_KEY_ID': settings.AWS_ACCESS_KEY_ID
+        'AWS_S3_BUCKET_URL': "http://{}.s3.amazonaws.com/".format(settings.FILE_UPLOAD_STORAGE_BUCKET_NAME),
+        'AWS_ACCESS_KEY_ID': settings.AWS_ACCESS_KEY_ID
     }
     return render(request, template_name, context)
 
+
+def registration_page(request):
+    """ /sparta/register/ """
+    template_name = "sparta_register.html"
+    context = {}
+
+    if request.method == "POST":
+        form = SpartaProfileForm(request.POST, request.FILES)
+        if form.is_valid():
+            proof_of_education_file = form.cleaned_data['proof_of_education_file']
+            proof_of_agreement_file = form.cleaned_data['proof_of_agreement_file']
+            first_timer = form.cleaned_data['first_timer']
+
+            s3_response = upload_to_s3(request.user, proof_of_education_file, proof_of_agreement_file)
+
+            proof_of_education_url = s3_response.get('proof_of_education_file')
+            proof_of_agreement_url = s3_response.get('proof_of_agreement_file')
+
+            sprofile, created = SpartaProfile.objects.get_or_create(user=request.user)
+            sprofile.proof_of_education = proof_of_education_url
+            sprofile.proof_of_agreement = proof_of_agreement_url
+            sprofile.first_timer = first_timer
+            sprofile.save()
+
+            return redirect(reverse('sparta-register-success'))
+    else:
+        form = SpartaProfileForm()
+
+    return render(request, template_name, context)
+
+
+def upload_to_s3(user, proof_of_education_file, proof_of_agreement_file):
+    """"""
+    c = s3.connection.S3Connection(
+        settings.AWS_ACCESS_KEY_ID,
+        settings.AWS_SECRET_ACCESS_KEY
+    )
+    nonexistent = conn.lookup(settings.FILE_UPLOAD_STORAGE_BUCKET_NAME)
+    if nonexistent is  None:
+        raise Exception("No valid S3 Bucket set for image uploading.")
+
+    b = c.get_bucket(settings.FILE_UPLOAD_STORAGE_BUCKET_NAME, validate=False) # substitute your bucket name here
+    blocation = str(b.get_location())
+
+    tnow = datetime.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
+
+    educ_key = Key(b)
+    educ_key.key = 'proof_of_education_{}_{}'.format(user.username, tnow)
+    educ_key.set_contents_from_filename(proof_of_education_file)
+    educ_url = "https://{}.{}.amazonaws.com/sparta_uploads/{}".format(settings.FILE_UPLOAD_STORAGE_BUCKET_NAME, blocation, educ_key.key)
+
+    agree_key = Key(b)
+    agree_key.key = 'proof_of_agreement_{}_{}'.format(user.username, tnow)
+    agree_key.set_contents_from_filename(proof_of_agreement_file)
+    agree_url = "https://{}.{}.amazonaws.com/sparta_uploads/{}".format(settings.FILE_UPLOAD_STORAGE_BUCKET_NAME, blocation, agree_key.key)
+
+    return {'proof_of_education_url': educ_url, 'proof_of_agreement_url': agree_url}
 
 def register_success_page(request):
     """ /sparta/register/success/ """
@@ -99,6 +161,30 @@ def application_page(request, profile_id):
 
     return render(request, template_name, context)
 
+
+def get_upload_params_json(request):
+    def make_policy():
+        policy_object = {
+            "expiration": (datetime.now() + timedelta(hours=24)).strftime('%Y-%m-%dT%H:%M:%S.000Z'),
+            "conditions": [
+                { "bucket": settings.FILE_UPLOAD_STORAGE_BUCKET_NAME },
+                { "acl": "public-read" },
+                ["starts-with", "$key", "sparta_uploads/"],
+                { "success_action_status": "201" }
+            ]
+        }
+        return b64encode(dumps(policy_object).replace('\n', '').replace('\r', ''))
+
+    def sign_policy(policy):
+        return b64encode(hmac.new(settings.AWS_SECRET_ACCESS_KEY, policy, sha).digest())
+
+    policy = make_policy()
+    return {
+        "policy": policy,
+        "signature": sign_policy(policy),
+        "key": "sparta_uploads/" + uuid4().hex + ".bin",
+        "success_action_redirect": "/"
+    }
 
 def get_upload_params(request):
     def make_policy():
