@@ -552,11 +552,23 @@ div.responsive-picture.mx-auto.picture-1 {
 
 button.btn {
   border-radius: 6px;
-  background-color: #f00;
+  /* background-color: #f00; */
   color: #b2b2b2;
 }
 
 button.btn.mx-auto {
+  display: block;
+  min-width: 150px;
+  min-height: 50px;
+  border: .125rem solid #fff;
+  border-radius: 15px;
+  background-color: transparent;
+  color: #fff;
+  font-size: 20px;
+  font-family: 'Montserrat', cursive;
+}
+
+a.btn.mx-auto {
   display: block;
   min-width: 150px;
   min-height: 50px;
@@ -975,6 +987,17 @@ div.responsive-picture.aap_logo.mx-auto {
 }
 
 button.apply-now-1_button.btn.mx-auto {
+  padding: 0;
+  min-width: 160px;
+  min-height: 50px;
+  border-width: 0;
+  border-color: #000;
+  border-radius: 5px;
+  background-color: #fff;
+  color: #520000;
+  font-weight: 700;
+}
+a.apply-now-1_button.btn.mx-auto {
   padding: 0;
   min-width: 160px;
   min-height: 50px;
@@ -1604,6 +1627,13 @@ button.apply-now-2_button.btn.mx-auto:hover {
   }
 
   button.btn.mx-auto {
+    border-width: .125rem;
+    border-color: #fff;
+    border-radius: 15px;
+    color: #fff;
+  }
+
+  a.btn.mx-auto {
     border-width: .125rem;
     border-color: #fff;
     border-radius: 15px;
