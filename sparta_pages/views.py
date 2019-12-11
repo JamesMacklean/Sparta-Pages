@@ -76,7 +76,7 @@ def demo_registration_page(request):
 def registration_page(request):
     """ /sparta/register/ """
     template_name = "sparta_register.html"
-    context = {}
+
 
     if request.method == "POST":
         form = SpartaProfileForm(request.POST, request.FILES)
@@ -100,7 +100,7 @@ def registration_page(request):
     else:
         form = SpartaProfileForm()
 
-    context['form'] = form
+    context = {'form': form}
     return render(request, template_name, context)
 
 
