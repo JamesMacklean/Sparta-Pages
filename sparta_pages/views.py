@@ -100,6 +100,7 @@ def registration_page(request):
     else:
         form = SpartaProfileForm()
 
+    context['form'] = form
     return render(request, template_name, context)
 
 
