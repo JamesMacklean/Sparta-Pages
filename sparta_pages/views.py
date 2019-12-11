@@ -96,10 +96,10 @@ def registration_page(request):
             sprofile.save()
 
             return redirect(reverse('sparta-register-success'))
+    else:
+        form = SpartaProfileForm()
 
-    form = SpartaProfileForm()
-    context = {'form': form}
-    return render(request, template_name, context)
+    return render(request, template_name, {'form': form})
 
 
 def upload_to_s3(user, proof_of_education_file, proof_of_agreement_file):
@@ -109,7 +109,7 @@ def upload_to_s3(user, proof_of_education_file, proof_of_agreement_file):
         settings.AWS_SECRET_ACCESS_KEY
     )
     nonexistent = conn.lookup(settings.FILE_UPLOAD_STORAGE_BUCKET_NAME)
-    if nonexistent is  None:
+    if nonexistent is None:
         raise Exception("No valid S3 Bucket set for image uploading.")
 
     b = c.get_bucket(settings.FILE_UPLOAD_STORAGE_BUCKET_NAME, validate=False) # substitute your bucket name here

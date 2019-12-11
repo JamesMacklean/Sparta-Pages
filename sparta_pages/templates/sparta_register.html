@@ -4,7 +4,7 @@
 {% block sparta_body %}
 
 {% if form.is_multipart %}
-  <form enctype="multipart/form-data" method="post" action="">
+  <form enctype="multipart/form-data" method="post" action="{% url 'sparta-register' %}">
 {% else %}
   <form method="post" action="{% url 'sparta-register' %}">
 {% endif %}
