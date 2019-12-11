@@ -107,7 +107,7 @@ class PathwayApplication(models.Model):
     pathway = models.ForeignKey(
         'Pathway',
         on_delete=models.CASCADE,
-        related_name="courses"
+        related_name="applications"
         )
     profile = models.ForeignKey(
         'SpartaProfile',
