@@ -77,7 +77,6 @@ def registration_page(request):
     """ /sparta/register/ """
     template_name = "sparta_register.html"
 
-
     if request.method == "POST":
         form = SpartaProfileForm(request.POST, request.FILES)
         if form.is_valid():
