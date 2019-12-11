@@ -6,6 +6,7 @@
 <h1>Upload Demo</h1>
 <div id="invisible">
   <form action="{{ AWS_S3_BUCKET_URL }}" method="post" enctype="multipart/form-data" id="upload_form">
+    {% csrf_token %}
     <input type="hidden" name="key"></input>
     <input type="hidden" name="AWSAccessKeyId" value="{{ AWS_ACCESS_KEY_ID }}"></input>
     <input type="hidden" name="acl" value="public-read"></input>
