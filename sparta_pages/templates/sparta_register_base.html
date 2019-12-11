@@ -18,7 +18,7 @@
       dataType: "xml"
       add: (event, data) ->
         log "fetching params"
-        $.get("{% url params %}").done (params) ->
+        $.get("{% url 'sparta-upload-params' %}").done (params) ->
           form.find('input[name=key]').val(params.key)
           form.find('input[name=policy]').val(params.policy)
           form.find('input[name=signature]').val(params.signature)
