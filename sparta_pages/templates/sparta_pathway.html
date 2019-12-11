@@ -35,22 +35,7 @@
       <!-- <a class="link-text text-link-1" href="{% url 'about_course' course_id=course.courseoverview.id %}">{{ course.courseoverview.display_name }}</a> -->
       <!-- <p class="paragraph paragraph-5">{{ course.pathway_course.short_description }}</p> -->
     <!-- </div> -->
-      <!-- {% include "sparta_course.html" %} -->
-      <a class="col-9 col-sm-6 col-md-4 course-item mb-3 mx-auto px-0" href="{% url 'about_course' course_id=course.id %}" style="border-bottom: 3px solid #126f9a;box-shadow: 0 1px 10px 0 rgba(0,0,0,0.125),inset 0 0 0 1px rgba(255,255,255,0.75);">
-          <div class="card">
-            <img class="card-img-top" src="{{ course.course_image_url }}">
-            <div class="card-body position-relative">
-              <h5 class="card-title text-bold teal line-hide-2 font-1 pb-4">{{course.display_name}}</h5>
-              <p class="card-text position-absolute fixed-bottom" style="color: gray;">
-                  {% if course.start_display != None %}
-                    Starts: {{course.start_display}}
-                  {% else %}
-                    Starts: {{course.start}}
-                  {% endif %}
-              </p>
-            </div>
-          </div>
-      </a>
+      {% include "sparta_course.html" %}
     {% endfor %}
   {% else %}
     <div class="container-grid container container-15">
