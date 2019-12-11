@@ -1,0 +1,27 @@
+{% extends "sparta_register_base.html" %}
+{% load static %}
+
+{% block sparta_body %}
+
+<h1>Upload Demo</h1>
+<div id="invisible">
+  <form action="{{ AWS_S3_BUCKET_URL }}" method="post" enctype="multipart/form-data" id="upload_form">
+    {% csrf_token %}
+    <input type="hidden" name="key"></input>
+    <input type="hidden" name="AWSAccessKeyId" value="{{ AWS_ACCESS_KEY_ID }}"></input>
+    <input type="hidden" name="acl" value="public-read"></input>
+    <input type="hidden" name="policy"></input>
+    <input type="hidden" name="signature"></input>
+    <input type="hidden" name="success_action_status" value="201"></input>
+    <input type="file" name="file"></input>
+  </form>
+</div>
+<div id="wrapper">
+  <img src="{% static 'images/sparta/upload_icon.png' %}" id="upload_button"/>
+  <div id="progress_container">
+    <div id="progress_bar"></div>
+  </div>
+</div>
+<div id="status_container">Status: <span id="status">idle</span></div>
+
+{% endblock %}
