@@ -62,7 +62,7 @@ def registration_page(request):
     """ /sparta/register/ """
     template_name = "sparta_register.html"
     context = {
-    'AWS_S3_BUCKET_URL': "http://{}.s3.amazonaws.com/".format(FILE_UPLOAD_STORAGE_BUCKET_NAME),
+    'AWS_S3_BUCKET_URL': "http://{}.s3.amazonaws.com/".format(settings.FILE_UPLOAD_STORAGE_BUCKET_NAME),
     'AWS_ACCESS_KEY_ID': settings.AWS_ACCESS_KEY_ID
     }
     return render(request, template_name, context)
