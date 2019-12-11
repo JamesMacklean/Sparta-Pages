@@ -13,6 +13,7 @@ class Pathway(models.Model):
     slug = models.SlugField(max_length=255)
     short_description = models.CharField(max_length=255, blank=True, default="")
     long_description = models.TextField(blank=True, default="")
+    card_description = models.TextField(blank=True, default="")
     image_url = models.CharField(max_length=255)
     order = models.PositiveSmallIntegerField(default=0)
     is_active = models.BooleanField(default=True)
