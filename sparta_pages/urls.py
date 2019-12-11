@@ -9,5 +9,5 @@ urlpatterns = [
     url(r'^sparta/upload/params/$', views.get_upload_params, name='sparta-upload-params'),
     url(r'^sparta/register/demo/$', views.demo_registration_page, name='sparta-register-demo'),
     url(r'^sparta/register/$', views.registration_page, name='sparta-register'),
-    url(r'^sparta/register/success/$', views.registration_page, name='sparta-register-success'),
+    url(r'^sparta/register/success/$', views.register_success_page, name='sparta-register-success'),
 ]
