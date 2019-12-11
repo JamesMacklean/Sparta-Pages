@@ -96,9 +96,8 @@ def registration_page(request):
             sprofile.save()
 
             return redirect(reverse('sparta-register-success'))
-    else:
-        form = SpartaProfileForm()
 
+    form = SpartaProfileForm()
     context = {'form': form}
     return render(request, template_name, context)
 
