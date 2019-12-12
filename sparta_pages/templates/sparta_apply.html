@@ -11,7 +11,7 @@
 <div class="card">
   <div class="card-body">
     <h2 class="card-title">Apply for a pathway</h2>
-    <p><a target="blank" href="https://coursebank.ph/sparta">Click here for pathway details.</a></p>
+    <p><a target="blank" href="{% url 'sparta-main' %}">Click here for pathway details.</a></p>
 
     <form action="{% url 'sparta-apply' %}" accept-charset="UTF-8" method="post">
       {% csrf_token %}
