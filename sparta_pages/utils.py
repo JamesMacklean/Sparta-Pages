@@ -8,3 +8,9 @@ def manage_pathway_applications():
     """"""
     for app in PathwayApplication.objects.filter(status="PE"):
         app.approve()
+
+        user_enrollments = CourseEnrollment.objects.enrollments_for_user(app.profile.user)
+        try:
+            course_enrollment = user_enrollments.get(course_id=course_key, mode='verified')
+        except CourseEnrollment.DoesNotExist:
+            pass
