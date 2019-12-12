@@ -195,7 +195,7 @@ class PathwayApplicationView(TemplateView):
                 return render(request, template_name, context)
             Event.objects.create(
                 event="Application Submitted",
-                description="User with profile id {} has submitted an application for learning pathway with id {}.".format(profile.id, app.pathway.id),
+                description="User {} has submitted an application for learning pathway {}.".format(app.profile.user.username, app.pathway.name),
                 profile=app.profile
             )
             return redirect('sparta-profile')
@@ -213,7 +213,7 @@ def widthraw(request, id):
     app.withraw()
     Event.objects.create(
         event="Withdraw Application",
-        description="User with profile id {} has withdrawn application for learning pathway with id {}.".format(profile.id, app.pathway.id),
+        description="User {} has withdrawn application for learning pathway {}.".format(app.profile.user.username, app.pathway.name),
         profile=app.profile
     )
     return redirect('sparta-profile')
