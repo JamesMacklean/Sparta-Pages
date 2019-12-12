@@ -39,7 +39,7 @@
         {% for app in applications %}
         <tr>
           <td>{{ app.pathway }}</td>
-          <td>{{ app.status }}</td>
+          <td>{{ app.get_status_display }}</td>
           {% if app.status == 'AP' %}
           <td>-</td>
           {% else %}
