@@ -23,6 +23,7 @@ from django.views.generic import TemplateView
 
 from openedx.core.djangoapps.content.course_overviews.models import CourseOverview
 from opaque_keys.edx.keys import CourseKey
+from student.models import CourseEnrollment
 
 from .forms import SpartaProfileForm, EducationProfileForm, EmploymentProfileForm, TrainingProfileForm, PathwayApplicationForm
 from .models import Pathway, SpartaCourse, SpartaProfile, EducationProfile, EmploymentProfile, TrainingProfile, PathwayApplication, Event
@@ -37,10 +38,18 @@ def main(request):
     template_name = "sparta_main.html"
     context = {}
 
+    if request.user.is_authenticated:
+        try:
+            profile = SpartaProfile.objects.get(user=request.user)
+        except SpartaProfile.DoesNotExist:
+            pass
+        else:
+            profile = None
+
     pathways = Pathway.objects.filter(is_active=True)
 
     context['pathways'] = pathways
-
+    context['profile'] = profile
     return render(request, template_name, context)
 
 
@@ -158,7 +167,7 @@ class ProfilePageView(TemplateView):
         try:
             profile = SpartaProfile.objects.get(user=request.user)
         except SpartaProfile.DoesNotExist:
-            context['apply_now'] = True
+            return redirect('sparta-main')
         return render(request, self.template_name, context)
 
 
@@ -218,6 +227,42 @@ def widthraw(request, id):
         profile=app.profile
     )
     return redirect('sparta-profile')
+
+
+class PathwayProgressView(TemplateView):
+    """
+    path: /sparta/pathway/<pathway_id>/progress/
+    """
+    template_name = 'sparta_progress.html'
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(PathwayProgressView, self).dispatch(*args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data()
+
+        pathway = get_object_or_404(Pathway, id=self.kwargs['pathway_id'])
+        context['pathway'] = pathway
+
+        user_enrollments = CourseEnrollment.objects.enrollments_for_user(app.profile.user)
+        for pathway_course in  pathway.courses.all():
+            course = {'pathway_course': pathway_course}
+            course_key = CourseKey.from_string(pathway_course.course_id)
+            courseoverview = CourseOverview.get_from_id(course_key)
+            course['courseoverview'] = courseoverview
+
+            try:
+                course_enrollment = user_enrollments.get(course_id=course_key, mode='verified')
+            except CourseEnrollment.DoesNotExist:
+                pass
+            else:
+                course['course_enrollment'] = course_enrollment
+
+            courses.append(course)
+        context['courses'] = courses
+
+        return render(request, self.template_name, context)
 
 
 def get_upload_params_json(request):
