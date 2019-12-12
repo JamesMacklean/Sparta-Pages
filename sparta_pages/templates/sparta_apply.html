@@ -1,0 +1,24 @@
+{% extends "sparta_base.html" %}
+{% load static %}
+
+{% block sparta_body %}
+
+{% if fail_app %}
+<div class="alert alert-warning" role="alert">
+  You could not apply because you've either already been approved or unfortunately denied from a previous application.
+</div>
+{% endif %}
+<div class="card">
+  <div class="card-body">
+    <h2 class="card-title">Apply for a pathway</h2>
+    <p><a target="blank" href="https://coursebank.ph/sparta">Click here for pathway details.</a></p>
+
+    <form action="{% url 'sparta-apply' %}" accept-charset="UTF-8" method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <input type="submit" name="commit" value="Apply" class="btn btn-primary" data-disable-with="Apply">
+    </form>
+  </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,90 @@
+{% extends "sparta_base.html" %}
+{% load static %}
+
+{% block sparta_body %}
+
+{% if apply_now %}
+
+<div class="container-grid cta-1_block col">
+  <div class="container-grid row">
+    <div class="container-grid col-sm-12 col-md-8 col-lg-8 col-xl-8 container-4">
+      <h1 class="become-scholar_headings" style="text-align: left;">Become a SPARTA Scholar</h1>
+      <p class="paragraph become-scholar_paragraph">Learn data analytics. Apply for a schorlarship and join thousands of learners in this exciting new field.</p>
+    </div>
+    <div class="container-grid col-sm-12 col-md-4 col-lg-4 col-xl-4 container-5"><a href="{% url 'sparta-register' %}" class="btn mx-auto apply-now-2_button">APPLY&nbsp;NOW</a>
+    </div>
+  </div>
+</div>
+
+{% else %}
+
+<div class="card">
+  <div class="card-body">
+    <h2 class="card-title">Your Pathways</h2>
+
+    <p>To enroll and take Sparta courses for free, you must apply for Pathways and get enrollment access to their corresponding courses. Once you apply and get accepted for a Pathway, you will receive an email with instructions on how to access the courses of the Pathway you applied for.</p>
+    <p><a target="blank" href="https://coursebank.ph/sparta">(Click here for details about Sparta Pathways)</a></p>
+
+    <table class="table">
+      <thead class="thead-light">
+        <tr>
+          <th>Pathway</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {% if applications %}
+        {% for app in applications %}
+        <tr>
+          <td>{{ app.pathway }}</td>
+          <td>{{ app.status }}</td>
+          {% if app.status=='AP' %}
+          <td>-</td>
+          {% else %}
+          <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#withdrawModal">Widthraw</button></td>
+          <!-- Modal Block -->
+          <div class="modal fade" id="withdrawModal" tabindex="-1" role="dialog" aria-labelledby="withdrawModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="withdrawModalLabel">Widthraw Application</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  Are you sure you want to cancel your application for this Learning Pathway ({{ app.pathway }})?
+                </div>
+                <div class="modal-footer">
+                  <form action="{% url 'sparta-withraw' id=app.id %}" method="POST">
+                    {% csrf_token %}
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <input class="btn btn-primary" id="submit" type="submit" value="Yes, Widthraw My Application" />
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+          {% endif %}
+        </tr>
+        {% endfor %}
+        {% else %}
+        <tr>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+        </tr>
+        {% endif %}
+      </tbody>
+    </table>
+
+    <a class="btn btn-primary" href="{% url 'sparta-apply' %}">Apply for a pathway</a>
+
+  </div>
+</div>
+
+{% endif %}
+
+{% endblock %}
