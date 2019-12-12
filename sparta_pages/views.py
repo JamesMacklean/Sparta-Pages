@@ -98,8 +98,8 @@ class RegistrationPageView(View):
 
             s3_response = upload_to_s3(request.user, proof_of_education_file, proof_of_agreement_file)
 
-            proof_of_education_url = s3_response.get('proof_of_education_file')
-            proof_of_agreement_url = s3_response.get('proof_of_agreement_file')
+            proof_of_education_url = s3_response.get('proof_of_education_url', "")
+            proof_of_agreement_url = s3_response.get('proof_of_agreement_url', "")
 
             try:
                 sprofile = SpartaProfile.objects.get(user=request.user)
