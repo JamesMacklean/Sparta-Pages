@@ -65,16 +65,6 @@ def pathway(request, slug):
     return render(request, template_name, context)
 
 
-def demo_registration_page(request):
-    """ /sparta/register/demo/ """
-    template_name = "sparta_register_demo.html"
-    context = {
-        'AWS_S3_BUCKET_URL': "https://{}.s3.amazonaws.com/".format(settings.FILE_UPLOAD_STORAGE_BUCKET_NAME),
-        'AWS_ACCESS_KEY_ID': settings.AWS_ACCESS_KEY_ID
-    }
-    return render(request, template_name, context)
-
-
 class RegistrationPageView(View):
     """
     """
@@ -150,28 +140,82 @@ def register_success_page(request):
     return render(request, template_name, context)
 
 
-def sparta_profile_page(request, profile_id):
-    """ /sparta/profile/{profile_id}/ """
-    template_name = "sparta_profile.html"
-    context = {}
+class ProfilePageView(View):
+    template_name = 'sparta_profile.html'
 
-    return render(request, template_name, context)
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(ProfilePageView, self).dispatch(*args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super(ProfilePageView, self).get_context_data(**kwargs)
+        context['applications'] = PathwayApplication.objects.all()
+        return context
+
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data()
+        try:
+            profile = SpartaProfile.objects.get(user=request.user)
+        except SpartaProfile.DoesNotExist:
+            context['apply_now'] = True
+        return render(request, self.template_name, context)
 
 
-def application_page(request, profile_id):
-    """ /sparta/profile/{profile_id}/apply/ """
-    template_name = "sparta_apply.html"
-    context = {}
+class PathwayApplicationView(View):
+    form_class = PathwayApplicationForm
+    template_name = 'sparta_apply.html'
 
-    if request.method == 'POST':
-        form = PathwayApplicationForm(request.POST)
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(PathwayApplicationView, self).dispatch(*args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super(PathwayApplication, self).get_context_data(**kwargs)
+        fail_app = kwargs.get('fail_app', None)
+        if fail_app:
+            context['fail_app'] = fail_app
+        return context
+
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data()
+        context['form'] = self.form_class()
+        return render(request, self.template_name, context)
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
         if form.is_valid():
+            pathway = form.cleaned_data['pathway']
+            try:
+                app = PathwayApplication.objects.get(profile=request.user.sparta_profile, pathway=pathway)
+            except PathwayApplication.DoesNotExist:
+                app = PathwayApplication.objects.create(profile=request.user.sparta_profile, pathway=pathway)
+            if app.status in ["DE", "AP"]:
+                context = get_context_data(**{'fail_app': True})
+                return render(request, template_name, context)
+            Event.objects.create(
+                event="Application Submitted",
+                description="User with profile id {} has submitted an application for learning pathway with id {}.".format(profile.id, app.pathway.id),
+                profile=app.profile
+            )
+            return redirect('sparta-profile')
+        context = self.get_context_data()
+        context['form'] = form
+        return render(request, self.template_name, context)
 
-            return redirect('sparta-profile', profile_id=profile_id)
-    else:
-        form = PathwayApplicationForm()
 
-    return render(request, template_name, context)
+@require_POST
+def widthraw(request, id):
+    """"""
+    app = get_object_or_404(PathwayApplication, id=id)
+    if request.user != app.profile.user:
+        return HttpResponse(status=403)
+    app.withraw()
+    Event.objects.create(
+        event="Withdraw Application",
+        description="User with profile id {} has withdrawn application for learning pathway with id {}.".format(profile.id, app.pathway.id),
+        profile=app.profile
+    )
+    return redirect('sparta-profile')
 
 
 def get_upload_params_json(request):
