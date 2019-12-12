@@ -68,7 +68,7 @@ def demo_registration_page(request):
     """ /sparta/register/demo/ """
     template_name = "sparta_register_demo.html"
     context = {
-        'AWS_S3_BUCKET_URL': "http://{}.s3.amazonaws.com/".format(settings.FILE_UPLOAD_STORAGE_BUCKET_NAME),
+        'AWS_S3_BUCKET_URL': "https://{}.s3.amazonaws.com/".format(settings.FILE_UPLOAD_STORAGE_BUCKET_NAME),
         'AWS_ACCESS_KEY_ID': settings.AWS_ACCESS_KEY_ID
     }
     return render(request, template_name, context)
@@ -79,6 +79,10 @@ class RegistrationPageView(View):
     """
     form_class = SpartaProfileForm
     template_name = "sparta_register.html"
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(RegistrationPageView, self).dispatch(*args, **kwargs)
 
     def get(self, request, *args, **kwargs):
         form = self.form_class()
