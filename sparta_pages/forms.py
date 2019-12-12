@@ -55,5 +55,5 @@ class PathwayApplicationForm(forms.ModelForm):
     class Meta:
         model = PathwayApplication
         fields = [
-            'pathway', 'profile', 'status'
+            'pathway',
         ]
