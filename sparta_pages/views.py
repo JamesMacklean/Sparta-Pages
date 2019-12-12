@@ -19,6 +19,7 @@ from django.urls import reverse
 from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.decorators.http import require_POST
+from django.views.generic import TemplateView
 
 from openedx.core.djangoapps.content.course_overviews.models import CourseOverview
 from opaque_keys.edx.keys import CourseKey
@@ -140,7 +141,7 @@ def register_success_page(request):
     return render(request, template_name, context)
 
 
-class ProfilePageView(View):
+class ProfilePageView(TemplateView):
     template_name = 'sparta_profile.html'
 
     @method_decorator(login_required)
@@ -161,7 +162,7 @@ class ProfilePageView(View):
         return render(request, self.template_name, context)
 
 
-class PathwayApplicationView(View):
+class PathwayApplicationView(TemplateView):
     form_class = PathwayApplicationForm
     template_name = 'sparta_apply.html'
 
