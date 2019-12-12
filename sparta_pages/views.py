@@ -150,7 +150,7 @@ class ProfilePageView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(ProfilePageView, self).get_context_data(**kwargs)
-        context['applications'] = PathwayApplication.objects.all()
+        context['applications'] = PathwayApplication.objects.all().exclude(status='WE')
         return context
 
     def get(self, request, *args, **kwargs):
