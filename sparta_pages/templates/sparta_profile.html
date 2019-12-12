@@ -40,7 +40,7 @@
         <tr>
           <td>{{ app.pathway }}</td>
           <td>{{ app.status }}</td>
-          {% if app.status=='AP' %}
+          {% if app.status == 'AP' %}
           <td>-</td>
           {% else %}
           <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#withdrawModal">Widthraw</button></td>
