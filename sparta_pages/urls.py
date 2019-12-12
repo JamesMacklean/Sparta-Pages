@@ -6,6 +6,9 @@ from . import views
 urlpatterns = [
     url(r'^sparta/$', views.main, name='sparta-main'),
     url(r'^sparta/register/$', views.RegistrationPageView.as_view(), name='sparta-register'),
-    url(r'^sparta/upload/params/$', views.get_upload_params, name='sparta-upload-params'),
+    url(r'^sparta/register/success/$', views.register_success_page, name='sparta-register-success'),
+    url(r'^sparta/profile/$', views.sparta_profile_page, name='sparta-profile'),
+    url(r'^sparta/apply/$', views.PathwayApplicationView.as_view(), name='sparta-apply'),
     url(r'^sparta/pathway/(?P<slug>[-\w]+)/$', views.pathway, name='sparta-pathway'),
+    url(r'^sparta/widthraw/(?P<id>\d+)/$', views.widthraw, name='sparta-widthraw'),
 ]
