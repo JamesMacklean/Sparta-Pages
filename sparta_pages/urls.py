@@ -10,5 +10,5 @@ urlpatterns = [
     url(r'^sparta/profile/$', views.ProfilePageView.as_view(), name='sparta-profile'),
     url(r'^sparta/apply/$', views.PathwayApplicationView.as_view(), name='sparta-apply'),
     url(r'^sparta/pathway/(?P<slug>[-\w]+)/$', views.pathway, name='sparta-pathway'),
-    url(r'^sparta/widthraw/(?P<id>\d+)/$', views.widthraw, name='sparta-widthraw'),
+    url(r'^sparta/widthraw/(?P<id>\d+)/$', views.widthraw, name='sparta-withdraw'),
 ]

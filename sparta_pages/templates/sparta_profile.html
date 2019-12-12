@@ -58,7 +58,7 @@
                   Are you sure you want to cancel your application for this Learning Pathway ({{ app.pathway }})?
                 </div>
                 <div class="modal-footer">
-                  <form action="{% url 'sparta-withraw' id=app.id %}" method="POST">
+                  <form action="{% url 'sparta-withdraw' id=app.id %}" method="POST">
                     {% csrf_token %}
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                     <input class="btn btn-primary" id="submit" type="submit" value="Yes, Widthraw My Application" />
