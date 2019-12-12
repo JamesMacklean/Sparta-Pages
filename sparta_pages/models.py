@@ -124,6 +124,11 @@ class PathwayApplication(models.Model):
             self.status = self.WITHDRAWN
             self.save()
 
+    def pend(self):
+        if self.status != self.PENDING:
+            self.status = self.PENDING
+            self.save()
+
 
 class EducationProfile(models.Model):
     """
