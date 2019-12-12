@@ -103,7 +103,7 @@ class RegistrationPageView(View):
 
             try:
                 sprofile = SpartaProfile.objects.get(user=request.user)
-            except SpartaProfile.DoestNotExist:
+            except SpartaProfile.DoesNotExist:
                 sprofile = SpartaProfile(user=request.user)
             sprofile.proof_of_education = proof_of_education_url
             sprofile.proof_of_agreement = proof_of_agreement_url
