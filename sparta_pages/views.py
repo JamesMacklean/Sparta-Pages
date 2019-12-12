@@ -171,7 +171,7 @@ class PathwayApplicationView(TemplateView):
         return super(PathwayApplicationView, self).dispatch(*args, **kwargs)
 
     def get_context_data(self, **kwargs):
-        context = super(PathwayApplication, self).get_context_data(**kwargs)
+        context = super(PathwayApplicationView, self).get_context_data(**kwargs)
         fail_app = kwargs.get('fail_app', None)
         if fail_app:
             context['fail_app'] = fail_app
