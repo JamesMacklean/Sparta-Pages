@@ -96,7 +96,7 @@ class RegistrationPageView(View):
             proof_of_agreement_file = form.cleaned_data['proof_of_agreement_file']
             first_timer = form.cleaned_data['first_timer']
 
-            s3_response = upload_to_s3(request.user, proof_of_education_file.name, proof_of_agreement_file.name)
+            s3_response = upload_to_s3(request.user, proof_of_education_file, proof_of_agreement_file)
 
             proof_of_education_url = s3_response.get('proof_of_education_file')
             proof_of_agreement_url = s3_response.get('proof_of_agreement_file')
@@ -128,12 +128,12 @@ def upload_to_s3(user, proof_of_education_file, proof_of_agreement_file):
 
     educ_key = Key(b)
     educ_key.key = 'proof_of_education_{}_{}'.format(user.username, tnow)
-    educ_key.set_contents_from_filename(proof_of_education_file)
+    educ_key.set_contents_from_file(proof_of_education_file)
     educ_url = "https://{}.{}.amazonaws.com/sparta_uploads/{}".format(settings.FILE_UPLOAD_STORAGE_BUCKET_NAME, blocation, educ_key.key)
 
     agree_key = Key(b)
     agree_key.key = 'proof_of_agreement_{}_{}'.format(user.username, tnow)
-    agree_key.set_contents_from_filename(proof_of_agreement_file)
+    agree_key.set_contents_from_file(proof_of_agreement_file)
     agree_url = "https://{}.{}.amazonaws.com/sparta_uploads/{}".format(settings.FILE_UPLOAD_STORAGE_BUCKET_NAME, blocation, agree_key.key)
 
     return {'proof_of_education_url': educ_url, 'proof_of_agreement_url': agree_url}
