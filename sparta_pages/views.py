@@ -117,7 +117,7 @@ def upload_to_s3(user, proof_of_education_file, proof_of_agreement_file):
         settings.AWS_ACCESS_KEY_ID,
         settings.AWS_SECRET_ACCESS_KEY
     )
-    nonexistent = conn.lookup(settings.FILE_UPLOAD_STORAGE_BUCKET_NAME)
+    nonexistent = c.lookup(settings.FILE_UPLOAD_STORAGE_BUCKET_NAME)
     if nonexistent is None:
         raise Exception("No valid S3 Bucket set for image uploading.")
 
