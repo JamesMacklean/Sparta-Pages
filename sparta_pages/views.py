@@ -210,7 +210,7 @@ def widthraw(request, id):
     app = get_object_or_404(PathwayApplication, id=id)
     if request.user != app.profile.user:
         return HttpResponse(status=403)
-    app.withraw()
+    app.withdraw()
     Event.objects.create(
         event="Withdraw Application",
         description="User {} has withdrawn application for learning pathway {}.".format(app.profile.user.username, app.pathway.name),
