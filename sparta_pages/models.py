@@ -129,6 +129,16 @@ class PathwayApplication(models.Model):
             self.status = self.PENDING
             self.save()
 
+    def approve(self):
+        if self.status != self.APPROVED:
+            self.status = self.APPROVED
+            self.save()
+
+    def deny(self):
+        if self.status != self.DENIED:
+            self.status = self.DENIED
+            self.save()
+
 
 class EducationProfile(models.Model):
     """
