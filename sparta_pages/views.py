@@ -21,6 +21,8 @@ from django.views import View
 from django.views.decorators.http import require_POST
 from django.views.generic import TemplateView
 
+from lms.djangoapps.certificates.models import certificate_status_for_student
+
 from openedx.core.djangoapps.content.course_overviews.models import CourseOverview
 from opaque_keys.edx.keys import CourseKey
 from student.models import CourseEnrollment
@@ -86,6 +88,8 @@ class RegistrationPageView(View):
         return super(RegistrationPageView, self).dispatch(*args, **kwargs)
 
     def get(self, request, *args, **kwargs):
+        if SpartaProfile.objects.filter(user=request.user):
+            return redirect('sparta-profile')
         form = self.form_class()
         return render(request, self.template_name, {'form': form})
 
@@ -245,19 +249,17 @@ class PathwayProgressView(TemplateView):
         pathway = get_object_or_404(Pathway, id=self.kwargs['pathway_id'])
         context['pathway'] = pathway
 
-        user_enrollments = CourseEnrollment.objects.enrollments_for_user(app.profile.user)
         for pathway_course in  pathway.courses.all():
             course = {'pathway_course': pathway_course}
             course_key = CourseKey.from_string(pathway_course.course_id)
             courseoverview = CourseOverview.get_from_id(course_key)
             course['courseoverview'] = courseoverview
 
-            try:
-                course_enrollment = user_enrollments.get(course_id=course_key, mode='verified')
-            except CourseEnrollment.DoesNotExist:
-                pass
+            cert_status = certificate_status_for_student(app.profile.user, course_key)
+            if cert_status and cert_status['mode'] == 'verified' and cert_status['status'] not in  ['unavailable', 'notpassing', 'restricted', 'unverified']:
+                course['completed'] = True
             else:
-                course['course_enrollment'] = course_enrollment
+                course['completed'] = False
 
             courses.append(course)
         context['courses'] = courses
