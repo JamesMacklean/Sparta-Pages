@@ -193,6 +193,7 @@ class PathwayApplicationView(TemplateView):
             if app.status in ["DE", "AP"]:
                 context = get_context_data(**{'fail_app': True})
                 return render(request, template_name, context)
+            app.pend()
             Event.objects.create(
                 event="Application Submitted",
                 description="User {} has submitted an application for learning pathway {}.".format(app.profile.user.username, app.pathway.name),
