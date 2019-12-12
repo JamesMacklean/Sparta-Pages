@@ -101,7 +101,10 @@ class RegistrationPageView(View):
             proof_of_education_url = s3_response.get('proof_of_education_file')
             proof_of_agreement_url = s3_response.get('proof_of_agreement_file')
 
-            sprofile, created = SpartaProfile.objects.get_or_create(user=request.user)
+            try:
+                sprofile = SpartaProfile.objects.get(user=request.user)
+            except SpartaProfile.DoestNotExist:
+                sprofile = SpartaProfile(user=request.user)
             sprofile.proof_of_education = proof_of_education_url
             sprofile.proof_of_agreement = proof_of_agreement_url
             sprofile.first_timer = first_timer
