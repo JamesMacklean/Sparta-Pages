@@ -25,7 +25,7 @@ from openedx.core.djangoapps.content.course_overviews.models import CourseOvervi
 from opaque_keys.edx.keys import CourseKey
 
 from .forms import SpartaProfileForm, EducationProfileForm, EmploymentProfileForm, TrainingProfileForm, PathwayApplicationForm
-from .models import Pathway, SpartaCourse, SpartaProfile, EducationProfile, EmploymentProfile, TrainingProfile, PathwayApplication
+from .models import Pathway, SpartaCourse, SpartaProfile, EducationProfile, EmploymentProfile, TrainingProfile, PathwayApplication, Event
 
 
 #################
