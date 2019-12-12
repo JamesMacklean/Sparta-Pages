@@ -96,7 +96,7 @@ class RegistrationPageView(View):
             proof_of_agreement_file = form.cleaned_data['proof_of_agreement_file']
             first_timer = form.cleaned_data['first_timer']
 
-            s3_response = upload_to_s3(request.user, proof_of_education_file, proof_of_agreement_file)
+            s3_response = upload_to_s3(request.user, proof_of_education_file.name, proof_of_agreement_file.name)
 
             proof_of_education_url = s3_response.get('proof_of_education_file')
             proof_of_agreement_url = s3_response.get('proof_of_agreement_file')
