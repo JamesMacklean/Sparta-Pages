@@ -119,6 +119,11 @@ class PathwayApplication(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=2, choices=STATUS_CHOICES, default=PENDING)
 
+    def withraw(self):
+        if self.status != WITHDRAWN:
+            self.status = WITHDRAWN
+            self.save()
+
 
 class EducationProfile(models.Model):
     """
