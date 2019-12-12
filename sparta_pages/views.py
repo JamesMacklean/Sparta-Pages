@@ -23,7 +23,7 @@ from openedx.core.djangoapps.content.course_overviews.models import CourseOvervi
 from opaque_keys.edx.keys import CourseKey
 
 from .forms import SpartaProfileForm, EducationProfileForm, EmploymentProfileForm, TrainingProfileForm, PathwayApplicationForm
-from .models import Pathway, SpartaCourse
+from .models import Pathway, SpartaCourse, SpartaProfile, EducationProfile, EmploymentProfile, TrainingProfile, PathwayApplication
 
 
 #################
@@ -77,7 +77,7 @@ def demo_registration_page(request):
 class RegistrationPageView(View):
     """
     """
-    form_class = SpartaProfile
+    form_class = SpartaProfileForm
     template_name = "sparta_register.html"
 
     def get(self, request, *args, **kwargs):
