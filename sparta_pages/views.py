@@ -16,6 +16,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, Http404
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
+from django.views import View
 from django.views.decorators.http import require_POST
 
 from openedx.core.djangoapps.content.course_overviews.models import CourseOverview
@@ -73,12 +74,18 @@ def demo_registration_page(request):
     return render(request, template_name, context)
 
 
-def registration_page(request):
-    """ /sparta/register/ """
+class RegistrationPageView(View):
+    """
+    """
+    form_class = SpartaProfile
     template_name = "sparta_register.html"
 
-    if request.method == "POST":
-        form = SpartaProfileForm(request.POST, request.FILES)
+    def get(self, request, *args, **kwargs):
+        form = self.form_class()
+        return render(request, self.template_name, {'form': form})
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST, request.FILES)
         if form.is_valid():
             proof_of_education_file = form.cleaned_data['proof_of_education_file']
             proof_of_agreement_file = form.cleaned_data['proof_of_agreement_file']
@@ -96,10 +103,7 @@ def registration_page(request):
             sprofile.save()
 
             return redirect(reverse('sparta-register-success'))
-    else:
-        form = SpartaProfileForm()
-
-    return render(request, template_name, {'form': form})
+        return render(request, self.template_name, {'form': form})
 
 
 def upload_to_s3(user, proof_of_education_file, proof_of_agreement_file):
