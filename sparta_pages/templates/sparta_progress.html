@@ -3,6 +3,26 @@
 
 {% block sparta_body %}
 
-<h1>View your progress for the {{ pathway.name }} Learning Pathway.</h1>
+<div class="card">
+  <div class="card-body">
+    <h1>View your progress for the {{ pathway.name }} Learning Pathway.</h1>
+
+    <h2>Courses:</h2>
+
+    {% for course in courses %}
+    <div class="card">
+      <div class="card-body">
+        <h3>Pathway: {{ course.courseoverview.display_name }}</h3>
+        {% if course.completed %}
+          <h3 class="badge badge-pill badge-success">Completed</h3>
+        {% else %}
+          <h3 class="badge badge-pill badge-secondary">Incomplete</h3>
+        {% endif %}
+      </div>
+    </div>
+    {% endfor %}
+
+  </div>
+</div>
 
 {% endblock %}
