@@ -52,7 +52,7 @@ class SpartaCourse(models.Model):
         ordering = ['order']
 
     def __str__(self):
-        return self.course_id
+        return "{}: {}".format(self.pathway.name, self.course_id)
 
     @property
     def related_courses(self):
@@ -74,6 +74,8 @@ class SpartaProfile(models.Model):
     first_timer = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
 
+    def __str__(self):
+        return self.user.username
 
     @property
     def pathwaysapproved(self):
@@ -118,6 +120,9 @@ class PathwayApplication(models.Model):
         )
     created_at = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=2, choices=STATUS_CHOICES, default=PENDING)
+
+    def __str__(self):
+        return "{}: {}".format(self.profile.user.username, self.pathway.name)
 
     def withdraw(self):
         if self.status != self.WITHDRAWN:
@@ -168,6 +173,9 @@ class EducationProfile(models.Model):
     started_at = models.DateField()
     graduated_at = models.DateField()
 
+    def __str__(self):
+        return self.profile.user.username
+
 
 class EmploymentProfile(models.Model):
     """
@@ -194,6 +202,9 @@ class EmploymentProfile(models.Model):
     started_at = models.DateField()
     ended_at = models.DateField()
 
+    def __str__(self):
+        return self.profile.user.username
+
 
 class TrainingProfile(models.Model):
     """
@@ -210,6 +221,9 @@ class TrainingProfile(models.Model):
     started_at = models.DateField()
     ended_at = models.DateField()
 
+    def __str__(self):
+        return self.profile.user.username
+
 
 class Event(models.Model):
     """
@@ -222,3 +236,6 @@ class Event(models.Model):
         verbose_name="sparta profile"
         )
     created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.event
