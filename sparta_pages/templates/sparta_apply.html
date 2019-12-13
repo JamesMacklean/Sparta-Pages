@@ -22,7 +22,7 @@
     {% endcomment %}
 
     {% for pathway in pathways %}
-    <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#apply-{{ pathway.id }}-Modal">{{ pathway.name }}</button>
+    <div type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#apply-{{ pathway.id }}-Modal">{{ pathway.name }}</div>
     <!-- Modal Block -->
     <div class="modal fade" id="apply-{{ pathway.id }}-Modal" tabindex="-1" role="dialog" aria-labelledby="apply-{{ pathway.id }}-ModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
@@ -39,7 +39,7 @@
           <div class="modal-footer">
             <form action="{% url 'sparta-apply' id=pathway.id %}" method="POST">
               {% csrf_token %}
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+              <div type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</div>
               <input class="btn btn-primary" id="submit" type="submit" value="Yes, Submit My Application" />
             </form>
           </div>
