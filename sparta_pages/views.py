@@ -13,6 +13,7 @@ from boto.s3.key import Key
 
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
+from django.forms import formset_factory
 from django.http import HttpResponse, Http404
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
@@ -27,7 +28,10 @@ from openedx.core.djangoapps.content.course_overviews.models import CourseOvervi
 from opaque_keys.edx.keys import CourseKey
 from student.models import CourseEnrollment
 
-from .forms import SpartaProfileForm, EducationProfileForm, EmploymentProfileForm, TrainingProfileForm, PathwayApplicationForm
+from .forms import (
+    SpartaProfileForm, EducationProfileForm, EmploymentProfileForm,
+    TrainingProfileForm, PathwayApplicationForm,
+)
 from .models import Pathway, SpartaCourse, SpartaProfile, EducationProfile, EmploymentProfile, TrainingProfile, PathwayApplication, Event
 
 
@@ -79,7 +83,10 @@ def pathway(request, slug):
 class RegistrationPageView(View):
     """
     """
-    form_class = SpartaProfileForm
+    sparta_profile_form_class = SpartaProfileForm
+    educ_formset_class = formset_factory(EducationProfileForm, extra=5)
+    employ_formset_class = formset_factory(EmploymentProfileForm, extra=5)
+    train_formset_class = formset_factory(TrainingProfileForm, extra=5)
     template_name = "sparta_register.html"
 
     @method_decorator(login_required)
@@ -89,14 +96,20 @@ class RegistrationPageView(View):
     def get(self, request, *args, **kwargs):
         if SpartaProfile.objects.filter(user=request.user):
             return redirect('sparta-profile')
-        form = self.form_class()
-        return render(request, self.template_name, {'form': form})
+        sparta_profile_form = self.sparta_profile_form_class()
+        educationFormset = self.educ_formset_class()
+        employmentFormset = self.employ_formset_class()
+        trainingFormset = self.train_formset_class()
+        return render(request, self.template_name, context)
 
     def post(self, request, *args, **kwargs):
-        form = self.form_class(request.POST, request.FILES)
-        if form.is_valid():
-            proof_of_education_file = form.cleaned_data['proof_of_education_file']
-            proof_of_agreement_file = form.cleaned_data['proof_of_agreement_file']
+        sparta_profile_form = self.sparta_profile_form_class(request.POST, request.FILES)
+        educationFormset = self.educ_formset_class(request.POST)
+        employmentFormset = self.employ_formset_class(request.POST)
+        trainingFormset = self.train_formset_class(request.POST)
+        if sparta_profile_form.is_valid() and educationFormset.is_valid() and employmentFormset.is_valid() and trainingFormset.train_form():
+            proof_of_education_file = sparta_profile_form.cleaned_data['proof_of_education_file']
+            proof_of_agreement_file = sparta_profile_form.cleaned_data['proof_of_agreement_file']
 
             s3_response = upload_to_s3(request.user, proof_of_education_file, proof_of_agreement_file)
 
@@ -110,6 +123,56 @@ class RegistrationPageView(View):
             sprofile.proof_of_education = proof_of_education_url
             sprofile.proof_of_agreement = proof_of_agreement_url
             sprofile.save()
+
+            for f in educationFormset:
+                degree = f.cleaned_data['degree']
+                course = f.cleaned_data['course']
+                school = f.cleaned_data['school']
+                address = f.cleaned_data['address']
+                started_at = f.cleaned_data['started_at']
+                graduated_at = f.cleaned_data['graduated_at']
+                edprofile = EducationProfile.objects.create(
+                    profile=sprofile,
+                    degree=degree,
+                    course=course,
+                    school=school,
+                    address=address,
+                    started_at=started_at,
+                    graduated_at=graduated_at
+                )
+
+            for f in employmentFormset:
+                affiliation = f.cleaned_data['affiliation']
+                occupation = f.cleaned_data['occupation']
+                designation = f.cleaned_data['designation']
+                employer = f.cleaned_data['employer']
+                address = f.cleaned_data['address']
+                started_at = f.cleaned_data['started_at']
+                ended_at = f.cleaned_data['ended_at']
+                emprofile = EmploymentProfile.objects.create(
+                    profile=sprofile,
+                    affiliation=affiliation,
+                    occupation=occupation,
+                    designation=designation,
+                    employer=employer,
+                    address=address,
+                    started_at=started_at,
+                    ended_at=ended_at
+                )
+
+            for f in trainingFormset:
+                title = f.cleaned_data['title']
+                organizer = f.cleaned_data['organizer']
+                address = f.cleaned_data['address']
+                started_at = f.cleaned_data['started_at']
+                ended_at = f.cleaned_data['ended_at']
+                tprofile = TrainingProfile.objects.create(
+                    profile=sprofile,
+                    organizer=organizer,
+                    address=address,
+                    started_at=started_at,
+                    ended_at=ended_at
+                )
 
             return redirect(reverse('sparta-register-success'))
         return render(request, self.template_name, {'form': form})
