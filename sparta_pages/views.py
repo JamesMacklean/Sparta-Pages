@@ -115,7 +115,7 @@ class RegistrationPageView(View):
             sprofile.proof_of_agreement = proof_of_agreement_url
             sprofile.save()
 
-            return redirect(reverse('sparta-register-success'))
+            return redirect(reverse('sparta-register-education'))
         return render(request, self.template_name, {'sparta_profile_form': sparta_profile_form})
 
 
@@ -160,7 +160,7 @@ class RegisterEducationProfileView(View):
                         started_at=started_at,
                         graduated_at=graduated_at
                     )
-            return redirect(reverse('sparta-register-education'))
+            return redirect(reverse('sparta-register-employment'))
         return render(request, self.template_name, {'educationFormset': educationFormset})
 
 
