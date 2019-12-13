@@ -94,9 +94,6 @@ class RegistrationPageView(View):
         if SpartaProfile.objects.filter(user=request.user):
             return redirect('sparta-profile')
         sparta_profile_form = self.sparta_profile_form_class()
-        educationFormset = self.educ_formset_class(request.GET or None)
-        employmentFormset = self.employ_formset_class(request.GET or None)
-        trainingFormset = self.train_formset_class(request.GET or None)
         return render(request, self.template_name, {'sparta_profile_form': sparta_profile_form})
 
     def post(self, request, *args, **kwargs):
