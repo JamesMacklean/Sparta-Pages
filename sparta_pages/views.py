@@ -232,10 +232,8 @@ def apply(request, id):
     except SpartaProfile.DoesNotExist:
         raise HttpResponse(status=403)
 
-    try:
-        app = PathwayApplication.objects.get(profile=sparta_profile, pathway=pathway)
-    except PathwayApplication.DoesNotExist:
-        app = PathwayApplication(profile=sparta_profile, pathway=pathway)
+    app, created = PathwayApplication.objects.get_or_create(profile=sparta_profile, pathway=pathway)
+    app.pend()
 
     return redirect('sparta-profile')
 
