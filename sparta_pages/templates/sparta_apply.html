@@ -13,11 +13,40 @@
     <h2 class="card-title">Apply for a pathway</h2>
     <p><a target="blank" href="{% url 'sparta-main' %}">Click here for pathway details.</a></p>
 
-    <form action="{% url 'sparta-apply' %}" accept-charset="UTF-8" method="post">
+    <!-- <form action="{% url 'sparta-apply' %}" accept-charset="UTF-8" method="post">
       {% csrf_token %}
       {{ form.as_p }}
       <input type="submit" name="commit" value="Apply" class="btn btn-primary" data-disable-with="Apply">
-    </form>
+    </form> -->
+
+    {% for pathway in pathways %}
+    <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#apply-{{ pathway.id }}-Modal">{{ pathway.name }}</button>
+    <!-- Modal Block -->
+    <div class="modal fade" id="apply-{{ pathway.id }}-Modal" tabindex="-1" role="dialog" aria-labelledby="apply-{{ pathway.id }}-ModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="apply-{{ pathway.id }}-ModalLabel">Confirm Application</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            Are you sure you want to submit your application for this Learning Pathway: ({{ pathway.name }})?
+          </div>
+          <div class="modal-footer">
+            <form action="{% url 'sparta-apply' id=pathway.id %}" method="POST">
+              {% csrf_token %}
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+              <input class="btn btn-primary" id="submit" type="submit" value="Yes, Submit My Application" />
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+
+
   </div>
 </div>
 
