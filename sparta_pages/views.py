@@ -98,10 +98,7 @@ class RegistrationPageView(View):
         educationFormset = self.educ_formset_class(request.GET or None)
         employmentFormset = self.employ_formset_class(request.GET or None)
         trainingFormset = self.train_formset_class(request.GET or None)
-        context = {
-            'sparta_profile_form': sparta_profile_form,
-        }
-        return render(request, self.template_name, context)
+        return render(request, self.template_name, {'sparta_profile_form': sparta_profile_form})
 
     def post(self, request, *args, **kwargs):
         sparta_profile_form = self.sparta_profile_form_class(request.POST, request.FILES)
@@ -123,10 +120,7 @@ class RegistrationPageView(View):
             sprofile.save()
 
             return redirect(reverse('sparta-register-success'))
-        context = {
-            'sparta_profile_form': sparta_profile_form,
-        }
-        return render(request, self.template_name, context)
+        return render(request, self.template_name, {'sparta_profile_form': sparta_profile_form})
 
 
 class RegisterEducationProfileView(View):
@@ -143,8 +137,6 @@ class RegisterEducationProfileView(View):
         if not SpartaProfile.objects.filter(user=request.user).exists():
             return redirect('sparta-register')
         educationFormset = self.educ_formset_class(request.GET or None)
-
-        context =
         return render(request, self.template_name, {'educationFormset': educationFormset})
 
     def post(self, request, *args, **kwargs):
@@ -221,10 +213,7 @@ class RegisterEmploymentProfileView(View):
                         ended_at=ended_at
                     )
             return redirect(reverse('sparta-register-training'))
-        context = {
-            'employmentFormset': employmentFormset,
-        }
-        return render(request, self.template_name, context)
+        return render(request, self.template_name, {'employmentFormset': employmentFormset})
 
 
 class RegisterTrainingProfileView(View):
