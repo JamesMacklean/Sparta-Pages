@@ -52,7 +52,7 @@
             <label for="{{ form.ended_at.id_for_label }}" style="font-family: inherit;font-style: inherit;">Ended at:</label>
             {{ form.ended_at }}
         </div>
-        <a class="btn btn-outine-secondary employment-remove-form-row float-right">Remove</a>
+        <a class="btn btn-outline-secondary employment-remove-form-row float-right">Remove</a>
       </div>
       {% endfor %}
       <a class="btn btn-outline-primary employment-add-form-row">Add Employment</a>
@@ -60,21 +60,21 @@
         <span>
           <a class="btn btn-outline-info" href="{% url 'sparta-register-training'%}">Skip this step</a>
         </span>
-        <input type="submit" value="Next" />
+        <input type="submit" value="Submit Employment Profile" />
       </div>
     </form>
   </div>
 </div>
 
 <script type='text/javascript'>
-function updateElementIndex(el, prefix, ndx) {
+function updateElementIndexEmployment(el, prefix, ndx) {
     var id_regex = new RegExp('(' + prefix + '-\\d+)');
     var replacement = prefix + '-' + ndx;
     if ($(el).attr("for")) $(el).attr("for", $(el).attr("for").replace(id_regex, replacement));
     if (el.id) el.id = el.id.replace(id_regex, replacement);
     if (el.name) el.name = el.name.replace(id_regex, replacement);
 }
-function cloneMore(selector, prefix) {
+function cloneMoreEmployment(selector, prefix) {
     var newElement = $(selector).clone(true);
     var total = $('#id_' + prefix + '-TOTAL_FORMS').val();
     newElement.find(':input:not([type=button]):not([type=submit]):not([type=reset])').each(function() {
@@ -99,7 +99,7 @@ function cloneMore(selector, prefix) {
     .html('<span class="glyphicon glyphicon-minus" aria-hidden="true"></span>');
     return false;
 }
-function deleteForm(prefix, btn) {
+function deleteFormEmployment(prefix, btn) {
     var total = parseInt($('#id_' + prefix + '-TOTAL_FORMS').val());
     if (total > 1){
         btn.closest('.employment-form-row').remove();
@@ -107,7 +107,7 @@ function deleteForm(prefix, btn) {
         $('#id_' + prefix + '-TOTAL_FORMS').val(forms.length);
         for (var i=0, formCount=forms.length; i<formCount; i++) {
             $(forms.get(i)).find(':input').each(function() {
-                updateElementIndex(this, prefix, i);
+                updateElementIndexEmployment(this, prefix, i);
             });
         }
     }
@@ -115,12 +115,12 @@ function deleteForm(prefix, btn) {
 }
 $(document).on('click', '.employment-add-form-row', function(e){
     e.preventDefault();
-    cloneMore('.employment-form-row:last', 'form');
+    cloneMoreEmployment('.employment-form-row:last', 'form');
     return false;
 });
 $(document).on('click', '.employment-remove-form-row', function(e){
     e.preventDefault();
-    deleteForm('form', $(this));
+    deleteFormEmployment('form', $(this));
     return false;
 });
 </script>
