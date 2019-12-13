@@ -14,29 +14,34 @@
       </ul>
     </div>
 
-    {% if sparta_profile_form.is_multipart %}
-      <form enctype="multipart/form-data" method="post" action="{% url 'sparta-register' %}">
-    {% else %}
-      <form method="post" action="{% url 'sparta-register' %}">
-    {% endif %}
-      <div class="form-group">
-        {% csrf_token %}
-        {{ sparta_profile_form.non_field_errors }}
-        <div class="fieldWrapper">
-            {{ sparta_profile_form.proof_of_education_file.errors }}
-            <label for="{{ sparta_profile_form.proof_of_education_file.id_for_label }}" style="font-family: inherit;font-style: inherit;">Proof of Education:</label>
-            {{ sparta_profile_form.proof_of_education_file }}
+    <div class="card">
+      <div class="card-body">
+      {% if sparta_profile_form.is_multipart %}
+        <form enctype="multipart/form-data" method="post" action="{% url 'sparta-register' %}">
+      {% else %}
+        <form method="post" action="{% url 'sparta-register' %}">
+      {% endif %}
+        <div class="form-group">
+          {% csrf_token %}
+          {{ sparta_profile_form.non_field_errors }}
+          <div class="fieldWrapper">
+              {{ sparta_profile_form.proof_of_education_file.errors }}
+              <label for="{{ sparta_profile_form.proof_of_education_file.id_for_label }}" style="font-family: inherit;font-style: inherit;">Proof of Education:</label>
+              {{ sparta_profile_form.proof_of_education_file }}
+          </div>
+          <div class="fieldWrapper">
+              {{ sparta_profile_form.proof_of_agreement_file.errors }}
+              <label for="{{ sparta_profile_form.proof_of_agreement_file.id_for_label }}" style="font-family: inherit;font-style: inherit;">Proof of Agreement:</label>
+              {{ sparta_profile_form.proof_of_agreement_file }}
+          </div>
+          <div class="d-flex justify-content-center">
+            <input type="submit" value="Submit Eligibility Documents" />
+          </div>
         </div>
-        <div class="fieldWrapper">
-            {{ sparta_profile_form.proof_of_agreement_file.errors }}
-            <label for="{{ sparta_profile_form.proof_of_agreement_file.id_for_label }}" style="font-family: inherit;font-style: inherit;">Proof of Agreement:</label>
-            {{ sparta_profile_form.proof_of_agreement_file }}
-        </div>
-        <div class="d-flex justify-content-center">
-          <input type="submit" value="Submit Eligibility Documents" />
-        </div>
+        </form>
       </div>
-      </form>
+    </div>
+
     </div>
 </div>
 {% endblock %}
