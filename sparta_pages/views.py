@@ -176,7 +176,7 @@ class ProfilePageView(TemplateView):
 
 
 class PathwayApplicationView(TemplateView):
-    form_class = PathwayApplicationForm
+    # form_class = PathwayApplicationForm
     template_name = 'sparta_apply.html'
 
     @method_decorator(login_required)
@@ -192,30 +192,51 @@ class PathwayApplicationView(TemplateView):
 
     def get(self, request, *args, **kwargs):
         context = self.get_context_data()
-        context['form'] = self.form_class()
+        # context['form'] = self.form_class()
         return render(request, self.template_name, context)
 
-    def post(self, request, *args, **kwargs):
-        form = self.form_class(request.POST)
-        if form.is_valid():
-            pathway = form.cleaned_data['pathway']
-            try:
-                app = PathwayApplication.objects.get(profile=request.user.sparta_profile, pathway=pathway)
-            except PathwayApplication.DoesNotExist:
-                app = PathwayApplication.objects.create(profile=request.user.sparta_profile, pathway=pathway)
-            if app.status in ["DE", "AP"]:
-                context = get_context_data(**{'fail_app': True})
-                return render(request, template_name, context)
-            app.pend()
-            Event.objects.create(
-                event="Application Submitted",
-                description="User {} has submitted an application for learning pathway {}.".format(app.profile.user.username, app.pathway.name),
-                profile=app.profile
-            )
-            return redirect('sparta-profile')
-        context = self.get_context_data()
-        context['form'] = form
-        return render(request, self.template_name, context)
+    # def post(self, request, *args, **kwargs):
+    #     form = self.form_class(request.POST)
+    #     if form.is_valid():
+    #         pathway = form.cleaned_data['pathway']
+    #         try:
+    #             app = PathwayApplication.objects.get(profile=request.user.sparta_profile, pathway=pathway)
+    #         except PathwayApplication.DoesNotExist:
+    #             app = PathwayApplication.objects.create(profile=request.user.sparta_profile, pathway=pathway)
+    #         if app.status in ["DE", "AP"]:
+    #             context = get_context_data(**{'fail_app': True})
+    #             return render(request, template_name, context)
+    #         app.pend()
+    #         Event.objects.create(
+    #             event="Application Submitted",
+    #             description="User {} has submitted an application for learning pathway {}.".format(app.profile.user.username, app.pathway.name),
+    #             profile=app.profile
+    #         )
+    #         return redirect('sparta-profile')
+    #     context = self.get_context_data()
+    #     context['form'] = form
+    #     return render(request, self.template_name, context)
+
+
+@require_POST
+def apply(request, id):
+    """"""
+    try:
+        pathway = Pathway.objects.get(id=id)
+    except Pathway.DoesNotExist:
+        raise HttpResponse(status=500)
+
+    try:
+        sparta_profile = SpartaProfile.objects.get(user=request.user)
+    except SpartaProfile.DoesNotExist:
+        raise HttpResponse(status=403)
+
+    try:
+        app = PathwayApplication.objects.get(profile=sparta_profile, pathway=pathway)
+    except PathwayApplication.DoesNotExist:
+        app = PathwayApplication(profile=sparta_profile, pathway=pathway)
+
+    return redirect('sparta-profile')
 
 
 @require_POST
