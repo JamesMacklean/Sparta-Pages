@@ -16,38 +16,42 @@
       {{ educationFormset.management_form }}
       {% for form in educationFormset %}
       <div class="education-form-row spacer">
-        {{ form.non_field_errors }}
-        <div class="fieldWrapper">
-            {{ form.degree.errors }}
-            <label for="{{ form.degree.id_for_label }}" style="font-family: inherit;font-style: inherit;">Degree:</label>
-            {{ form.degree }}
+        <div class="card">
+          <div class="card-body">
+            {{ form.non_field_errors }}
+            <div class="fieldWrapper">
+              {{ form.degree.errors }}
+              <label for="{{ form.degree.id_for_label }}" style="font-family: inherit;font-style: inherit;">Degree:</label>
+              {{ form.degree }}
+            </div>
+            <div class="fieldWrapper">
+              {{ form.course.errors }}
+              <label for="{{ form.course.id_for_label }}" style="font-family: inherit;font-style: inherit;">Course:</label>
+              {{ form.course }}
+            </div>
+            <div class="fieldWrapper">
+              {{ form.school.errors }}
+              <label for="{{ form.school.id_for_label }}" style="font-family: inherit;font-style: inherit;">School:</label>
+              {{ form.school }}
+            </div>
+            <div class="fieldWrapper">
+              {{ form.address.errors }}
+              <label for="{{ form.address.id_for_label }}" style="font-family: inherit;font-style: inherit;">Address:</label>
+              {{ form.address }}
+            </div>
+            <div class="fieldWrapper">
+              {{ form.started_at.errors }}
+              <label for="{{ form.started_at.id_for_label }}" style="font-family: inherit;font-style: inherit;">Started at:</label>
+              {{ form.started_at }}
+            </div>
+            <div class="fieldWrapper">
+              {{ form.graduated_at.errors }}
+              <label for="{{ form.graduated_at.id_for_label }}" style="font-family: inherit;font-style: inherit;">Graduated at:</label>
+              {{ form.graduated_at }}
+            </div>
+            <a class="btn btn-outline-secondary education-remove-form-row float-right">Remove</a>
+          </div>
         </div>
-        <div class="fieldWrapper">
-            {{ form.course.errors }}
-            <label for="{{ form.course.id_for_label }}" style="font-family: inherit;font-style: inherit;">Course:</label>
-            {{ form.course }}
-        </div>
-        <div class="fieldWrapper">
-            {{ form.school.errors }}
-            <label for="{{ form.school.id_for_label }}" style="font-family: inherit;font-style: inherit;">School:</label>
-            {{ form.school }}
-        </div>
-        <div class="fieldWrapper">
-            {{ form.address.errors }}
-            <label for="{{ form.address.id_for_label }}" style="font-family: inherit;font-style: inherit;">Address:</label>
-            {{ form.address }}
-        </div>
-        <div class="fieldWrapper">
-            {{ form.started_at.errors }}
-            <label for="{{ form.started_at.id_for_label }}" style="font-family: inherit;font-style: inherit;">Started at:</label>
-            {{ form.started_at }}
-        </div>
-        <div class="fieldWrapper">
-            {{ form.graduated_at.errors }}
-            <label for="{{ form.graduated_at.id_for_label }}" style="font-family: inherit;font-style: inherit;">Graduated at:</label>
-            {{ form.graduated_at }}
-        </div>
-        <a class="btn btn-outline-secondary education-remove-form-row float-right">Remove</a>
       </div>
       {% endfor %}
       <a class="btn btn-outline-primary education-add-form-row">Add Education</a>

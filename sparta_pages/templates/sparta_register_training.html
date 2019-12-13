@@ -16,33 +16,37 @@
       {{ trainingFormset.management_form }}
       {% for form in trainingFormset %}
       <div class="training-form-row spacer">
-        {{ form.non_field_errors }}
-        <div class="fieldWrapper">
-            {{ form.title.errors }}
-            <label for="{{ form.title.id_for_label }}" style="font-family: inherit;font-style: inherit;">Title:</label>
-            {{ form.title }}
+        <div class="card">
+          <div class="card-body">
+            {{ form.non_field_errors }}
+            <div class="fieldWrapper">
+                {{ form.title.errors }}
+                <label for="{{ form.title.id_for_label }}" style="font-family: inherit;font-style: inherit;">Title:</label>
+                {{ form.title }}
+            </div>
+            <div class="fieldWrapper">
+                {{ form.organizer.errors }}
+                <label for="{{ form.organizer.id_for_label }}" style="font-family: inherit;font-style: inherit;">Organizer:</label>
+                {{ form.organizer }}
+            </div>
+            <div class="fieldWrapper">
+                {{ form.address.errors }}
+                <label for="{{ form.address.id_for_label }}" style="font-family: inherit;font-style: inherit;">Address:</label>
+                {{ form.address }}
+            </div>
+            <div class="fieldWrapper">
+                {{ form.started_at.errors }}
+                <label for="{{ form.started_at.id_for_label }}" style="font-family: inherit;font-style: inherit;">Started at:</label>
+                {{ form.started_at }}
+            </div>
+            <div class="fieldWrapper">
+                {{ form.ended_at.errors }}
+                <label for="{{ form.ended_at.id_for_label }}" style="font-family: inherit;font-style: inherit;">Ended at:</label>
+                {{ form.ended_at }}
+            </div>
+            <a class="btn btn-outline-secondary training-remove-form-row float-right">Remove</a>
+          </div>
         </div>
-        <div class="fieldWrapper">
-            {{ form.organizer.errors }}
-            <label for="{{ form.organizer.id_for_label }}" style="font-family: inherit;font-style: inherit;">Organizer:</label>
-            {{ form.organizer }}
-        </div>
-        <div class="fieldWrapper">
-            {{ form.address.errors }}
-            <label for="{{ form.address.id_for_label }}" style="font-family: inherit;font-style: inherit;">Address:</label>
-            {{ form.address }}
-        </div>
-        <div class="fieldWrapper">
-            {{ form.started_at.errors }}
-            <label for="{{ form.started_at.id_for_label }}" style="font-family: inherit;font-style: inherit;">Started at:</label>
-            {{ form.started_at }}
-        </div>
-        <div class="fieldWrapper">
-            {{ form.ended_at.errors }}
-            <label for="{{ form.ended_at.id_for_label }}" style="font-family: inherit;font-style: inherit;">Ended at:</label>
-            {{ form.ended_at }}
-        </div>
-        <a class="btn btn-outline-secondary training-remove-form-row float-right">Remove</a>
       </div>
       {% endfor %}
       <a class="btn btn-outline-primary training-add-form-row">Add Training</a>
