@@ -46,11 +46,13 @@
             <label for="{{ form.graduated_at.id_for_label }}" style="font-family: inherit;font-style: inherit;">Graduated at:</label>
             {{ form.graduated_at }}
         </div>
-        <button class="btn btn-danger education-remove-form-row">+</button>
+        <a class="btn btn-outline-secondary education-remove-form-row float-right">Remove</a>
       </div>
       {% endfor %}
-      <button class="btn btn-success education-add-form-row">+</button>
-      <input type="submit" value="Submit" />
+      <a class="btn btn-outline-primary education-add-form-row">Add Education</a>
+      <div>
+        <input type="submit" value="Submit" />
+      </div>
     </form>
   </div>
 </div>
