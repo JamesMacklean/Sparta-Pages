@@ -100,6 +100,12 @@ class RegistrationPageView(View):
         educationFormset = self.educ_formset_class()
         employmentFormset = self.employ_formset_class()
         trainingFormset = self.train_formset_class()
+        context = {
+            'sparta_profile_form': sparta_profile_form,
+            'educationFormset': educationFormset,
+            'employmentFormset': employmentFormset,
+            'trainingFormset': trainingFormset
+        }
         return render(request, self.template_name, context)
 
     def post(self, request, *args, **kwargs):
@@ -175,7 +181,13 @@ class RegistrationPageView(View):
                 )
 
             return redirect(reverse('sparta-register-success'))
-        return render(request, self.template_name, {'form': form})
+        context = {
+            'sparta_profile_form': sparta_profile_form,
+            'educationFormset': educationFormset,
+            'employmentFormset': employmentFormset,
+            'trainingFormset': trainingFormset
+        }
+        return render(request, self.template_name, context)
 
 
 def upload_to_s3(user, proof_of_education_file, proof_of_agreement_file):

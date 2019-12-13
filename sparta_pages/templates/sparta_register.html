@@ -70,16 +70,16 @@
     {% endif %}
       <div class="form-group">
         {% csrf_token %}
-        {{ form.non_field_errors }}
+        {{ sparta_profile_form.non_field_errors }}
         <div class="fieldWrapper">
-            {{ form.proof_of_education_file.errors }}
-            <label for="{{ form.proof_of_education_file.id_for_label }}" style="font-family: inherit;font-style: inherit;">Proof of Education:</label>
-            {{ form.proof_of_education_file }}
+            {{ sparta_profile_form.proof_of_education_file.errors }}
+            <label for="{{ sparta_profile_form.proof_of_education_file.id_for_label }}" style="font-family: inherit;font-style: inherit;">Proof of Education:</label>
+            {{ sparta_profile_form.proof_of_education_file }}
         </div>
         <div class="fieldWrapper">
-            {{ form.proof_of_agreement_file.errors }}
-            <label for="{{ form.proof_of_agreement_file.id_for_label }}" style="font-family: inherit;font-style: inherit;">Proof of Agreement:</label>
-            {{ form.proof_of_agreement_file }}
+            {{ sparta_profile_form.proof_of_agreement_file.errors }}
+            <label for="{{ sparta_profile_form.proof_of_agreement_file.id_for_label }}" style="font-family: inherit;font-style: inherit;">Proof of Agreement:</label>
+            {{ sparta_profile_form.proof_of_agreement_file }}
             <div class=""><a href="#">Download the form here</a></div>
         </div>
         <input type="submit" value="Submit" />
