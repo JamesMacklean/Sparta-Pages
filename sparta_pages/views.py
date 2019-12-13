@@ -97,7 +97,6 @@ class RegistrationPageView(View):
         if form.is_valid():
             proof_of_education_file = form.cleaned_data['proof_of_education_file']
             proof_of_agreement_file = form.cleaned_data['proof_of_agreement_file']
-            first_timer = form.cleaned_data['first_timer']
 
             s3_response = upload_to_s3(request.user, proof_of_education_file, proof_of_agreement_file)
 
@@ -110,7 +109,6 @@ class RegistrationPageView(View):
                 sprofile = SpartaProfile(user=request.user)
             sprofile.proof_of_education = proof_of_education_url
             sprofile.proof_of_agreement = proof_of_agreement_url
-            sprofile.first_timer = first_timer
             sprofile.save()
 
             return redirect(reverse('sparta-register-success'))
