@@ -8,9 +8,21 @@
 {% else %}
   <form method="post" action="{% url 'sparta-register' %}">
 {% endif %}
+  <div class="form-group">
     {% csrf_token %}
-    {{ form.as_p }}
+    {{ form.non_field_errors }}
+    <div class="fieldWrapper">
+        {{ form.proof_of_education.errors }}
+        <label for="{{ form.proof_of_education.id_for_label }}">Proof of Education:</label>
+        {{ form.proof_of_education }}
+    </div>
+    <div class="fieldWrapper">
+        {{ form.proof_of_agreement.errors }}
+        <label for="{{ form.proof_of_agreement.id_for_label }}">Proof of Agreement:</label>
+        {{ form.proof_of_agreement }}
+    </div>
     <input type="submit" value="Submit" />
+  </div>
   </form>
 
 {% endblock %}
