@@ -13,7 +13,6 @@ from boto.s3.key import Key
 
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
-from django.forms import formset_factory
 from django.http import HttpResponse, Http404
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
