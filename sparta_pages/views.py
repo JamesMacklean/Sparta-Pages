@@ -40,13 +40,12 @@ def main(request):
     template_name = "sparta_main.html"
     context = {}
 
+    profile = None
     if request.user.is_authenticated:
         try:
             profile = SpartaProfile.objects.get(user=request.user)
         except SpartaProfile.DoesNotExist:
             pass
-        else:
-            profile = None
 
     pathways = Pathway.objects.filter(is_active=True)
 
