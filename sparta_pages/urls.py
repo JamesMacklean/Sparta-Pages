@@ -4,7 +4,7 @@ from django.conf.urls import url
 from . import views
 
 urlpatterns = [
-    url(r'^sparta$', views.main, name='sparta-main'),
+    url(r'^sparta/$', views.main, name='sparta-main'),
     url(r'^sparta/register/$', views.RegistrationPageView.as_view(), name='sparta-register'),
     url(r'^sparta/register/education/$', views.RegisterEducationProfileView.as_view(), name='sparta-register-education'),
     url(r'^sparta/register/employment/$', views.RegisterEmploymentProfileView.as_view(), name='sparta-register-employment'),
