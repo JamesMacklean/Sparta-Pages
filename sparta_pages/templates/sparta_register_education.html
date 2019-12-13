@@ -7,7 +7,8 @@
   <div class="card-body">
     <h2 class="card-title">Education Profile</h2>
     <div>
-
+      To become a SPARTA Scholar and gain free access to the data analytics courses, you must accomplish these forms.
+      Please enter your Education credentials below.
     </div>
 
     <form method="post" action="{% url 'sparta-register-education' %}">
@@ -51,7 +52,10 @@
       {% endfor %}
       <a class="btn btn-outline-primary education-add-form-row">Add Education</a>
       <div>
-        <input type="submit" value="Submit" />
+        <span>
+          <a class="btn btn-outline-info" href="{% 'sparta-register-employment'%}">Skip this step</a>
+        </span>
+        <input type="submit" value="Next" />
       </div>
     </form>
   </div>

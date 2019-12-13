@@ -7,7 +7,8 @@
   <div class="card-body">
     <h2 class="card-title">Training Profile</h2>
     <div>
-
+      To become a SPARTA Scholar and gain free access to the data analytics courses, you must accomplish these forms.
+      Please enter your Training credentials below.
     </div>
 
     <form method="post" action="{% url 'sparta-register-training' %}">
@@ -41,13 +42,13 @@
             <label for="{{ form.ended_at.id_for_label }}" style="font-family: inherit;font-style: inherit;">Ended at:</label>
             {{ form.ended_at }}
         </div>
-        <a class="btn btn-outine-secondary training-remove-form-row">Remove</a>
+        <a class="btn btn-outine-secondary training-remove-form-row float-right">Remove</a>
       </div>
       {% endfor %}
+      <a class="btn btn-outline-primary training-add-form-row">Add Training</a>
       <div>
-        <a class="btn btn-outline-primary training-add-form-row">Add Training</a>
+        <input type="submit" value="Complete Registration" />
       </div>
-      <input type="submit" value="Submit" />
     </form>
   </div>
 </div>

@@ -7,7 +7,8 @@
   <div class="card-body">
     <h2 class="card-title">Employment Profile</h2>
     <div>
-
+      To become a SPARTA Scholar and gain free access to the data analytics courses, you must accomplish these forms.
+      Please enter your Employment credentials below.
     </div>
 
     <form method="post" action="{% url 'sparta-register-employment' %}">
@@ -51,13 +52,16 @@
             <label for="{{ form.ended_at.id_for_label }}" style="font-family: inherit;font-style: inherit;">Ended at:</label>
             {{ form.ended_at }}
         </div>
-        <a class="btn btn-outine-secondary employment-remove-form-row">Remove</a>
+        <a class="btn btn-outine-secondary employment-remove-form-row float-right">Remove</a>
       </div>
       {% endfor %}
+      <a class="btn btn-outline-primary employment-add-form-row">Add Employment</a>
       <div>
-        <a class="btn btn-outline-primary employment-add-form-row">Add Employment</a>
+        <span>
+          <a class="btn btn-outline-info" href="{% 'sparta-register-training'%}">Skip this step</a>
+        </span>
+        <input type="submit" value="Next" />
       </div>
-      <input type="submit" value="Submit" />
     </form>
   </div>
 </div>
