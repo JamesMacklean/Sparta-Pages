@@ -51,10 +51,12 @@
             <label for="{{ form.ended_at.id_for_label }}" style="font-family: inherit;font-style: inherit;">Ended at:</label>
             {{ form.ended_at }}
         </div>
-        <a class="btn btn-danger employment-remove-form-row">Remove</a>
+        <a class="btn btn-outine-secondary employment-remove-form-row">Remove</a>
       </div>
       {% endfor %}
-      <a class="btn btn-success employment-add-form-row">Add Employment</a>
+      <div>
+        <a class="btn btn-outline-primary employment-add-form-row">Add Employment</a>
+      </div>
       <input type="submit" value="Submit" />
     </form>
   </div>
