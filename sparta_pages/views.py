@@ -405,6 +405,11 @@ class PathwayProgressView(TemplateView):
         pathway = get_object_or_404(Pathway, id=self.kwargs['pathway_id'])
         context['pathway'] = pathway
 
+        try:
+            app = PathwayApplication.objects.get(profile=request.user.sparta_profile, pathway=pathway, status="AP")
+        except PathwayApplication.DoesNotExist:
+            raise Http404
+
         courses = []
         for pathway_course in pathway.courses.all():
             course = {'pathway_course': pathway_course}
