@@ -49,6 +49,11 @@ class TrainingProfileForm(forms.ModelForm):
         ]
 
 
+EducationProfileFormset = formset_factory(EducationProfileForm, extra=1)
+EmploymentProfileFormset = formset_factory(EmploymentProfileForm, extra=1)
+TrainingProfileFormset = formset_factory(TrainingProfileForm, extra=1)
+
+
 class PathwayApplicationForm(forms.ModelForm):
     """
     """
