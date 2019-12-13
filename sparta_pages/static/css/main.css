@@ -550,11 +550,11 @@ div.responsive-picture.mx-auto.picture-1 {
   max-width: 200px;
 }
 
-a.btn {
+/* a.btn {
   border-radius: 6px;
   background-color: #f00;
   color: #b2b2b2;
-}
+} */
 
 a.btn.mx-auto {
   display: block;
