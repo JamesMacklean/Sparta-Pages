@@ -101,6 +101,10 @@ class RegistrationPageView(View):
         if sparta_profile_form.is_valid():
             proof_of_education_file = sparta_profile_form.cleaned_data['proof_of_education_file']
             proof_of_agreement_file = sparta_profile_form.cleaned_data['proof_of_agreement_file']
+            tos_yes = sparta_profile_form.cleaned_data['tos_yes']
+
+            if not tos_yes:
+                return render(request, self.template_name, {'sparta_profile_form': sparta_profile_form})
 
             s3_response = upload_to_s3(request.user, proof_of_education_file, proof_of_agreement_file)
 

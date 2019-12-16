@@ -10,7 +10,7 @@
       To become a SPARTA Scholar and gain free access to the data analytics courses, you must accomplish these forms. Please submit the following eligibility documents:
       <ul>
         <li><b>Proof of Education</b> - A scanned image or a clear photograph of your certificate of graduation or diploma.</li>
-        <li><b>Proof of Agreement</b> - A scanned image or a clear photograph of the signed confirmation form. <a href="#">You can download the form here.</a></li>
+        <li><b>Proof of Agreement</b> - A scanned image or a clear photograph of the signed confirmation form. <a href="#" target="_blank">You can download the form here.</a></li>
       </ul>
     </div>
 
@@ -33,6 +33,11 @@
               {{ sparta_profile_form.proof_of_agreement_file.errors }}
               <label for="{{ sparta_profile_form.proof_of_agreement_file.id_for_label }}" style="font-family: inherit;font-style: inherit;">Proof of Agreement:</label>
               {{ sparta_profile_form.proof_of_agreement_file }}
+          </div>
+          <div class="fieldWrapper">
+              {{ sparta_profile_form.tos_yes.errors }}
+              <label for="{{ sparta_profile_form.tos_yes.id_for_label }}" style="font-family: inherit;font-style: inherit;">I agree to the <a href="/tos" target="_blank">Terms of Service</a> and <a href="/honor" target="_blank">Honor Code</a>*</label>
+              {{ sparta_profile_form.tos_yes }}
           </div>
           <div class="d-flex justify-content-center">
             <input type="submit" value="Submit Eligibility Documents" />
