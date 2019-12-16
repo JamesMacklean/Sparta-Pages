@@ -321,10 +321,13 @@ class PathwayApplicationView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(PathwayApplicationView, self).get_context_data(**kwargs)
-        context['pathways'] = Pathway.objects.filter(is_active=True)
-        fail_app = kwargs.get('fail_app', None)
-        if fail_app:
-            context['fail_app'] = fail_app
+        get_pathways = Pathway.objects.filter(is_active=True)
+        pathways = []
+        for p in get_pathways:
+            apps = p.applications.all().exclude(status='WE')
+            if not apps.filter(profile=self.request.user.sparta_profile).exists():
+                pathways.append(p)
+        context['pathways'] = pathways
         return context
 
     def get(self, request, *args, **kwargs):
@@ -369,8 +372,6 @@ def apply(request, id):
         raise HttpResponse(status=403)
 
     app, created = PathwayApplication.objects.get_or_create(profile=sparta_profile, pathway=pathway)
-    if not created and app.status != "WE":
-        return redirect(reverse('sparta-apply', kwargs={'fai_app': 'ok'}))
     app.pend()
 
     return redirect('sparta-profile')
