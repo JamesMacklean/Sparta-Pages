@@ -31,13 +31,13 @@
           </div>
           <div class="fieldWrapper">
               {{ sparta_profile_form.proof_of_agreement_file.errors }}
-              {{ sparta_profile_form.proof_of_agreement_file }}
               <label for="{{ sparta_profile_form.proof_of_agreement_file.id_for_label }}" class="pl-2" style="font-family: inherit;font-style: inherit;">Proof of Agreement:</label>
+              {{ sparta_profile_form.proof_of_agreement_file }}
           </div>
           <div class="fieldWrapper">
               {{ sparta_profile_form.tos_yes.errors }}
-              <label for="{{ sparta_profile_form.tos_yes.id_for_label }}" style="font-family: inherit;font-style: inherit;">I agree to the <a href="/tos" target="_blank">Terms of Service</a> and <a href="/honor" target="_blank">Honor Code</a>*</label>
               {{ sparta_profile_form.tos_yes }}
+              <label for="{{ sparta_profile_form.tos_yes.id_for_label }}" style="font-family: inherit;font-style: inherit;">I agree to the <a href="/tos" target="_blank">Terms of Service</a> and <a href="/honor" target="_blank">Honor Code</a>*</label>
           </div>
           <div class="d-flex justify-content-center">
             <input type="submit" value="Submit Eligibility Documents" />
