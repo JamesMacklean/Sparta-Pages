@@ -411,7 +411,7 @@ class PathwayProgressView(TemplateView):
             raise Http404
 
         courses = []
-        for pathway_course in pathway.courses.all():
+        for pathway_course in pathway.courses.all().filter(is_active=True):
             course = {'pathway_course': pathway_course}
             course_key = CourseKey.from_string(pathway_course.course_id)
             courseoverview = CourseOverview.get_from_id(course_key)
