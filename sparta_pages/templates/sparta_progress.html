@@ -11,6 +11,7 @@
     <h3 class="p-3">Courses:</h3>
 
     {% for course in courses %}
+    <a href="{% url 'about_course' course_id=course.courseoverview.id %}">
     <div class="card">
       <div class="card-body">
         <h4>Pathway: {{ course.courseoverview.display_name }}</h4>
@@ -21,6 +22,7 @@
         {% endif %}
       </div>
     </div>
+    </a>
     {% endfor %}
 
   </div>
