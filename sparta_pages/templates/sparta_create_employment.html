@@ -1,0 +1,124 @@
+{% extends "sparta_base.html" %}
+{% load static %}
+
+{% block sparta_body %}
+<div class="card">
+  <div class="card-body">
+    <h2 class="card-title">Employment Profile</h2>
+
+    <form method="post" action="{% url 'sparta-register-employment' %}">
+      {% csrf_token %}
+      {{ employmentFormset.management_form }}
+      {% for form in employmentFormset %}
+      <div class="employment-form-row spacer">
+        <div class="card">
+          <div class="card-body">
+            {{ form.non_field_errors }}
+            <div class="fieldWrapper">
+                {{ form.affiliation.errors }}
+                <label for="{{ form.affiliation.id_for_label }}" style="font-family: inherit;font-style: inherit;">Affiliation:</label>
+                {{ form.affiliation }}
+            </div>
+            <div class="fieldWrapper">
+                {{ form.occupation.errors }}
+                <label for="{{ form.occupation.id_for_label }}" style="font-family: inherit;font-style: inherit;">Occupation:</label>
+                {{ form.occupation }}
+            </div>
+            <div class="fieldWrapper">
+                {{ form.designation.errors }}
+                <label for="{{ form.designation.id_for_label }}" style="font-family: inherit;font-style: inherit;">Designation:</label>
+                {{ form.designation }}
+            </div>
+            <div class="fieldWrapper">
+                {{ form.employer.errors }}
+                <label for="{{ form.employer.id_for_label }}" style="font-family: inherit;font-style: inherit;">Employer:</label>
+                {{ form.employer }}
+            </div>
+            <div class="fieldWrapper">
+                {{ form.address.errors }}
+                <label for="{{ form.address.id_for_label }}" style="font-family: inherit;font-style: inherit;">Address:</label>
+                {{ form.address }}
+            </div>
+            <div class="fieldWrapper">
+                {{ form.started_at.errors }}
+                <label for="{{ form.started_at.id_for_label }}" style="font-family: inherit;font-style: inherit;">Started at:</label>
+                {{ form.started_at }}
+            </div>
+            <div class="fieldWrapper">
+                {{ form.ended_at.errors }}
+                <label for="{{ form.ended_at.id_for_label }}" style="font-family: inherit;font-style: inherit;">Ended at:</label>
+                {{ form.ended_at }}
+            </div>
+            <a class="btn btn-outline-secondary employment-remove-form-row float-right">Remove</a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+      <a class="btn btn-outline-primary employment-add-form-row">Add Employment</a>
+      <div class="p-3 d-flex justify-content-center">
+        <input type="submit" value="Save" />
+      </div>
+    </form>
+  </div>
+</div>
+
+<script type='text/javascript'>
+function updateElementIndexEmployment(el, prefix, ndx) {
+    var id_regex = new RegExp('(' + prefix + '-\\d+)');
+    var replacement = prefix + '-' + ndx;
+    if ($(el).attr("for")) $(el).attr("for", $(el).attr("for").replace(id_regex, replacement));
+    if (el.id) el.id = el.id.replace(id_regex, replacement);
+    if (el.name) el.name = el.name.replace(id_regex, replacement);
+}
+function cloneMoreEmployment(selector, prefix) {
+    var newElement = $(selector).clone(true);
+    var total = $('#id_' + prefix + '-TOTAL_FORMS').val();
+    newElement.find(':input:not([type=button]):not([type=submit]):not([type=reset])').each(function() {
+        var name = $(this).attr('name').replace('-' + (total-1) + '-', '-' + total + '-');
+        var id = 'id_' + name;
+        $(this).attr({'name': name, 'id': id}).val('').removeAttr('checked');
+    });
+    newElement.find('label').each(function() {
+        var forValue = $(this).attr('for');
+        if (forValue) {
+          forValue = forValue.replace('-' + (total-1) + '-', '-' + total + '-');
+          $(this).attr({'for': forValue});
+        }
+    });
+    total++;
+    $('#id_' + prefix + '-TOTAL_FORMS').val(total);
+    $(selector).after(newElement);
+    var conditionRow = $('.employment-form-row:not(:last)');
+    conditionRow.find('.btn.employment-add-form-row')
+    .removeClass('btn-success').addClass('btn-danger')
+    .removeClass('employment-add-form-row').addClass('employment-remove-form-row')
+    .html('<span class="glyphicon glyphicon-minus" aria-hidden="true"></span>');
+    return false;
+}
+function deleteFormEmployment(prefix, btn) {
+    var total = parseInt($('#id_' + prefix + '-TOTAL_FORMS').val());
+    if (total > 1){
+        btn.closest('.employment-form-row').remove();
+        var forms = $('.employment-form-row');
+        $('#id_' + prefix + '-TOTAL_FORMS').val(forms.length);
+        for (var i=0, formCount=forms.length; i<formCount; i++) {
+            $(forms.get(i)).find(':input').each(function() {
+                updateElementIndexEmployment(this, prefix, i);
+            });
+        }
+    }
+    return false;
+}
+$(document).on('click', '.employment-add-form-row', function(e){
+    e.preventDefault();
+    cloneMoreEmployment('.employment-form-row:last', 'form');
+    return false;
+});
+$(document).on('click', '.employment-remove-form-row', function(e){
+    e.preventDefault();
+    deleteFormEmployment('form', $(this));
+    return false;
+});
+</script>
+
+{% endblock %}

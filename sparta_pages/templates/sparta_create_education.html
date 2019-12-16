@@ -1,0 +1,119 @@
+{% extends "sparta_base.html" %}
+{% load static %}
+
+{% block sparta_body %}
+<div class="card">
+  <div class="card-body">
+    <h2 class="card-title">Education Profile</h2>
+
+    <form method="post" action="{% url 'sparta-education-create' %}">
+      {% csrf_token %}
+      {{ educationFormset.management_form }}
+      {% for form in educationFormset %}
+      <div class="education-form-row spacer">
+        <div class="card">
+          <div class="card-body">
+            {{ form.non_field_errors }}
+            <div class="fieldWrapper">
+              {{ form.degree.errors }}
+              <label for="{{ form.degree.id_for_label }}" style="font-family: inherit;font-style: inherit;">Degree:</label>
+              {{ form.degree }}
+            </div>
+            <div class="fieldWrapper">
+              {{ form.course.errors }}
+              <label for="{{ form.course.id_for_label }}" style="font-family: inherit;font-style: inherit;">Course:</label>
+              {{ form.course }}
+            </div>
+            <div class="fieldWrapper">
+              {{ form.school.errors }}
+              <label for="{{ form.school.id_for_label }}" style="font-family: inherit;font-style: inherit;">School:</label>
+              {{ form.school }}
+            </div>
+            <div class="fieldWrapper">
+              {{ form.address.errors }}
+              <label for="{{ form.address.id_for_label }}" style="font-family: inherit;font-style: inherit;">Address:</label>
+              {{ form.address }}
+            </div>
+            <div class="fieldWrapper">
+              {{ form.started_at.errors }}
+              <label for="{{ form.started_at.id_for_label }}" style="font-family: inherit;font-style: inherit;">Started at:</label>
+              {{ form.started_at }}
+            </div>
+            <div class="fieldWrapper">
+              {{ form.graduated_at.errors }}
+              <label for="{{ form.graduated_at.id_for_label }}" style="font-family: inherit;font-style: inherit;">Graduated at:</label>
+              {{ form.graduated_at }}
+            </div>
+            <a class="btn btn-outline-secondary education-remove-form-row float-right">Remove</a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+      <a class="btn btn-outline-primary education-add-form-row">Add Education</a>
+      <div class="p-3 d-flex justify-content-center">
+        <input type="submit" value="Save" />
+      </div>
+    </form>
+  </div>
+</div>
+
+<script type='text/javascript'>
+function updateElementIndexEducation(el, prefix, ndx) {
+    var id_regex = new RegExp('(' + prefix + '-\\d+)');
+    var replacement = prefix + '-' + ndx;
+    if ($(el).attr("for")) $(el).attr("for", $(el).attr("for").replace(id_regex, replacement));
+    if (el.id) el.id = el.id.replace(id_regex, replacement);
+    if (el.name) el.name = el.name.replace(id_regex, replacement);
+}
+function cloneMoreEducation(selector, prefix) {
+    var newElement = $(selector).clone(true);
+    var total = $('#id_' + prefix + '-TOTAL_FORMS').val();
+    newElement.find(':input:not([type=button]):not([type=submit]):not([type=reset])').each(function() {
+        var name = $(this).attr('name').replace('-' + (total-1) + '-', '-' + total + '-');
+        var id = 'id_' + name;
+        $(this).attr({'name': name, 'id': id}).val('').removeAttr('checked');
+    });
+    newElement.find('label').each(function() {
+        var forValue = $(this).attr('for');
+        if (forValue) {
+          forValue = forValue.replace('-' + (total-1) + '-', '-' + total + '-');
+          $(this).attr({'for': forValue});
+        }
+    });
+    total++;
+    $('#id_' + prefix + '-TOTAL_FORMS').val(total);
+    $(selector).after(newElement);
+    var conditionRow = $('.education-form-row:not(:last)');
+    conditionRow.find('.btn.education-add-form-row')
+    .removeClass('btn-success').addClass('btn-danger')
+    .removeClass('education-add-form-row').addClass('education-remove-form-row')
+    .html('<span class="glyphicon glyphicon-minus" aria-hidden="true"></span>');
+    return false;
+}
+function deleteFormEducation(prefix, btn) {
+    var total = parseInt($('#id_' + prefix + '-TOTAL_FORMS').val());
+    if (total > 1){
+        btn.closest('.education-form-row').remove();
+        var forms = $('.education-form-row');
+        $('#id_' + prefix + '-TOTAL_FORMS').val(forms.length);
+        for (var i=0, formCount=forms.length; i<formCount; i++) {
+            $(forms.get(i)).find(':input').each(function() {
+                updateElementIndexEducation(this, prefix, i);
+            });
+        }
+    }
+    return false;
+}
+$(document).on('click', '.education-add-form-row', function(e){
+    e.preventDefault();
+    cloneMoreEducation('.education-form-row:last', 'form');
+    return false;
+});
+$(document).on('click', '.education-remove-form-row', function(e){
+    e.preventDefault();
+    deleteFormEducation('form', $(this));
+    return false;
+});
+</script>
+
+{% endblock %}

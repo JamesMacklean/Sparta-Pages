@@ -20,6 +20,7 @@ from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.decorators.http import require_POST
 from django.views.generic import TemplateView
+from django.views.generic.edit import CreateView, UpdateView
 
 from lms.djangoapps.certificates.models import certificate_status_for_student
 
@@ -304,7 +305,11 @@ class ProfilePageView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(ProfilePageView, self).get_context_data(**kwargs)
-        context['applications'] = PathwayApplication.objects.all().filter(profile=self.request.user.sparta_profile).exclude(status='WE')
+        profile = self.request.user.sparta_profile
+        context['applications'] = PathwayApplication.objects.all().filter(profile=profile).exclude(status='WE')
+        context['education_profiles'] = EducationProfile.objects.all().filter(profile=profile)
+        context['employment_profiles'] = EmploymentProfile.objects.all().filter(profile=profile)
+        context['training_profiles'] = TrainingProfile.objects.all().filter(profile=profile)
         return context
 
     def get(self, request, *args, **kwargs):
@@ -339,28 +344,6 @@ class PathwayApplicationView(TemplateView):
         context = self.get_context_data()
         # context['form'] = self.form_class()
         return render(request, self.template_name, context)
-
-    # def post(self, request, *args, **kwargs):
-    #     form = self.form_class(request.POST)
-    #     if form.is_valid():
-    #         pathway = form.cleaned_data['pathway']
-    #         try:
-    #             app = PathwayApplication.objects.get(profile=request.user.sparta_profile, pathway=pathway)
-    #         except PathwayApplication.DoesNotExist:
-    #             app = PathwayApplication.objects.create(profile=request.user.sparta_profile, pathway=pathway)
-    #         if app.status in ["DE", "AP"]:
-    #             context = get_context_data(**{'fail_app': True})
-    #             return render(request, template_name, context)
-    #         app.pend()
-    #         Event.objects.create(
-    #             event="Application Submitted",
-    #             description="User {} has submitted an application for learning pathway {}.".format(app.profile.user.username, app.pathway.name),
-    #             profile=app.profile
-    #         )
-    #         return redirect('sparta-profile')
-    #     context = self.get_context_data()
-    #     context['form'] = form
-    #     return render(request, self.template_name, context)
 
 
 @require_POST
@@ -435,6 +418,159 @@ class PathwayProgressView(TemplateView):
         context['courses'] = courses
 
         return render(request, self.template_name, context)
+
+
+class EducationProfileUpdateView(UpdateView):
+    model = EducationProfile
+    fields = ['degree', 'course', 'school', 'address', 'started_at', 'graduated_at']
+    template_name_suffix = '_update_form'
+
+
+class EmploymentProfileUpdateView(UpdateView):
+    model = EmploymentProfile
+    fields = ['affiliation', 'occupation', 'designation', 'employer', 'address', 'started_at', 'ended_at']
+    template_name_suffix = '_update_form'
+
+
+class TrainingProfileUpdateView(UpdateView):
+    model = TrainingProfile
+    fields = ['title', 'organizer', 'address', 'started_at', 'ended_at']
+    template_name_suffix = '_update_form'
+
+
+class EducationProfileCreateView(CreateView):
+    """
+    """
+    educ_formset_class = EducationProfileFormset
+    template_name = "sparta_create_education.html"
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(EducationProfileCreateView, self).dispatch(*args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
+        if not SpartaProfile.objects.filter(user=request.user).exists():
+            return redirect('sparta-register')
+        educationFormset = self.educ_formset_class(request.GET or None)
+        return render(request, self.template_name, {'educationFormset': educationFormset})
+
+    def post(self, request, *args, **kwargs):
+        try:
+            sprofile = SpartaProfile.objects.get(user=request.user)
+        except SpartaProfile.DoesNotExist:
+            return redirect('sparta-register')
+
+        educationFormset = self.educ_formset_class(request.POST)
+        if educationFormset.is_valid():
+            for f in educationFormset:
+                degree = f.cleaned_data.get('degree')
+                course = f.cleaned_data.get('course', None)
+                school = f.cleaned_data.get('school', None)
+                address = f.cleaned_data.get('address', None)
+                started_at = f.cleaned_data.get('started_at', None)
+                graduated_at = f.cleaned_data.get('graduated_at', None)
+                if None not in [course, school, address, started_at, graduated_at]:
+                    edprofile = EducationProfile.objects.create(
+                        profile=sprofile,
+                        degree=degree,
+                        course=course,
+                        school=school,
+                        address=address,
+                        started_at=started_at,
+                        graduated_at=graduated_at
+                    )
+            return redirect(reverse('sparta-profile'))
+        return render(request, self.template_name, {'educationFormset': educationFormset})
+
+
+class EmploymentProfileCreateView(CreateView):
+    """
+    """
+    employ_formset_class = EmploymentProfileFormset
+    template_name = "sparta_create_employment.html"
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(EmploymentProfileCreateView, self).dispatch(*args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
+        if not SpartaProfile.objects.filter(user=request.user).exists():
+            return redirect('sparta-register')
+
+        employmentFormset = self.employ_formset_class(request.GET or None)
+        return render(request, self.template_name, {'employmentFormset': employmentFormset})
+
+    def post(self, request, *args, **kwargs):
+        try:
+            sprofile = SpartaProfile.objects.get(user=request.user)
+        except SpartaProfile.DoesNotExist:
+            return redirect('sparta-register')
+
+        employmentFormset = self.employ_formset_class(request.POST)
+        if employmentFormset.is_valid():
+            for f in employmentFormset:
+                affiliation = f.cleaned_data.get('affiliation')
+                occupation = f.cleaned_data.get('occupation', None)
+                designation = f.cleaned_data.get('designation', None)
+                employer = f.cleaned_data.get('employer', None)
+                address = f.cleaned_data.get('address', None)
+                started_at = f.cleaned_data.get('started_at', None)
+                ended_at = f.cleaned_data.get('ended_at', None)
+                if None not in [occupation, designation, employer, address, started_at, ended_at]:
+                    emprofile = EmploymentProfile.objects.create(
+                        profile=sprofile,
+                        affiliation=affiliation,
+                        occupation=occupation,
+                        designation=designation,
+                        employer=employer,
+                        address=address,
+                        started_at=started_at,
+                        ended_at=ended_at
+                    )
+            return redirect(reverse('sparta-profile'))
+        return render(request, self.template_name, {'employmentFormset': employmentFormset})
+
+
+class TrainingProfileCreateView(CreateView):
+    """
+    """
+    train_formset_class = TrainingProfileFormset
+    template_name = "sparta_create_training.html"
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(TrainingProfileCreateView, self).dispatch(*args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
+        if not SpartaProfile.objects.filter(user=request.user).exists():
+            return redirect('sparta-register')
+        trainingFormset = self.train_formset_class(request.GET or None)
+        return render(request, self.template_name, {'trainingFormset': trainingFormset})
+
+    def post(self, request, *args, **kwargs):
+        try:
+            sprofile = SpartaProfile.objects.get(user=request.user)
+        except SpartaProfile.DoesNotExist:
+            return redirect('sparta-register')
+
+        trainingFormset = self.train_formset_class(request.POST)
+        if trainingFormset.is_valid():
+            for f in trainingFormset:
+                title = f.cleaned_data.get('title', None)
+                organizer = f.cleaned_data.get('organizer', None)
+                address = f.cleaned_data.get('address', None)
+                started_at = f.cleaned_data.get('started_at', None)
+                ended_at = f.cleaned_data.get('ended_at', None)
+                if None not in [title, organizer, address, started_at, ended_at]:
+                    tprofile = TrainingProfile.objects.create(
+                        profile=sprofile,
+                        organizer=organizer,
+                        address=address,
+                        started_at=started_at,
+                        ended_at=ended_at
+                    )
+            return redirect(reverse('sparta-profile'))
+        return render(request, self.template_name, {'trainingFormset': trainingFormset})
 
 
 def get_upload_params_json(request):

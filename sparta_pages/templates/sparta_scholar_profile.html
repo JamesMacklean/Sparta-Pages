@@ -1,0 +1,62 @@
+<div class="card-group">
+{% for p of education_profiles %}
+  <div class="card">
+    <div class="card-body">
+      <ul class="list-group">
+        <li class="list-group-item">Degree: {{ p.degree }}</li>
+        <li class="list-group-item">Course: {{ p.course }}</li>
+        <li class="list-group-item">School: {{ p.school }}</li>
+        <li class="list-group-item">Address: {{ p.address }}</li>
+        <li class="list-group-item">Started at: {{ p.started_at }}</li>
+        <li class="list-group-item">Graduated at: {{ p.graduated_at }}</li>
+        <li class="list-group-item">
+          <span><a href="{% url 'sparta-education-update' pk=p.pk %}" class="btn btn-outline-info">Edit</a></span>
+        </li>
+      </ul>
+    </div>
+  </div>
+{% endfor %}
+<a href="{% url 'sparta-education-create' %}" class="btn btn-outline-info">Add Education Profile</a>
+</div>
+
+<div class="card-group">
+{% for p of employment_profiles %}
+<div class="card">
+  <div class="card-body">
+    <ul class="list-group">
+      <li class="list-group-item">Affiliation: {{ p.affiliation }}</li>
+      <li class="list-group-item">Occupation: {{ p.occupation }}</li>
+      <li class="list-group-item">Designation: {{ p.designation }}</li>
+      <li class="list-group-item">Employer: {{ p.employer }}</li>
+      <li class="list-group-item">Address: {{ p.address }}</li>
+      <li class="list-group-item">Started at: {{ p.started_at }}</li>
+      <li class="list-group-item">Ended at: {{ p.ended_at }}</li>
+      <li class="list-group-item">
+        <span><a href="{% url 'sparta-employment-update' pk=p.pk %}" class="btn btn-outline-info">Edit</a></span>
+      </li>
+    </ul>
+  </div>
+</div>
+{% endfor %}
+<a href="{% url 'sparta-employment-create' %}" class="btn btn-outline-info">Add Employment Profile</a>
+</div>
+
+<div class="card-group">
+{% for p of training_profiles %}
+<div class="card">
+  <div class="card-body">
+    <ul class="list-group">
+      <li class="list-group-item">Title: {{ p.title }}</li>
+      <li class="list-group-item">Organizer: {{ p.organizer }}</li>
+      <li class="list-group-item">Address: {{ p.address }}</li>
+      <li class="list-group-item">Started at: {{ p.started_at }}</li>
+      <li class="list-group-item">Ended at: {{ p.ended_at }}</li>
+      <li class="list-group-item">
+        <span><a href="{% url 'sparta-training-update' pk=p.pk %}" class="btn btn-outline-info">Edit</a></span>
+      </li>
+    </ul>
+  </div>
+</div>
+{% endfor %}
+<a href="{% url 'sparta-training-create' %}" class="btn btn-outline-info">Add Training Profile</a>
+</div>
