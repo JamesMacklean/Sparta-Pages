@@ -14,7 +14,7 @@
     <a href="{% url 'about_course' course_id=course.courseoverview.id %}">
     <div class="card">
       <div class="card-body">
-        <h4>Pathway: {{ course.courseoverview.display_name }}</h4>
+        <h4>{{ course.courseoverview.display_name }}</h4>
         {% if course.completed %}
           <h5>Status: <span class="badge badge-pill badge-success">Completed</span></h5>
         {% else %}
