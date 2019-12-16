@@ -260,15 +260,16 @@ class RegisterTrainingProfileView(View):
 
 def upload_to_s3(user, proof_of_education_file, proof_of_agreement_file):
     """"""
+    BUCKET_NAME = "openedx-coursebank-sparta-eligibility-documents"
     c = s3.connection.S3Connection(
         settings.AWS_ACCESS_KEY_ID,
         settings.AWS_SECRET_ACCESS_KEY
     )
-    nonexistent = c.lookup(settings.FILE_UPLOAD_STORAGE_BUCKET_NAME)
+    nonexistent = c.lookup(BUCKET_NAME)
     if nonexistent is None:
         raise Exception("No valid S3 Bucket set for image uploading.")
 
-    b = c.get_bucket(settings.FILE_UPLOAD_STORAGE_BUCKET_NAME, validate=False) # substitute your bucket name here
+    b = c.get_bucket(BUCKET_NAME, validate=False) # substitute your bucket name here
     blocation = str(b.get_location())
 
     tnow = datetime.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
@@ -276,12 +277,12 @@ def upload_to_s3(user, proof_of_education_file, proof_of_agreement_file):
     educ_key = Key(b)
     educ_key.key = 'proof_of_education_{}_{}'.format(user.username, tnow)
     educ_key.set_contents_from_file(proof_of_education_file)
-    educ_url = "https://{}.{}.amazonaws.com/sparta_uploads/{}".format(settings.FILE_UPLOAD_STORAGE_BUCKET_NAME, blocation, educ_key.key)
+    educ_url = "https://{}.{}.amazonaws.com/proof_of_education/{}".format(settings.FILE_UPLOAD_STORAGE_BUCKET_NAME, blocation, educ_key.key)
 
     agree_key = Key(b)
     agree_key.key = 'proof_of_agreement_{}_{}'.format(user.username, tnow)
     agree_key.set_contents_from_file(proof_of_agreement_file)
-    agree_url = "https://{}.{}.amazonaws.com/sparta_uploads/{}".format(settings.FILE_UPLOAD_STORAGE_BUCKET_NAME, blocation, agree_key.key)
+    agree_url = "https://{}.{}.amazonaws.com/proof_of_agreement/{}".format(settings.FILE_UPLOAD_STORAGE_BUCKET_NAME, blocation, agree_key.key)
 
     return {'proof_of_education_url': educ_url, 'proof_of_agreement_url': agree_url}
 
