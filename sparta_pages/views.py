@@ -275,14 +275,14 @@ def upload_to_s3(user, proof_of_education_file, proof_of_agreement_file):
     tnow = datetime.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
 
     educ_key = Key(b)
-    educ_key.key = 'proof_of_education_{}_{}'.format(user.username, tnow)
+    educ_key.key = 'proof_of_education/{}_{}'.format(user.username, tnow)
     educ_key.set_contents_from_file(proof_of_education_file)
-    educ_url = "https://{}.{}.amazonaws.com/proof_of_education/{}".format(settings.FILE_UPLOAD_STORAGE_BUCKET_NAME, blocation, educ_key.key)
+    educ_url = "https://{}.{}.amazonaws.com/{}".format(settings.FILE_UPLOAD_STORAGE_BUCKET_NAME, blocation, educ_key.key)
 
     agree_key = Key(b)
-    agree_key.key = 'proof_of_agreement_{}_{}'.format(user.username, tnow)
+    agree_key.key = 'proof_of_agreement/{}_{}'.format(user.username, tnow)
     agree_key.set_contents_from_file(proof_of_agreement_file)
-    agree_url = "https://{}.{}.amazonaws.com/proof_of_agreement/{}".format(settings.FILE_UPLOAD_STORAGE_BUCKET_NAME, blocation, agree_key.key)
+    agree_url = "https://{}.{}.amazonaws.com/{}".format(settings.FILE_UPLOAD_STORAGE_BUCKET_NAME, blocation, agree_key.key)
 
     return {'proof_of_education_url': educ_url, 'proof_of_agreement_url': agree_url}
 
