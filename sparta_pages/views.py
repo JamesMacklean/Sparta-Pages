@@ -328,8 +328,8 @@ class PathwayApplicationView(TemplateView):
         get_pathways = Pathway.objects.filter(is_active=True)
         pathways = []
         for p in get_pathways:
-            apps = p.applications.all().exclude(status='WE')
-            if not apps.filter(profile=self.request.user.sparta_profile).exists():
+            apps = p.applications.all().filter(profile=self.request.user.sparta_profile).exclude(status='WE')
+            if not apps.exists():
                 pathways.append(p)
         context['pathways'] = pathways
         return context
