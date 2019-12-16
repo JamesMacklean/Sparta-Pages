@@ -30,13 +30,13 @@
           {% elif app.status == 'DE' %}
           <td>-</td>
           {% else %}
-          <td><div type="button" class="btn btn-outline-secondary" data-toggle="modal" data-target="#withdrawModal">Widthraw</div></td>
+          <td><div type="button" class="btn btn-outline-secondary" data-toggle="modal" data-target="#withdrawModal">Withdraw</div></td>
           <!-- Modal Block -->
           <div class="modal fade" id="withdrawModal" tabindex="-1" role="dialog" aria-labelledby="withdrawModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title" id="withdrawModalLabel">Widthraw Application</h5>
+                  <h5 class="modal-title" id="withdrawModalLabel">Withdraw Application</h5>
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                   </button>
@@ -48,7 +48,7 @@
                   <form action="{% url 'sparta-withdraw' id=app.id %}" method="POST">
                     {% csrf_token %}
                     <div type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</div>
-                    <input class="btn btn-primary" id="submit" type="submit" value="Yes, Widthraw My Application" />
+                    <input class="btn btn-primary" id="submit" type="submit" value="Yes, Withdraw My Application" />
                   </form>
                 </div>
               </div>
