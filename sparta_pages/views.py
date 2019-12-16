@@ -369,6 +369,8 @@ def apply(request, id):
         raise HttpResponse(status=403)
 
     app, created = PathwayApplication.objects.get_or_create(profile=sparta_profile, pathway=pathway)
+    if not created and app.status != "WE":
+        return redirect(reverse('sparta-apply', kwargs={'fai_app': 'ok'}))
     app.pend()
 
     return redirect('sparta-profile')
