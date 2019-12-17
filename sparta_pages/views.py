@@ -202,7 +202,7 @@ class RegisterEmploymentProfileView(View):
                 address = f.cleaned_data.get('address', None)
                 started_at = f.cleaned_data.get('started_at', None)
                 ended_at = f.cleaned_data.get('ended_at', None)
-                if None not in [occupation, designation, employer, address, started_at, ended_at]:
+                if None not in [occupation, designation, employer, address, started_at]:
                     emprofile = EmploymentProfile.objects.create(
                         profile=sprofile,
                         affiliation=affiliation,
@@ -529,7 +529,7 @@ class EmploymentProfileCreateView(CreateView):
                 address = f.cleaned_data.get('address', None)
                 started_at = f.cleaned_data.get('started_at', None)
                 ended_at = f.cleaned_data.get('ended_at', None)
-                if None not in [occupation, designation, employer, address, started_at, ended_at]:
+                if None not in [occupation, designation, employer, address, started_at]:
                     emprofile = EmploymentProfile.objects.create(
                         profile=sprofile,
                         affiliation=affiliation,
