@@ -425,19 +425,22 @@ class PathwayProgressView(TemplateView):
 
 class EducationProfileUpdateView(UpdateView):
     model = EducationProfile
-    fields = ['degree', 'course', 'school', 'address', 'started_at', 'graduated_at']
+    form_class = EducationProfileForm
+    # fields = ['degree', 'course', 'school', 'address', 'started_at', 'graduated_at']
     template_name_suffix = '_update_form'
 
 
 class EmploymentProfileUpdateView(UpdateView):
     model = EmploymentProfile
-    fields = ['affiliation', 'occupation', 'designation', 'employer', 'address', 'started_at', 'ended_at']
+    form_class = EmploymentProfileForm
+    # fields = ['affiliation', 'occupation', 'designation', 'employer', 'address', 'started_at', 'ended_at']
     template_name_suffix = '_update_form'
 
 
 class TrainingProfileUpdateView(UpdateView):
     model = TrainingProfile
-    fields = ['title', 'organizer', 'address', 'started_at', 'ended_at']
+    form_class = TrainingProfileForm
+    # fields = ['title', 'organizer', 'address', 'started_at', 'ended_at']
     template_name_suffix = '_update_form'
 
 
