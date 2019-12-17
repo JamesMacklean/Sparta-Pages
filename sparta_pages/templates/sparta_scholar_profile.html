@@ -1,10 +1,13 @@
 <h2 class="card-title">Your Scholar Profile</h2>
+<p>
+View, Edit, or Delete your Education, Employment, and Training credential.s
+</p>
 
-<h4>Education Profiles</h4>
+<h4>Education Profile</h4>
 <div class="card-group">
   <div class="row">
   {% for p in education_profiles %}
-    <div class="col col-xs-6">
+    <div class="col col-xs-6 col-sm-6 col-md-6 col-lg-6">
       <div class="card">
         <div class="card-body">
           <ul class="list-group">
@@ -16,7 +19,7 @@
             <li class="list-group-item">Graduated at: {{ p.graduated_at }}</li>
             <li class="list-group-item">
               <div class="d-flex justify-content-between">
-                <div type="div" class="btn btn-danger" data-toggle="modal" data-target="#deleteEducationModel">Delete</div>
+                <div type="div" class="btn btn-outline-danger btn-sm" style="cursor: pointer" data-toggle="modal" data-target="#deleteEducationModel">Delete</div>
                 <!-- Modal Block -->
                 <div class="modal fade" id="deleteEducationModel" tabindex="-1" role="dialog" aria-labelledby="deleteEducationModelLabel" aria-hidden="true">
                   <div class="modal-dialog" role="document">
@@ -41,7 +44,7 @@
                   </div>
                 </div>
 
-                <a href="{% url 'sparta-education-update' pk=p.pk %}" class="btn btn-outline-info">Edit</a>
+                <a href="{% url 'sparta-education-update' pk=p.pk %}" class="btn btn-outline-info btn-sm">Edit</a>
               </div>
             </li>
           </ul>
@@ -56,11 +59,11 @@
 <br>
 <br>
 
-<h4>Employment Profiles</h4>
+<h4>Employment Profile</h4>
 <div class="card-group">
   <div class="row">
   {% for p in employment_profiles %}
-    <div class="col col-xs-6">
+    <div class="col col-xs-6 col-sm-6 col-md-6 col-lg-6">
       <div class="card">
         <div class="card-body">
           <ul class="list-group">
@@ -73,7 +76,7 @@
             <li class="list-group-item">Ended at: {{ p.ended_at }}</li>
             <li class="list-group-item">
               <div class="d-flex justify-content-between">
-                <div type="div" class="btn btn-danger" data-toggle="modal" data-target="#deleteEmploymentModel">Delete</div>
+                <div type="div" class="btn btn-outline-danger btn-sm" style="cursor: pointer" data-toggle="modal" data-target="#deleteEmploymentModel">Delete</div>
                 <!-- Modal Block -->
                 <div class="modal fade" id="deleteEmploymentModel" tabindex="-1" role="dialog" aria-labelledby="deleteEmploymentModelLabel" aria-hidden="true">
                   <div class="modal-dialog" role="document">
@@ -98,7 +101,7 @@
                   </div>
                 </div>
 
-                <a href="{% url 'sparta-employment-update' pk=p.pk %}" class="btn btn-outline-info">Edit</a>
+                <a href="{% url 'sparta-employment-update' pk=p.pk %}" class="btn btn-outline-info btn-sm">Edit</a>
               </div>
             </li>
           </ul>
@@ -113,11 +116,11 @@
 <br>
 <br>
 
-<h4>Training Profiles</h4>
+<h4>Training Profile</h4>
 <div class="card-group">
   <div class="row">
     {% for p in training_profiles %}
-      <div class="col col-xs-6">
+      <div class="col col-xs-6 col-sm-6 col-md-6 col-lg-6">
         <div class="card">
           <div class="card-body">
             <ul class="list-group">
@@ -128,7 +131,7 @@
               <li class="list-group-item">Ended at: {{ p.ended_at }}</li>
               <li class="list-group-item">
                 <div class="d-flex justify-content-between">
-                  <div type="div" class="btn btn-danger" data-toggle="modal" data-target="#deleteTrainingModel">Delete</div>
+                  <div type="div" class="btn btn-outline-danger btn-sm" style="cursor: pointer" data-toggle="modal" data-target="#deleteTrainingModel">Delete</div>
                   <!-- Modal Block -->
                   <div class="modal fade" id="deleteTrainingModel" tabindex="-1" role="dialog" aria-labelledby="deleteTrainingModelLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
@@ -153,7 +156,7 @@
                     </div>
                   </div>
 
-                  <a href="{% url 'sparta-training-update' pk=p.pk %}" class="btn btn-outline-info">Edit</a>
+                  <a href="{% url 'sparta-training-update' pk=p.pk %}" class="btn btn-outline-info btn-sm">Edit</a>
                 </div>
               </li>
             </ul>
