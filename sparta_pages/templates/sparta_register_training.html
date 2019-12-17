@@ -40,29 +40,29 @@
           <div class="card-body">
             {{ form.non_field_errors }}
             <div class="fieldWrapper">
-                {{ form.title.errors }}
                 <label for="{{ form.title.id_for_label }}" style="font-family: inherit;font-style: inherit;">Title:</label>
                 {{ form.title }}
+                {{ form.title.errors }}
             </div>
             <div class="fieldWrapper">
-                {{ form.organizer.errors }}
                 <label for="{{ form.organizer.id_for_label }}" style="font-family: inherit;font-style: inherit;">Organizer:</label>
                 {{ form.organizer }}
+                {{ form.organizer.errors }}
             </div>
             <div class="fieldWrapper">
-                {{ form.address.errors }}
                 <label for="{{ form.address.id_for_label }}" style="font-family: inherit;font-style: inherit;">Address:</label>
                 {{ form.address }}
+                {{ form.address.errors }}
             </div>
             <div class="fieldWrapper">
-                {{ form.started_at.errors }}
                 <label for="{{ form.started_at.id_for_label }}" style="font-family: inherit;font-style: inherit;">Started at:</label>
                 {{ form.started_at }}
+                {{ form.started_at.errors }}
             </div>
             <div class="fieldWrapper">
-                {{ form.ended_at.errors }}
                 <label for="{{ form.ended_at.id_for_label }}" style="font-family: inherit;font-style: inherit;">Ended at:</label>
                 {{ form.ended_at }}
+                {{ form.ended_at.errors }}
             </div>
             <a class="btn btn-outline-secondary training-remove-form-row float-right">Remove</a>
           </div>

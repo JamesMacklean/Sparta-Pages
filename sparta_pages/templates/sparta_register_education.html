@@ -39,34 +39,34 @@
           <div class="card-body">
             {{ form.non_field_errors }}
             <div class="fieldWrapper">
-              {{ form.degree.errors }}
               <label for="{{ form.degree.id_for_label }}" style="font-family: inherit;font-style: inherit;">Degree:</label>
               {{ form.degree }}
+              {{ form.degree.errors }}
             </div>
             <div class="fieldWrapper">
-              {{ form.course.errors }}
               <label for="{{ form.course.id_for_label }}" style="font-family: inherit;font-style: inherit;">Course:</label>
               {{ form.course }}
+              {{ form.course.errors }}
             </div>
             <div class="fieldWrapper">
-              {{ form.school.errors }}
               <label for="{{ form.school.id_for_label }}" style="font-family: inherit;font-style: inherit;">School:</label>
               {{ form.school }}
+              {{ form.school.errors }}
             </div>
             <div class="fieldWrapper">
-              {{ form.address.errors }}
               <label for="{{ form.address.id_for_label }}" style="font-family: inherit;font-style: inherit;">Address:</label>
               {{ form.address }}
+              {{ form.address.errors }}
             </div>
             <div class="fieldWrapper">
-              {{ form.started_at.errors }}
               <label for="{{ form.started_at.id_for_label }}" style="font-family: inherit;font-style: inherit;">Started at:</label>
               {{ form.started_at }}
+              {{ form.started_at.errors }}
             </div>
             <div class="fieldWrapper">
-              {{ form.graduated_at.errors }}
               <label for="{{ form.graduated_at.id_for_label }}" style="font-family: inherit;font-style: inherit;">Graduated at:</label>
               {{ form.graduated_at }}
+              {{ form.graduated_at.errors }}
             </div>
             <a class="btn btn-outline-secondary education-remove-form-row float-right">Remove</a>
           </div>

@@ -39,39 +39,39 @@
           <div class="card-body">
             {{ form.non_field_errors }}
             <div class="fieldWrapper">
-                {{ form.affiliation.errors }}
                 <label for="{{ form.affiliation.id_for_label }}" style="font-family: inherit;font-style: inherit;">Affiliation:</label>
                 {{ form.affiliation }}
+                {{ form.affiliation.errors }}
             </div>
             <div class="fieldWrapper">
-                {{ form.occupation.errors }}
                 <label for="{{ form.occupation.id_for_label }}" style="font-family: inherit;font-style: inherit;">Occupation:</label>
                 {{ form.occupation }}
+                {{ form.occupation.errors }}
             </div>
             <div class="fieldWrapper">
-                {{ form.designation.errors }}
                 <label for="{{ form.designation.id_for_label }}" style="font-family: inherit;font-style: inherit;">Designation:</label>
                 {{ form.designation }}
+                {{ form.designation.errors }}
             </div>
             <div class="fieldWrapper">
-                {{ form.employer.errors }}
                 <label for="{{ form.employer.id_for_label }}" style="font-family: inherit;font-style: inherit;">Employer:</label>
                 {{ form.employer }}
+                {{ form.employer.errors }}
             </div>
             <div class="fieldWrapper">
-                {{ form.address.errors }}
                 <label for="{{ form.address.id_for_label }}" style="font-family: inherit;font-style: inherit;">Address:</label>
                 {{ form.address }}
+                {{ form.address.errors }}
             </div>
             <div class="fieldWrapper">
-                {{ form.started_at.errors }}
                 <label for="{{ form.started_at.id_for_label }}" style="font-family: inherit;font-style: inherit;">Started at:</label>
                 {{ form.started_at }}
+                {{ form.started_at.errors }}
             </div>
             <div class="fieldWrapper">
-                {{ form.ended_at.errors }}
                 <label for="{{ form.ended_at.id_for_label }}" style="font-family: inherit;font-style: inherit;">Ended at:</label>
                 {{ form.ended_at }}
+                {{ form.ended_at.errors }}
             </div>
             <a class="btn btn-outline-secondary employment-remove-form-row float-right">Remove</a>
           </div>
