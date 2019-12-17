@@ -49,13 +49,9 @@
           </div>
         </div>
       </div>
-      <div class="p-3 d-flex justify-content-center">
-        <div>
-          <span>
-            <a href="{% url 'sparta-education-delete' pk=form.instance.pk %}" class="btn btn-danger">Delete</a>
-          </span>
+      <div class="p-3 d-flex justify-content-between">
+          <a href="{% url 'sparta-education-delete' pk=form.instance.pk %}" class="btn btn-danger">Delete</a>
           <input type="submit" value="Save" />
-        </div>
       </div>
     </form>
   </div>
