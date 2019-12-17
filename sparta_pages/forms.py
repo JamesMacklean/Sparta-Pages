@@ -64,7 +64,7 @@ class EmploymentProfileForm(forms.ModelForm):
     class Meta:
         model = EmploymentProfile
         fields = [
-            'affiliation', 'occupation', 'designation', 'started_at', 'ended_at'
+            'affiliation', 'occupation', 'designation', 'started_at', 'ended_at',
             'employer', 'address',
         ]
 
