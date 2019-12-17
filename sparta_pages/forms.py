@@ -144,18 +144,12 @@ class PathwayApplicationForm(forms.ModelForm):
         ]
 
 def CHOICES():
-    ALL = "AL"
-    PENDING = "PE"
-    APPROVED = "AP"
-    DENIED = "DE"
-    WITHDRAWN = "WE"
-
     return [
-        (ALL, "all")
-        (PENDING, "pending"),
-        (APPROVED, "approved"),
-        (DENIED, "denied"),
-        (WITHDRAWN, "withdrawn")
+        ("all", "all")
+        ("pending", "pending"),
+        ("approved", "approved"),
+        ("denied", "denied"),
+        ("withdrawn", "withdrawn")
     ]
 
 class ExportAppsForm(forms.Form):
@@ -164,7 +158,7 @@ class ExportAppsForm(forms.Form):
 
     selection = forms.ChoiceField(
         choices=CHOICES,
-        default=ALL
+        default="all"
         )
 
 
