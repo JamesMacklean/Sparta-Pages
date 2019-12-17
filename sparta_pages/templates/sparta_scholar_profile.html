@@ -1,4 +1,5 @@
 <h2 class="card-title">Your Scholar Profile</h2>
+
 <h4>Education Profiles</h4>
 <div class="card-group">
   <div class="row">
@@ -7,7 +8,7 @@
       <div class="card">
         <div class="card-body">
           <ul class="list-group">
-            <li class="list-group-item">Degree: {{ p.degree }}</li>
+            <li class="list-group-item">Degree: {{ p.get_degree_display }}</li>
             <li class="list-group-item">Course: {{ p.course }}</li>
             <li class="list-group-item">School: {{ p.school }}</li>
             <li class="list-group-item">Address: {{ p.address }}</li>
@@ -63,7 +64,7 @@
       <div class="card">
         <div class="card-body">
           <ul class="list-group">
-            <li class="list-group-item">Affiliation: {{ p.affiliation }}</li>
+            <li class="list-group-item">Affiliation: {{ p.get_affiliation_display }}</li>
             <li class="list-group-item">Occupation: {{ p.occupation }}</li>
             <li class="list-group-item">Designation: {{ p.designation }}</li>
             <li class="list-group-item">Employer: {{ p.employer }}</li>
