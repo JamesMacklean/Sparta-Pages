@@ -37,14 +37,14 @@
             {% elif app.status == 'DE' %}
             <td>-</td>
             {% else %}
-            <td><div type="div" class="btn btn-outline-secondary" data-toggle="modal" data-target="#withdrawModal">Withdraw</div></td>
+            <td><div type="div" class="btn btn-outline-secondary" style="cursor: pointer" data-toggle="modal" data-target="#withdrawModal">Withdraw</div></td>
             <!-- Modal Block -->
             <div class="modal fade" id="withdrawModal" tabindex="-1" role="dialog" aria-labelledby="withdrawModalLabel" aria-hidden="true">
               <div class="modal-dialog" role="document">
                 <div class="modal-content">
                   <div class="modal-header">
                     <h5 class="modal-title" id="withdrawModalLabel">Withdraw Application</h5>
-                    <div type="div" class="close" data-dismiss="modal" aria-label="Close">
+                    <div type="div" class="close" style="cursor: pointer" data-dismiss="modal" aria-label="Close">
                       <span aria-hidden="true">&times;</span>
                     </div>
                   </div>
