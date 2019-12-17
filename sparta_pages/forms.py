@@ -1,4 +1,5 @@
 from datetime import datetime
+from datetime import date
 
 from django import forms
 from django.forms import formset_factory
@@ -24,16 +25,20 @@ class EducationProfileForm(forms.ModelForm):
     """
     """
     started_at = forms.DateField(
+        initial=date.today(),
         widget=forms.SelectDateWidget(
-            years=range(1900, int(datetime.now().strftime("%Y"))),
+            years=range(1900, int(datetime.now().strftime("%Y"))+1),
             empty_label=("Choose Year", "Choose Month", "Choose Day"),
             ),
+        required=True
         )
     graduated_at = forms.DateField(
+        initial=date.today(),
         widget=forms.SelectDateWidget(
-            years=range(1900, int(datetime.now().strftime("%Y"))),
+            years=range(1900, int(datetime.now().strftime("%Y"))+1),
             empty_label=("Choose Year", "Choose Month", "Choose Day"),
             ),
+        required=True
         )
     class Meta:
         model = EducationProfile
@@ -56,15 +61,18 @@ class EmploymentProfileForm(forms.ModelForm):
     """
     """
     started_at = forms.DateField(
+        initial=date.today(),
         widget=forms.SelectDateWidget(
-            years=range(1900, int(datetime.now().strftime("%Y"))),
+            years=range(1900, int(datetime.now().strftime("%Y"))+1),
             empty_label=("Choose Year", "Choose Month", "Choose Day"),
             ),
+        required=True
         )
     ended_at = forms.DateField(
+        initial=date.today(),
         widget=forms.SelectDateWidget(
-            years=range(1900, int(datetime.now().strftime("%Y"))),
-            empty_label=("Choose Year", "Choose Month", "Choose Day"),
+            years=range(1900, int(datetime.now().strftime("%Y"))+1),
+            empty_label="Present",
             ),
         )
     class Meta:
@@ -89,16 +97,20 @@ class TrainingProfileForm(forms.ModelForm):
     """
     """
     started_at = forms.DateField(
+        initial=date.today(),
         widget=forms.SelectDateWidget(
-            years=range(1900, int(datetime.now().strftime("%Y"))),
+            years=range(1900, int(datetime.now().strftime("%Y"))+1),
             empty_label=("Choose Year", "Choose Month", "Choose Day"),
             ),
+        required=True
         )
     ended_at = forms.DateField(
+        initial=date.today(),
         widget=forms.SelectDateWidget(
-            years=range(1900, int(datetime.now().strftime("%Y"))),
+            years=range(1900, int(datetime.now().strftime("%Y"))+1),
             empty_label=("Choose Year", "Choose Month", "Choose Day"),
             ),
+        required=True
         )
     class Meta:
         model = TrainingProfile
