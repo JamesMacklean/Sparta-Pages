@@ -20,7 +20,7 @@ from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.decorators.http import require_POST
 from django.views.generic import TemplateView
-from django.views.generic.edit import CreateView, UpdateView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 from lms.djangoapps.certificates.models import certificate_status_for_student
 
@@ -571,6 +571,21 @@ class TrainingProfileCreateView(CreateView):
                     )
             return redirect(reverse('sparta-profile'))
         return render(request, self.template_name, {'trainingFormset': trainingFormset})
+
+
+class EducationProfileDeleteView(DeleteView):
+    model = EducationProfile
+    success_url = reverse('sparta-profile')
+
+
+class EmploymentProfileDeleteView(DeleteView):
+    model = EmploymentProfile
+    success_url = reverse('sparta-profile')
+
+
+class TrainingProfileDeleteView(DeleteView):
+    model = TrainingProfile
+    success_url = reverse('sparta-profile')
 
 
 def get_upload_params_json(request):

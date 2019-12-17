@@ -55,7 +55,12 @@
         </div>
       </div>
       <div class="p-3 d-flex justify-content-center">
-        <input type="submit" value="Save" />
+        <div>
+          <span>
+            <a href="{% url 'sparta-employment-delete' pk=form.instance.pk %}" class="btn btn-danger">Delete</a>
+          </span>
+          <input type="submit" value="Save" />
+        </div>
       </div>
     </form>
   </div>

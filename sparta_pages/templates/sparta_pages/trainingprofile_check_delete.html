@@ -1,0 +1,18 @@
+{% extends "sparta_base.html" %}
+{% load static %}
+
+{% block sparta_body %}
+
+<form action="" method="post">{% csrf_token %}
+    <p>Are you sure you want to delete your Training credential "{{ object.title }}"?</p>
+    <div>
+      <span>
+        <a href="javascript:history.back()" class="btn btn-outline-info">Go Back</a>
+      </span>
+      <span>
+        <input type="submit" value="Yes, Delete this Training credential" />
+      </span>
+    </div>
+</form>
+
+{% endblock %}
