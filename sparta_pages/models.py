@@ -205,6 +205,13 @@ class EmploymentProfile(models.Model):
     def __str__(self):
         return self.profile.user.username
 
+    @property
+    def get_ended_at_display(self):
+        if ended_at is None:
+            return "Present"
+        else:
+            return self.ended_at
+
 
 class TrainingProfile(models.Model):
     """
