@@ -428,7 +428,7 @@ class EducationProfileUpdateView(UpdateView):
     form_class = EducationProfileForm
     template_name_suffix = '_update_form'
 
-     def get_success_url(self):
+    def get_success_url(self):
         return reverse('sparta-profile')
 
 
@@ -437,7 +437,7 @@ class EmploymentProfileUpdateView(UpdateView):
     form_class = EmploymentProfileForm
     template_name_suffix = '_update_form'
 
-     def get_success_url(self):
+    def get_success_url(self):
         return reverse('sparta-profile')
 
 
@@ -446,7 +446,7 @@ class TrainingProfileUpdateView(UpdateView):
     form_class = TrainingProfileForm
     template_name_suffix = '_update_form'
 
-     def get_success_url(self):
+    def get_success_url(self):
         return reverse('sparta-profile')
 
 
