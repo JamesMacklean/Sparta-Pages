@@ -6,7 +6,7 @@
   <div class="card-body">
     <h2 class="card-title">Training Profile</h2>
 
-    <form method="post" action="{% url 'sparta-register-training' %}">
+    <form method="post" action="{% url 'sparta-training-create' %}">
       {% csrf_token %}
       {{ trainingFormset.management_form }}
       {% for form in trainingFormset %}

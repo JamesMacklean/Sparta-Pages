@@ -6,7 +6,7 @@
   <div class="card-body">
     <h2 class="card-title">Employment Profile</h2>
 
-    <form method="post" action="{% url 'sparta-register-employment' %}">
+    <form method="post" action="{% url 'sparta-employment-create' %}">
       {% csrf_token %}
       {{ employmentFormset.management_form }}
       {% for form in employmentFormset %}
