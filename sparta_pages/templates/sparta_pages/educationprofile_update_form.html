@@ -10,7 +10,7 @@
       You can update your Education credentials below.
     </p>
 
-    <form method="post" action="">
+    <form method="post" action="{% url 'sparta-profile' %}">
       {% csrf_token %}
       <div class="education-form-row spacer">
         <div class="card">
