@@ -147,7 +147,7 @@ class PathwayApplicationForm(forms.ModelForm):
 class ExportAppsForm(forms.Form):
     """
     """
-    ALL =
+    ALL = "AL"
     PENDING = "PE"
     APPROVED = "AP"
     DENIED = "DE"
