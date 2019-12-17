@@ -200,7 +200,7 @@ class EmploymentProfile(models.Model):
     employer = models.CharField(max_length=255)
     address = models.TextField()
     started_at = models.DateField()
-    ended_at = models.DateField()
+    ended_at = models.DateField(null=True, blank=True)
 
     def __str__(self):
         return self.profile.user.username
