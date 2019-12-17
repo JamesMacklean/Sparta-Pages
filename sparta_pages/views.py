@@ -1,11 +1,13 @@
+import csv
+import hmac
+import sha
+
 from base64 import b64encode
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 from json import dumps
 from mimetypes import guess_type
 from os import path
 from uuid import uuid4
-import hmac
-import sha
 
 import boto
 from boto import s3
@@ -31,7 +33,8 @@ from student.models import CourseEnrollment
 from .forms import (
     SpartaProfileForm, EducationProfileForm, EmploymentProfileForm,
     TrainingProfileForm, PathwayApplicationForm,
-    EducationProfileFormset, EmploymentProfileFormset, TrainingProfileFormset
+    EducationProfileFormset, EmploymentProfileFormset, TrainingProfileFormset,
+    ExportAppsForm, AppsFilterForm
 )
 from .models import Pathway, SpartaCourse, SpartaProfile, EducationProfile, EmploymentProfile, TrainingProfile, PathwayApplication, Event
 
@@ -692,22 +695,84 @@ def admin_main_view(request):
     if not request.user.is_staff:
         raise Http404
 
-    template_name = "sparta_admin.html"
+    template_name = "sparta_admin_main.html"
     context = {}
 
     return render(request, template_name, context)
 
 
 @login_required
-def admin_profiles_view(request):
+def admin_applications_view(request):
     if not request.user.is_staff:
         raise Http404
 
-    template_name = "sparta_admin_profiles.html"
+    template_name = "sparta_admin_applications.html"
     context = {}
+
+    applications = PathwayApplication.objects.all()
+
+    date_from = request.GET.get('date_from', None)
+    date_to = request.GET.get('date_to', None)
+
+    if date_from or date_to:
+        if not date_from:
+            date_from = date.today()
+        else:
+            date_from = datetime.strptime(date_from, "%Y-%m-%d").date()
+        if not date_to:
+            date_to = date.today()
+        else:
+            date_to = datetime.strptime(date_to, "%Y-%m-%d").date()
+        applications.filter(created_at__gte=date_from).filter(created_at__lte=date_to)
+
+    pending_applications = applications.filter(status='PE')
+    withdrawn_applications = applications.filter(status='WE')
+    denied_applications = applications.filter(status='DE')
+    approved_applications = applications.filter(status='PE')
+
+    context['pending_applications'] = pending_applications
+    context['approved_applications'] = approved_applications
+    context['withdrawn_applications'] = withdrawn_applications
+    context['denied_applications'] = denied_applications
+
+    context['form'] = ExportAppsForm()
+    context['filter_form'] = AppsFilterForm(request.GET or None)
+
+    if request.method == "POST":
+        form = ExportAppsForm(request.POST)
+        if form.is_valid:
+            selection = form.cleaned_data['selection']
+            if status == "pending":
+                apps_to_export = pending_applications
+            elif status == "approved":
+                apps_to_export = approved_applications
+            elif status == "withdrawn":
+                apps_to_export = withdrawn_applications
+            elif status == "denied":
+                apps_to_export = denied_applications
+            else:
+                apps_to_export = applications
+            return export_pathway_applications_to_csv(apps_to_export)
 
     return render(request, template_name, context)
 
+def export_pathway_applications_to_csv(apps):
+    tnow = datetime.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
+    filename = "sparta-pathway-applications-{}.csv".format(tnow)
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename={}'.format(filename)
+
+    writer = csv.writer(response)
+    writer.writerow(['username', 'email', 'pathway', 'status', 'created_at'])
+    for a in apps:
+        username = a.profile.user.username
+        email = a.profile.user.email
+        pathway = a.pathway.name
+        status = a.status
+        created_at = str(a.created_at)
+        writer.writerow([username, email, pathway, status, created_at])
+
+    return response
 
 @login_required
 def admin_applications_view(request):

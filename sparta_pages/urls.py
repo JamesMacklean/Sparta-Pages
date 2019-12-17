@@ -27,4 +27,6 @@ urlpatterns = [
     url(r'^sparta/pathway/(?P<slug>[-\w]+)/$', views.pathway, name='sparta-pathway'),
     url(r'^sparta/pathway/(?P<pathway_id>\d+)/progress/$', views.PathwayProgressView.as_view(), name='sparta-pathway-progress'),
     url(r'^sparta/widthraw/(?P<id>\d+)/$', views.widthraw, name='sparta-withdraw'),
+
+    url(r'^sparta/admin-view/applications/$', views.admin_profiles_view, name='sparta-admin-applications'),
 ]

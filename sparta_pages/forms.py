@@ -142,3 +142,40 @@ class PathwayApplicationForm(forms.ModelForm):
         fields = [
             'pathway',
         ]
+
+
+class ExportAppsForm(forms.Form):
+    """
+    """
+    ALL = "AL"
+    PENDING = "PE"
+    APPROVED = "AP"
+    DENIED = "DE"
+    WITHDRAWN = "WE"
+    CHOICES = (
+        (ALL, "all")
+        (PENDING, "pending"),
+        (APPROVED, "approved"),
+        (DENIED, "denied"),
+        (WITHDRAWN, "withdrawn")
+    )
+    selection = forms.ChoiceField(choices=CHOICES, default=ALL)
+
+
+class AppsFilterForm(forms.Form):
+    """
+    """
+    date_from = forms.DateField(
+        widget=forms.SelectDateWidget(
+            years=range(1900, int(datetime.now().strftime("%Y"))+1),
+            empty_label=("Choose Year", "Choose Month", "Choose Day"),
+            ),
+        required=False
+        )
+    date_to = forms.DateField(
+        widget=forms.SelectDateWidget(
+            years=range(1900, int(datetime.now().strftime("%Y"))+1),
+            empty_label=("Choose Year", "Choose Month", "Choose Day"),
+            ),
+        required=False
+        )

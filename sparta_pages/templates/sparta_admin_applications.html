@@ -1,0 +1,149 @@
+{% extends "sparta_base.html" %}
+{% load static %}
+
+{% block sparta_body %}
+
+<form action="{% url 'sparta-admin-applications'%}" method="post">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Export to CSV" />
+</form>
+
+<form action="{% url 'sparta-admin-applications' %}" method="get">
+  {% csrf_token %}
+  {{ filter_form }}
+  <input type="submit" value="Filter" />
+</form>
+
+<div class="card">
+  <div class="card-body">
+    <h2>Pending Pathway Applications</h2>
+    <table class="table table-hover table-sm">
+      <thead>
+        <tr>
+          <th scope="col">Username</th>
+          <th scope="col">Email</th>
+          <th scope="col">Pathway</th>
+          <th scope="col">Status</th>
+          <th scope="col">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for a in pending_applications %}
+        <tr>
+          <td>{{ a.profile.user.username }}</td>
+          <td>{{ a.profile.user.email }}</td>
+          <td>{{ a.pathway.name }}</td>
+          <td>{{ a.status }}</td>
+          <td><div class="btn btn-success">Approve</div></td>
+        </tr>
+        {% endfor %}
+        <tr>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-body">
+    <h2>Approved Pathway Applications</h2>
+    <table class="table table-hover table-sm">
+      <thead>
+        <tr>
+          <th scope="col">Username</th>
+          <th scope="col">Email</th>
+          <th scope="col">Pathway</th>
+          <th scope="col">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for a in approved_applications %}
+        <tr>
+          <td>{{ a.profile.user.username }}</td>
+          <td>{{ a.profile.user.email }}</td>
+          <td>{{ a.pathway.name }}</td>
+          <td>{{ a.status }}</td>
+        </tr>
+        {% endfor %}
+        <tr>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-body">
+    <h2>Withdrawn Pathway Applications</h2>
+    <table class="table table-hover table-sm">
+      <thead>
+        <tr>
+          <th scope="col">Username</th>
+          <th scope="col">Email</th>
+          <th scope="col">Pathway</th>
+          <th scope="col">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for a in withdrawn_applications %}
+        <tr>
+          <td>{{ a.profile.user.username }}</td>
+          <td>{{ a.profile.user.email }}</td>
+          <td>{{ a.pathway.name }}</td>
+          <td>{{ a.status }}</td>
+        </tr>
+        {% endfor %}
+        <tr>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-body">
+    <h2>Denied Pathway Applications</h2>
+    <table class="table table-hover table-sm">
+      <thead>
+        <tr>
+          <th scope="col">Username</th>
+          <th scope="col">Email</th>
+          <th scope="col">Pathway</th>
+          <th scope="col">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for a in denied_applications %}
+        <tr>
+          <td>{{ a.profile.user.username }}</td>
+          <td>{{ a.profile.user.email }}</td>
+          <td>{{ a.pathway.name }}</td>
+          <td>{{ a.status }}</td>
+        </tr>
+        {% endfor %}
+        <tr>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{% endblock %}
