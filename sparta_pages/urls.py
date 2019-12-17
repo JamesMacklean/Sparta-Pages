@@ -18,9 +18,9 @@ urlpatterns = [
     url(r'^sparta/profile/education/(?P<pk>\d+)/$', views.EducationProfileUpdateView.as_view(), name='sparta-education-update'),
     url(r'^sparta/profile/employment/(?P<pk>\d+)/$', views.EmploymentProfileUpdateView.as_view(), name='sparta-employment-update'),
     url(r'^sparta/profile/training/(?P<pk>\d+)/$', views.TrainingProfileUpdateView.as_view(), name='sparta-training-update'),
-    url(r'^sparta/d/profile/education/(?P<pk>\d+)/$', views.EducationProfileDeleteView.as_view(), name='sparta-education-delete'),
-    url(r'^sparta/d/profile/employment/(?P<pk>\d+)/$', views.EmploymentProfileDeleteView.as_view(), name='sparta-employment-delete'),
-    url(r'^sparta/d/profile/training/(?P<pk>\d+)/$', views.TrainingProfileDeleteView.as_view(), name='sparta-training-delete'),
+    url(r'^sparta/profile/education/(?P<pk>\d+)/delete/$', views.EducationProfileDeleteView.as_view(), name='sparta-education-delete'),
+    url(r'^sparta/profile/employment/(?P<pk>\d+)/delete/$', views.EmploymentProfileDeleteView.as_view(), name='sparta-employment-delete'),
+    url(r'^sparta/profile/training/(?P<pk>\d+)/delete/$', views.TrainingProfileDeleteView.as_view(), name='sparta-training-delete'),
 
     url(r'^sparta/application-page/$', views.PathwayApplicationView.as_view(), name='sparta-application-page'),
     url(r'^sparta/apply/(?P<id>\d+)/$', views.apply, name='sparta-apply'),
