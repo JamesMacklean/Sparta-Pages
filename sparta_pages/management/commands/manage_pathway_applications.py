@@ -12,4 +12,4 @@ class Command(BaseCommand):
         except Exception as e:
             raise CommandError("Error in managing PathwayApplications: {}".format(str(e)))
         else:
-            self.stdout.write(self.style.SUCCESS("Successfully managed PathwayApplications.")
+            self.stdout.write(self.style.SUCCESS("Successfully managed PathwayApplications."))
