@@ -73,7 +73,7 @@ View, Edit, or Delete your Education, Employment, and Training credentials.
             <li class="list-group-item"><b>Employer:</b> {{ p.employer }}</li>
             <li class="list-group-item"><b>Address:</b> {{ p.address }}</li>
             <li class="list-group-item"><b>Started at:</b> {{ p.started_at }}</li>
-            <li class="list-group-item"><b>Ended at:</b> {{ p.get_ended_at_str }}</li>
+            <li class="list-group-item"><b>Ended at:</b> {{ p.print_ended_at }}</li>
             <li class="list-group-item">
               <div class="d-flex justify-content-between">
                 <div type="div" class="btn btn-outline-danger btn-sm" style="cursor: pointer" data-toggle="modal" data-target="#deleteEmploymentModel">Delete</div>

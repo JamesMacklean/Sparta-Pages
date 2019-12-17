@@ -206,11 +206,11 @@ class EmploymentProfile(models.Model):
         return self.profile.user.username
 
     @property
-    def get_ended_at_str(self):
-        if ended_at is None:
-            return "Present"
-        else:
+    def print_ended_at(self):
+        if ended_at:
             return self.ended_at
+        else:
+            return "Present"
 
 
 class TrainingProfile(models.Model):
