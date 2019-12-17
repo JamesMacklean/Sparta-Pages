@@ -150,7 +150,7 @@ def CHOICES():
     DENIED = "DE"
     WITHDRAWN = "WE"
 
-    return = [
+    return [
         (ALL, "all")
         (PENDING, "pending"),
         (APPROVED, "approved"),
