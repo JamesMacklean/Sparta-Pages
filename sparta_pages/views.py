@@ -250,6 +250,7 @@ class RegisterTrainingProfileView(View):
                 if None not in [title, organizer, address, started_at, ended_at]:
                     tprofile = TrainingProfile.objects.create(
                         profile=sprofile,
+                        title=title,
                         organizer=organizer,
                         address=address,
                         started_at=started_at,
@@ -576,6 +577,7 @@ class TrainingProfileCreateView(CreateView):
                 if None not in [title, organizer, address, started_at, ended_at]:
                     tprofile = TrainingProfile.objects.create(
                         profile=sprofile,
+                        title=title,
                         organizer=organizer,
                         address=address,
                         started_at=started_at,
