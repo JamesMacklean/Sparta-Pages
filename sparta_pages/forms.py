@@ -37,6 +37,16 @@ class EducationProfileForm(forms.ModelForm):
             'degree', 'course', 'school', 'address',
         ]
 
+    def clean(self):
+        cleaned_data = super(EducationProfileForm, self).clean()
+        started_at = cleaned_data.get('started_at')
+        graduated_at = cleaned_data.get('graduated_at')
+
+        if started_at >= graduated_at:
+            msg = "Date for 'started_at' must be before date for 'graduated_at'."
+            self.add_error('started_at', msg)
+            self.add_error('graduated_at', msg)
+
 
 class EmploymentProfileForm(forms.ModelForm):
     """
@@ -58,6 +68,16 @@ class EmploymentProfileForm(forms.ModelForm):
             'employer', 'address',
         ]
 
+    def clean(self):
+        cleaned_data = super(EmploymentProfileForm, self).clean()
+        started_at = cleaned_data.get('started_at')
+        ended_at = cleaned_data.get('ended_at', None)
+
+        if ended_at is not None and started_at >= ended_at:
+            msg = "Date for 'started_at' must be before date for 'ended_at'."
+            self.add_error('started_at', msg)
+            self.add_error('ended_at', msg)
+
 
 class TrainingProfileForm(forms.ModelForm):
     """
@@ -77,6 +97,16 @@ class TrainingProfileForm(forms.ModelForm):
         fields = [
             'title', 'organizer', 'address',
         ]
+
+    def clean(self):
+        cleaned_data = super(TrainingProfileForm, self).clean()
+        started_at = cleaned_data.get('started_at')
+        ended_at = cleaned_data.get('ended_at')
+
+        if started_at > ended_at:
+            msg = "Date for 'started_at' must be the same or before date for 'ended_at'."
+            self.add_error('started_at', msg)
+            self.add_error('ended_at', msg)
 
 
 EducationProfileFormset = formset_factory(EducationProfileForm, extra=1)
