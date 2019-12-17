@@ -156,10 +156,7 @@ class ExportAppsForm(forms.Form):
     """
     """
 
-    selection = forms.ChoiceField(
-        choices=CHOICES,
-        default="all"
-        )
+    selection = forms.ChoiceField(choices=CHOICES)
 
 
 class AppsFilterForm(forms.Form):
