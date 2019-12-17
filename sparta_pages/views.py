@@ -581,7 +581,7 @@ def delete_education_profile(request, pk):
         raise HttpResponse(status=403)
 
     education_profile = get_object_or_404(EducationProfile, pk=pk)
-    if education_profile.profile != profile:
+    if education_profile.profile != sparta_profile:
         raise HttpResponse(status=403)
     else:
         education_profile.delete()
@@ -597,7 +597,7 @@ def delete_employment_profile(request, pk):
         raise HttpResponse(status=403)
 
     employment_profile = get_object_or_404(EmploymentProfile, pk=pk)
-    if employment_profile.profile != profile:
+    if employment_profile.profile != sparta_profile:
         raise HttpResponse(status=403)
     else:
         employment_profile.delete()
@@ -613,7 +613,7 @@ def delete_training_profile(request, pk):
         raise HttpResponse(status=403)
 
     training_profile = get_object_or_404(TrainingProfile, pk=pk)
-    if training_profile.profile != profile:
+    if training_profile.profile != sparta_profile:
         raise HttpResponse(status=403)
     else:
         training_profile.delete()
