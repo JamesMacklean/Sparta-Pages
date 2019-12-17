@@ -1,6 +1,6 @@
 <h2 class="card-title">Your Scholar Profile</h2>
 <p>
-View, Edit, or Delete your Education, Employment, and Training credential.s
+View, Edit, or Delete your Education, Employment, and Training credentials.
 </p>
 
 <h4>Education Profile</h4>
@@ -26,12 +26,12 @@ View, Edit, or Delete your Education, Employment, and Training credential.s
                     <div class="modal-content">
                       <div class="modal-header">
                         <h5 class="modal-title" id="deleteEducationModelLabel">Delete Education Credential</h5>
-                        <div type="div" class="close" data-dismiss="modal" aria-label="Close">
+                        <div type="div" class="close" style="cursor: pointer" data-dismiss="modal" aria-label="Close">
                           <span aria-hidden="true">&times;</span>
                         </div>
                       </div>
                       <div class="modal-body">
-                        Are you sure you want to delete your Education credential "{{ p.degree }} - {{ p.course }} ({{ p.school }})"?
+                        Are you sure you want to delete your Education credential "{{ p.get_degree_display }} - {{ p.course }} ({{ p.school }})"?
                       </div>
                       <div class="modal-footer">
                         <form action="{% url 'sparta-education-delete' pk=p.pk %}" method="POST">
@@ -83,12 +83,12 @@ View, Edit, or Delete your Education, Employment, and Training credential.s
                     <div class="modal-content">
                       <div class="modal-header">
                         <h5 class="modal-title" id="deleteEmploymentModelLabel">Delete Employment Credential</h5>
-                        <div type="div" class="close" data-dismiss="modal" aria-label="Close">
+                        <div type="div" class="close" style="cursor: pointer" data-dismiss="modal" aria-label="Close">
                           <span aria-hidden="true">&times;</span>
                         </div>
                       </div>
                       <div class="modal-body">
-                        Are you sure you want to delete your Employment credential "{{ p.affiliation }} - {{ p.occupation }}"?
+                        Are you sure you want to delete your Employment credential "{{ p.get_affiliation_display }} - {{ p.occupation }}"?
                       </div>
                       <div class="modal-footer">
                         <form action="{% url 'sparta-employment-delete' pk=p.pk %}" method="POST">
@@ -138,7 +138,7 @@ View, Edit, or Delete your Education, Employment, and Training credential.s
                       <div class="modal-content">
                         <div class="modal-header">
                           <h5 class="modal-title" id="deleteTrainingModelLabel">Delete Training Credential</h5>
-                          <div type="div" class="close" data-dismiss="modal" aria-label="Close">
+                          <div type="div" class="close" style="cursor: pointer" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                           </div>
                         </div>
