@@ -74,7 +74,9 @@
         </tbody>
       </table>
 
-      <a class="btn btn-primary" href="{% url 'sparta-application-page' %}">Apply for a pathway</a>
+      {% if max_applied %}
+        <a class="btn btn-primary" href="{% url 'sparta-application-page' %}">Apply for a pathway</a>
+      {% endif %}
     </div>
 
     <div id="ScholarProfile" class="tabcontent">

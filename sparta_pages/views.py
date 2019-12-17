@@ -306,10 +306,13 @@ class ProfilePageView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(ProfilePageView, self).get_context_data(**kwargs)
         profile = self.request.user.sparta_profile
-        context['applications'] = PathwayApplication.objects.all().filter(profile=profile).exclude(status='WE')
+        applications = PathwayApplication.objects.all().filter(profile=profile).exclude(status='WE')
+        context['applications'] = applications
         context['education_profiles'] = EducationProfile.objects.all().filter(profile=profile)
         context['employment_profiles'] = EmploymentProfile.objects.all().filter(profile=profile)
         context['training_profiles'] = TrainingProfile.objects.all().filter(profile=profile)
+        if applications.count() == Pathway.objects.all().count():
+            context['max_applied'] = True
         return context
 
     def get(self, request, *args, **kwargs):
