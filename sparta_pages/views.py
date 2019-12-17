@@ -426,22 +426,28 @@ class PathwayProgressView(TemplateView):
 class EducationProfileUpdateView(UpdateView):
     model = EducationProfile
     form_class = EducationProfileForm
-    # fields = ['degree', 'course', 'school', 'address', 'started_at', 'graduated_at']
     template_name_suffix = '_update_form'
+
+     def get_success_url(self):
+        return reverse('sparta-profile')
 
 
 class EmploymentProfileUpdateView(UpdateView):
     model = EmploymentProfile
     form_class = EmploymentProfileForm
-    # fields = ['affiliation', 'occupation', 'designation', 'employer', 'address', 'started_at', 'ended_at']
     template_name_suffix = '_update_form'
+
+     def get_success_url(self):
+        return reverse('sparta-profile')
 
 
 class TrainingProfileUpdateView(UpdateView):
     model = TrainingProfile
     form_class = TrainingProfileForm
-    # fields = ['title', 'organizer', 'address', 'started_at', 'ended_at']
     template_name_suffix = '_update_form'
+
+     def get_success_url(self):
+        return reverse('sparta-profile')
 
 
 class EducationProfileCreateView(CreateView):
