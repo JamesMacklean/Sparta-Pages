@@ -207,7 +207,7 @@ class EmploymentProfile(models.Model):
 
     @property
     def print_ended_at(self):
-        if ended_at:
+        if self.ended_at:
             return self.ended_at
         else:
             return "Present"
