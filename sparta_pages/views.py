@@ -575,17 +575,17 @@ class TrainingProfileCreateView(CreateView):
 
 class EducationProfileDeleteView(DeleteView):
     model = EducationProfile
-    success_url = reverse('sparta-profile')
+    success_url = reverse(ProfilePageView)
 
 
 class EmploymentProfileDeleteView(DeleteView):
     model = EmploymentProfile
-    success_url = reverse('sparta-profile')
+    success_url = reverse(ProfilePageView)
 
 
 class TrainingProfileDeleteView(DeleteView):
     model = TrainingProfile
-    success_url = reverse('sparta-profile')
+    success_url = reverse(ProfilePageView)
 
 
 def get_upload_params_json(request):
