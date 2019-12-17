@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django import forms
 from django.forms import formset_factory
 
@@ -23,11 +25,13 @@ class EducationProfileForm(forms.ModelForm):
     """
     started_at = forms.DateField(
         widget=forms.SelectDateWidget(
+            years=range(1900, int(datetime.now().strftime("%Y"))),
             empty_label=("Choose Year", "Choose Month", "Choose Day"),
             ),
         )
     graduated_at = forms.DateField(
         widget=forms.SelectDateWidget(
+            years=range(1900, int(datetime.now().strftime("%Y"))),
             empty_label=("Choose Year", "Choose Month", "Choose Day"),
             ),
         )
@@ -53,11 +57,13 @@ class EmploymentProfileForm(forms.ModelForm):
     """
     started_at = forms.DateField(
         widget=forms.SelectDateWidget(
+            years=range(1900, int(datetime.now().strftime("%Y"))),
             empty_label=("Choose Year", "Choose Month", "Choose Day"),
             ),
         )
     ended_at = forms.DateField(
         widget=forms.SelectDateWidget(
+            years=range(1900, int(datetime.now().strftime("%Y"))),
             empty_label=("Choose Year", "Choose Month", "Choose Day"),
             ),
         )
@@ -84,11 +90,13 @@ class TrainingProfileForm(forms.ModelForm):
     """
     started_at = forms.DateField(
         widget=forms.SelectDateWidget(
+            years=range(1900, int(datetime.now().strftime("%Y"))),
             empty_label=("Choose Year", "Choose Month", "Choose Day"),
             ),
         )
     ended_at = forms.DateField(
         widget=forms.SelectDateWidget(
+            years=range(1900, int(datetime.now().strftime("%Y"))),
             empty_label=("Choose Year", "Choose Month", "Choose Day"),
             ),
         )
