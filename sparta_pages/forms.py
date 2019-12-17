@@ -69,11 +69,11 @@ class EmploymentProfileForm(forms.ModelForm):
         required=True
         )
     ended_at = forms.DateField(
-        initial=date.today(),
         widget=forms.SelectDateWidget(
             years=range(1900, int(datetime.now().strftime("%Y"))+1),
             empty_label="Present",
             ),
+        required=False
         )
     class Meta:
         model = EmploymentProfile
