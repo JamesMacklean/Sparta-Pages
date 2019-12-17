@@ -206,7 +206,7 @@ class EmploymentProfile(models.Model):
         return self.profile.user.username
 
     @property
-    def get_ended_at_display(self):
+    def get_ended_at_str(self):
         if ended_at is None:
             return "Present"
         else:
