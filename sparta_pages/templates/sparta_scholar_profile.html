@@ -1,70 +1,84 @@
 <h2 class="card-title">Your Scholar Profile</h2>
 <h4>Education Profiles</h4>
 <div class="card-group">
-{% for p in education_profiles %}
-  <div class="card">
-    <div class="card-body">
-      <ul class="list-group">
-        <li class="list-group-item">Degree: {{ p.degree }}</li>
-        <li class="list-group-item">Course: {{ p.course }}</li>
-        <li class="list-group-item">School: {{ p.school }}</li>
-        <li class="list-group-item">Address: {{ p.address }}</li>
-        <li class="list-group-item">Started at: {{ p.started_at }}</li>
-        <li class="list-group-item">Graduated at: {{ p.graduated_at }}</li>
-        <li class="list-group-item">
-          <span><a href="{% url 'sparta-education-update' pk=p.pk %}" class="btn btn-outline-info">Edit</a></span>
-        </li>
-      </ul>
+  <div class="row">
+  {% for p in education_profiles %}
+    <div class="col col-6">
+      <div class="card">
+        <div class="card-body">
+          <ul class="list-group">
+            <li class="list-group-item">Degree: {{ p.degree }}</li>
+            <li class="list-group-item">Course: {{ p.course }}</li>
+            <li class="list-group-item">School: {{ p.school }}</li>
+            <li class="list-group-item">Address: {{ p.address }}</li>
+            <li class="list-group-item">Started at: {{ p.started_at }}</li>
+            <li class="list-group-item">Graduated at: {{ p.graduated_at }}</li>
+            <li class="list-group-item">
+              <span><a href="{% url 'sparta-education-update' pk=p.pk %}" class="btn btn-outline-info">Edit</a></span>
+            </li>
+          </ul>
+        </div>
+      </div>
     </div>
+  {% endfor %}
   </div>
-{% endfor %}
 </div>
 <a href="{% url 'sparta-education-create' %}" class="btn btn-outline-info">Add Education Profile</a>
 
-<br />
+<br>
+<br>
 
 <h4>Employment Profiles</h4>
 <div class="card-group">
-{% for p in employment_profiles %}
-<div class="card">
-  <div class="card-body">
-    <ul class="list-group">
-      <li class="list-group-item">Affiliation: {{ p.affiliation }}</li>
-      <li class="list-group-item">Occupation: {{ p.occupation }}</li>
-      <li class="list-group-item">Designation: {{ p.designation }}</li>
-      <li class="list-group-item">Employer: {{ p.employer }}</li>
-      <li class="list-group-item">Address: {{ p.address }}</li>
-      <li class="list-group-item">Started at: {{ p.started_at }}</li>
-      <li class="list-group-item">Ended at: {{ p.ended_at }}</li>
-      <li class="list-group-item">
-        <span><a href="{% url 'sparta-employment-update' pk=p.pk %}" class="btn btn-outline-info">Edit</a></span>
-      </li>
-    </ul>
-  </div>
-</div>
+  <div class="row">
+    {% for p in employment_profiles %}
+    <div class="col col-6">
+      <div class="card">
+        <div class="card-body">
+          <ul class="list-group">
+            <li class="list-group-item">Affiliation: {{ p.affiliation }}</li>
+            <li class="list-group-item">Occupation: {{ p.occupation }}</li>
+            <li class="list-group-item">Designation: {{ p.designation }}</li>
+            <li class="list-group-item">Employer: {{ p.employer }}</li>
+            <li class="list-group-item">Address: {{ p.address }}</li>
+            <li class="list-group-item">Started at: {{ p.started_at }}</li>
+            <li class="list-group-item">Ended at: {{ p.ended_at }}</li>
+            <li class="list-group-item">
+              <span><a href="{% url 'sparta-employment-update' pk=p.pk %}" class="btn btn-outline-info">Edit</a></span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
 {% endfor %}
+  </div>
 </div>
 <a href="{% url 'sparta-employment-create' %}" class="btn btn-outline-info">Add Employment Profile</a>
 
-<br />
+<br>
+<br>
 
 <h4>Training Profiles</h4>
 <div class="card-group">
-{% for p in training_profiles %}
-<div class="card">
-  <div class="card-body">
-    <ul class="list-group">
-      <li class="list-group-item">Title: {{ p.title }}</li>
-      <li class="list-group-item">Organizer: {{ p.organizer }}</li>
-      <li class="list-group-item">Address: {{ p.address }}</li>
-      <li class="list-group-item">Started at: {{ p.started_at }}</li>
-      <li class="list-group-item">Ended at: {{ p.ended_at }}</li>
-      <li class="list-group-item">
-        <span><a href="{% url 'sparta-training-update' pk=p.pk %}" class="btn btn-outline-info">Edit</a></span>
-      </li>
-    </ul>
+  <div class="row">
+    {% for p in training_profiles %}
+    <div class="col col-6">
+      <div class="card">
+        <div class="card-body">
+          <ul class="list-group">
+            <li class="list-group-item">Title: {{ p.title }}</li>
+            <li class="list-group-item">Organizer: {{ p.organizer }}</li>
+            <li class="list-group-item">Address: {{ p.address }}</li>
+            <li class="list-group-item">Started at: {{ p.started_at }}</li>
+            <li class="list-group-item">Ended at: {{ p.ended_at }}</li>
+            <li class="list-group-item">
+              <span><a href="{% url 'sparta-training-update' pk=p.pk %}" class="btn btn-outline-info">Edit</a></span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
   </div>
-</div>
-{% endfor %}
 </div>
 <a href="{% url 'sparta-training-create' %}" class="btn btn-outline-info">Add Training Profile</a>
