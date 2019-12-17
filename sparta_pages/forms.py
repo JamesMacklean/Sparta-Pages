@@ -74,6 +74,7 @@ class EmploymentProfileForm(forms.ModelForm):
             years=range(1900, int(datetime.now().strftime("%Y"))+1),
             empty_label="Present",
             ),
+        empty_label="Present"
         )
     class Meta:
         model = EmploymentProfile
