@@ -10,7 +10,7 @@
       You can update your Employment credentials below.
     </p>
 
-    <form method="post" action="{% url 'sparta-profile' %}">
+    <form method="post" action="{% url 'sparta-employment-update' pk=form.instance.pk %}">
       {% csrf_token %}
       <div class="employment-form-row spacer">
         <div class="card">
