@@ -34,7 +34,7 @@ class EducationProfileForm(forms.ModelForm):
     class Meta:
         model = EducationProfile
         fields = [
-            'degree', 'course', 'school', 'address',
+            'degree', 'course', 'school', 'address', 'started_at', 'graduated_at'
         ]
 
     def clean(self):
@@ -64,7 +64,7 @@ class EmploymentProfileForm(forms.ModelForm):
     class Meta:
         model = EmploymentProfile
         fields = [
-            'affiliation', 'occupation', 'designation',
+            'affiliation', 'occupation', 'designation', 'started_at', 'ended_at'
             'employer', 'address',
         ]
 
@@ -95,7 +95,7 @@ class TrainingProfileForm(forms.ModelForm):
     class Meta:
         model = TrainingProfile
         fields = [
-            'title', 'organizer', 'address',
+            'title', 'organizer', 'address', 'started_at', 'ended_at'
         ]
 
     def clean(self):
