@@ -42,17 +42,19 @@
         <div class="form-group">
           {% csrf_token %}
           {{ sparta_profile_form.non_field_errors }}
-          <div class="fieldWrapper">
+          <div class="form-group">
               {{ sparta_profile_form.proof_of_education_file.errors }}
               <label for="{{ sparta_profile_form.proof_of_education_file.id_for_label }}" style="font-family: inherit;font-style: inherit;">Proof of Education:</label>
               {{ sparta_profile_form.proof_of_education_file }}
+              <small>*File size must not be larger than 2.5MB.</small>
           </div>
-          <div class="fieldWrapper">
+          <div class="form-group">
               {{ sparta_profile_form.proof_of_agreement_file.errors }}
               <label for="{{ sparta_profile_form.proof_of_agreement_file.id_for_label }}" style="font-family: inherit;font-style: inherit;">Proof of Agreement:</label>
               {{ sparta_profile_form.proof_of_agreement_file }}
+              <small>*File size must not be larger than 2.5MB.</small>
           </div>
-          <div class="fieldWrapper">
+          <div class="form-group">
               {{ sparta_profile_form.tos_yes.errors }}
               {{ sparta_profile_form.tos_yes }}
               <label for="{{ sparta_profile_form.tos_yes.id_for_label }}" style="font-family: inherit;font-style: inherit;">I agree to the <a href="/tos" target="_blank">Terms of Service</a> and <a href="/honor" target="_blank">Honor Code</a>*</label>
