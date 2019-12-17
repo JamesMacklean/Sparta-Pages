@@ -30,7 +30,7 @@
                         Are you sure you want to delete your Education credential "{{ p.degree }} - {{ p.course }} ({{ p.school }})"?
                       </div>
                       <div class="modal-footer">
-                        <form action="{% url 'sparta-education-delete' p=p.pk %}" method="POST">
+                        <form action="{% url 'sparta-education-delete' pk=p.pk %}" method="POST">
                           {% csrf_token %}
                           <div type="div" class="btn btn-secondary" data-dismiss="modal">Cancel</div>
                           <input class="btn btn-primary" id="submit" type="submit" value="Delete" />
