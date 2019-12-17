@@ -74,7 +74,7 @@
         </tbody>
       </table>
 
-      {% if max_applied %}
+      {% if not max_applied %}
         <a class="btn btn-primary" href="{% url 'sparta-application-page' %}">Apply for a pathway</a>
       {% endif %}
     </div>
