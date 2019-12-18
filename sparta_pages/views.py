@@ -773,13 +773,3 @@ def export_pathway_applications_to_csv(apps):
         writer.writerow([username, email, pathway, status, created_at])
 
     return response
-
-@login_required
-def admin_applications_view(request):
-    if not request.user.is_staff:
-        raise Http404
-
-    template_name = "sparta_admin_applications.html"
-    context = {}
-
-    return render(request, template_name, context)
