@@ -31,12 +31,12 @@ class Command(BaseCommand):
         if fromdate is not None:
             date_from = datetime.strptime(fromdate, "%Y-%m-%d").date()
         else:
-            date_from = timezone.now().date()
+            date_from = timezone.now().date() - timedelta(days=1)
 
         if todate is not None:
             date_to = datetime.strptime(todate, "%Y-%m-%d").date()
         else:
-            date_to = timezone.now().date() + timedelta(days=1)
+            date_to = timezone.now().date()
 
         try:
             manage_sparta_enrollments(date_from=date_from, date_to=date_to)
