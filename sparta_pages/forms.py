@@ -153,7 +153,7 @@ class ExportAppsForm(forms.Form):
     DENIED = "denied"
     WITHDRAWN = "withdrawn"
     CHOICES = (
-        (ALL, "all"),
+        (ALL, "All"),
         (PENDING, "Pending"),
         (APPROVED, "Approved"),
         (DENIED, "Denied"),
