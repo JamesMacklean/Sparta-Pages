@@ -23,11 +23,11 @@ def manage_sparta_enrollments(date_from=None, date_to=None):
 
     if date_from:
         applications = applications.filter(created_at__gte=date_from)
-        datefrom_str = date_from.strftime('%Y-%m-%d')
+        datefrom_str = date_from.strftime('%Y-%m-%dT%H:%M:%S.000Z')
 
     if date_to:
         applications = applications.filter(created_at__lte=date_to)
-        dateto_str = date_to.strftime('%Y-%m-%d')
+        dateto_str = date_to.strftime('%Y-%m-%dT%H:%M:%S.000Z')
 
     student_list = []
     for app in applications.filter(status="AP"):
