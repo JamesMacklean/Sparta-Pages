@@ -1,4 +1,4 @@
-from datetime import datetime, date
+from datetime import datetime, date, timedelta
 
 from django.core.management.base import BaseCommand, CommandError
 
@@ -35,7 +35,7 @@ class Command(BaseCommand):
         if todate is not None:
             date_to = datetime.strptime(todate, "%Y-%m-%d").date()
         else:
-            date_to = date.today()
+            date_to = date.today() + timedelta(days=1)
 
         try:
             manage_sparta_enrollments(date_from=date_from, date_to=date_to)
