@@ -746,13 +746,13 @@ def admin_applications_view(request):
         form = ExportAppsForm(request.POST)
         if form.is_valid():
             selection = form.cleaned_data['selection']
-            if status == "pending":
+            if selection == "pending":
                 apps_to_export = pending_applications
-            elif status == "approved":
+            elif selection == "approved":
                 apps_to_export = approved_applications
-            elif status == "withdrawn":
+            elif selection == "withdrawn":
                 apps_to_export = withdrawn_applications
-            elif status == "denied":
+            elif selection == "denied":
                 apps_to_export = denied_applications
             else:
                 apps_to_export = applications
