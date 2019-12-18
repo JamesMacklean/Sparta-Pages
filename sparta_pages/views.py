@@ -728,7 +728,7 @@ def admin_applications_view(request):
     pending_applications = applications.filter(status='PE')
     withdrawn_applications = applications.filter(status='WE')
     denied_applications = applications.filter(status='DE')
-    approved_applications = applications.filter(status='PE')
+    approved_applications = applications.filter(status='AP')
 
     context['pending_applications'] = pending_applications
     context['approved_applications'] = approved_applications
