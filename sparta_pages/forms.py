@@ -166,15 +166,17 @@ class AppsFilterForm(forms.Form):
     """
     """
     date_from = forms.DateField(
+        initial=date.today(),
         widget=forms.SelectDateWidget(
-            years=range(1900, int(datetime.now().strftime("%Y"))+1),
+            years=range(2019, int(datetime.now().strftime("%Y"))+1),
             empty_label=("Choose Year", "Choose Month", "Choose Day"),
             ),
         required=False
         )
     date_to = forms.DateField(
+        initial=date.today(),
         widget=forms.SelectDateWidget(
-            years=range(1900, int(datetime.now().strftime("%Y"))+1),
+            years=range(2019, int(datetime.now().strftime("%Y"))+1),
             empty_label=("Choose Year", "Choose Month", "Choose Day"),
             ),
         required=False
