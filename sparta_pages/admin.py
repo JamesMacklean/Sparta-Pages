@@ -21,7 +21,7 @@ class SpartaProfileAdmin(admin.ModelAdmin):
 
 @admin.register(PathwayApplication)
 class PathwayApplicationAdmin(admin.ModelAdmin):
-    list_display = ('profile', 'pathway__name', 'status')
+    list_display = ('profile', 'pathway', 'status')
     list_filter = ('pathway', 'status')
     search_fields = ['pathway__name', 'profile__user__username', 'profile__user__email']
 
