@@ -1,14 +1,44 @@
+from datetime import datetime, date
+
 from django.core.management.base import BaseCommand, CommandError
 
 from sparta_pages.models import Pathway, SpartaCourse, PathwayApplication
 from sparta_pages.utils import manage_sparta_enrollments
 
+
 class Command(BaseCommand):
     help = 'Manages PathwayApplications'
 
+    def add_arguments(self, parser):
+        parser.add_argument(
+            '-f',
+            '--fromdate',
+            type=str,
+            help='set from date (format: Y-M-D)',
+        )
+        parser.add_argument(
+            '-t',
+            '--todate',
+            type=str,
+            help='set to date (format: Y-M-D)',
+        )
+
     def handle(self, *args, **options):
+        fromdate = options.get('fromdate', None)
+        todate = options.get('todate', None)
+
+        if fromdate is not None:
+            date_from = datetime.strptime(fromdate, "%Y-%m-%d").date()
+        else:
+            date_from = date.today()
+
+        if todate is not None:
+            date_to = datetime.strptime(todate, "%Y-%m-%d").date()
+        else:
+            date_to = date.today()
+
         try:
-            manage_sparta_enrollments()
+            manage_sparta_enrollments(date_from=date_from, date_to=date_to)
         except Exception as e:
             raise CommandError("Error in managing Sparta enrollments: {}".format(str(e)))
         else:
