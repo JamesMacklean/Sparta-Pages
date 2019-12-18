@@ -36,7 +36,7 @@ class Command(BaseCommand):
         if todate is not None:
             date_to = datetime.strptime(todate, "%Y-%m-%d").date()
         else:
-            date_to = timezone.now().date()
+            date_to = timezone.now().date() + timedelta(days=1)
 
         try:
             manage_sparta_enrollments(date_from=date_from, date_to=date_to)
