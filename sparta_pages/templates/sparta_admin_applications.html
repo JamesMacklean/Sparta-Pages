@@ -3,7 +3,7 @@
 
 {% block sparta_body %}
 
-<form action="{% url 'sparta-admin-applications'%}" method="post">
+<form action="" method="post">
     {% csrf_token %}
     {{ form }}
     <input type="submit" value="Export to CSV" />
