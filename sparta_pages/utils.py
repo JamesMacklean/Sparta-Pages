@@ -25,23 +25,23 @@ def manage_sparta_enrollments(date_from=None, date_to=None):
 
     student_list = []
     for app in applications.filter(status="AP"):
-        user_enrollments = CourseEnrollment.enrollments_for_user(app.profile.user)
-        course_enrollment = user_enrollments.filter(course_id=course_key).filter(mode='verified')
-        if course_enrollment.exists():
-            continue
-        else:
-            student_list.append({'user': app.profile.user, 'pathway': app.pathway})
+        # user_enrollments = CourseEnrollment.enrollments_for_user(app.profile.user
+        student_list.append({'user': app.profile.user, 'pathway': app.pathway, 'courses': app.pathway.courses.all()})
 
     tnow = datetime.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
     file_name = '/home/ubuntu/files/sparta_applications_file_{}.csv'.format(tnow)
     with open(file_name, mode='w') as apps_file:
         writer = csv.writer(apps_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
 
-        writer.writerow(['User_ID', 'Username', 'Email', 'Pathway_ID', 'Pathway_Name'])
+        writer.writerow(['User_ID', 'Username', 'Email', 'Pathway_ID', 'Pathway_Name', 'Course_Keys'])
         for student in student_list:
             user = student['user']
             pathway = student['pathway']
-            writer.writerow([user.id, user.username, user.email, pathway.id, pathway.name])
+            courses = student['courses']
+            course_keys = ""
+            for course in courses:
+                course_keys = course_keys + course.course_id + ";"
+            writer.writerow([user.id, user.username, user.email, pathway.id, pathway.name, course_keys])
 
     email = EmailMessage(
         'Coursebank - SPARTA Applications - {}'.format(tnow),
