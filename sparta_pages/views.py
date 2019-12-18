@@ -710,31 +710,24 @@ def admin_applications_view(request):
     context = {}
 
     date_today = date.today()
-    buffer_date = date_today - timedelta(days=3)
-    applications = PathwayApplication.objects.all().filter(created_at__gte=buffer_date).filter(created_at__lte=date_today)
+    date_from = date_today - timedelta(days=3)
+    date_to = date_today
 
     date_from_year = request.GET.get('date_from_year', None)
     date_from_month = request.GET.get('date_from_month', None)
     date_from_day = request.GET.get('date_from_day', None)
     if None not in [date_from_year, date_from_month, date_from_day]:
-        date_from = "{}-{}-{}".format(date_from_year, date_from_month, date_from_day)
+        date_from_str = "{}-{}-{}".format(date_from_year, date_from_month, date_from_day)
+        date_from = datetime.strptime(date_from_str, "%Y-%m-%d").date()
 
     date_to_year = request.GET.get('date_to_year', None)
     date_to_month = request.GET.get('date_to_month', None)
     date_to_day = request.GET.get('date_to_day', None)
     if None not in [date_to_year, date_to_month, date_to_day]:
-        date_to = "{}-{}-{}".format(date_to_year, date_to_month, date_to_day)
+        date_to_str = "{}-{}-{}".format(date_to_year, date_to_month, date_to_day)
+        date_to = datetime.strptime(date_to_str, "%Y-%m-%d").date()
 
-    if date_from or date_to:
-        if not date_from:
-            date_from = date_today
-        else:
-            date_from = datetime.strptime(date_from, "%Y-%m-%d").date()
-        if not date_to:
-            date_to = date_today
-        else:
-            date_to = datetime.strptime(date_to, "%Y-%m-%d").date()
-        applications.filter(created_at__gte=date_from).filter(created_at__lte=date_to)
+    applications = PathwayApplication.objects.all().filter(created_at__gte=date_from).filter(created_at__lte=date_to)
 
     pending_applications = applications.filter(status='PE')
     withdrawn_applications = applications.filter(status='WE')
