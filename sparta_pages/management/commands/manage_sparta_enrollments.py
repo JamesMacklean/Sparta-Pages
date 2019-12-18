@@ -1,4 +1,5 @@
 from datetime import datetime, date, timedelta
+from django.utils import timezone
 
 from django.core.management.base import BaseCommand, CommandError
 
@@ -30,12 +31,12 @@ class Command(BaseCommand):
         if fromdate is not None:
             date_from = datetime.strptime(fromdate, "%Y-%m-%d").date()
         else:
-            date_from = date.today()
+            date_from = timezone.now.date()
 
         if todate is not None:
             date_to = datetime.strptime(todate, "%Y-%m-%d").date()
         else:
-            date_to = date.today() + timedelta(days=1)
+            date_to = timezone.now.date()
 
         try:
             manage_sparta_enrollments(date_from=date_from, date_to=date_to)
