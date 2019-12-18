@@ -34,7 +34,7 @@
           <td>{{ a.profile.user.username }}</td>
           <td>{{ a.profile.user.email }}</td>
           <td>{{ a.pathway.name }}</td>
-          <td>{{ a.status }}</td>
+          <td>{{ a.get_status_display }}</td>
           <td><div class="btn btn-success">Approve</div></td>
         </tr>
         {% endfor %}
@@ -68,7 +68,7 @@
           <td>{{ a.profile.user.username }}</td>
           <td>{{ a.profile.user.email }}</td>
           <td>{{ a.pathway.name }}</td>
-          <td>{{ a.status }}</td>
+          <td>{{ a.get_status_display }}</td>
         </tr>
         {% endfor %}
         <tr>
@@ -100,7 +100,7 @@
           <td>{{ a.profile.user.username }}</td>
           <td>{{ a.profile.user.email }}</td>
           <td>{{ a.pathway.name }}</td>
-          <td>{{ a.status }}</td>
+          <td>{{ a.get_status_display }}</td>
         </tr>
         {% endfor %}
         <tr>
@@ -132,7 +132,7 @@
           <td>{{ a.profile.user.username }}</td>
           <td>{{ a.profile.user.email }}</td>
           <td>{{ a.pathway.name }}</td>
-          <td>{{ a.status }}</td>
+          <td>{{ a.get_status_display }}</td>
         </tr>
         {% endfor %}
         <tr>
