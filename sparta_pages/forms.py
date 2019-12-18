@@ -3,6 +3,7 @@ from datetime import date
 
 from django import forms
 from django.forms import formset_factory
+from django.utils import timezone
 
 from .models import (
     SpartaProfile,
@@ -166,7 +167,7 @@ class AppsFilterForm(forms.Form):
     """
     """
     date_from = forms.DateField(
-        initial=date.today(),
+        initial=timezone.now().date(),
         widget=forms.SelectDateWidget(
             years=range(2019, int(datetime.now().strftime("%Y"))+1),
             empty_label=("Choose Year", "Choose Month", "Choose Day"),
@@ -174,7 +175,7 @@ class AppsFilterForm(forms.Form):
         required=False
         )
     date_to = forms.DateField(
-        initial=date.today(),
+        initial=timezone.now().date(),
         widget=forms.SelectDateWidget(
             years=range(2019, int(datetime.now().strftime("%Y"))+1),
             empty_label=("Choose Year", "Choose Month", "Choose Day"),
