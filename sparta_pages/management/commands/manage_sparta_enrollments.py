@@ -8,7 +8,7 @@ from sparta_pages.utils import manage_sparta_enrollments
 
 
 class Command(BaseCommand):
-    help = 'Manages PathwayApplications'
+    help = 'Manages List of Sparta Scholars that need to be enrolled.'
 
     def add_arguments(self, parser):
         parser.add_argument(
