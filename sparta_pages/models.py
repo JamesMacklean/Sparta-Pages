@@ -20,6 +20,7 @@ class Pathway(models.Model):
 
     class Meta:
         ordering = ['order']
+        verbose_name_plural = "1. Pathways"
 
     def get_absolute_url(self):
         return reverse('sparta-pathway', kwargs={'slug': self.slug})
@@ -50,6 +51,7 @@ class SpartaCourse(models.Model):
 
     class Meta:
         ordering = ['order']
+        verbose_name_plural = "2. Sparta Courses"
 
     def __str__(self):
         return "{}: {}".format(self.pathway.name, self.course_id)
@@ -73,6 +75,9 @@ class SpartaProfile(models.Model):
     modified_at = models.DateTimeField(auto_now=True)
     first_timer = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
+
+    class Meta:
+        verbose_name_plural = "3. Sparta Profiles"
 
     def __str__(self):
         return self.user.username
@@ -120,6 +125,9 @@ class PathwayApplication(models.Model):
         )
     created_at = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=2, choices=STATUS_CHOICES, default=PENDING)
+
+    class Meta:
+        verbose_name_plural = "4. Pathway Applications"
 
     def __str__(self):
         return "{}: {}".format(self.profile.user.username, self.pathway.name)
@@ -173,6 +181,9 @@ class EducationProfile(models.Model):
     started_at = models.DateField()
     graduated_at = models.DateField()
 
+    class Meta:
+        verbose_name_plural = "5. Education Profiles"
+
     def __str__(self):
         return self.profile.user.username
 
@@ -202,6 +213,9 @@ class EmploymentProfile(models.Model):
     started_at = models.DateField()
     ended_at = models.DateField(null=True, blank=True)
 
+    class Meta:
+        verbose_name_plural = "6. Employment Profiles"
+
     def __str__(self):
         return self.profile.user.username
 
@@ -228,6 +242,9 @@ class TrainingProfile(models.Model):
     started_at = models.DateField()
     ended_at = models.DateField()
 
+    class Meta:
+        verbose_name_plural = "7. Training Profiles"
+
     def __str__(self):
         return self.profile.user.username
 
@@ -243,6 +260,9 @@ class Event(models.Model):
         verbose_name="sparta profile"
         )
     created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name_plural = "8. Events"
 
     def __str__(self):
         return self.event
