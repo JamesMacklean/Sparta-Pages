@@ -19,10 +19,10 @@ def manage_sparta_enrollments(date_from=None, date_to=None):
     applications = PathwayApplication.objects.all()
 
     if date_from:
-        applications.filter(created_at__gte=date_from)
+        applications = applications.filter(created_at__gte=date_from)
 
     if date_to:
-        applications.filter(created_at__lte=date_to)
+        applications = applications.filter(created_at__lte=date_to)
 
     student_list = []
     for app in applications.filter(status="AP"):
