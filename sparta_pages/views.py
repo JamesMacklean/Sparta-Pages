@@ -711,7 +711,7 @@ def admin_applications_view(request):
 
     date_today = date.today()
     buffer_date = date_today - timedelta(days=3)
-    applications = PathwayApplication.objects.all().filter(created_at__gte=buffer_date).filter(created_at__lte=)
+    applications = PathwayApplication.objects.all().filter(created_at__gte=buffer_date).filter(created_at__lte=date_today)
 
     date_from_year = request.GET.get('date_from_year', None)
     date_from_month = request.GET.get('date_from_month', None)
