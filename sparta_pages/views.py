@@ -744,7 +744,7 @@ def admin_applications_view(request):
 
     if request.method == "POST":
         form = ExportAppsForm(request.POST)
-        if form.is_valid:
+        if form.is_valid():
             selection = form.cleaned_data['selection']
             if status == "pending":
                 apps_to_export = pending_applications
