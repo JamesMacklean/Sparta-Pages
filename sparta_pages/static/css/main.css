@@ -1229,6 +1229,28 @@ div.responsive-picture.sparta_logo {
   background-blend-mode: normal, normal;
 }
 
+.container-grid.how-to-6_container {
+  padding-top: 10px;
+  padding-right: 20px;
+  padding-left: 20px;
+  min-height: 200px;
+  border: 0 solid #720000;
+  border-radius: 2px;
+  background-color: #2d759a;
+  background-image: -webkit-linear-gradient(top, rgba(0, 0, 0, .5) 0%, rgba(29, 30, 33, .5) 100%), url('../../images/sparta/_0000_6.jpg');
+  background-image:    -moz-linear-gradient(top, rgba(0, 0, 0, .5) 0%, rgba(29, 30, 33, .5) 100%), url('../../images/sparta/_0000_6.jpg');
+  background-image:      -o-linear-gradient(top, rgba(0, 0, 0, .5) 0%, rgba(29, 30, 33, .5) 100%), url('../../images/sparta/_0000_6.jpg');
+  background-image:         linear-gradient(180deg, rgba(0, 0, 0, .5) 0%, rgba(29, 30, 33, .5) 100%), url('../../images/sparta/_0000_6.jpg');
+  background-attachment: scroll, local;
+  background-position: left top, center top;
+  background-clip: border-box, border-box;
+  background-origin: padding-box, padding-box;
+  background-size: auto auto, cover;
+  background-repeat: no-repeat, no-repeat;
+
+  background-blend-mode: normal, normal;
+}
+
 .rule.rule-2 {
   padding-right: 10px;
   padding-left: 10px;
@@ -1351,7 +1373,7 @@ div.responsive-picture.mx-auto.sparta_logo {
 
   background-blend-mode: normal, normal;
 }
-
+/*
 .container-grid.how-to_container6 {
   margin-right: 0;
   margin-bottom: 0;
@@ -1385,7 +1407,7 @@ div.responsive-picture.mx-auto.sparta_logo {
   background-repeat: no-repeat;
 
   background-blend-mode: normal;
-}
+} */
 
 a.btn.mx-auto:hover {
   background-color: #fff;
