@@ -1466,20 +1466,17 @@ a.apply-now-2_button.btn.mx-auto:hover {
   background-blend-mode: normal;
 }
 
-/* .container-grid.how-to-6_container:hover {
-  background-image: -webkit-linear-gradient(top, rgba(0, 0, 0, .5) 0%, rgba(29, 30, 33, .5) 100%), url('../../images/sparta/_0000_6.jpg');
-  background-image:    -moz-linear-gradient(top, rgba(0, 0, 0, .5) 0%, rgba(29, 30, 33, .5) 100%), url('../../images/sparta/_0000_6.jpg');
-  background-image:      -o-linear-gradient(top, rgba(0, 0, 0, .5) 0%, rgba(29, 30, 33, .5) 100%), url('../../images/sparta/_0000_6.jpg');
-  background-image:         linear-gradient(180deg, rgba(0, 0, 0, .5) 0%, rgba(29, 30, 33, .5) 100%), url('../../images/sparta/_0000_6.jpg');
-  background-attachment: scroll, local;
-  background-position: left top, center center;
-  background-clip: border-box, border-box;
-  background-origin: padding-box, padding-box;
-  background-size: auto auto, cover;
-  background-repeat: no-repeat, no-repeat;
+.container-grid.how-to-6_container:hover {
+  background-image: url('../../images/sparta/_0000_6.jpg');
+  background-attachment: local;
+  background-position: center center;
+  background-clip: border-box;
+  background-origin: padding-box;
+  background-size: cover;
+  background-repeat: no-repeat;
 
-  background-blend-mode: normal, normal;
-} */
+  background-blend-mode: normal;
+}
 
 @media screen and (min-width: 36rem) {
   .container-grid.container-7 {
@@ -1688,20 +1685,6 @@ a.apply-now-2_button.btn.mx-auto:hover {
     color: #630b00;
   }
 
-  /* .container-grid.how-to-6_container:hover {
-    background-image: -webkit-linear-gradient(top, rgba(0, 0, 0, .5) 0%, rgba(29, 30, 33, .5) 100%), url('../../images/sparta/_0000_6.jpg');
-    background-image:    -moz-linear-gradient(top, rgba(0, 0, 0, .5) 0%, rgba(29, 30, 33, .5) 100%), url('../../images/sparta/_0000_6.jpg');
-    background-image:      -o-linear-gradient(top, rgba(0, 0, 0, .5) 0%, rgba(29, 30, 33, .5) 100%), url('../../images/sparta/_0000_6.jpg');
-    background-image:         linear-gradient(180deg, rgba(0, 0, 0, .5) 0%, rgba(29, 30, 33, .5) 100%), url('../../images/sparta/_0000_6.jpg');
-    background-attachment: scroll, local;
-    background-position: left top, center center;
-    background-clip: border-box, border-box;
-    background-origin: padding-box, padding-box;
-    background-size: auto auto, cover;
-    background-repeat: no-repeat, no-repeat;
-
-    background-blend-mode: normal, normal;
-  } */
 }
 
 @media screen and (min-width: 75rem) {
@@ -2046,20 +2029,6 @@ a.apply-now-2_button.btn.mx-auto:hover {
     background-image:         linear-gradient(180deg, rgba(0, 0, 0, .5) 0%, rgba(0, 5, 0, .5) 100%), url('../../images/sparta/_0000_6.jpg');
   }
 
-  .container-grid.how-to-6_container:hover {
-    background-image: -webkit-linear-gradient(top, rgba(0, 0, 0, .5) 0%, rgba(29, 30, 33, .5) 100%), url('../../images/sparta/_0000_6.jpg');
-    background-image:    -moz-linear-gradient(top, rgba(0, 0, 0, .5) 0%, rgba(29, 30, 33, .5) 100%), url('../../images/sparta/_0000_6.jpg');
-    background-image:      -o-linear-gradient(top, rgba(0, 0, 0, .5) 0%, rgba(29, 30, 33, .5) 100%), url('../../images/sparta/_0000_6.jpg');
-    background-image:         linear-gradient(180deg, rgba(0, 0, 0, .5) 0%, rgba(29, 30, 33, .5) 100%), url('../../images/sparta/_0000_6.jpg');
-    background-attachment: scroll, local;
-    background-position: left top, center center;
-    background-clip: border-box, border-box;
-    background-origin: padding-box, padding-box;
-    background-size: auto auto, cover;
-    background-repeat: no-repeat, no-repeat;
-
-    background-blend-mode: normal, normal;
-  }
 }
 
 #invisible {
