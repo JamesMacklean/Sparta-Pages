@@ -18,3 +18,6 @@ TEMPLATES_DIR = {
 urlpatterns += [
     url(r'', include('sparta_pages.urls')),
 ]
+
+## Temporary Directory for manage command
+Make 'tempfiles' in /home/ubuntu/
