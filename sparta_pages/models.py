@@ -70,7 +70,7 @@ class SpartaProfile(models.Model):
         help_text='User referred with this SPARTA User',
         related_name='sparta_profile')
     proof_of_education = models.URLField(max_length=255)
-    proof_of_agreement = models.URLField(max_length=255)
+    proof_of_agreement = models.URLField(max_length=255, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
     first_timer = models.BooleanField(default=False)
