@@ -791,4 +791,4 @@ def admin_approve_application_view(request, id):
     else:
         app.approve()
 
-    redirect('sparta-admin-applications')
+    return redirect('sparta-admin-applications')
