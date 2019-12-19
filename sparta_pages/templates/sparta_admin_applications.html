@@ -35,7 +35,30 @@
           <td>{{ a.profile.user.email }}</td>
           <td>{{ a.pathway.name }}</td>
           <td>{{ a.get_status_display }}</td>
-          <td><div class="btn btn-success">Approve</div></td>
+          <td><div type="div" class="btn btn-outline-success btn-sm" style="cursor: pointer" data-toggle="modal" data-target="#approveModal">Approve</div></td>
+          <!-- Modal Block -->
+          <div class="modal fade" id="approveModal" tabindex="-1" role="dialog" aria-labelledby="approveModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="approveModalLabel">Approve Application</h5>
+                  <div type="div" class="close" style="cursor: pointer" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </div>
+                </div>
+                <div class="modal-body">
+                  Are you sure you want to approve this application by {{ a.profile.user.username }} for {{ a.pathway.name }})?
+                </div>
+                <div class="modal-footer">
+                  <form action="{% url 'sparta-admin-approve' id=a.id %}" method="POST">
+                    {% csrf_token %}
+                    <div type="div" class="btn btn-secondary" data-dismiss="modal">Cancel</div>
+                    <input class="btn btn-success" id="submit" type="submit" value="Approve" />
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
         </tr>
         {% endfor %}
         <tr>

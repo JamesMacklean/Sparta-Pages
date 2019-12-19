@@ -30,4 +30,5 @@ urlpatterns = [
 
     url(r'^sparta/admin-view/main/$', views.admin_main_view, name='sparta-admin-main'),
     url(r'^sparta/admin-view/applications/$', views.admin_applications_view, name='sparta-admin-applications'),
+    url(r'^sparta/admin-view/applications/approve/(?P<id>\d+)/$', views.admin_approve_application_view, name='sparta-admin-approve'),
 ]

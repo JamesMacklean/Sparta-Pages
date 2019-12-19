@@ -777,3 +777,18 @@ def export_pathway_applications_to_csv(apps):
         writer.writerow([username, email, pathway, status, created_at])
 
     return response
+
+
+@require_POST
+def admin_approve_application_view(request, id):
+    if not request.user.is_staff:
+        raise HttpResponse(status=500)
+
+    try:
+        app = PathwayApplication.objects.get(id=id)
+    except PathwayApplication.DoesNotExist:
+        raise HttpResponse(status=500)
+    else:
+        app.approve()
+
+    redirect('sparta-admin-applications')
