@@ -1,10 +1,13 @@
 from django.conf import settings
 from django.conf.urls import url
+from django.views.generic import TemplateView
 
 from . import views
 
 urlpatterns = [
     url(r'^sparta/$', views.main, name='sparta-main'),
+    url(r'^sparta/tos/$', TemplateView.as_view(template_name="sparta_tos.html"), name='sparta-tos'),
+
     url(r'^sparta/register/$', views.RegistrationPageView.as_view(), name='sparta-register'),
     url(r'^sparta/register/education/$', views.RegisterEducationProfileView.as_view(), name='sparta-register-education'),
     url(r'^sparta/register/employment/$', views.RegisterEmploymentProfileView.as_view(), name='sparta-register-employment'),
