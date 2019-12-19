@@ -24,10 +24,9 @@
   <div class="card-body">
     <h2 class="card-title">Register to become a SPARTA Scholar</h2>
     <div>
-      To become a SPARTA Scholar and gain free access to the data analytics courses, you must accomplish these forms. Please submit the following eligibility documents:
+      To become a SPARTA Scholar and gain free access to the data analytics courses, you must accomplish these forms. Please submit the following eligibility document:
       <ul>
         <li><b>Proof of Education</b> - A scanned image or a clear photograph of your certificate of graduation or diploma.</li>
-        <li><b>Proof of Agreement</b> - A scanned image or a clear photograph of the signed confirmation form. <a href="#" target="_blank">You can download the form here.</a></li>
       </ul>
     </div>
 
@@ -49,15 +48,9 @@
               <small>*File size must not be larger than 2.5MB.</small>
           </div>
           <div class="form-group">
-              {{ sparta_profile_form.proof_of_agreement_file.errors }}
-              <label for="{{ sparta_profile_form.proof_of_agreement_file.id_for_label }}" style="font-family: inherit;font-style: inherit;">Proof of Agreement:</label>
-              {{ sparta_profile_form.proof_of_agreement_file }}
-              <small>*File size must not be larger than 2.5MB.</small>
-          </div>
-          <div class="form-group">
               {{ sparta_profile_form.tos_yes.errors }}
               {{ sparta_profile_form.tos_yes }}
-              <label for="{{ sparta_profile_form.tos_yes.id_for_label }}" style="font-family: inherit;font-style: inherit;">I agree to the <a href="/tos" target="_blank">Terms of Service</a> and <a href="/honor" target="_blank">Honor Code</a>*</label>
+              <label for="{{ sparta_profile_form.tos_yes.id_for_label }}" style="font-family: inherit;font-style: inherit;">I agree to the <a href="/tos" target="_blank">SPARTA Scholarship Terms and Conditions</a> and <a href="/honor" target="_blank">Coursebank Honor Code</a>*</label>
           </div>
           <div class="d-flex justify-content-center">
             <input type="submit" value="Submit Eligibility Documents" />
