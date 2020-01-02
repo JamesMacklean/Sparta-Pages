@@ -19,19 +19,19 @@
     <section class="details" aria-labelledby="details-heading-{{ course.pathway_course.course_id }}">
       <h2 class="hd hd-2 sr" id="details-heading-{{ course.pathway_course.course_id }}">Course details</h2>
       <div class="wrapper-course-image" aria-hidden="true">
-        <a href="{% url 'about_course' course_id=course.courseoverview.id %}" data-course-key="{{ course.pathway_course.course_id }}" class="cover" tabindex="-1">
+        <a href="{% url 'about_course' course_id=course.courseoverview.id %}" class="cover" tabindex="-1">
           <img src="{{ course.courseoverview.course_image_url }}" class="course-image" alt="{{ course.courseoverview.display_name }} Home Page">
         </a>
       </div>
       <div class="wrapper-course-details">
         <h3 class="course-title" id="course-title-{{ course.pathway_course.course_id }}">
-          <a data-course-key="{{ course.pathway_course.course_id }}" href="{% url 'about_course' course.pathway_course.course_id=course.courseoverview.id %}">{{ course.courseoverview.display_name }}</a>
+          <a href="{% url 'about_course' course.pathway_course.course_id=course.courseoverview.id %}">{{ course.courseoverview.display_name }}</a>
         </h3>
         <div class="course-info">
           <span class="info-university">{{ course.courseoverview.display_org_with_default }} - </span>
           <span class="info-course-id"> {{ course.courseoverview.display_number_with_default }} </span>
           <span class="info-date-block-container">
-            <span class="info-date-block localized-datetime" data-language="en" data-timezone="Asia/Manila" data-datetime="{{ course.courseoverview.start }}" data-format="shortDate" data-string="Starts - {{ course.courseoverview.start }}">
+            <span class="info-date-block localized-datetime">
               {% if course.courseoverview.start_display != None %}
               Starts: {{course.courseoverview.start_display}}
               {% else %}
@@ -42,7 +42,7 @@
         </div>
         <div class="wrapper-course-actions">
           <div class="course-actions">
-            <a href="{% url 'about_course' course_id=course.courseoverview.id %}" class="enter-course " data-course-key="{{ course.pathway_course.course_id }}">
+            <a href="{% url 'about_course' course_id=course.courseoverview.id %}" class="enter-course ">
               View Course
               <span class="sr">&nbsp; {{ course.courseoverview.display_name }}</span>
             </a>
