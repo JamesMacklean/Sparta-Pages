@@ -14,41 +14,23 @@
     </div>
 </a> -->
 
-<div class="course-container" lang="en">
-  <article class="course" aria-labelledby="course-title-{{ course.pathway_course.course_id }}" id="course-card-{{ course.pathway_course.course_id }}">
-    <section class="details" aria-labelledby="details-heading-{{ course.pathway_course.course_id }}">
-      <h2 class="hd hd-2 sr" id="details-heading-{{ course.pathway_course.course_id }}">Course details</h2>
-      <div class="wrapper-course-image" aria-hidden="true">
-        <a href="{% url 'about_course' course_id=course.courseoverview.id %}" class="cover" tabindex="-1">
-          <img src="{{ course.courseoverview.course_image_url }}" class="course-image" alt="{{ course.courseoverview.display_name }} Home Page">
-        </a>
-      </div>
-      <div class="wrapper-course-details">
-        <h3 class="course-title" id="course-title-{{ course.pathway_course.course_id }}">
-          <a href="{% url 'about_course' course.pathway_course.course_id=course.courseoverview.id %}">{{ course.courseoverview.display_name }}</a>
-        </h3>
-        <div class="course-info">
-          <span class="info-university">{{ course.courseoverview.display_org_with_default }} - </span>
-          <span class="info-course-id"> {{ course.courseoverview.display_number_with_default }} </span>
-          <span class="info-date-block-container">
-            <span class="info-date-block localized-datetime">
-              {% if course.courseoverview.start_display != None %}
-              Starts: {{course.courseoverview.start_display}}
-              {% else %}
-              Starts: {{course.courseoverview.start}}
-              {% endif %}
-            </span>
-          </span>
-        </div>
-        <div class="wrapper-course-actions">
-          <div class="course-actions">
-            <a href="{% url 'about_course' course_id=course.courseoverview.id %}" class="enter-course ">
-              View Course
-              <span class="sr">&nbsp; {{ course.courseoverview.display_name }}</span>
-            </a>
-          </div>
-        </div>
-      </div>
-    </section>
-  </article>
+<div class="course-item mb-3 mx-auto px-3 d-flex justify-content-between" style="border-bottom: 3px solid #126f9a;box-shadow: 0 1px 10px 0 rgba(0,0,0,0.125),inset 0 0 0 1px rgba(255,255,255,0.75);">
+  <div class="col-9 col-sm-6 col-md-4">
+    <img src="{{ course.courseoverview.course_image_url }}">
+  </div>
+  <div>
+    <a href="{% url 'about_course' course_id=course.courseoverview.id %}">
+      <h5 class="text-bold teal line-hide-2 font-1 pb-4">{{course.courseoverview.display_name}}</h5>
+    </a>
+    <p class="position-absolute fixed-bottom" style="color: gray;">
+      {% if course.courseoverview.start_display != None %}
+      Starts: {{course.courseoverview.start_display}}
+      {% else %}
+      Starts: {{course.courseoverview.start}}
+      {% endif %}
+    </p>
+  </div>
+  <div>
+    <a class="btn btn-outline-primary" href="{% url 'about_course' course_id=course.courseoverview.id %}">View More</a>
+  </div>
 </div>

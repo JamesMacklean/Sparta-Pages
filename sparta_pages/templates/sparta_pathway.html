@@ -30,11 +30,11 @@
 
 <div class="container-grid container container-9">
   {% if courses %}
-  <div class="row mb-md-5 mb-3 mx-auto">
     {% for course in courses %}
+    <div class="row mb-md-5 mb-3 mx-auto">
       {% include "sparta_course.html" %}
+    </div>
     {% endfor %}
-  </div>
   {% else %}
     <div class="container-grid container container-15">
       <p class="paragraph paragraph-5">The are no courses available for this learning pathway.</p>
