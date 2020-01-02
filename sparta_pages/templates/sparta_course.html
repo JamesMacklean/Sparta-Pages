@@ -14,23 +14,25 @@
     </div>
 </a> -->
 
-<div class="course-item mb-3 mx-auto px-3 d-flex justify-content-between" style="border-bottom: 3px solid #126f9a;box-shadow: 0 1px 10px 0 rgba(0,0,0,0.125),inset 0 0 0 1px rgba(255,255,255,0.75);">
+<div class="course-item mb-3 mx-auto px-3 d-flex justify-content-between" style="border-bottom: 3px solid #126f9a;box-shadow: 0 1px 10px 0 rgba(0,0,0,0.125),inset 0 0 0 1px rgba(255,255,255,0.75);max-height: 150px;">
   <div class="col-9 col-sm-6 col-md-4">
-    <img src="{{ course.courseoverview.course_image_url }}">
+    <img class="p-1" src="{{ course.courseoverview.course_image_url }}" style="max-height: 150px;">
   </div>
-  <div>
+  <div class="d-flex align-items-start flex-column">
     <a href="{% url 'about_course' course_id=course.courseoverview.id %}">
       <h5 class="text-bold teal line-hide-2 font-1 pb-4">{{course.courseoverview.display_name}}</h5>
     </a>
-    <p class="position-absolute fixed-bottom" style="color: gray;">
+    <p class="mt-auto" style="color: gray;">
+      <small>
       {% if course.courseoverview.start_display != None %}
       Starts: {{course.courseoverview.start_display}}
       {% else %}
       Starts: {{course.courseoverview.start}}
       {% endif %}
+      </small>
     </p>
   </div>
-  <div>
-    <a class="btn btn-outline-primary" href="{% url 'about_course' course_id=course.courseoverview.id %}">View More</a>
+  <div class="d-flex align-items-end flex-column">
+    <a class="btn btn-outline-info my-auto" href="{% url 'about_course' course_id=course.courseoverview.id %}">View More</a>
   </div>
 </div>
