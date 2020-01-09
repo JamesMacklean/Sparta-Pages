@@ -37,7 +37,11 @@ from .forms import (
     EducationProfileFormset, EmploymentProfileFormset, TrainingProfileFormset,
     ExportAppsForm, AppsFilterForm
 )
-from .models import Pathway, SpartaCourse, SpartaProfile, EducationProfile, EmploymentProfile, TrainingProfile, PathwayApplication, Event
+from .models import (
+    Pathway, SpartaCourse, SpartaProfile,
+    EducationProfile, EmploymentProfile, TrainingProfile,
+    PathwayApplication, Event, APIToken
+)
 
 
 #################
@@ -688,6 +692,29 @@ def get_upload_params(request):
         "key": "sparta_uploads/" + uuid4().hex + ".bin",
         "success_action_redirect": "/"
     }), content_type="application/json")
+
+
+class DeveloperProfileView(TemplateView):
+    """
+    path: /sparta/dev/profile/
+    """
+    template_name = 'sparta_developer_profile.html'
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(DeveloperProfileView, self).dispatch(*args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data()
+        try:
+            token = APIToken.objects.get(user=request.user)
+        except APIToken.DoesNotExist:
+            token = None
+
+        context['token'] = token
+
+        return render(request, self.template_name, context)
+
 
 ###############
 # Admin Pages #
