@@ -2,6 +2,8 @@ from django.conf import settings
 from django.db import models
 from django.urls import reverse
 
+from rest_framework.authtoken.models import Token as BaseToken
+
 # Backwards compatible settings.AUTH_USER_MODEL
 USER_MODEL = getattr(settings, 'AUTH_USER_MODEL', 'auth.User')
 
@@ -27,10 +29,6 @@ class Pathway(models.Model):
 
     def __str__(self):
         return self.name
-
-    @property
-    def courses(self):
-        pass
 
 
 class SpartaCourse(models.Model):
@@ -266,3 +264,11 @@ class Event(models.Model):
 
     def __str__(self):
         return self.event
+
+
+class APIToken(BaseToken):
+     class Meta:
+        verbose_name = "API Token"
+        verbose_name_plural = "API Tokens"
+
+    is_active = models.BooleanField(default=False)
