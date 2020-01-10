@@ -383,7 +383,7 @@ def student_list_view(request, format=None):
             'pathways': pathway_list,
             'courses_enrolled_in': courses_enrolled_in,
             'registered_at': student.created_at,
-            'last_login': student.last_login,
+            'last_login': student.user.last_login,
             'average_grade_percent': get_average_grade_percent(student, courses_enrolled_in)
         }
         data.append(student_data)
@@ -441,7 +441,7 @@ def student_detail_view(request, id, format=None):
         'pathways': pathway_list,
         'courses_enrolled_in': courses_enrolled_in,
         'registered_at': student.created_at,
-        'last_login': student.last_login,
+        'last_login': student.user.last_login,
         'average_grade_percent': get_average_grade_percent(student, courses_enrolled_in)
     }
 
