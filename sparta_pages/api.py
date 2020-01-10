@@ -135,12 +135,12 @@ def pathway_list_view(request, format=None):
 
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticatedOrReadOnly])
+@authentication_classes([])
 def pathway_detail_view(request, id, format=None):
     try:
         auth = authenticate(request)
     except Exception as e:
-        return Response(str(e), status=status.HTTP_401_UNAUTHORIZED)
+        return Response("Request unauthorized: {}".format(str(e)), status=status.HTTP_401_UNAUTHORIZED)
     if not auth:
         return Response("Request unauthorized", status=status.HTTP_401_UNAUTHORIZED)
 
@@ -186,12 +186,12 @@ def pathway_detail_view(request, id, format=None):
 
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticatedOrReadOnly])
+@authentication_classes([])
 def course_list_view(request, format=None):
     try:
         auth = authenticate(request)
     except Exception as e:
-        return Response("Request unauthorized", status=status.HTTP_401_UNAUTHORIZED)
+        return Response("Request unauthorized: {}".format(str(e)), status=status.HTTP_401_UNAUTHORIZED)
     if not auth:
         return Response("Request unauthorized", status=status.HTTP_401_UNAUTHORIZED)
 
@@ -245,12 +245,12 @@ def course_list_view(request, format=None):
 
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticatedOrReadOnly])
+@authentication_classes([])
 def course_detail_view(request, id, format=None):
     try:
         auth = authenticate(request)
     except Exception as e:
-        return Response(str(e), status=status.HTTP_401_UNAUTHORIZED)
+        return Response("Request unauthorized: {}".format(str(e)), status=status.HTTP_401_UNAUTHORIZED)
     if not auth:
         return Response("Request unauthorized", status=status.HTTP_401_UNAUTHORIZED)
 
@@ -314,12 +314,12 @@ def get_average_grade_percent(student, courses_enrolled_in):
 
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticatedOrReadOnly])
+@authentication_classes([])
 def student_list_view(request, format=None):
     try:
         auth = authenticate(request)
     except Exception as e:
-        return Response("Request unauthorized", status=status.HTTP_401_UNAUTHORIZED)
+        return Response("Request unauthorized: {}".format(str(e)), status=status.HTTP_401_UNAUTHORIZED)
     if not auth:
         return Response("Request unauthorized", status=status.HTTP_401_UNAUTHORIZED)
 
@@ -388,12 +388,12 @@ def student_list_view(request, format=None):
 
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticatedOrReadOnly])
+@authentication_classes([])
 def student_detail_view(request, id, format=None):
     try:
         auth = authenticate(request)
     except Exception as e:
-        return Response(str(e), status=status.HTTP_401_UNAUTHORIZED)
+        return Response("Request unauthorized: {}".format(str(e)), status=status.HTTP_401_UNAUTHORIZED)
     if not auth:
         return Response("Request unauthorized", status=status.HTTP_401_UNAUTHORIZED)
 
