@@ -7,7 +7,7 @@ from django.contrib.auth import get_user_model
 USER_MODEL = get_user_model()
 
 from rest_framework import status
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -98,7 +98,7 @@ def get_average_completion_rate(course_id):
 
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticatedOrReadOnly])
+@authentication_classes([])
 def pathway_list_view(request, format=None):
     try:
         auth = authenticate(request)
@@ -108,28 +108,28 @@ def pathway_list_view(request, format=None):
         return Response("Request unauthorized", status=status.HTTP_401_UNAUTHORIZED)
 
     data = []
-    # queryset = Pathway.objects.all()
-    #
-    # name = self.request.query_params.get('name', None)
-    # if name is not None:
-    #     queryset = queryset.filter(name=name)
-    #
-    # offset = request.query_params.get('offset', None)
-    # if offset is not None and offset != '':
-    #     of = int(offset)
-    #     queryset = queryset[of:]
-    # limit = request.query_params.get('limit', None)
-    # if limit is not None and limit != '':
-    #     lim = int(limit)
-    #     queryset = queryset[:lim]
-    #
-    # for pathway in queryset:
-    #     pathway_data = {
-    #         'id': pathway.id,
-    #         'name': pathway.name,
-    #         'num_courses': pathway.courses.filter(is_active=True).count()
-    #     }
-    #     data.append(pathway_data)
+    queryset = Pathway.objects.all()
+
+    name = self.request.query_params.get('name', None)
+    if name is not None:
+        queryset = queryset.filter(name=name)
+
+    offset = request.query_params.get('offset', None)
+    if offset is not None and offset != '':
+        of = int(offset)
+        queryset = queryset[of:]
+    limit = request.query_params.get('limit', None)
+    if limit is not None and limit != '':
+        lim = int(limit)
+        queryset = queryset[:lim]
+
+    for pathway in queryset:
+        pathway_data = {
+            'id': pathway.id,
+            'name': pathway.name,
+            'num_courses': pathway.courses.filter(is_active=True).count()
+        }
+        data.append(pathway_data)
 
     return Response(data, status=status.HTTP_200_OK)
 
