@@ -26,23 +26,6 @@ from .models import (
 )
 
 
-def util():
-    try:
-        user = USER_MODEL.objects.get(username=username)
-    except USER_MODEL.DoesNotExist:
-        raise Exception('')
-
-    try:
-        course_key = CourseKey.from_string(course_id)
-    except InvalidKeyError:
-        raise Exception('')
-
-    grade = CourseGradeFactory().read(user, course_key=course_key)
-    grade.attempted
-    grade.passed
-    user.last_login
-
-
 def get_header_token(request):
     """
     function to get access token from request header
@@ -127,6 +110,15 @@ def pathway_list_view(request, format=None):
     if name is not None:
         queryset = queryset.filter(name=name)
 
+    offset = request.query_params.get('offset', None)
+    if offset is not None and offset != '':
+        of = int(offset)
+        queryset = queryset[of:]
+    limit = request.query_params.get('limit', None)
+    if limit is not None and limit != '':
+        lim = int(limit)
+        queryset = queryset[:lim]
+
     for pathway in queryset:
         pathway_data = {
             'id': pathway.id,
@@ -199,6 +191,23 @@ def course_list_view(request, format=None):
 
     data = []
     queryset = SpartaCourse.objects.all()
+
+    course_id = self.request.query_params.get('course_id', None)
+    pathway = self.request.query_params.get('pathway', None)
+
+    if course_id is not None:
+        queryset = queryset.filter(course_id=course_id)
+    if pathway is not None:
+        queryset = queryset.filter(pathway__name=pathway)
+
+    offset = request.query_params.get('offset', None)
+    if offset is not None and offset != '':
+        of = int(offset)
+        queryset = queryset[of:]
+    limit = request.query_params.get('limit', None)
+    if limit is not None and limit != '':
+        lim = int(limit)
+        queryset = queryset[:lim]
 
     for sparta_course in queryset:
         course_key = CourseKey.from_string(sparta_course.course_id)
@@ -307,6 +316,24 @@ def student_list_view(request, format=None):
         return Response("Request unauthorized", status=status.HTTP_401_UNAUTHORIZED)
 
     queryset = SpartaProfile.objects.all()
+
+    pathway = self.request.query_params.get('pathway', None)
+    course_id = self.request.query_params.get('course_id', None)
+
+    if pathway is not None:
+        queryset = queryset.filter(applications__pathway__name=pathway)
+    if course_id is not None:
+        queryset = queryset.filter(applications__pathway__courses__course_id=course_id)
+
+    offset = request.query_params.get('offset', None)
+    if offset is not None and offset != '':
+        of = int(offset)
+        queryset = queryset[of:]
+    limit = request.query_params.get('limit', None)
+    if limit is not None and limit != '':
+        lim = int(limit)
+        queryset = queryset[:lim]
+
     data = []
     for student in queryset:
         pathway_courses = SpartaCourse.objects.none()
@@ -343,6 +370,7 @@ def student_list_view(request, format=None):
             'id': student.id,
             'pathways': pathway_list,
             'courses_enrolled_in': courses_enrolled_in,
+            'registered_at': student.created_at,
             'last_login': student.last_login,
             'average_grade_percent': get_average_grade_percent(student, courses_enrolled_in)
         }
@@ -396,8 +424,10 @@ def student_detail_view(request, id, format=None):
             })
 
     data = {
+        'id': student.id,
         'pathways': pathway_list,
         'courses_enrolled_in': courses_enrolled_in,
+        'registered_at': student.created_at,
         'last_login': student.last_login,
         'average_grade_percent': get_average_grade_percent(student, courses_enrolled_in)
     }
