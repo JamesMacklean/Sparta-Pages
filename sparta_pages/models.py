@@ -267,8 +267,10 @@ class Event(models.Model):
 
 
 class APIToken(BaseToken):
-     class Meta:
+    """
+    """
+    is_active = models.BooleanField(default=False)
+
+    class Meta:
         verbose_name = "API Token"
         verbose_name_plural = "API Tokens"
-
-    is_active = models.BooleanField(default=False)
