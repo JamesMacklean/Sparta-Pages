@@ -297,8 +297,8 @@ def get_student_enrollment_status(student, course_key):
 
     modules = StudentModule.objects.filter(course_id=course_key, student=student.user)
     if modules.exists():
-        latest_student_module = modules.order_by('-modified_date').first()
-        diff_time =  timezome.now() - latest_student_module.modified_date
+        latest_student_module = modules.order_by('-modified').first()
+        diff_time =  timezome.now() - latest_student_module.modified
         diff_time_secs = diff_time.total_seconds()
         if diff_time_secs > 604800:
             return "inactive"
