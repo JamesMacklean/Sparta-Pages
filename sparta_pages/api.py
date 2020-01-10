@@ -315,7 +315,7 @@ def get_average_grade_percent(student, courses_enrolled_in):
         grade = CourseGradeFactory().read(student.user, course_key=course_key)
         grades_list.append(Decimal(grade.percent))
     if grades_list:
-        return str(sum(grades_list) / len(grades_list))
+        return str(round(sum(grades_list) / len(grades_list)), 4)
     else:
         return "unavailable"
 
