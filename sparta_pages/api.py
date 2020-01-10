@@ -76,15 +76,15 @@ def get_average_completion_rate(course_id):
 
         student_modules = modules.filter(student=user)
 
-        course_module = student_modules.filter(module_type='course').order_by('created_date').first()
+        course_module = student_modules.filter(module_type='course').order_by('created').first()
         if course_module:
-            started_course_at = course_module.created_date
+            started_course_at = course_module.created
         else:
             continue
 
-        latest_student_module = student_modules.order_by('-modified_date').first()
+        latest_student_module = student_modules.order_by('-modified').first()
         if latest_student_module:
-            ended_course_at = latest_student_module.modified_date
+            ended_course_at = latest_student_module.modified
         else:
             continue
 
