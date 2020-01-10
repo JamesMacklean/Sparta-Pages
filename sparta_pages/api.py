@@ -18,7 +18,6 @@ from opaque_keys.edx.keys import CourseKey
 from openedx.core.djangoapps.content.course_overviews.models import CourseOverview
 from student.models import CourseEnrollment
 
-from .local_settings import LOCAL_AUTH_TOKEN
 from .models import (
     Pathway, SpartaCourse, SpartaProfile, PathwayApplication,
     EducationProfile, EmploymentProfile, TrainingProfile,
