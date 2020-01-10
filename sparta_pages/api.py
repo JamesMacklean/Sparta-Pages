@@ -47,7 +47,7 @@ def get_header_token(request):
 
 def authenticate(request):
     token = get_header_token(request)
-    token_decoded = token.base64.b64decode(token)
+    token_decoded = base64.b64decode(token)
     token_key = token_decoded.strip(':')
     if not APIToken.objects.filter(is_active=True, key=token_key).exists():
         return False
