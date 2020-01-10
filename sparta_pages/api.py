@@ -238,7 +238,7 @@ def course_list_view(request, format=None):
                 is_active=True,
                 mode="verified"
             ).count(),
-            'average_completion_rate': get_average_completion_rate(course_id)
+            'average_completion_rate': get_average_completion_rate(sparta_course.course_id)
         }
         data.append(course)
 
@@ -281,7 +281,7 @@ def course_detail_view(request, id, format=None):
             is_active=True,
             mode="verified"
         ).count(),
-        'average_completion_rate': get_average_completion_rate(course_id)
+        'average_completion_rate': get_average_completion_rate(course.course_id)
     }
 
     return Response(data, status=status.HTTP_200_OK)
