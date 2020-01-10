@@ -2,6 +2,7 @@ from django.conf import settings
 from django.conf.urls import url
 from django.views.generic import TemplateView
 
+from . import api
 from . import views
 
 urlpatterns = [
@@ -34,4 +35,11 @@ urlpatterns = [
     url(r'^sparta/admin-view/main/$', views.admin_main_view, name='sparta-admin-main'),
     url(r'^sparta/admin-view/applications/$', views.admin_applications_view, name='sparta-admin-applications'),
     url(r'^sparta/admin-view/applications/approve/(?P<id>\d+)/$', views.admin_approve_application_view, name='sparta-admin-approve'),
+
+    url(r'^sparta/api/v0/pathways/$', api.pathway_list_view, name='sparta-api-pathway-list'),
+    url(r'^sparta/api/v0/pathways/(?P<id>\d+)/$', api.pathway_detail_view, name='sparta-api-pathway-detail'),
+    url(r'^sparta/api/v0/courses/$', api.course_list_view, name='sparta-api-course-list'),
+    url(r'^sparta/api/v0/courses/(?P<id>\d+)/$', api.course_detail_view, name='sparta-api-course-detail'),
+    url(r'^sparta/api/v0/students/$', api.student_list_view, name='sparta-api-student-list'),
+    url(r'^sparta/api/v0/students/(?P<id>\d+)/$', api.student_detail_view, name='sparta-api-student-detail'),
 ]
