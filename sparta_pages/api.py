@@ -156,6 +156,7 @@ def pathway_detail_view(request, id, format=None):
         course_key = CourseKey.from_string(course_id)
         courseoverview = CourseOverview.get_from_id(course_key)
         course = {
+            'id': pathway_course.id,
             'course_id': course_id,
             'name': courseoverview.display_name,
             'partner': courseoverview.org,
@@ -220,6 +221,7 @@ def course_list_view(request, format=None):
         course_key = CourseKey.from_string(sparta_course.course_id)
         courseoverview = CourseOverview.get_from_id(course_key)
         course = {
+            'id': sparta_course.id,
             'course_id': sparta_course.course_id,
             'name': courseoverview.display_name,
             'partner': courseoverview.org,
@@ -263,6 +265,7 @@ def course_detail_view(request, id, format=None):
     course_key = CourseKey.from_string(course.course_id)
     courseoverview = CourseOverview.get_from_id(course_key)
     data = {
+        'id': course.id,
         'course_id': course.course_id,
         'name': courseoverview.display_name,
         'partner': courseoverview.org,
@@ -294,7 +297,7 @@ def get_student_enrollment_status(student, course_key):
 
     modules = StudentModule.objects.filter(course_id=course_key, student=student.user)
     if modules.exists():
-        latest_student_module = student_modules.order_by('-modified_date').first()
+        latest_student_module = modules.order_by('-modified_date').first()
         diff_time =  timezome.now() - latest_student_module.modified_date
         diff_time_secs = diff_time.total_seconds()
         if diff_time_secs > 604800:
