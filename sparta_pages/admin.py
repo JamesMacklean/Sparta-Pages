@@ -1,6 +1,10 @@
 from django.contrib import admin
-from .models import Pathway, SpartaCourse, SpartaProfile, PathwayApplication, EducationProfile, EmploymentProfile, TrainingProfile, Event
-
+from .models import (
+    Pathway, SpartaCourse,
+    SpartaProfile, PathwayApplication,
+    EducationProfile, EmploymentProfile, TrainingProfile,
+    Event, APIToken
+)
 
 @admin.register(Pathway)
 class PathwayAdmin(admin.ModelAdmin):
@@ -51,3 +55,8 @@ class TrainingProfileAdmin(admin.ModelAdmin):
 class EventAdmin(admin.ModelAdmin):
     list_display = ('profile', 'event')
     search_fields = ['profile__user__username', 'profile__user__email', 'event', 'description']
+
+
+@admin.register(APIToken)
+class APITokenAdmin(admin.ModelAdmin):
+    pass
