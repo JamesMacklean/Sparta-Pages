@@ -110,7 +110,7 @@ def pathway_list_view(request, format=None):
     data = []
     queryset = Pathway.objects.all()
 
-    name = self.request.query_params.get('name', None)
+    name = request.query_params.get('name', None)
     if name is not None:
         queryset = queryset.filter(name=name)
 
@@ -198,8 +198,8 @@ def course_list_view(request, format=None):
     data = []
     queryset = SpartaCourse.objects.all()
 
-    course_id = self.request.query_params.get('course_id', None)
-    pathway = self.request.query_params.get('pathway', None)
+    course_id = request.query_params.get('course_id', None)
+    pathway = request.query_params.get('pathway', None)
 
     if course_id is not None:
         queryset = queryset.filter(course_id=course_id)
@@ -325,8 +325,8 @@ def student_list_view(request, format=None):
 
     queryset = SpartaProfile.objects.all()
 
-    pathway = self.request.query_params.get('pathway', None)
-    course_id = self.request.query_params.get('course_id', None)
+    pathway = request.query_params.get('pathway', None)
+    course_id = request.query_params.get('course_id', None)
 
     if pathway is not None:
         queryset = queryset.filter(applications__pathway__name=pathway)
