@@ -7,7 +7,8 @@ from django.contrib.auth import get_user_model
 USER_MODEL = get_user_model()
 
 from rest_framework import status
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -38,6 +39,9 @@ def get_header_token(request):
         raise Exception("No authorization header token found.")
 
     token_split = htoken.split(' ')
+    if len(token_split) < 2:
+        raise Exception("No authorization header token found.")
+
     return token_split[1]
 
 
@@ -94,11 +98,12 @@ def get_average_completion_rate(course_id):
 
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticatedOrReadOnly])
 def pathway_list_view(request, format=None):
     try:
         auth = authenticate(request)
     except Exception as e:
-        return Response(str(e), status=status.HTTP_401_UNAUTHORIZED)
+        return Response("Request unauthorized", status=status.HTTP_401_UNAUTHORIZED)
     if not auth:
         return Response("Request unauthorized", status=status.HTTP_401_UNAUTHORIZED)
 
@@ -130,6 +135,7 @@ def pathway_list_view(request, format=None):
 
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticatedOrReadOnly])
 def pathway_detail_view(request, id, format=None):
     try:
         auth = authenticate(request)
@@ -180,11 +186,12 @@ def pathway_detail_view(request, id, format=None):
 
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticatedOrReadOnly])
 def course_list_view(request, format=None):
     try:
         auth = authenticate(request)
     except Exception as e:
-        return Response(str(e), status=status.HTTP_401_UNAUTHORIZED)
+        return Response("Request unauthorized", status=status.HTTP_401_UNAUTHORIZED)
     if not auth:
         return Response("Request unauthorized", status=status.HTTP_401_UNAUTHORIZED)
 
@@ -238,6 +245,7 @@ def course_list_view(request, format=None):
 
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticatedOrReadOnly])
 def course_detail_view(request, id, format=None):
     try:
         auth = authenticate(request)
@@ -306,11 +314,12 @@ def get_average_grade_percent(student, courses_enrolled_in):
 
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticatedOrReadOnly])
 def student_list_view(request, format=None):
     try:
         auth = authenticate(request)
     except Exception as e:
-        return Response(str(e), status=status.HTTP_401_UNAUTHORIZED)
+        return Response("Request unauthorized", status=status.HTTP_401_UNAUTHORIZED)
     if not auth:
         return Response("Request unauthorized", status=status.HTTP_401_UNAUTHORIZED)
 
@@ -379,6 +388,7 @@ def student_list_view(request, format=None):
 
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticatedOrReadOnly])
 def student_detail_view(request, id, format=None):
     try:
         auth = authenticate(request)
