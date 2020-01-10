@@ -103,7 +103,7 @@ def pathway_list_view(request, format=None):
     try:
         auth = authenticate(request)
     except Exception as e:
-        return Response("Request unauthorized", status=status.HTTP_401_UNAUTHORIZED)
+        return Response("Request unauthorized: {}".format(str(e)), status=status.HTTP_401_UNAUTHORIZED)
     if not auth:
         return Response("Request unauthorized", status=status.HTTP_401_UNAUTHORIZED)
 
