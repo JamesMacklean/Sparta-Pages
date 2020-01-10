@@ -7,9 +7,14 @@
   <div class="card-body">
 
     <h2 class="card-title">Developer API Token</h2>
-    <div>
-
-    </div>
+    <h4>API Token</h4>
+    <ul class="list-group">
+      {% if token.is_active %}
+      <li class="list-group-item">{{ token.key }}</li>
+      {% else %}
+      <li class="list-group-item">No API Token available.</li>
+      {% endif %}
+    </ul>
 
   </div>
 </div>
