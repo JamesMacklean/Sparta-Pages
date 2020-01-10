@@ -88,8 +88,9 @@ def get_average_completion_rate(course_id):
         else:
             continue
 
-        finish_duration = Decimal(ended_course_at - started_course_at)
-        total_seconds_list.append(finish_duration.total_seconds())
+        finish_duration = ended_course_at - started_course_at
+        finish_duration_decimal = Decimal(finish_duration.total_seconds())
+        total_seconds_list.append(finish_duration_decimal)
 
     if total_seconds_list:
         return str(sum(total_seconds_list) / len(total_seconds_list))
