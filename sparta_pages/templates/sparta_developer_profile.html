@@ -6,15 +6,22 @@
 <div class="card">
   <div class="card-body">
 
-    <h2 class="card-title">Developer API Token</h2>
-    <h4>API Token</h4>
-    <ul class="list-group">
-      {% if token.is_active %}
-      <li class="list-group-item">{{ token.key }}</li>
-      {% else %}
-      <li class="list-group-item">No API Token available.</li>
-      {% endif %}
-    </ul>
+    <h2 class="card-title">Developers</h2>
+
+    <table class="table table-hover">
+      <tbody>
+        <tr>
+          <th scope="row">API Key</th>
+          <td>
+            {% if token.is_active %}
+            <em>{{ token.key }}</em>
+            {% else %}
+            <em>No API Token available.</em>
+            {% endif %}
+          </td>
+        </tr>
+      </tbody>
+    </table>
 
   </div>
 </div>
