@@ -311,7 +311,7 @@ def get_student_enrollment_status(student, course_key):
 def get_average_grade_percent(student, courses_enrolled_in):
     grades_list = []
     for course in courses_enrolled_in:
-        course_key = CourseKey.from_string(course.course_id)
+        course_key = CourseKey.from_string(course['course_id'])
         grade = CourseGradeFactory().read(student.user, course_key=course_key)
         grades_list.append(Decimal(grade.percent))
     return str(sum(grades_list) / len(grades_list))
