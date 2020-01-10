@@ -314,7 +314,10 @@ def get_average_grade_percent(student, courses_enrolled_in):
         course_key = CourseKey.from_string(course['course_id'])
         grade = CourseGradeFactory().read(student.user, course_key=course_key)
         grades_list.append(Decimal(grade.percent))
-    return str(sum(grades_list) / len(grades_list))
+    if grades_list:
+        return str(sum(grades_list) / len(grades_list))
+    else:
+        return "unavailable"
 
 
 @api_view(['GET'])
