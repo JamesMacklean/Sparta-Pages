@@ -59,4 +59,5 @@ class EventAdmin(admin.ModelAdmin):
 
 @admin.register(APIToken)
 class APITokenAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('user', 'key', 'is_active')
+    search_fields = ['user__username', 'user__email', 'key']
