@@ -15,6 +15,7 @@ def manage_pathway_applications():
     for app in PathwayApplication.objects.filter(status="PE"):
         app.approve()
 
+
 def manage_sparta_enrollments(date_from=None, date_to=None):
     applications = PathwayApplication.objects.all()
 
@@ -63,3 +64,23 @@ def manage_sparta_enrollments(date_from=None, date_to=None):
     )
     email.attach_file(file_name)
     email.send()
+
+
+def manage_student_coupons_list():
+    """"""
+    sc_list = []
+    for student in SpartaProfile.objects.filter(is_active=True):
+        applications = PathwayApplication.objects.filter(profile=student).filter(status="AP")
+
+        if not applications.exists():
+            continue
+
+        data = {}
+        data['email'] = app.user.email
+
+        for a in applications:
+            if a.course_id not in data:
+                data[a.course_id] = ""
+
+
+        sc_list.append(data)
