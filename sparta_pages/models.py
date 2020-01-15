@@ -274,3 +274,42 @@ class APIToken(BaseToken):
     class Meta:
         verbose_name = "API Token"
         verbose_name_plural = "API Tokens"
+
+
+class SpartaCoupon(models.Model):
+    """
+    Model to record coupons for a course.
+    Strictly used for record purposes and is not connected to ecommerce logic.
+    Hence, coupon might already be used.
+    """
+    code = models.CharField(max_length=255, unique=True)
+    course_id = models.CharField(max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def get_related_pathways(self):
+        pathways = Pathway.objects.none()
+        for c in SpartaCourse.objects.filter(course_id=self.course_id):
+            pathways |= c.pathway
+        return pathways
+
+    def get_related_sparta_courses(self):
+        return SpartaCourse.objects.filter(course_id=self.course_id)
+
+
+class StudentCouponRecord(models.Model):
+    """
+    Model to record student coupon for a course.
+    """
+    profile = models.ForeignKey(
+        'SpartaProfile',
+        on_delete=models.CASCADE,
+        related_name="coupons",
+        )
+    coupon = models.ForeignKey(
+        'SpartaCoupon',
+        on_delete=models.CASCADE,
+        related_name="records",
+        )
+
+    def __str__(self):
+        return "{}: {}".format(self.profile.user.username, self.coupon.code)
