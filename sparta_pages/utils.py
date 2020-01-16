@@ -174,3 +174,50 @@ def email_sparta_student_coupon_records(email=None, pathway=None):
     )
     email.attach_file(file_name)
     email.send()
+
+
+def get_enrollment_status(email=None, pathway=None):
+    profiles = SpartaProfile.objects.filter(is_active=True)
+    if email:
+        profiles = profiles.filter(user__email=email)
+
+    if pathway:
+        courses = SpartaCourse.objects.filter(pathway=pathway)
+    else:
+        courses = SpartaCourse.objects.all()
+
+    tnow = datetime.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
+
+    file_name = '/home/ubuntu/tempfiles/sparta_enrollments_file_{}.csv'.format(tnow)
+    with open(file_name, mode='w') as coupons_file:
+        writer = csv.writer(coupons_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+
+        HEAD_ARR = ['Email Address',]
+        for c in courses:
+            if c.course_id not in HEAD_ARR:
+                HEAD_ARR.append(c.course_id)
+        writer.writerow(HEAD_ARR)
+
+        for s in profiles:
+            ROW_ARR = [s.user.email,]
+
+            student_records = StudentCouponRecord.objects.filter(profile=s)
+
+            for c in HEAD_ARR[1:]:
+                c_records = student_records.filter(coupon__course_id=c)
+                if c_records.exists():
+                    status = "True" if c_records[0].is_user_verified else "False"
+                    ROW_ARR.append(status)
+                else:
+                    ROW_ARR.append("False")
+
+            writer.writerow(ROW_ARR)
+
+    email = EmailMessage(
+        'Coursebank - SPARTA Enrollments List - {}'.format(tnow),
+        'Attached file of SPARTA Enrollments List',
+        'no-reply-sparta-enrollments-list@coursebank.ph',
+        [LOCAL_STAFF_EMAIL,],
+    )
+    email.attach_file(file_name)
+    email.send()

@@ -2,6 +2,8 @@ from django.conf import settings
 from django.db import models
 from django.urls import reverse
 
+from opaque_keys.edx.keys import CourseKey
+from student.models import CourseEnrollment
 from rest_framework.authtoken.models import Token as BaseToken
 
 # Backwards compatible settings.AUTH_USER_MODEL
@@ -323,3 +325,11 @@ class StudentCouponRecord(models.Model):
 
     def __str__(self):
         return "{}: {}".format(self.profile.user.username, self.coupon.code)
+
+    @property
+    def is_user_verified(self):
+        course_key = CourseKey.from_string(self.coupon.course_id)
+        enrollment = CourseEnrollment.get_enrollment(self.profile.user, course_key)
+        if enrollment:
+            return enrollment.is_active and enrollment.mode == "verified"
+        return False
