@@ -288,6 +288,9 @@ class SpartaCoupon(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
 
+    def __str__(self):
+        return self.code
+
     def get_related_pathways(self):
         pathways = Pathway.objects.none()
         for c in SpartaCourse.objects.filter(course_id=self.course_id):
