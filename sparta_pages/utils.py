@@ -102,26 +102,24 @@ def get_courses_that_need_new_coupons_list():
 
 def assign_coupons_to_single_student(student):
     applications = PathwayApplication.objects.filter(profile=student).filter(status="AP")
-    if not applications.exists():
-        continue
+    if applications.exists():
+        screcords = StudentCouponRecord.objects.filter(profile=student)
 
-    screcords = StudentCouponRecord.objects.filter(profile=student)
+        for a in applications:
+            for c in a.pathway.courses.all():
+                # check if coupon for this course already assigned for this student
+                these_screcords = screcords.filter(coupon__course_id=c.course_id)
+                if not these_screcords.exists():
+                    # assign clean coupon to student
+                    try:
+                        coup = get_first_clean_coupon(SpartaCoupon.objects.filter(is_active=True).filter(course_id=course_id))
+                    except SpentCouponsException as e:
+                        raise e
 
-    for a in applications:
-        for c in a.pathway.courses.all():
-            # check if coupon for this course already assigned for this student
-            these_screcords = screcords.filter(coupon__course_id=c.course_id)
-            if not these_screcords.exists():
-                # assign clean coupon to student
-                try:
-                    coup = get_first_clean_coupon(SpartaCoupon.objects.filter(is_active=True).filter(course_id=course_id))
-                except SpentCouponsException as e:
-                    raise e
-
-                StudentCouponRecord.objects.create(
-                    profile=student,
-                    coupon=coup
-                )
+                    StudentCouponRecord.objects.create(
+                        profile=student,
+                        coupon=coup
+                    )
 
 
 def assign_coupons_to_students():
