@@ -111,19 +111,17 @@ def assign_coupons_to_single_student(student):
         for c in a.pathway.courses.all():
             # check if coupon for this course already assigned for this student
             these_screcords = screcords.filter(coupon__course_id=c.course_id)
-            if these_screcords.exists():
-                continue
+            if not these_screcords.exists():
+                # assign clean coupon to student
+                try:
+                    coup = get_first_clean_coupon(SpartaCoupon.objects.filter(is_active=True).filter(course_id=course_id))
+                except SpentCouponsException as e:
+                    raise e
 
-            # assign clean coupon to student
-            try:
-                coup = get_first_clean_coupon(SpartaCoupon.objects.filter(is_active=True).filter(course_id=course_id))
-            except SpentCouponsException as e:
-                raise e
-
-            StudentCouponRecord.objects.create(
-                profile=student,
-                coupon=coup
-            )
+                StudentCouponRecord.objects.create(
+                    profile=student,
+                    coupon=coup
+                )
 
 
 def assign_coupons_to_students():
