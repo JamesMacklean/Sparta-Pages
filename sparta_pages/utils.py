@@ -117,7 +117,7 @@ def assign_coupons_to_single_student(student):
                 if not these_screcords.exists():
                     # assign clean coupon to student
                     try:
-                        coup = get_first_clean_coupon(SpartaCoupon.objects.filter(is_active=True).filter(course_id=course_id))
+                        coup = get_first_clean_coupon(SpartaCoupon.objects.filter(is_active=True).filter(course_id=c.course_id))
                     except SpentCouponsException as e:
                         raise e
 
