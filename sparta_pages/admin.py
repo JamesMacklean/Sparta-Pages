@@ -3,7 +3,8 @@ from .models import (
     Pathway, SpartaCourse,
     SpartaProfile, PathwayApplication,
     EducationProfile, EmploymentProfile, TrainingProfile,
-    Event, APIToken
+    Event, APIToken,
+    SpartaCoupon, StudentCouponRecord
 )
 
 @admin.register(Pathway)
@@ -61,3 +62,15 @@ class EventAdmin(admin.ModelAdmin):
 class APITokenAdmin(admin.ModelAdmin):
     list_display = ('user', 'key', 'is_active')
     search_fields = ['user__username', 'user__email', 'key']
+
+
+@admin.register(SpartaCoupon)
+class SpartaCouponAdmin(admin.ModelAdmin):
+    list_display = ('code', 'course_id',)
+    search_fields = ['code', 'course_id',]
+
+
+@admin.register(StudentCouponRecord)
+class StudentCouponRecordAdmin(admin.ModelAdmin):
+    list_display = ('profile', 'coupon',)
+    search_fields = ['profile__user__email', 'profile__user__username' 'coupon__course_id', 'coupon__code']
