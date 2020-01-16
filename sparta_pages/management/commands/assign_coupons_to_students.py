@@ -5,7 +5,7 @@ from pprint import pformat
 import logging
 log = logging.getLogger(__name__)
 
-from django.core.management.base import BaseCommand
+from django.core.management.base import BaseCommand, CommandError
 
 from sparta_pages.utils import assign_coupons_to_students
 
