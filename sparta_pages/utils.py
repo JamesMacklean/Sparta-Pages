@@ -87,7 +87,7 @@ def get_first_clean_coupon(coupons):
 
 def check_if_enough_clean_coupons(course):
     coupons = SpartaCoupon.objects.filter(course_id=course.course_id)
-    records = StudentCouponRecord.objects.filter(coupon__course_id=course_id)
+    records = StudentCouponRecord.objects.filter(coupon__course_id=course.course_id)
     return coupons.count() - records.count() > LOCAL_COUPON_WARNING_LIMIT
 
 
