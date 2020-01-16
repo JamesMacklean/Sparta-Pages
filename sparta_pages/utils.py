@@ -85,21 +85,17 @@ def get_first_clean_coupon(coupons):
     raise SpentCouponsException("No more coupons available.")
 
 
-def check_if_enough_clean_coupons(coupons):
-    count = 0
-    for c in coupons:
-        if c.get_records():
-            continue
-        else:
-            count += 1
-    return count > LOCAL_COUPON_WARNING_LIMIT
+def check_if_enough_clean_coupons(course):
+    coupons = SpartaCoupon.objects.filter(course_id=course.course_id)
+    records = StudentCouponRecord.objects.filter(coupon__course_id=course_id)
+    return coupons.count() - records.count() > LOCAL_COUPON_WARNING_LIMIT
 
 
 def get_courses_that_need_new_coupons_list():
     courses_that_need_new_coupons_list = []
     coupons = SpartaCoupon.objects.filter(is_active=True)
     for course in SpartaCourse.objects.filter(is_active=True):
-        if not check_if_enough_clean_coupons(coupons.filter(course_id=course.course_id)):
+        if not check_if_enough_clean_coupons(course):
             if course.course_id not in courses_that_need_new_coupons_list:
                 courses_that_need_new_coupons_list.append(course.course_id)
     return courses_that_need_new_coupons_list
