@@ -284,7 +284,9 @@ class SpartaCoupon(models.Model):
     """
     code = models.CharField(max_length=255, unique=True)
     course_id = models.CharField(max_length=255)
-    created_at = models.DateTimeField(auto_now_add=True)
+    is_active = models.BooleanField(default=True)
+    created = models.DateTimeField(auto_now_add=True)
+    modified = models.DateTimeField(auto_now=True)
 
     def get_related_pathways(self):
         pathways = Pathway.objects.none()
@@ -294,6 +296,9 @@ class SpartaCoupon(models.Model):
 
     def get_related_sparta_courses(self):
         return SpartaCourse.objects.filter(course_id=self.course_id)
+
+    def get_records(self):
+        return self.records.all()
 
 
 class StudentCouponRecord(models.Model):
@@ -310,6 +315,8 @@ class StudentCouponRecord(models.Model):
         on_delete=models.CASCADE,
         related_name="records",
         )
+    created = models.DateTimeField(auto_now_add=True)
+    modified = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return "{}: {}".format(self.profile.user.username, self.coupon.code)
