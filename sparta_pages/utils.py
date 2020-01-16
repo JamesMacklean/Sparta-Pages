@@ -75,42 +75,44 @@ def get_first_clean_coupon(coupons):
             return c
 
 
+def assign_coupons_to_single_student(student):
+    applications = PathwayApplication.objects.filter(profile=student).filter(status="AP")
+    if not applications.exists():
+        continue
+
+    screcords = StudentCouponRecord.objects.filter(profile=student)
+
+    for a in applications:
+        for c in a.pathway.courses.all():
+            # check if coupon for this course already assigned for this student
+            these_screcords = screcords.filter(coupon__course_id=c.course_id)
+            if these_screcords.exists():
+                continue
+
+            # assign clean coupon to student
+            coup = get_first_clean_coupon(SpartaCoupon.objects.filter(is_active=True).filter(course_id=course_id))
+            StudentCouponRecord.objects.create(
+                profile=student,
+                coupon=coup
+            )
+
+
 def assign_coupons_to_students():
     """"""
-    for student in SpartaProfile.objects.filter(is_active=True):
-        applications = PathwayApplication.objects.filter(profile=student).filter(status="AP")
-        if not applications.exists():
-            continue
-
-        screcords = StudentCouponRecord.objects.filter(profile=student)
-
-        for a in applications:
-            for c in a.pathway.courses.all():
-                #check if coupon for this course already assigned for this student
-                these_screcords = screcords.filter(coupon__course_id=c.course_id)
-                if these_screcords.exists():
-                    continue
-
-                coup = get_first_clean_coupon(SpartaCoupon.objects.filter(is_active=True).filter(course_id=course_id))
-                StudentCouponRecord.objects.create(
-                    profile=student,
-                    coupon=coup
-                )
+    profiles = SpartaProfile.objects.filter(is_active=True)
+    for student in profiles:
+        assign_coupons_to_single_student(student)
 
 
-def email_sparta_student_coupon_records(date_from=None, date_to=None):
-    records = StudentCouponRecord.objects.all()
+def email_sparta_student_coupon_records(email=None, pathway=None):
+    profiles = SpartaProfile.objects.filter(is_active=True)
+    if email:
+        profiles = profiles.filter(user__email=email)
 
-    datefrom_str = ""
-    dateto_str = ""
-
-    if date_from:
-        applications = applications.filter(created_at__gte=date_from)
-        datefrom_str = date_from.strftime('%Y-%m-%dT%H:%M:%S.000Z')
-
-    if date_to:
-        applications = applications.filter(created_at__lte=date_to)
-        dateto_str = date_to.strftime('%Y-%m-%dT%H:%M:%S.000Z')
+    if pathway:
+        courses = SpartaCourse.objects.filter(pathway=pathway)
+    else:
+        courses = SpartaCourse.objects.all()
 
     tnow = datetime.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
 
@@ -118,16 +120,16 @@ def email_sparta_student_coupon_records(date_from=None, date_to=None):
     with open(file_name, mode='w') as apps_file:
         writer = csv.writer(apps_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
 
-        HEAD_ARR = ['email',]
-        for c in SpartaCourse.objects.all():
+        HEAD_ARR = ['Email Address',]
+        for c in courses:
             if c.course_id not in HEAD_ARR:
                 HEAD_ARR.append(c.course_id)
-        writer.writerow(CSV_ARR)
+        writer.writerow(HEAD_ARR)
 
-        for s in SpartaProfile.objects.filter(is_active=True):
+        for s in profiles:
             ROW_ARR = [s.user.email,]
 
-            student_records = records.filter(profile=s)
+            student_records = StudentCouponRecord.objects.filter(profile=s)
 
             for c in HEAD_ARR[1:]:
                 c_records = student_records.filter(coupon__course_id=c)
@@ -138,14 +140,9 @@ def email_sparta_student_coupon_records(date_from=None, date_to=None):
 
             writer.writerow(ROW_ARR)
 
-    if datefrom_str or dateto_str:
-        date_range = ' for date range: {} to {}'.format(datefrom_str, dateto_str)
-    else:
-        date_range = ""
-
     email = EmailMessage(
         'Coursebank - SPARTA Assigned Coupons List - {}'.format(tnow),
-        'Attached file of SPARTA Assigned Coupons List - {}'.format(date_range),
+        'Attached file of SPARTA Assigned Coupons List',
         'no-reply-sparta-coupons-list@coursebank.ph',
         [LOCAL_STAFF_EMAIL,],
     )
