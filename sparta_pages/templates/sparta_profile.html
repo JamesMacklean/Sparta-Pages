@@ -33,7 +33,10 @@
             <td>{{ app.pathway }}</td>
             <td>{{ app.get_status_display }}</td>
             {% if app.status == 'AP' %}
-            <td><a class="btn btn-primary" href="{% url 'sparta-pathway-progress' pathway_id=app.pathway.id %}">View Progress</a></td>
+            <td>
+              <a class="btn btn-outline-primary mx-1" href="{% url 'sparta-pathway-coupons' pathway_id=app.pathway.id %}">Enrollment Codes</a>
+              <a class="btn btn-primary mx-1" href="{% url 'sparta-pathway-progress' pathway_id=app.pathway.id %}">View Progress</a>
+            </td>
             {% elif app.status == 'DE' %}
             <td>-</td>
             {% else %}
