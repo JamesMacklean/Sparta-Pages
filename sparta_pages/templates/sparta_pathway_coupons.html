@@ -35,7 +35,7 @@
         {% for coupon in coupons %}
         <tr>
           <td>{{ coupon.courseoverview.display_name }}</td>
-          <td>{{ coupon.code }}</td>
+          <td>{{ coupon.coupon_code }}</td>
           <td>
             <a class="btn btn-primary" target="_blank" href="{% url 'about_course' course_id=coupon.courseoverview.id %}">
               View Course
