@@ -40,7 +40,8 @@ from .forms import (
 from .models import (
     Pathway, SpartaCourse, SpartaProfile,
     EducationProfile, EmploymentProfile, TrainingProfile,
-    PathwayApplication, Event, APIToken
+    PathwayApplication, Event, APIToken,
+    SpartaCoupon, StudentCouponRecord
 )
 
 
