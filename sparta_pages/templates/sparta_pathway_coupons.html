@@ -1,0 +1,59 @@
+{% extends "sparta_base.html" %}
+{% load static %}
+
+{% block sparta_body %}
+
+<div class="card">
+  <div class="card-body">
+
+    <h2 class="card-title">Your Enrollment Codes for the {{ pathway.name|title }} Learning Pathway</h2>
+
+    {% if coupons %}
+    <div class="p">
+      Use these enrollment codes to enroll and get verified access to the Learning Pathway courses for free. <a href="/coupon" target="_blank">Learn how to use enrollment codes here</a>.
+    </div>
+    <div class="p">
+      Please <b>do not</b> share these codes with other learners. Each code can only be used once for their corresponding course and cannot be used again once redeemed for enrollment.
+    </div>
+    {% else %}
+    <p>
+      No coupons available for this Learning Pathway.
+    </p>
+    {% endif %}
+
+    <table class="table">
+      <thead class="thead-light">
+        <tr>
+          <th>Course</th>
+          <th>Coupon Code</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {% if coupons %}
+        {% for coupon in coupons %}
+        <tr>
+          <td>{{ coupon.courseoverview.display_name }}</td>
+          <td>{{ coupon.code }}</td>
+          <td>
+            <a class="btn btn-primary" target="_blank" href="{% url 'about_course' course_id=coupon.courseoverview.id %}">
+              View Course
+            </a>
+          </td>
+        </tr>
+        {% endfor %}
+        {% else %}
+        <tr>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+        </tr>
+        {% endif %}
+      </tbody>
+    </table>
+
+  </div>
+</div>
+
+{% endblock %}

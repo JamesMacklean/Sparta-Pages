@@ -645,6 +645,51 @@ def delete_training_profile(request, pk):
     return redirect('sparta-profile')
 
 
+class StudentCouponRecordsView(TemplateView):
+    template_name = 'sparta_pathway_coupons.html'
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(StudentCouponRecordsView, self).dispatch(*args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super(ProfilePageView, self).get_context_data(**kwargs)
+        pathway = get_object_or_404(Pathway, id=self.kwargs['pathway_id'])
+
+        profile = self.request.user.sparta_profile
+        student_records = StudentCouponRecord.objects.filter(profile=profile)
+
+        coupons = []
+        for c in pathway.courses.all().filter(is_active=True):
+            course_key = CourseKey.from_string(c.course_id)
+            courseoverview = CourseOverview.get_from_id(course_key)
+            coupon_data = {
+                'course_id': c.course_id,
+                'courseoverview': courseoverview,
+                'coupon_code': student_records.filter(coupon__course_id=c.course_id)[0].coupon.code
+            }
+            coupons.append(coupon_data)
+
+        context['pathway'] = pathway
+        context['coupons'] = coupons
+
+        return context
+
+    def get(self, request, *args, **kwargs):
+        try:
+            profile = SpartaProfile.objects.get(user=request.user)
+        except SpartaProfile.DoesNotExist:
+            return redirect('sparta-main')
+
+        try:
+            applications = PathwayApplication.objects.filter(profile=profile).filter(pathway__id=self.kwargs['pathway_id']).filter(status="AP")
+        except PathwayApplication.DoesNotExist:
+            return redirect('sparta-profile')
+
+        context = self.get_context_data()
+        return render(request, self.template_name, context)
+
+
 def get_upload_params_json(request):
     def make_policy():
         policy_object = {
@@ -694,6 +739,11 @@ def get_upload_params(request):
     }), content_type="application/json")
 
 
+###############
+# Admin Pages #
+###############
+
+
 class DeveloperProfileView(TemplateView):
     """
     path: /sparta/dev/profile/
@@ -715,10 +765,6 @@ class DeveloperProfileView(TemplateView):
 
         return render(request, self.template_name, context)
 
-
-###############
-# Admin Pages #
-###############
 
 @login_required
 def admin_main_view(request):

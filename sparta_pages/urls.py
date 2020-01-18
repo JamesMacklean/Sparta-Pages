@@ -31,6 +31,7 @@ urlpatterns = [
     url(r'^sparta/pathway/(?P<slug>[-\w]+)/$', views.pathway, name='sparta-pathway'),
     url(r'^sparta/pathway/(?P<pathway_id>\d+)/progress/$', views.PathwayProgressView.as_view(), name='sparta-pathway-progress'),
     url(r'^sparta/widthraw/(?P<id>\d+)/$', views.widthraw, name='sparta-withdraw'),
+    url(r'^sparta/pathway/(?P<pathway_id>\d+)/coupons/$', views.StudentCouponRecordsView.as_view(), name='sparta-pathway-coupons'),
 
     url(r'^sparta/admin-view/main/$', views.admin_main_view, name='sparta-admin-main'),
     url(r'^sparta/admin-view/applications/$', views.admin_applications_view, name='sparta-admin-applications'),
