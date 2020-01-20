@@ -2,12 +2,14 @@ import base64
 import json
 from decimal import Decimal
 
-from django.utils import timezone
 from django.contrib.auth import get_user_model
 USER_MODEL = get_user_model()
+
+from django.urls import reverse
+from django.utils import timezone
 from django.views.generic import TemplateView
 
-from rest_framework import status, renderers, response
+from rest_framework import status, renderers
 from rest_framework.decorators import api_view, permission_classes, authentication_classes, renderer_classes
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
@@ -165,7 +167,7 @@ def schema_view(request):
             )
         }
     )
-    return response.Response(schema)
+    return Response(schema)
 
 
 class RedocView(TemplateView):
