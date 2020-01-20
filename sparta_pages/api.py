@@ -16,6 +16,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from rest_framework_yaml.renderers import YAMLRenderer
+from rest_framework_swagger.renderers import OpenAPIRenderer
 
 from courseware.models import StudentModule
 from lms.djangoapps.certificates.models import certificate_status_for_student
@@ -33,7 +34,7 @@ from .local_settings import LOCAL_REDOC_SCHEMA_URL
 
 
 @api_view()
-@renderer_classes([YAMLRenderer])
+@renderer_classes([OpenAPIRenderer])
 def schema_view(request):
     schema = coreapi.Document(
         title='SPARTA Analytics API',
