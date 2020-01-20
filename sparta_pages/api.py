@@ -1,4 +1,5 @@
 import base64
+import coreapi
 import json
 from decimal import Decimal
 
