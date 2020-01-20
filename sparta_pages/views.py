@@ -662,14 +662,17 @@ class StudentCouponRecordsView(TemplateView):
 
         coupons = []
         for c in pathway.courses.all().filter(is_active=True):
-            course_key = CourseKey.from_string(c.course_id)
-            courseoverview = CourseOverview.get_from_id(course_key)
-            coupon_data = {
-                'course_id': c.course_id,
-                'courseoverview': courseoverview,
-                'coupon_code': student_records.filter(coupon__course_id=c.course_id)[0].coupon.code
-            }
-            coupons.append(coupon_data)
+            course_screcord = student_records.filter(coupon__course_id=c.course_id)
+            if course_screcord.exists():
+                coupon_code = student_records.filter(coupon__course_id=c.course_id)[0].coupon.code
+                course_key = CourseKey.from_string(c.course_id)
+                courseoverview = CourseOverview.get_from_id(course_key)
+                coupon_data = {
+                    'course_id': c.course_id,
+                    'courseoverview': courseoverview,
+                    'coupon_code': coupon_code
+                }
+                coupons.append(coupon_data)
 
         context['pathway'] = pathway
         context['coupons'] = coupons
