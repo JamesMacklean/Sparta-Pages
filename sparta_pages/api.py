@@ -41,132 +41,138 @@ def schema_view(request):
         title='SPARTA Analytics API',
         url=LOCAL_REDOC_SCHEMA_URL,
         content={
-            'pathways': coreapi.Link(
-                url='/sparta/api/v0/pathways/',
-                action='get',
-                fields=[
-                    coreapi.Field(
-                        name='offset',
-                        required=False,
-                        location='query',
-                        description='Offset or from what index list will start.'
+            'pathways': {
+                'list': coreapi.Link(
+                    url='/sparta/api/v0/pathways/',
+                    action='get',
+                    fields=[
+                        coreapi.Field(
+                            name='offset',
+                            required=False,
+                            location='query',
+                            description='Offset or from what index list will start.'
+                        ),
+                        coreapi.Field(
+                            name='limit',
+                            required=False,
+                            location='query',
+                            description='Limit or up to how many object will be retrieved.'
+                        ),
+                        coreapi.Field(
+                            name='name',
+                            required=False,
+                            location='query',
+                            description='Name of Learning Pathway to filter list.'
+                        )
+                    ],
+                    description='Return list of Learning Pathways.'
                     ),
-                    coreapi.Field(
-                        name='limit',
-                        required=False,
-                        location='query',
-                        description='Limit or up to how many object will be retrieved.'
-                    ),
-                    coreapi.Field(
-                        name='name',
-                        required=False,
-                        location='query',
-                        description='Name of Learning Pathway to filter list.'
-                    )
-                ],
-                description='Return list of Learning Pathways.'
-            ),
-            'pathway detail': coreapi.Link(
-                url='/sparta/api/v0/pathways/{id}',
-                action='get',
-                fields=[
-                    coreapi.Field(
-                        name='id',
-                        required=True,
-                        location='path',
-                        description='Id for this Learning Pathway.'
-                    ),
-                ],
-                description='Return detail of specified Learning Pathway.'
-            ),
-            'courses': coreapi.Link(
-                url='/sparta/api/v0/courses/',
-                action='get',
-                fields=[
-                    coreapi.Field(
-                        name='offset',
-                        required=False,
-                        location='query',
-                        description='Offset or from what index list will start.'
-                    ),
-                    coreapi.Field(
-                        name='limit',
-                        required=False,
-                        location='query',
-                        description='Limit or up to how many objects will be retrieved.'
-                    ),
-                    coreapi.Field(
-                        name='pathway',
-                        required=False,
-                        location='query',
-                        description='Name of Learning Pathway to filter list.'
-                    ),
-                    coreapi.Field(
-                        name='course_id',
-                        required=False,
-                        location='query',
-                        description='Unique course_id of a course to filter list.'
-                    )
-                ],
-                description='Return list of SPARTA Courses.'
-            ),
-            'course detail': coreapi.Link(
-                url='/sparta/api/v0/courses/{id}',
-                action='get',
-                fields=[
-                    coreapi.Field(
-                        name='id',
-                        required=True,
-                        location='path',
-                        description='sparta_id for this SPARTA Course (different from course_id).'
-                    ),
-                ],
-                description='Return detail of specified SPARTA Course.'
-            ),
-            'students': coreapi.Link(
-                url='/sparta/api/v0/students/',
-                action='get',
-                fields=[
-                    coreapi.Field(
-                        name='offset',
-                        required=False,
-                        location='query',
-                        description='Offset or from what index list will start.'
-                    ),
-                    coreapi.Field(
-                        name='limit',
-                        required=False,
-                        location='query',
-                        description='Limit or up to how many objects will be retrieved.'
-                    ),
-                    coreapi.Field(
-                        name='pathway',
-                        required=False,
-                        location='query',
-                        description='Name of Learning Pathway to filter list.'
-                    ),
-                    coreapi.Field(
-                        name='course_id',
-                        required=False,
-                        location='query',
-                        description='Unique course_id of a course enrolled in to filter list.'
-                    )
-                ],
-                description='Return list of Students/SPARTA Learners.'
-            ),
-            'student detail': coreapi.Link(
-                url='/sparta/api/v0/students/{id}',
-                action='get',
-                fields=[
-                    coreapi.Field(
-                        name='id',
-                        required=True,
-                        location='path',
-                        description='Id for this Student/SPARTA Learner.'
-                    ),
-                ],
-                description='Return detail of specified Student/SPARTA Learner.'
-            )
+                'detail': coreapi.Link(
+                    url='/sparta/api/v0/pathways/{id}',
+                    action='get',
+                    fields=[
+                        coreapi.Field(
+                            name='id',
+                            required=True,
+                            location='path',
+                            description='Id for this Learning Pathway.'
+                        ),
+                    ],
+                    description='Return detail of specified Learning Pathway.'
+                ),
+            },
+            'courses': {
+                'list': coreapi.Link(
+                    url='/sparta/api/v0/courses/',
+                    action='get',
+                    fields=[
+                        coreapi.Field(
+                            name='offset',
+                            required=False,
+                            location='query',
+                            description='Offset or from what index list will start.'
+                        ),
+                        coreapi.Field(
+                            name='limit',
+                            required=False,
+                            location='query',
+                            description='Limit or up to how many objects will be retrieved.'
+                        ),
+                        coreapi.Field(
+                            name='pathway',
+                            required=False,
+                            location='query',
+                            description='Name of Learning Pathway to filter list.'
+                        ),
+                        coreapi.Field(
+                            name='course_id',
+                            required=False,
+                            location='query',
+                            description='Unique course_id of a course to filter list.'
+                        )
+                    ],
+                    description='Return list of SPARTA Courses.'
+                ),
+                'detail': coreapi.Link(
+                    url='/sparta/api/v0/courses/{id}',
+                    action='get',
+                    fields=[
+                        coreapi.Field(
+                            name='id',
+                            required=True,
+                            location='path',
+                            description='sparta_id for this SPARTA Course (different from course_id).'
+                        ),
+                    ],
+                    description='Return detail of specified SPARTA Course.'
+                ),
+            },
+            'students': {
+                'list': coreapi.Link(
+                    url='/sparta/api/v0/students/',
+                    action='get',
+                    fields=[
+                        coreapi.Field(
+                            name='offset',
+                            required=False,
+                            location='query',
+                            description='Offset or from what index list will start.'
+                        ),
+                        coreapi.Field(
+                            name='limit',
+                            required=False,
+                            location='query',
+                            description='Limit or up to how many objects will be retrieved.'
+                        ),
+                        coreapi.Field(
+                            name='pathway',
+                            required=False,
+                            location='query',
+                            description='Name of Learning Pathway to filter list.'
+                        ),
+                        coreapi.Field(
+                            name='course_id',
+                            required=False,
+                            location='query',
+                            description='Unique course_id of a course enrolled in to filter list.'
+                        )
+                    ],
+                    description='Return list of Students/SPARTA Learners.'
+                ),
+                'detail': coreapi.Link(
+                    url='/sparta/api/v0/students/{id}',
+                    action='get',
+                    fields=[
+                        coreapi.Field(
+                            name='id',
+                            required=True,
+                            location='path',
+                            description='Id for this Student/SPARTA Learner.'
+                        ),
+                    ],
+                    description='Return detail of specified Student/SPARTA Learner.'
+                )
+            },
         }
     )
     return Response(schema)
