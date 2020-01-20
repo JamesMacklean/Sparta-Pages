@@ -44,4 +44,7 @@ urlpatterns = [
     url(r'^sparta/api/v0/courses/(?P<id>\d+)/$', api.course_detail_view, name='sparta-api-course-detail'),
     url(r'^sparta/api/v0/students/$', api.student_list_view, name='sparta-api-student-list'),
     url(r'^sparta/api/v0/students/(?P<id>\d+)/$', api.student_detail_view, name='sparta-api-student-detail'),
+
+    url('^sparta-schema$', api.schema_view, name='sparta-schema'),
+    url(r'^sparta/api/v0/redoc/$', api.RedocView.as_view(), name='sparta-redoc'),
 ]
