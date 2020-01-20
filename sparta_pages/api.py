@@ -176,7 +176,7 @@ class RedocView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(RedocView, self).get_context_data(**kwargs)
-        context['schema_url'] = reverse('sparta-schema')
+        context['schema_url'] = 'sparta-schema'
         return context
 
 
