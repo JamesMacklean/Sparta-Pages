@@ -43,6 +43,7 @@ def schema_view(request):
         content={
             'pathways': {
                 'list': coreapi.Link(
+                    title='Pathway List',
                     url='/sparta/api/v0/pathways/',
                     action='get',
                     fields=[
@@ -68,6 +69,7 @@ def schema_view(request):
                     description='Return list of Learning Pathways.'
                     ),
                 'detail': coreapi.Link(
+                    title='Pathway Detail',
                     url='/sparta/api/v0/pathways/{id}',
                     action='get',
                     fields=[
@@ -83,6 +85,7 @@ def schema_view(request):
             },
             'courses': {
                 'list': coreapi.Link(
+                    title='Course List',
                     url='/sparta/api/v0/courses/',
                     action='get',
                     fields=[
@@ -114,6 +117,7 @@ def schema_view(request):
                     description='Return list of SPARTA Courses.'
                 ),
                 'detail': coreapi.Link(
+                    title='Course Detail',
                     url='/sparta/api/v0/courses/{id}',
                     action='get',
                     fields=[
@@ -129,6 +133,7 @@ def schema_view(request):
             },
             'students': {
                 'list': coreapi.Link(
+                    title='Student List',
                     url='/sparta/api/v0/students/',
                     action='get',
                     fields=[
@@ -160,6 +165,7 @@ def schema_view(request):
                     description='Return list of Students/SPARTA Learners.'
                 ),
                 'detail': coreapi.Link(
+                    title='Student Detail',
                     url='/sparta/api/v0/students/{id}',
                     action='get',
                     fields=[
