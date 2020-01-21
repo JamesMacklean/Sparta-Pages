@@ -162,6 +162,11 @@ class ExportAppsForm(forms.Form):
     selection = forms.ChoiceField(choices=CHOICES)
 
 
+class ExportCredsForm(forms.Form):
+    """
+    """
+
+
 class AppsFilterForm(forms.Form):
     """
     """

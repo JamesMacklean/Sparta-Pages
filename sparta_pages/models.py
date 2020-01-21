@@ -98,6 +98,11 @@ class SpartaProfile(models.Model):
     def coursesenrolled(self):
         pass
 
+    def deactivate(self):
+        if self.is_active:
+            self.is_active = False
+            self.save()
+
 
 class PathwayApplication(models.Model):
     """

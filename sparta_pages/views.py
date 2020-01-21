@@ -35,7 +35,7 @@ from .forms import (
     SpartaProfileForm, EducationProfileForm, EmploymentProfileForm,
     TrainingProfileForm, PathwayApplicationForm,
     EducationProfileFormset, EmploymentProfileFormset, TrainingProfileFormset,
-    ExportAppsForm, AppsFilterForm
+    ExportAppsForm, AppsFilterForm, ExportCredsForm
 )
 from .models import (
     Pathway, SpartaCourse, SpartaProfile,
@@ -289,7 +289,7 @@ def upload_to_s3(user, proof_of_education_file, proof_of_agreement_file=None):
     educ_key = Key(b)
     educ_key.key = 'proof_of_education/{}_{}'.format(user.username, tnow)
     educ_key.set_contents_from_file(proof_of_education_file)
-    educ_url = "https://{}.{}.amazonaws.com/{}".format(settings.FILE_UPLOAD_STORAGE_BUCKET_NAME, blocation, educ_key.key)
+    educ_url = "https://{}.s3-{}.amazonaws.com/{}".format(settings.FILE_UPLOAD_STORAGE_BUCKET_NAME, blocation, educ_key.key)
 
     # agree_key = Key(b)
     # agree_key.key = 'proof_of_agreement/{}_{}'.format(user.username, tnow)
@@ -870,3 +870,64 @@ def admin_approve_application_view(request, id):
         app.approve()
 
     return redirect('sparta-admin-applications')
+
+
+def export_credentials_to_csv(creds):
+    tnow = timezone.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
+    filename = "sparta-scholar-credentials-{}.csv".format(tnow)
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename={}'.format(filename)
+
+    writer = csv.writer(response)
+    writer.writerow(['username', ])
+    for c in creds:
+        username = c['username']
+
+        writer.writerow([username, ])
+
+    return response
+
+
+@login_required
+def admin_credentials_view(request):
+    if not request.user.is_staff:
+        raise Http404
+
+    template_name = "sparta_admin_credentials.html"
+    context = {}
+
+    date_from = timezone.now().date() - timedelta(days=1)
+    date_to = timezone.now()
+
+    date_from_year = request.GET.get('date_from_year', None)
+    date_from_month = request.GET.get('date_from_month', None)
+    date_from_day = request.GET.get('date_from_day', None)
+    if None not in [date_from_year, date_from_month, date_from_day]:
+        date_from_str = "{}-{}-{}".format(date_from_year, date_from_month, date_from_day)
+        date_from = datetime.strptime(date_from_str, "%Y-%m-%d").date()
+
+    date_to_year = request.GET.get('date_to_year', None)
+    date_to_month = request.GET.get('date_to_month', None)
+    date_to_day = request.GET.get('date_to_day', None)
+    if None not in [date_to_year, date_to_month, date_to_day]:
+        date_to_str = "{}-{}-{}".format(date_to_year, date_to_month, date_to_day)
+        date_to = datetime.strptime(date_to_str, "%Y-%m-%d").date()
+
+    creds = []
+    for profile in SpartaProfile.objects.filter(is_active=True).filter(created_at__gte=date_from).filter(created_at__lte=date_to):
+        data = {
+            'username': profile.user.username,
+            'education_profiles': profile.education_profiles.all(),
+            'employment_profiles': profile.employment_profiles.all(),
+            'training_profiles': profile.training_profiles.all(),
+        }
+        creds.append(data)
+
+     if request.method == "POST":
+         form = ExportCredsForm(request.POST)
+         if form.is_valid():
+             return export_credentials_to_csv(creds)
+
+    context['form'] = ExportCredsForm()
+    context['credentials'] = creds
+    return render(request, template_name, context)
