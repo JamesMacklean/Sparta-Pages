@@ -907,6 +907,7 @@ def export_profiles_to_csv(profiles):
     for profile in profiles:
         username = profile['username']
         email = profile['email']
+        full_name = profile['full_name']
         approved_pathways_str = ""
         for p in profile['approved_pathways']:
             approved_pathways_str = approved_pathways_str + p.name +"| "
@@ -948,6 +949,7 @@ def admin_profiles_view(request):
             'id': profile.id,
             'username': profile.user.username,
             'email': profile.user.email,
+            'full_name': profile.user.profile.name,
             'approved_pathways': profile.applications.all().filter(status='AP'),
             'is_active': profile.is_active
         }

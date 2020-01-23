@@ -24,6 +24,7 @@
         <tr>
           <th scope="col">Username</th>
           <th scope="col">Email Address</th>
+          <th scope="col">Name</th>
           <th scope="col">Approved Pathways</th>
           <th scope="col">Active</th>
           <th scope="col">Action</th>
@@ -34,6 +35,7 @@
         <tr>
           <td>{{ profile.username }}</td>
           <td>{{ profile.email }}</td>
+          <td>{{ profile.full_name }}</td>
           <td>{{ profile.approved_pathways.count }}</td>
           <td>
             {% if profile.is_active %}
@@ -46,6 +48,7 @@
         </tr>
         {% endfor %}
         <tr>
+          <td>-</td>
           <td>-</td>
           <td>-</td>
           <td>-</td>
