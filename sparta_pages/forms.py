@@ -162,12 +162,12 @@ class ExportAppsForm(forms.Form):
     selection = forms.ChoiceField(choices=CHOICES)
 
 
-class ExportCredsForm(forms.Form):
+class ExportProfilesForm(forms.Form):
     """
     """
 
 
-class AppsFilterForm(forms.Form):
+class FilterForm(forms.Form):
     """
     """
     date_from = forms.DateField(

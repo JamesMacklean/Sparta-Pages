@@ -1,0 +1,60 @@
+{% extends "sparta_base.html" %}
+{% load static %}
+
+{% block sparta_body %}
+<h1>Admin View</h1>
+
+<form action="" method="post">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Export to CSV" />
+</form>
+
+<form action="{% url 'sparta-admin-profiles' %}" method="get">
+  {% csrf_token %}
+  {{ filter_form }}
+  <input type="submit" value="Filter" />
+</form>
+
+<div class="card">
+  <div class="card-body">
+    <h2>Sparta Profiles</h2>
+    <table class="table table-hover table-sm">
+      <thead>
+        <tr>
+          <th scope="col">Username</th>
+          <th scope="col">Email Address</th>
+          <th scope="col">Approved Pathways</th>
+          <th scope="col">Active</th>
+          <th scope="col">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for credential in credentials %}
+        <tr>
+          <td>{{ credential.username }}</td>
+          <td>{{ credential.email }}</td>
+          <td>{{ credential.approved_pathways.count }}</td>
+          <td>
+            {% if credential.is_active %}
+            <span class="glyphicon glyphicon-ok" aria-hidden="true" style="color: green;">
+            {% else %}
+            <span class="glyphicon glyphicon-remove" aria-hidden="true" style="color: red;">
+            {% endif %}
+          </td>
+          <td><a class="btn btn-primary btn-sm" href="{% url 'sparta-admin-credentials' id=credential.id %}">View Credentials</a></td>
+        </tr>
+        {% endfor %}
+        <tr>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{% endblock %}

@@ -35,7 +35,7 @@ from .forms import (
     SpartaProfileForm, EducationProfileForm, EmploymentProfileForm,
     TrainingProfileForm, PathwayApplicationForm,
     EducationProfileFormset, EmploymentProfileFormset, TrainingProfileFormset,
-    ExportAppsForm, AppsFilterForm, ExportCredsForm
+    ExportAppsForm, FilterForm, ExportProfilesForm
 )
 from .models import (
     Pathway, SpartaCourse, SpartaProfile,
@@ -842,7 +842,7 @@ def admin_applications_view(request):
     context['denied_applications'] = denied_applications
 
     context['form'] = ExportAppsForm()
-    context['filter_form'] = AppsFilterForm(request.GET or None)
+    context['filter_form'] = FilterForm(request.GET or None)
 
     if request.method == "POST":
         form = ExportAppsForm(request.POST)
@@ -896,28 +896,33 @@ def admin_approve_application_view(request, id):
     return redirect('sparta-admin-applications')
 
 
-def export_credentials_to_csv(creds):
+def export_profiles_to_csv(profiles):
     tnow = timezone.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
     filename = "sparta-scholar-credentials-{}.csv".format(tnow)
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename={}'.format(filename)
 
     writer = csv.writer(response)
-    writer.writerow(['username', ])
-    for c in creds:
-        username = c['username']
+    writer.writerow(['username', 'email', 'approved_pathways', 'is_active'])
+    for profile in profiles:
+        username = profile['username']
+        email = profile['email']
+        approved_pathways_str = ""
+        for p in profile['approved_pathways']:
+            approved_pathways_str = approved_pathways_str + p.name +"| "
+        is_active_str = "True" if profile['is_active'] else "False"
 
-        writer.writerow([username, ])
+        writer.writerow([username, email, approved_pathways_str[:-2], is_active_str])
 
     return response
 
 
 @login_required
-def admin_credentials_view(request):
+def admin_profiles_view(request):
     if not request.user.is_staff:
         raise Http404
 
-    template_name = "sparta_admin_credentials.html"
+    template_name = "sparta_admin_profiles.html"
     context = {}
 
     date_from = timezone.now().date() - timedelta(days=1)
@@ -937,20 +942,39 @@ def admin_credentials_view(request):
         date_to_str = "{}-{}-{}".format(date_to_year, date_to_month, date_to_day)
         date_to = datetime.strptime(date_to_str, "%Y-%m-%d").date()
 
-    creds = []
-    for profile in SpartaProfile.objects.filter(is_active=True).filter(created_at__gte=date_from).filter(created_at__lte=date_to):
+    profiles = []
+    for profile in SpartaProfile.objects.filter(created_at__gte=date_from).filter(created_at__lte=date_to):
         data = {
+            'id': profile.id,
             'username': profile.user.username,
-            'education_profiles': profile.education_profiles.all(),
-            'employment_profiles': profile.employment_profiles.all(),
-            'training_profiles': profile.training_profiles.all(),
+            'email': profile.user.email,
+            'approved_pathways': profile.applications.all().filter(status='AP'),
+            'is_active': profile.is_active
         }
-        creds.append(data)
+        profiles.append(data)
     if request.method == "POST":
-        form = ExportCredsForm(request.POST)
+        form = ExportProfilesForm(request.POST)
         if form.is_valid():
-            return export_credentials_to_csv(creds)
+            return export_profiles_to_csv(profiles)
 
-    context['form'] = ExportCredsForm()
-    context['credentials'] = creds
+    context['form'] = ExportProfilesForm()
+    context['profiles'] = profiles
+    context['filter_form'] = FilterForm(request.GET or None)
+
+    return render(request, template_name, context)
+
+
+@login_required
+def admin_credentials_view(request, id):
+    if not request.user.is_staff:
+        raise Http404
+
+    template_name = "sparta_admin_credentials.html"
+    context = {}
+
+    profile = get_object_or_404(SpartaProfile, id=id)
+    context['profile'] = profile
+    context['education_profiles'] = profile.education_profiles.all()
+    context['employment_profiles'] = profile.employment_profiles.all()
+    context['training_profiles'] = profile.training_profiles.all()
     return render(request, template_name, context)
