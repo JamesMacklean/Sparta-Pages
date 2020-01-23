@@ -74,12 +74,12 @@ def pathway(request, slug):
     context = {}
 
     pathway = get_object_or_404(Pathway, slug=slug)
-    courses = SpartaCourse.objects.filter(is_active=True).filter(pathway=pathway)
+    sparta_courses = SpartaCourse.objects.filter(is_active=True).filter(pathway=pathway)
 
     core_courses = []
     elective_courses = []
     for group in pathway.groups.all().filter(is_active=True):
-        pathway_courses = courses.filter(group=group)
+        pathway_courses = sparta_courses.filter(group=group)
         courses = []
         for pathway_course in pathway_courses:
             course = {'pathway_course': pathway_course}
