@@ -24,23 +24,48 @@
 
 
 <div class="container-grid container-21 container">
-  <h1 class="heading-3" style="text-align: center;"><span class="heading-text-1" style="font-size: 26px;font-weight: 700;">Courses</span>
+  <h1 class="heading-3" style="text-align: center;"><span class="heading-text-1" style="font-size: 30px;font-weight: 700;">CORE COURSES</span>
   </h1>
 </div>
 
 <div class="container-grid container container-9">
-  {% if courses %}
-    {% for course in courses %}
-    <div class="row mb-md-5 mb-3 mx-auto">
-      {% include "sparta_course.html" %}
-    </div>
+  {% if core_courses %}
+    {% for group in core_courses %}
+      {% if group.complete_at_least %}
+      <h3 style="color: gray;">
+        Complete at least {{group.complete_at_least}}
+      </h3>
+      {% endif %}
+      {% for course in group.courses %}
+        {% include "sparta_course.html" %}
+      {% endfor %}
     {% endfor %}
   {% else %}
     <div class="container-grid container container-15">
-      <p class="paragraph paragraph-5">The are no courses available for this learning pathway.</p>
+      <p class="paragraph paragraph-5">The are no core courses available for this learning pathway.</p>
     </div>
   {% endif %}
 </div>
+
+{% if elective_courses %}
+<div class="container-grid container-21 container">
+  <h1 class="heading-3" style="text-align: center;"><span class="heading-text-1" style="font-size: 26px;font-weight: 700;">ELECTIVES</span>
+  </h1>
+</div>
+
+<div class="container-grid container container-9">
+  {% for group in elective_courses %}
+    {% if group.complete_at_least %}
+    <h3 style="color: gray;">
+      Complete at least {{group.complete_at_least}}
+    </h3>
+    {% endif %}
+    {% for course in group.courses %}
+      {% include "sparta_course.html" %}
+    {% endfor %}
+  {% endfor %}
+</div>
+{% endif %}
 
 <div class="container-grid cta-2_block">
     <div class="container-grid row">

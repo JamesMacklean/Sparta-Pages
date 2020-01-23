@@ -74,19 +74,32 @@ def pathway(request, slug):
     context = {}
 
     pathway = get_object_or_404(Pathway, slug=slug)
+    courses = SpartaCourse.objects.filter(is_active=True).filter(pathway=pathway)
 
-    pathway_courses = SpartaCourse.objects.filter(is_active=True).filter(pathway=pathway)
-    courses = []
-    for pathway_course in pathway_courses:
-        course = {'pathway_course': pathway_course}
-        course_key = CourseKey.from_string(pathway_course.course_id)
-        courseoverview = CourseOverview.get_from_id(course_key)
-        course['courseoverview'] = courseoverview
-        courses.append(course)
+    core_courses = []
+    elective_courses = []
+    for group in pathway.groups.all().filter(is_active=True):
+        pathway_courses = courses.filter(group=group)
+        courses = []
+        for pathway_course in pathway_courses:
+            course = {'pathway_course': pathway_course}
+            course_key = CourseKey.from_string(pathway_course.course_id)
+            courseoverview = CourseOverview.get_from_id(course_key)
+            course['courseoverview'] = courseoverview
+            courses.append(course)
+        data = {
+            'courses': courses,
+            'complete_at_least': group.complete_at_least
+        }
+        if group.type == "EL":
+            elective_courses.append(data)
+        else:
+            core_courses.append(data)
 
+
+    context['core_courses'] = core_courses
+    context['elective_courses'] = elective_courses
     context['pathway'] = pathway
-    context['courses'] = courses
-
     return render(request, template_name, context)
 
 
