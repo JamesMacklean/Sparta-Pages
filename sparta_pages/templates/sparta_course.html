@@ -7,7 +7,7 @@
       <a href="{% url 'about_course' course_id=course.courseoverview.id %}">
         <h3 class="text-bold teal line-hide-2 pt-2">{{course.courseoverview.display_name}}</h3>
       </a>
-      <div class="mt-auto" style="color: gray;">
+      <div style="color: gray;">
         <small>
         {% if course.courseoverview.display_org_with_default != None %}
         {{course.courseoverview.display_org_with_default}}
@@ -17,7 +17,7 @@
         </small>
         <small> - {{course.courseoverview.display_number_with_default}}</small>
       </div>
-      <div class="mt-auto" style="color: gray;">
+      <div style="color: gray;">
         <small>
         {% if course.courseoverview.start_display != None %}
         Starts: {{course.courseoverview.start_display}}

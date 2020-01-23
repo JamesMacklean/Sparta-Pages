@@ -32,7 +32,7 @@
   {% if core_courses %}
     {% for group in core_courses %}
       {% if group.complete_at_least %}
-      <h5 class="text-center" style="color: gray;font-weight: bolder;">
+      <h5 class="text-center py-3" style="color: gray;font-weight: bolder;">
         Complete at least {{group.complete_at_least}}
       </h5>
       {% endif %}
@@ -78,4 +78,6 @@
     </div>
 </div>
 
+<br />
+<br />
 {% endblock %}
