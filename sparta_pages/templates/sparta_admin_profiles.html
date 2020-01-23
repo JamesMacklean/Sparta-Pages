@@ -37,9 +37,9 @@
           <td>{{ profile.approved_pathways.count }}</td>
           <td>
             {% if profile.is_active %}
-            <span class="glyphicon glyphicon-ok" aria-hidden="true" style="color: green;">
+            <i class="material-icons" style="color: green;">check_circle</i>
             {% else %}
-            <span class="glyphicon glyphicon-remove" aria-hidden="true" style="color: red;">
+            <i class="material-icons" style="color: red;">cancel</i>
             {% endif %}
           </td>
           <td><a class="btn btn-primary btn-sm" href="{% url 'sparta-admin-credentials' id=profile.id %}">View Credentials</a></td>
