@@ -3,6 +3,8 @@
 
 {% block sparta_body %}
 
+{% if not profile.is_active %}
+
 <section class="outside-app">
   <h1>This SPARTA profile is deactivated.</h1>
   <div>
@@ -12,7 +14,6 @@
   </div>
 </section>
 
-{% if not profile.is_active %}
 
 {% else %}
 <div class="tab">
