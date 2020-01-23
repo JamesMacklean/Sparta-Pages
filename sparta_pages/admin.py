@@ -1,6 +1,6 @@
 from django.contrib import admin
 from .models import (
-    Pathway, SpartaCourse,
+    Pathway, SpartaCourse, CourseGroup,
     SpartaProfile, PathwayApplication,
     EducationProfile, EmploymentProfile, TrainingProfile,
     Event, APIToken,
@@ -17,6 +17,13 @@ class SpartaCourseAdmin(admin.ModelAdmin):
     list_display = ('pathway', 'course_id')
     list_filter = ('pathway',)
     search_fields = ['pathway__name', 'course_id']
+
+
+@admin.register(CourseGroup)
+class CourseGroupAdmin(admin.ModelAdmin):
+    list_display = ('name', 'pathway', 'type')
+    list_filter = ('pathway', 'type')
+    search_fields = ['name', 'pathway__name',]
 
 
 @admin.register(SpartaProfile)
