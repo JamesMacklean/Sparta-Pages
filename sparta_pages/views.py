@@ -933,11 +933,10 @@ def admin_credentials_view(request):
             'training_profiles': profile.training_profiles.all(),
         }
         creds.append(data)
-
-     if request.method == "POST":
-         form = ExportCredsForm(request.POST)
-         if form.is_valid():
-             return export_credentials_to_csv(creds)
+    if request.method == "POST":
+        form = ExportCredsForm(request.POST)
+        if form.is_valid():
+            return export_credentials_to_csv(creds)
 
     context['form'] = ExportCredsForm()
     context['credentials'] = creds
