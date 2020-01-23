@@ -47,6 +47,13 @@ class SpartaCourse(models.Model):
     long_description = models.TextField(blank=True, default="")
     image_url = models.CharField(max_length=255, default="https://coursebank-static-assets.s3-ap-northeast-1.amazonaws.com/sparta+black.png")
     order = models.PositiveSmallIntegerField(default=0)
+    display_order = models.CharField(max_length=255, blank=True, default="")
+    group = models.ForeignKey(
+        'CourseGroup',
+        on_delete=models.CASCADE,
+        null=True, blank=True,
+        related_name="courses"
+    )
     is_active = models.BooleanField(default=True)
 
     class Meta:
@@ -59,6 +66,30 @@ class SpartaCourse(models.Model):
     @property
     def related_courses(self):
         pass
+
+
+class CourseGroup(models.Model):
+    """
+    """
+    CORE = "CO"
+    ELECTIVE = "EL"
+    GROUP_TYPE = (
+        (CORE, "Core"),
+        (ELECTIVE, "Elective"),
+    )
+    type = models.CharField(choices=GROUP_TYPE, default=CORE)
+    name = models.CharField(max_length=255)
+    pathway = models.ForeignKey(
+        'Pathway',
+        on_delete=models.CASCADE,
+        null=True, blank=True,
+        related_name="groups"
+    )
+    complete_at_least = models.PositiveSmallIntegerField(null=True, blank=True)
+    is_active = models.BooleanField(default=True)
+
+    class Meta:
+        verbose_name_plural = "2.2 Course Groups"
 
 
 class SpartaProfile(models.Model):
