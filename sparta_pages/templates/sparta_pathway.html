@@ -32,9 +32,9 @@
   {% if core_courses %}
     {% for group in core_courses %}
       {% if group.complete_at_least %}
-      <h3 style="color: gray;">
+      <h5 class="text-center" style="color: gray;font-weight: bolder;">
         Complete at least {{group.complete_at_least}}
-      </h3>
+      </h5>
       {% endif %}
       {% for course in group.courses %}
         {% include "sparta_course.html" %}
@@ -56,9 +56,9 @@
 <div class="container-grid container container-9">
   {% for group in elective_courses %}
     {% if group.complete_at_least %}
-    <h3 style="color: gray;">
+    <h5 class="text-center py-3" style="color: gray;font-weight: bolder;">
       Complete at least {{group.complete_at_least}}
-    </h3>
+    </h5>
     {% endif %}
     {% for course in group.courses %}
       {% include "sparta_course.html" %}
