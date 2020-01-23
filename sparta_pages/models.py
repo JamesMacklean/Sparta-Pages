@@ -77,8 +77,8 @@ class CourseGroup(models.Model):
         (CORE, "Core"),
         (ELECTIVE, "Elective"),
     )
-    type = models.CharField(choices=GROUP_TYPE, default=CORE)
-    name = models.CharField(max_length=255)
+    type = models.CharField(max_length=2, choices=GROUP_TYPE, default=CORE)
+    name = models.CharField(max_length=255, null=True, blank=True)
     pathway = models.ForeignKey(
         'Pathway',
         on_delete=models.CASCADE,
@@ -90,6 +90,9 @@ class CourseGroup(models.Model):
 
     class Meta:
         verbose_name_plural = "2.2 Course Groups"
+
+    def __str__(self):
+        return self.name or "{}: {}".format(self.pathway.name, self.type)
 
 
 class SpartaProfile(models.Model):
