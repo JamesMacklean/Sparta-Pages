@@ -3,6 +3,18 @@
 
 {% block sparta_body %}
 
+<section class="outside-app">
+  <h1>This SPARTA profile is deactivated.</h1>
+  <div>
+    <p>The SPARTA team has found your credentials, which may include your education, employment, training, or document submission, invalid.</p>
+    <br>
+    <p>You can contact technical support if you have any questions.</p>
+  </div>
+</section>
+
+{% if not profile.is_active %}
+
+{% else %}
 <div class="tab">
   <div class="tablinks btn btn-outline-info" onclick="openTab(event, 'LearningPathways')">Learning Pathways</div>
   <div class="tablinks btn btn-outline-info" onclick="openTab(event, 'ScholarProfile')">Scholar Profile</div>
@@ -116,5 +128,7 @@
     evt.currentTarget.className += " active";
   }
 </script>
+
+{% endif %}
 
 {% endblock %}

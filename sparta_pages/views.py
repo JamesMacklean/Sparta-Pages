@@ -319,6 +319,7 @@ class ProfilePageView(TemplateView):
         context = super(ProfilePageView, self).get_context_data(**kwargs)
         profile = self.request.user.sparta_profile
         applications = PathwayApplication.objects.all().filter(profile=profile).exclude(status='WE')
+        context['profile'] = profile
         context['applications'] = applications
         context['education_profiles'] = EducationProfile.objects.all().filter(profile=profile)
         context['employment_profiles'] = EmploymentProfile.objects.all().filter(profile=profile)
@@ -357,7 +358,8 @@ class PathwayApplicationView(TemplateView):
 
     def get(self, request, *args, **kwargs):
         context = self.get_context_data()
-        # context['form'] = self.form_class()
+        if not request.user.sparta_profile.is_active:
+            return redirect('sparta-profile')
         return render(request, self.template_name, context)
 
 
@@ -369,8 +371,9 @@ def apply(request, id):
     except Pathway.DoesNotExist:
         raise HttpResponse(status=500)
 
+    profiles = SpartaProfile.objects.filter(is_active=True)
     try:
-        sparta_profile = SpartaProfile.objects.get(user=request.user)
+        sparta_profile = profiles.get(user=request.user)
     except SpartaProfile.DoesNotExist:
         raise HttpResponse(status=403)
 
@@ -383,6 +386,8 @@ def apply(request, id):
 @require_POST
 def widthraw(request, id):
     """"""
+    if not request.user.sparta_profile.is_active:
+        return redirect('sparta-profile')
     app = get_object_or_404(PathwayApplication, id=id)
     if request.user != app.profile.user:
         return HttpResponse(status=403)
@@ -406,6 +411,9 @@ class PathwayProgressView(TemplateView):
         return super(PathwayProgressView, self).dispatch(*args, **kwargs)
 
     def get(self, request, *args, **kwargs):
+        if not request.user.sparta_profile.is_active:
+            return redirect('sparta-profile')
+
         context = self.get_context_data()
 
         pathway = get_object_or_404(Pathway, id=self.kwargs['pathway_id'])
@@ -473,7 +481,7 @@ class EducationProfileCreateView(CreateView):
         return super(EducationProfileCreateView, self).dispatch(*args, **kwargs)
 
     def get(self, request, *args, **kwargs):
-        if not SpartaProfile.objects.filter(user=request.user).exists():
+        if not SpartaProfile.objects.filter(is_active=True).filter(user=request.user).exists():
             return redirect('sparta-register')
         educationFormset = self.educ_formset_class(request.GET or None)
         return render(request, self.template_name, {'educationFormset': educationFormset})
@@ -518,7 +526,7 @@ class EmploymentProfileCreateView(CreateView):
         return super(EmploymentProfileCreateView, self).dispatch(*args, **kwargs)
 
     def get(self, request, *args, **kwargs):
-        if not SpartaProfile.objects.filter(user=request.user).exists():
+        if not SpartaProfile.filter(is_active=True).objects.filter(user=request.user).exists():
             return redirect('sparta-register')
 
         employmentFormset = self.employ_formset_class(request.GET or None)
@@ -566,7 +574,7 @@ class TrainingProfileCreateView(CreateView):
         return super(TrainingProfileCreateView, self).dispatch(*args, **kwargs)
 
     def get(self, request, *args, **kwargs):
-        if not SpartaProfile.objects.filter(user=request.user).exists():
+        if not SpartaProfile.filter(is_active=True).objects.filter(user=request.user).exists():
             return redirect('sparta-register')
         trainingFormset = self.train_formset_class(request.GET or None)
         return render(request, self.template_name, {'trainingFormset': trainingFormset})
@@ -600,8 +608,9 @@ class TrainingProfileCreateView(CreateView):
 
 @require_POST
 def delete_education_profile(request, pk):
+    profiles = SpartaProfile.objects.filter(is_active=True)
     try:
-        sparta_profile = SpartaProfile.objects.get(user=request.user)
+        sparta_profile = profiles.get(user=request.user)
     except SpartaProfile.DoesNotExist:
         raise HttpResponse(status=403)
 
@@ -616,8 +625,9 @@ def delete_education_profile(request, pk):
 
 @require_POST
 def delete_employment_profile(request, pk):
+    profiles = SpartaProfile.objects.filter(is_active=True)
     try:
-        sparta_profile = SpartaProfile.objects.get(user=request.user)
+        sparta_profile = profiles.get(user=request.user)
     except SpartaProfile.DoesNotExist:
         raise HttpResponse(status=403)
 
@@ -632,8 +642,9 @@ def delete_employment_profile(request, pk):
 
 @require_POST
 def delete_training_profile(request, pk):
+    profiles = SpartaProfile.objects.filter(is_active=True)
     try:
-        sparta_profile = SpartaProfile.objects.get(user=request.user)
+        sparta_profile = profiles.get(user=request.user)
     except SpartaProfile.DoesNotExist:
         raise HttpResponse(status=403)
 
