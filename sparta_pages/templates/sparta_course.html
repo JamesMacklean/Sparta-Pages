@@ -1,20 +1,5 @@
-<!-- <a class="col-9 col-sm-6 col-md-4 course-item mb-3 mx-auto px-3" href="{% url 'about_course' course_id=course.courseoverview.id %}">
-    <div class="card" style="border-bottom: 3px solid #126f9a;box-shadow: 0 1px 10px 0 rgba(0,0,0,0.125),inset 0 0 0 1px rgba(255,255,255,0.75);">
-      <img class="card-img-top" src="{{ course.courseoverview.course_image_url }}">
-      <div class="card-body position-relative">
-        <h5 class="card-title text-bold teal line-hide-2 font-1 pb-4">{{course.courseoverview.display_name}}</h5>
-        <p class="card-text position-absolute fixed-bottom" style="color: gray;">
-            {% if course.courseoverview.start_display != None %}
-              Starts: {{course.courseoverview.start_display}}
-            {% else %}
-              Starts: {{course.courseoverview.start}}
-            {% endif %}
-        </p>
-      </div>
-    </div>
-</a> -->
-
-<div class="course-item mb-3 mx-auto px-3 d-flex justify-content-start" style="border-bottom: 3px solid #126f9a;box-shadow: 0 1px 10px 0 rgba(0,0,0,0.125),inset 0 0 0 1px rgba(255,255,255,0.75);max-height: 150px;">
+<a href="{% url 'about_course' course_id=course.courseoverview.id %}">
+<div class="course-item mb-3 mx-auto px-3 d-flex justify-content-between" style="box-shadow: 0 1px 10px 0 rgba(0,0,0,0.125),inset 0 0 0 1px rgba(255,255,255,0.75);max-height: 150px;">
   <div class="mr-5">
     <img class="p-1" src="{{ course.courseoverview.course_image_url }}" style="max-height: 150px;">
   </div>
@@ -22,7 +7,18 @@
     <a href="{% url 'about_course' course_id=course.courseoverview.id %}">
       <h3 class="text-bold teal line-hide-2 pb-4">{{course.courseoverview.display_name}}</h3>
     </a>
-    <p class="mt-auto" style="color: gray;">
+    <div class="mt-auto" style="color: gray;">
+      <small>
+      {% if course.courseoverview.display_org_with_default != None %}
+      {{course.courseoverview.display_org_with_default}}
+      {% else %}
+      {{course.courseoverview.org}}
+      {% endif %}
+      </small>
+       -
+      <<small>{{course.courseoverview.display_number_with_default}}</small>
+    </div>
+    <div class="mt-auto" style="color: gray;">
       <small>
       {% if course.courseoverview.start_display != None %}
       Starts: {{course.courseoverview.start_display}}
@@ -30,9 +26,19 @@
       Starts: {{course.courseoverview.start}}
       {% endif %}
       </small>
-    </p>
+    </div>
   </div>
-  <div class="d-flex align-items-end flex-column ml-5">
-    <a class="btn btn-outline-info my-auto" href="{% url 'about_course' course_id=course.courseoverview.id %}">View More</a>
+  <div>
+    <div class="h3" style="font-family: Montserrat;">
+      course
+    </div>
+    <div class="font-weight-bolder" style="font-size: 3.5em;">
+      {% if course.pathway_course.display_order %}
+      {{course.pathway_course.display_order}}
+      {% else %}
+      {{course.pathway_course.order}}
+      {% endif %}
+    </div>
   </div>
 </div>
+</a>
