@@ -30,13 +30,13 @@
         </tr>
       </thead>
       <tbody>
-        {% for credential in credentials %}
+        {% for profile in profiles %}
         <tr>
-          <td>{{ credential.username }}</td>
-          <td>{{ credential.email }}</td>
-          <td>{{ credential.approved_pathways.count }}</td>
+          <td>{{ profile.username }}</td>
+          <td>{{ profile.email }}</td>
+          <td>{{ profile.approved_pathways.count }}</td>
           <td>
-            {% if credential.is_active %}
+            {% if profile.is_active %}
             <span class="glyphicon glyphicon-ok" aria-hidden="true" style="color: green;">
             {% else %}
             <span class="glyphicon glyphicon-remove" aria-hidden="true" style="color: red;">
