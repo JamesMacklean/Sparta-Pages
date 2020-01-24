@@ -342,11 +342,11 @@ class ProfilePageView(TemplateView):
         return context
 
     def get(self, request, *args, **kwargs):
-        context = self.get_context_data()
         try:
             profile = SpartaProfile.objects.get(user=request.user)
         except SpartaProfile.DoesNotExist:
             return redirect('sparta-main')
+        context = self.get_context_data()
         return render(request, self.template_name, context)
 
 
