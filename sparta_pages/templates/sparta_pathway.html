@@ -60,9 +60,11 @@
       Complete at least {{group.complete_at_least}}
     </h5>
     {% endif %}
+    <div class="row mb-md-5 mb-3 mx-auto">
     {% for course in group.courses %}
-      {% include "sparta_course.html" %}
+      {% include "sparta_elective_course.html" %}
     {% endfor %}
+    </div>
   {% endfor %}
 </div>
 {% endif %}
