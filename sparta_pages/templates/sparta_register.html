@@ -24,9 +24,9 @@
   <div class="card-body">
     <h2 class="card-title">Register to become a SPARTA Scholar</h2>
     <div>
-      To become a SPARTA Scholar and gain free access to the data analytics courses, you must accomplish these forms. Please submit the following eligibility document:
+      Become a SPARTA Scholar and gain free access to the data analytics courses. Please submit the following eligibility document:
       <ul>
-        <li><b>Proof of Education</b> - A scanned image or a clear photograph of your certificate of graduation or diploma.</li>
+        <li><b>*Proof of Education</b> - A scanned image or a clear photograph of your certificate of graduation or diploma.</li>
       </ul>
     </div>
 
@@ -43,9 +43,9 @@
           {{ sparta_profile_form.non_field_errors }}
           <div class="form-group">
               {{ sparta_profile_form.proof_of_education_file.errors }}
-              <label for="{{ sparta_profile_form.proof_of_education_file.id_for_label }}" style="font-family: inherit;font-style: inherit;">Proof of Education:</label>
+              <label for="{{ sparta_profile_form.proof_of_education_file.id_for_label }}" style="font-family: inherit;font-style: inherit;">*Proof of Education:</label>
               {{ sparta_profile_form.proof_of_education_file }}
-              <small>*File size must not be larger than 2.5MB.</small>
+              <small>File size must not be larger than 2.5MB.</small>
           </div>
           <div class="form-group">
               {{ sparta_profile_form.tos_yes.errors }}
