@@ -230,10 +230,12 @@ class EducationProfile(models.Model):
 class EmploymentProfile(models.Model):
     """
     """
+    NOT_APPLICABLE = "NA"
     PRIVATE = "PR"
     GOVERNMENT = "GO"
     ACADEME = "AC"
     AFF_CHOICES = (
+        (NOT_APPLICABLE, "Not Applicable"),
         (PRIVATE, "Private"),
         (GOVERNMENT, "Government"),
         (ACADEME, "Academe"),
