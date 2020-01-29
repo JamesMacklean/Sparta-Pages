@@ -56,9 +56,14 @@
           <div id="ifOtherAttain" style="display: none;">
             <div class="form-group">
                 {{ sparta_profile_form.other_attain.errors }}
-                <label for="{{ sparta_profile_form.other_attain.id_for_label }}" style="font-family: inherit;font-style: inherit;">If you chose "Other" for Attainment:</label>
+                <label for="{{ sparta_profile_form.other_attain.id_for_label }}" style="font-family: inherit;font-style: inherit;">If you chose "Other" for Attainment, you can enter further details here:</label>
                 {{ sparta_profile_form.other_attain }}
             </div>
+          </div>
+          <div class="form-group">
+              {{ sparta_profile_form.is_employed.errors }}
+              <label for="{{ sparta_profile_form.is_employed.id_for_label }}" style="font-family: inherit;font-style: inherit;">*Are you currently employed?</label>
+              {{ sparta_profile_form.is_employed }}
           </div>
           <div class="form-group">
               {{ sparta_profile_form.grad_degree.errors }}
