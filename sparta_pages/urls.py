@@ -6,7 +6,7 @@ from . import api
 from . import views
 
 urlpatterns = [
-    url(r'^sparta', views.main, name='sparta-main'),
+    url(r'^sparta$', views.main, name='sparta-main'),
     url(r'^sparta/tos/$', TemplateView.as_view(template_name="sparta_tos.html"), name='sparta-tos'),
 
     url(r'^sparta/register/$', views.RegistrationPageView.as_view(), name='sparta-register'),
