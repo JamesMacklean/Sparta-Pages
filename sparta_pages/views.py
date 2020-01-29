@@ -35,10 +35,11 @@ from .forms import (
     SpartaProfileForm, EducationProfileForm, EmploymentProfileForm,
     TrainingProfileForm, PathwayApplicationForm,
     EducationProfileFormset, EmploymentProfileFormset, TrainingProfileFormset,
-    ExportAppsForm, FilterForm, ExportProfilesForm
+    ExportAppsForm, FilterForm, ExportProfilesForm,
+    ExtendedSpartaProfileForm
 )
 from .models import (
-    Pathway, SpartaCourse, SpartaProfile,
+    Pathway, SpartaCourse, SpartaProfile, ExtendedSpartaProfile,
     EducationProfile, EmploymentProfile, TrainingProfile,
     PathwayApplication, Event, APIToken,
     SpartaCoupon, StudentCouponRecord
@@ -142,6 +143,46 @@ class RegistrationPageView(View):
             # sprofile.proof_of_agreement = proof_of_agreement_url
             sprofile.proof_of_education = proof_of_education_url
             sprofile.save()
+
+            return redirect(reverse('sparta-register-extended'))
+        return render(request, self.template_name, {'sparta_profile_form': sparta_profile_form})
+
+
+class ExtendedRegistrationPageView(View):
+    """
+    """
+    sparta_profile_form_class = ExtendedSpartaProfileForm
+    template_name = "sparta_register_extended.html"
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(ExtendedRegistrationPageView, self).dispatch(*args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
+        if not SpartaProfile.objects.filter(user=request.user).exists():
+            return redirect('sparta-register')
+        sparta_profile_form = self.sparta_profile_form_class()
+        return render(request, self.template_name, {'sparta_profile_form': sparta_profile_form})
+
+    def post(self, request, *args, **kwargs):
+        sparta_profile_form = self.sparta_profile_form_class(request.POST)
+        if sparta_profile_form.is_valid():
+            affiliation = sparta_profile_form.cleaned_data['affiliation']
+            attainment = sparta_profile_form.cleaned_data['attainment']
+            other_attain = sparta_profile_form.cleaned_data['other_attain']
+            grad_degree = sparta_profile_form.cleaned_data['grad_degree']
+
+            try:
+                ext_profile = ExtendedSpartaProfile.objects.get(user=request.user)
+            except ExtendedSpartaProfile.DoesNotExist:
+                ext_profile = ExtendedSpartaProfile(user=request.user)
+
+            ext_profile.affiliation = affiliation
+            ext_profile.attainment = attainment
+            ext_profile.grad_degree = grad_degree
+            if other_attain:
+                ext_profile.other_attain = other_attain
+            ext_profile.save()
 
             return redirect(reverse('sparta-register-education'))
         return render(request, self.template_name, {'sparta_profile_form': sparta_profile_form})

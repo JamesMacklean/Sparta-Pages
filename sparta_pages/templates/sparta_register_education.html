@@ -3,23 +3,26 @@
 
 {% block sparta_body %}
 <div class="progress">
-  <div role="progressbar" aria-valuemin="0" aria-valuemax="100" class="progress-bar bg-info" style="width: 25%;font-size: 1.25em;" aria-valuenow="0">
+  <div role="progressbar" aria-valuemin="0" aria-valuemax="100" class="progress-bar bg-info" style="width: 20%;font-size: 1.25em;" aria-valuenow="0">
     Step 1: Eligibility Requirements
   </div>
-  <div role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 25%;font-size: 1.25em;" aria-valuenow="0" class="progress-bar bg-success">
-    Step 2: Education Profile
+  <div role="progressbar" aria-valuemin="0" aria-valuemax="100" class="progress-bar bg-primary" style="width: 20%;font-size: 1.25em;" aria-valuenow="0">
+    Step 2: Scholar Profile Requirements
   </div>
-  <div role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 25%;font-size: 1.25em;" aria-valuenow="0" class="progress-bar bg-info">
-    Step 3: Employment Profile
+  <div role="progressbar" aria-valuemin="0" aria-valuemax="100" class="progress-bar bg-success" style="width: 20%;font-size: 1.25em;" aria-valuenow="0" >
+    Step 3: Education Profile
   </div>
-  <div role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 25%;font-size: 1.25em;" aria-valuenow="0" class="progress-bar bg-primary">
-    Step 4: Training Profile
+  <div role="progressbar" aria-valuemin="0" aria-valuemax="100" class="progress-bar bg-info" style="width: 20%;font-size: 1.25em;" aria-valuenow="0" >
+    Step 4: Employment Profile
+  </div>
+  <div role="progressbar" aria-valuemin="0" aria-valuemax="100" class="progress-bar bg-primary" style="width: 20%;font-size: 1.25em;" aria-valuenow="0" >
+    Step 5: Training Profile
   </div>
 </div>
 <div class="progress">
-  <div role="progressbar" aria-valuemin="0" aria-valuemax="100" class="progress-bar bg-info" style="width: 25%;font-size: 1.25em;font-weight: bolder;" aria-valuenow="0"></div>
-  <div role="progressbar" aria-valuemin="0" aria-valuemax="100" class="progress-bar bg-info" style="width: 25%;font-size: 1.25em;font-weight: bolder;" aria-valuenow="0">^</div>
-
+  <div role="progressbar" aria-valuemin="0" aria-valuemax="100" class="progress-bar bg-info" style="width: 20%;font-size: 1.25em;font-weight: bolder;" aria-valuenow="0"></div>
+  <div role="progressbar" aria-valuemin="0" aria-valuemax="100" class="progress-bar bg-info" style="width: 20%;font-size: 1.25em;font-weight: bolder;" aria-valuenow="0"></div>
+  <div role="progressbar" aria-valuemin="0" aria-valuemax="100" class="progress-bar bg-info" style="width: 20%;font-size: 1.25em;font-weight: bolder;" aria-valuenow="0">^</div>
 </div>
 
 <div class="card">
@@ -27,7 +30,7 @@
     <h2 class="card-title">Education Profile</h2>
     <div>
       Become a SPARTA Scholar and gain free access to the data analytics courses.
-      Enter your Education credentials below or skip this step and update your Education profile later.
+      You can enter your Education credentials below to update your SPARTA scholar profile.
     </div>
 
     <form method="post" action="{% url 'sparta-register-education' %}">
@@ -76,7 +79,7 @@
       <a class="btn btn-outline-primary education-add-form-row">Add Education</a>
       <div class="p-3 d-flex justify-content-center">
         <span style="padding-right: 2em;">
-          <a class="btn btn-outline-info" href="{% url 'sparta-register-employment'%}">Skip this step</a>
+          <a class="btn btn-outline-info" href="{% url 'sparta-register-employment'%}">I have no Educational credentials to submit.</a>
         </span>
         <input type="submit" value="Submit Education Profile" />
       </div>

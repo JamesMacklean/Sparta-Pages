@@ -7,6 +7,7 @@ from django.utils import timezone
 
 from .models import (
     SpartaProfile,
+    ExtendedSpartaProfile,
     EducationProfile,
     EmploymentProfile,
     TrainingProfile,
@@ -19,6 +20,14 @@ class SpartaProfileForm(forms.Form):
     """
     proof_of_education_file = forms.ImageField(widget=forms.FileInput, required=True,label='Proof of Education',help_text='Select a clear image of your Proof of Education that is no more than 2MB.')
     tos_yes = forms.BooleanField(required=True)
+
+
+class SpartaProfileForm(forms.ModelForm):
+    """
+    """
+    class Meta:
+        model = ExtendedSpartaProfile
+        fields = ['affiliation', 'attainment', 'other_attain', 'grad_degree']
 
 
 class EducationProfileForm(forms.ModelForm):
