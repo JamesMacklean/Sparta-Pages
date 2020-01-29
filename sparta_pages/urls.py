@@ -17,9 +17,11 @@ urlpatterns = [
     url(r'^sparta/register/success/$', views.register_success_page, name='sparta-register-success'),
     url(r'^sparta/profile/$', views.ProfilePageView.as_view(), name='sparta-profile'),
 
+    url(r'^sparta/profile/info/new/$', views.ExtendedRegistrationCreateView.as_view(), name='sparta-extended-profile-create'),
     url(r'^sparta/profile/education/new/$', views.EducationProfileCreateView.as_view(), name='sparta-education-create'),
     url(r'^sparta/profile/employment/new/$', views.EmploymentProfileCreateView.as_view(), name='sparta-employment-create'),
     url(r'^sparta/profile/training/new/$', views.TrainingProfileCreateView.as_view(), name='sparta-training-create'),
+    url(r'^sparta/profile/info/(?P<pk>\d+)/$', views.ExtendedSpartaProfileUpdateView.as_view(), name='sparta-extended-profile-update'),
     url(r'^sparta/profile/education/(?P<pk>\d+)/$', views.EducationProfileUpdateView.as_view(), name='sparta-education-update'),
     url(r'^sparta/profile/employment/(?P<pk>\d+)/$', views.EmploymentProfileUpdateView.as_view(), name='sparta-employment-update'),
     url(r'^sparta/profile/training/(?P<pk>\d+)/$', views.TrainingProfileUpdateView.as_view(), name='sparta-training-update'),

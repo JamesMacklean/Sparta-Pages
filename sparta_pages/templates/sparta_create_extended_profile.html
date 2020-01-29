@@ -1,0 +1,66 @@
+{% extends "sparta_base.html" %}
+{% load static %}
+
+{% block sparta_body %}
+<div class="card">
+  <div class="card-body">
+    <h2 class="card-title">Education Profile</h2>
+
+    <form method="post" action="{% url 'sparta-extended-profile-create' %}">
+      {% csrf_token %}
+      <div class="education-form-row spacer">
+        <div class="card">
+          <div class="card-body">
+            {{ sparta_profile_form.non_field_errors }}
+            <div class="form-group">
+                {{ sparta_profile_form.affiliation.errors }}
+                <label for="{{ sparta_profile_form.affiliation.id_for_label }}" style="font-family: inherit;font-style: inherit;">*Affiliation:</label>
+                {{ sparta_profile_form.affiliation }}
+            </div>
+            <div class="form-group">
+                {{ sparta_profile_form.attainment.errors }}
+                <label for="{{ sparta_profile_form.attainment.id_for_label }}" style="font-family: inherit;font-style: inherit;">*Highest Educational Attainment:</label>
+                {{ sparta_profile_form.attainment }}
+            </div>
+            <div id="ifOtherAttain" style="display: none;">
+              <div class="form-group">
+                  {{ sparta_profile_form.other_attain.errors }}
+                  <label for="{{ sparta_profile_form.other_attain.id_for_label }}" style="font-family: inherit;font-style: inherit;"><small>If you chose "Other" for Highest Educational Attainment, you can enter further details here:</small></label>
+                  {{ sparta_profile_form.other_attain }}
+              </div>
+            </div>
+            <div class="form-group" style="display: inline-flex;">
+                {{ sparta_profile_form.is_employed.errors }}
+                <label for="{{ sparta_profile_form.is_employed.id_for_label }}" style="font-family: inherit;font-style: inherit;">*Are you currently employed?</label>
+                {{ sparta_profile_form.is_employed }}
+            </div>
+            <div class="form-group">
+                {{ sparta_profile_form.grad_degree.errors }}
+                <label for="{{ sparta_profile_form.grad_degree.id_for_label }}" style="font-family: inherit;font-style: inherit;">*Are you currently pursuing a post graduate degree?</label>
+                {{ sparta_profile_form.grad_degree }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="p-3 d-flex justify-content-center">
+        <input type="submit" value="Save" />
+      </div>
+    </form>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block sparta_extra_script %}
+  <script>
+    $("#{{sparta_profile_form.attainment.id_for_label}}").on("change", function() {
+      var e = document.getElementById("{{sparta_profile_form.attainment.id_for_label}}")
+      if (e.options[e.selectedIndex].value == "OE") {
+        document.getElementById("ifOtherAttain").style.display = "block";
+      } else {
+        document.getElementById("ifOtherAttain").style.display = "none";
+      }
+    });
+  </script>
+{% endblock %}

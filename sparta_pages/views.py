@@ -374,8 +374,10 @@ class ProfilePageView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(ProfilePageView, self).get_context_data(**kwargs)
         profile = self.request.user.sparta_profile
+        extended_profile = self.request.user.extended_sparta_profile
         applications = PathwayApplication.objects.all().filter(profile=profile).exclude(status='WE')
         context['profile'] = profile
+        context['extended_profile'] = extended_profile
         context['applications'] = applications
         context['education_profiles'] = EducationProfile.objects.all().filter(profile=profile)
         context['employment_profiles'] = EmploymentProfile.objects.all().filter(profile=profile)
@@ -499,6 +501,15 @@ class PathwayProgressView(TemplateView):
         return render(request, self.template_name, context)
 
 
+class ExtendedSpartaProfileUpdateView(UpdateView):
+    model = ExtendedSpartaProfile
+    form_class = ExtendedSpartaProfileForm
+    template_name_suffix = '_update_form'
+
+    def get_success_url(self):
+        return reverse('sparta-profile')
+
+
 class EducationProfileUpdateView(UpdateView):
     model = EducationProfile
     form_class = EducationProfileForm
@@ -524,6 +535,48 @@ class TrainingProfileUpdateView(UpdateView):
 
     def get_success_url(self):
         return reverse('sparta-profile')
+
+
+class ExtendedRegistrationCreateView(View):
+    """
+    """
+    sparta_profile_form_class = ExtendedSpartaProfileForm
+    template_name = "sparta_create_extended_profile.html"
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(ExtendedRegistrationCreateView, self).dispatch(*args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
+        if not SpartaProfile.objects.filter(is_active=True).filter(user=request.user).exists():
+            return redirect('sparta-register')
+        sparta_profile_form = self.sparta_profile_form_class()
+        return render(request, self.template_name, {'sparta_profile_form': sparta_profile_form})
+
+    def post(self, request, *args, **kwargs):
+        sparta_profile_form = self.sparta_profile_form_class(request.POST)
+        if sparta_profile_form.is_valid():
+            affiliation = sparta_profile_form.cleaned_data['affiliation']
+            attainment = sparta_profile_form.cleaned_data['attainment']
+            other_attain = sparta_profile_form.cleaned_data['other_attain']
+            is_employed = sparta_profile_form.cleaned_data['is_employed']
+            grad_degree = sparta_profile_form.cleaned_data['grad_degree']
+
+            try:
+                ext_profile = ExtendedSpartaProfile.objects.get(user=request.user)
+            except ExtendedSpartaProfile.DoesNotExist:
+                ext_profile = ExtendedSpartaProfile(user=request.user)
+
+            ext_profile.affiliation = affiliation
+            ext_profile.attainment = attainment
+            ext_profile.is_employed = is_employed
+            ext_profile.grad_degree = grad_degree
+            if other_attain:
+                ext_profile.other_attain = other_attain
+            ext_profile.save()
+
+            return redirect(reverse('sparta-register-education'))
+        return render(request, self.template_name, {'sparta_profile_form': sparta_profile_form})
 
 
 class EducationProfileCreateView(CreateView):

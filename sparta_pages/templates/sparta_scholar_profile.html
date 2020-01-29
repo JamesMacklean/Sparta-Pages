@@ -1,7 +1,29 @@
 <h2 class="card-title">Your Scholar Profile</h2>
 <p>
-View, Edit, or Delete your Education, Employment, and Training credentials.
+View and update your Scholar Profile information, Education, Employment, and Training credentials.
 </p>
+
+<div class="card">
+  <div class="card-body">
+    <ul class="list-group list-group-flush">
+    <li class="list-group-item"><b>Affiliation:</b> {{ extended_profile.get_affiliation_display }}</li>
+    <li class="list-group-item"><b>Highest Educational Attainment:</b> {{ extended_profile.get_attainment_display }}</li>
+    <li class="list-group-item">If Other Education: {{ extended_profile.other_attain }}</li>
+    <li class="list-group-item"><b>Are you currently employed?</b> {% if extended_profile.is_employed %}Yes{% else %}No{% endif %}</li>
+    <li class="list-group-item"><b>Are you currently pursuing a post graduate degree?</b> {{ extended_profile.get_grad_degree_display }}</li>
+    <div class="card-body">
+      {% if extended_profile %}
+      <a href="{% url 'sparta-extended-profile-update' id=extended_profile.id %}" class="card-link">Edit</a>
+      {% else %}
+      <a href="{% url 'sparta-extended-profile-create' %}" class="card-link">Add Info</a>
+      {% endif %}
+  </div>
+  </ul>
+  </div>
+</div>
+
+<br>
+<br>
 
 <h4>Education Profile</h4>
 <div class="card-group">
