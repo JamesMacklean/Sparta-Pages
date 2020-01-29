@@ -1,7 +1,7 @@
 from django.contrib import admin
 from .models import (
     Pathway, SpartaCourse, CourseGroup,
-    SpartaProfile, PathwayApplication,
+    SpartaProfile, PathwayApplication, ExtendedSpartaProfile,
     EducationProfile, EmploymentProfile, TrainingProfile,
     Event, APIToken,
     SpartaCoupon, StudentCouponRecord
@@ -28,6 +28,11 @@ class CourseGroupAdmin(admin.ModelAdmin):
 
 @admin.register(SpartaProfile)
 class SpartaProfileAdmin(admin.ModelAdmin):
+    search_fields = ['user__username', 'user__email']
+
+
+@admin.register(ExtendedSpartaProfile)
+class ExtendedSpartaProfileAdmin(admin.ModelAdmin):
     search_fields = ['user__username', 'user__email']
 
 
