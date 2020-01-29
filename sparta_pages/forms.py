@@ -25,17 +25,15 @@ class SpartaProfileForm(forms.Form):
 class ExtendedSpartaProfileForm(forms.ModelForm):
     """
     """
+    is_employed = forms.TypedChoiceField(
+                   coerce=lambda x: x == 'True',
+                   choices=((True, 'Yes'), (False, 'No')),
+                   widget=forms.RadioSelect,
+                   initial=False
+                )
     class Meta:
         model = ExtendedSpartaProfile
         fields = ['affiliation', 'attainment', 'other_attain', 'is_employed', 'grad_degree']
-        widgets = {
-            'is_employed': forms.TypedChoiceField(
-                           coerce=int,
-                           choices=((True, 'Yes'), (False, 'No')),
-                           widget=forms.RadioSelect,
-                           initial=False
-                        )
-        }
 
 
 class EducationProfileForm(forms.ModelForm):
