@@ -61,6 +61,9 @@
     color: red;
     font-size: 0.8em;
   }
+  div.form-group ul {
+    list-style: none;
+  }
 </style>
 
 {% endblock %}
@@ -79,5 +82,7 @@
 <script src="{% static 'js/sparta/outofview.js' %}"></script>
 <script src="{% static 'js/sparta/popper.min.js' %}"></script>
 <script src="{% static 'js/sparta/bootstrap.min.js' %}"></script>
+
+{% block sparta_extra_script %}{% endblock %}
 
 {% endblock %}

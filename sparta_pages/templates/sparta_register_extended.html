@@ -82,6 +82,7 @@
     </div>
 </div>
 
+{% block sparta_extra_script %}
 <script>
   $("#{{sparta_profile_form.attainment.id_for_label}}").on("change", function() {
     var e = document.getElementById("{{sparta_profile_form.attainment.id_for_label}}")
@@ -92,4 +93,6 @@
     }
   });
 </script>
+{% endblock %}
+
 {% endblock %}
