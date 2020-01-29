@@ -146,24 +146,24 @@ class ExtendedSpartaProfile(models.Model):
     NO_FORMAL = "NF"
     OTHER_EDUC = "OE"
     ATTAINMENT_CHOICES = (
-        (DOCTORATE, "Doctorate"),
-        (MASTERS, "Master's or Professional Degree"),
-        (BACHELORS, "Bachelor's Degree"),
-        (ASSOCIATE, "Associate Degree"),
-        (HIGH_SCHOOL, "Secondary/High School"),
-        (JUNIOR_HIGH, "Junior Secondary/Junior High/Middle School"),
         (ELEMENTARY, "Elementary/Primary School"),
-        (NO_FORMAL, "No Formal Education"),
+        (JUNIOR_HIGH, "Junior Secondary/Junior High/Middle School"),
+        (HIGH_SCHOOL, "Secondary/High School"),
+        (ASSOCIATE, "Associate Degree"),
+        (BACHELORS, "Bachelor's Degree"),
+        (MASTERS, "Master's or Professional Degree"),
+        (DOCTORATE, "Doctorate"),
         (OTHER_EDUC, "Other Education"),
+        (NO_FORMAL, "No Formal Education"),
     )
 
     YES_MASTER = "YM"
     YES_DOCTOR = "YD"
     NO_DEGREE = "ND"
     GRAD_CHOICES = (
+        (NO_DEGREE, "No."),
         (YES_MASTER, "Yes, a Master's degree"),
         (YES_DOCTOR, "Yes, a Doctorate degree."),
-        (NO_DEGREE, "No."),
     )
 
     user = models.OneToOneField(
@@ -172,7 +172,7 @@ class ExtendedSpartaProfile(models.Model):
         help_text='User referred with this SPARTA User',
         related_name='extended_sparta_profile')
     affiliation = models.CharField(max_length=2, choices=AFFILIATION_CHOICES, default=PRIVATE)
-    attainment = models.CharField(max_length=2, choices=ATTAINMENT_CHOICES, default=HIGH_SCHOOL)
+    attainment = models.CharField(max_length=2, choices=ATTAINMENT_CHOICES, default=ELEMENTARY)
     other_attain = models.CharField(max_length=255, null=True, blank=True)
     is_employed = models.BooleanField(default=False)
     grad_degree = models.CharField(max_length=2, choices=GRAD_CHOICES, default=NO_DEGREE)
