@@ -67,7 +67,7 @@
           </div>
           <div class="form-group">
               {{ sparta_profile_form.grad_degree.errors }}
-              <label for="{{ sparta_profile_form.grad_degree.id_for_label }}" style="font-family: inherit;font-style: inherit;">*Graduate Degree:</label>
+              <label for="{{ sparta_profile_form.grad_degree.id_for_label }}" style="font-family: inherit;font-style: inherit;">*Are you currently pursuing a post graduate degree?</label>
               {{ sparta_profile_form.grad_degree }}
           </div>
           <div class="d-flex justify-content-center">
@@ -83,7 +83,7 @@
 </div>
 
 <script>
-  $("#account_type_id").on("change", function() {
+  $("#{{sparta_profile_form.attainment.id_for_label}}").on("change", function() {
     var e = document.getElementById("{{sparta_profile_form.attainment.id_for_label}}")
     if (e.options(e.selectedIndex).value == "OE") {
       document.getElementById("ifOtherAttain").style.display = "block";
