@@ -179,6 +179,12 @@ class ExtendedSpartaProfile(models.Model):
     is_employed = models.BooleanField(default=False)
     grad_degree = models.CharField(max_length=2, choices=GRAD_CHOICES, default=NO_DEGREE)
 
+    class Meta:
+        verbose_name_plural = "3.2 Extended Sparta Profiles"
+
+    def __str__(self):
+        return self.user.username
+
 
 class PathwayApplication(models.Model):
     """
