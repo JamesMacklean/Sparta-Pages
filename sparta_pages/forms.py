@@ -22,7 +22,7 @@ class SpartaProfileForm(forms.Form):
     tos_yes = forms.BooleanField(required=True)
 
 
-class SpartaProfileForm(forms.ModelForm):
+class ExtendedSpartaProfileForm(forms.ModelForm):
     """
     """
     class Meta:
