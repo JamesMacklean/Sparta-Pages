@@ -27,7 +27,7 @@ class ExtendedSpartaProfileForm(forms.ModelForm):
     """
     class Meta:
         model = ExtendedSpartaProfile
-        fields = ['affiliation', 'attainment', 'other_attain', 'grad_degree']
+        fields = ['affiliation', 'attainment', 'other_attain', 'is_employed', 'grad_degree']
 
 
 class EducationProfileForm(forms.ModelForm):

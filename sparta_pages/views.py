@@ -170,6 +170,7 @@ class ExtendedRegistrationPageView(View):
             affiliation = sparta_profile_form.cleaned_data['affiliation']
             attainment = sparta_profile_form.cleaned_data['attainment']
             other_attain = sparta_profile_form.cleaned_data['other_attain']
+            is_employed = sparta_profile_form.cleaned_data['is_employed']
             grad_degree = sparta_profile_form.cleaned_data['grad_degree']
 
             try:
@@ -179,6 +180,7 @@ class ExtendedRegistrationPageView(View):
 
             ext_profile.affiliation = affiliation
             ext_profile.attainment = attainment
+            ext_profile.is_employed = is_employed
             ext_profile.grad_degree = grad_degree
             if other_attain:
                 ext_profile.other_attain = other_attain
