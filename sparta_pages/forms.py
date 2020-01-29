@@ -27,7 +27,7 @@ class ExtendedSpartaProfileForm(forms.ModelForm):
     """
     is_employed = forms.TypedChoiceField(
                    coerce=int,
-                   choices=((False, 'No'), (True, 'Yes')),
+                   choices=((True, 'Yes'), (False, 'No')),
                    widget=forms.RadioSelect
                 )
     class Meta:
