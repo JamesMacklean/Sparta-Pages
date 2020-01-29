@@ -88,7 +88,7 @@
   <script>
     $("#{{sparta_profile_form.attainment.id_for_label}}").on("change", function() {
       var e = document.getElementById("{{sparta_profile_form.attainment.id_for_label}}")
-      if (e.options(e.selectedIndex).value == "OE") {
+      if (e.options[e.selectedIndex].value == "OE") {
         document.getElementById("ifOtherAttain").style.display = "block";
       } else {
         document.getElementById("ifOtherAttain").style.display = "none";
