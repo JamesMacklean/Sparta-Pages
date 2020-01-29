@@ -140,6 +140,7 @@ class ExtendedSpartaProfile(models.Model):
     MASTERS = "MA"
     BACHELORS = "BA"
     ASSOCIATE = "AS"
+    SENIOR_HIGH = "SH"
     HIGH_SCHOOL = "HS"
     JUNIOR_HIGH = "JH"
     ELEMENTARY = "EL"
@@ -148,6 +149,7 @@ class ExtendedSpartaProfile(models.Model):
     ATTAINMENT_CHOICES = (
         (ELEMENTARY, "Elementary/Primary School"),
         (JUNIOR_HIGH, "Junior Secondary/Junior High/Middle School"),
+        (SENIOR_HIGH, "Senior High School"),
         (HIGH_SCHOOL, "Secondary/High School"),
         (ASSOCIATE, "Associate Degree"),
         (BACHELORS, "Bachelor's Degree"),
