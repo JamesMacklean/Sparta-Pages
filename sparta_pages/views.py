@@ -575,7 +575,7 @@ class ExtendedRegistrationCreateView(View):
                 ext_profile.other_attain = other_attain
             ext_profile.save()
 
-            return redirect(reverse('sparta-register-education'))
+            return redirect(reverse('sparta-profile'))
         return render(request, self.template_name, {'sparta_profile_form': sparta_profile_form})
 
 
