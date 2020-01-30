@@ -512,7 +512,7 @@ class ExtendedSpartaProfileUpdateView(UpdateView):
 
     def get(self, request, *args, **kwargs):
         ep = get_object_or_404(ExtendedSpartaProfile, user=request.user)
-        if ep.id != self.object.id:
+        if ep.id != self.get_object().id:
             raise Http404
         return super(ExtendedSpartaProfileUpdateView, self).get(request, *args, **kwargs)
 
