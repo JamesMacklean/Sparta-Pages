@@ -529,6 +529,11 @@ class EducationProfileUpdateView(UpdateView):
     def dispatch(self, *args, **kwargs):
         return super(EducationProfileUpdateView, self).dispatch(*args, **kwargs)
 
+    def get(self, request, *args, **kwargs):
+        if self.get_object() not in EducationProfile.objects.filter(profile__user=request.user):
+            raise Http404
+        return super(EducationProfileUpdateView, self).get(request, *args, **kwargs)
+
     def get_success_url(self):
         return reverse('sparta-profile')
 
@@ -542,6 +547,11 @@ class EmploymentProfileUpdateView(UpdateView):
     def dispatch(self, *args, **kwargs):
         return super(EmploymentProfileUpdateView, self).dispatch(*args, **kwargs)
 
+    def get(self, request, *args, **kwargs):
+        if self.get_object() not in EmploymentProfile.objects.filter(profile__user=request.user):
+            raise Http404
+        return super(EmploymentProfileUpdateView, self).get(request, *args, **kwargs)
+
     def get_success_url(self):
         return reverse('sparta-profile')
 
@@ -554,6 +564,11 @@ class TrainingProfileUpdateView(UpdateView):
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
         return super(TrainingProfileUpdateView, self).dispatch(*args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
+        if self.get_object() not in TrainingProfile.objects.filter(profile__user=request.user):
+            raise Http404
+        return super(TrainingProfileUpdateView, self).get(request, *args, **kwargs)
 
     def get_success_url(self):
         return reverse('sparta-profile')
