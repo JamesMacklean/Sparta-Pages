@@ -506,6 +506,16 @@ class ExtendedSpartaProfileUpdateView(UpdateView):
     form_class = ExtendedSpartaProfileForm
     template_name_suffix = '_update_form'
 
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(ExtendedSpartaProfileUpdateView, self).dispatch(*args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
+        ep = get_object_or_404(ExtendedSpartaProfile, user=request.user)
+        if ep.id != self.object.id:
+            raise Http404
+        return super(ExtendedSpartaProfileUpdateView, self).get(request, *args, **kwargs)
+
     def get_success_url(self):
         return reverse('sparta-profile')
 
@@ -514,6 +524,10 @@ class EducationProfileUpdateView(UpdateView):
     model = EducationProfile
     form_class = EducationProfileForm
     template_name_suffix = '_update_form'
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(EducationProfileUpdateView, self).dispatch(*args, **kwargs)
 
     def get_success_url(self):
         return reverse('sparta-profile')
@@ -524,6 +538,10 @@ class EmploymentProfileUpdateView(UpdateView):
     form_class = EmploymentProfileForm
     template_name_suffix = '_update_form'
 
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(EmploymentProfileUpdateView, self).dispatch(*args, **kwargs)
+
     def get_success_url(self):
         return reverse('sparta-profile')
 
@@ -532,6 +550,10 @@ class TrainingProfileUpdateView(UpdateView):
     model = TrainingProfile
     form_class = TrainingProfileForm
     template_name_suffix = '_update_form'
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(TrainingProfileUpdateView, self).dispatch(*args, **kwargs)
 
     def get_success_url(self):
         return reverse('sparta-profile')
@@ -548,7 +570,7 @@ class ExtendedRegistrationCreateView(View):
         return super(ExtendedRegistrationCreateView, self).dispatch(*args, **kwargs)
 
     def get(self, request, *args, **kwargs):
-        if not SpartaProfile.objects.filter(is_active=True).filter(user=request.user).exists():
+        if not SpartaProfile.objects.filter(is_active=True).filter(user=request.user).exists() or ExtendedSpartaProfile.objects.filter(user=request.user).exists():
             return redirect('sparta-register')
         sparta_profile_form = self.sparta_profile_form_class()
         return render(request, self.template_name, {'sparta_profile_form': sparta_profile_form})
