@@ -672,7 +672,7 @@ class EmploymentProfileCreateView(CreateView):
         return super(EmploymentProfileCreateView, self).dispatch(*args, **kwargs)
 
     def get(self, request, *args, **kwargs):
-        if not SpartaProfile.objects.filter(is_active=True).objects.filter(user=request.user).exists():
+        if not SpartaProfile.objects.filter(is_active=True).filter(user=request.user).exists():
             return redirect('sparta-register')
 
         employmentFormset = self.employ_formset_class(request.GET or None)
@@ -720,7 +720,7 @@ class TrainingProfileCreateView(CreateView):
         return super(TrainingProfileCreateView, self).dispatch(*args, **kwargs)
 
     def get(self, request, *args, **kwargs):
-        if not SpartaProfile.objects.filter(is_active=True).objects.filter(user=request.user).exists():
+        if not SpartaProfile.objects.filter(is_active=True).filter(user=request.user).exists():
             return redirect('sparta-register')
         trainingFormset = self.train_formset_class(request.GET or None)
         return render(request, self.template_name, {'trainingFormset': trainingFormset})
