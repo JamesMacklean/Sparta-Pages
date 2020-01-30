@@ -18,10 +18,6 @@ View and update your Scholar Profile information, Education, Employment, and Tra
         <a href="{% url 'sparta-extended-profile-update' pk=extended_profile.pk %}" class="card-link">Edit</a>
       </div>
     {% else %}
-      <li class="list-group-item"><b>Affiliation:</b> N/A</li>
-      <li class="list-group-item"><b>Highest Educational Attainment:</b> N/A</li>
-      <li class="list-group-item"><b>Are you currently employed?</b> N/A</li>
-      <li class="list-group-item"><b>Are you currently pursuing a post graduate degree?</b> N/A</li>
       <div class="card-body d-flex justify-content-center">
         <a href="{% url 'sparta-extended-profile-create' %}" class="btn btn-primary btn-lg">Update Profile Info</a>
       </div>
