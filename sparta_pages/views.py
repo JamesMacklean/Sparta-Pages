@@ -376,7 +376,12 @@ class ProfilePageView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(ProfilePageView, self).get_context_data(**kwargs)
         profile = self.request.user.sparta_profile
-        extended_profile = self.request.user.extended_sparta_profile
+
+        try:
+            extended_profile = ExtendedSpartaProfile.objects.get(user=self.request.user)
+        except ExtendedSpartaProfile.DoesNotExist:
+            extended_profile = None
+
         applications = PathwayApplication.objects.all().filter(profile=profile).exclude(status='WE')
         context['profile'] = profile
         context['extended_profile'] = extended_profile
