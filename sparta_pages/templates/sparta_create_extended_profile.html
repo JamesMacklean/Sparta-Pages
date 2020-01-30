@@ -4,7 +4,10 @@
 {% block sparta_body %}
 <div class="card">
   <div class="card-body">
-    <h2 class="card-title">Education Profile</h2>
+    <h2 class="card-title">SPARTA Scholar Profile</h2>
+    <p>
+      You can update your SPARTA Scholar Profile below.
+    </p>
 
     <form method="post" action="{% url 'sparta-extended-profile-create' %}">
       {% csrf_token %}
@@ -25,7 +28,7 @@
             <div id="ifOtherAttain" style="display: none;">
               <div class="form-group">
                   {{ sparta_profile_form.other_attain.errors }}
-                  <label for="{{ sparta_profile_form.other_attain.id_for_label }}" style="font-family: inherit;font-style: inherit;"><small>If you chose "Other" for Highest Educational Attainment, you can enter further details here:</small></label>
+                  <label for="{{ sparta_profile_form.other_attain.id_for_label }}" style="font-family: inherit;font-style: inherit;"><small>If you chose "Other Education" for Highest Educational Attainment, you can enter further details here:</small></label>
                   {{ sparta_profile_form.other_attain }}
               </div>
             </div>

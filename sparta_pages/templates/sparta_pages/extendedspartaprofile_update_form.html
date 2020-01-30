@@ -29,7 +29,7 @@
             <div id="ifOtherAttain" style="display: none;">
               <div class="form-group">
                   {{ form.other_attain.errors }}
-                  <label for="{{ form.other_attain.id_for_label }}" style="font-family: inherit;font-style: inherit;"><small>If you chose "Other" for Highest Educational Attainment, you can enter further details here:</small></label>
+                  <label for="{{ form.other_attain.id_for_label }}" style="font-family: inherit;font-style: inherit;"><small>If you chose "Other Education" for Highest Educational Attainment, you can enter further details here:</small></label>
                   {{ form.other_attain }}
               </div>
             </div>
@@ -58,8 +58,8 @@
 
 {% block sparta_extra_script %}
   <script>
-    $("#{{sparta_profile_form.attainment.id_for_label}}").on("change", function() {
-      var e = document.getElementById("{{sparta_profile_form.attainment.id_for_label}}")
+    $("#{{form.attainment.id_for_label}}").on("change", function() {
+      var e = document.getElementById("{{form.attainment.id_for_label}}")
       if (e.options[e.selectedIndex].value == "OE") {
         document.getElementById("ifOtherAttain").style.display = "block";
       } else {

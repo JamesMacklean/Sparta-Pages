@@ -16,7 +16,6 @@ View and update your Scholar Profile information, Education, Employment, and Tra
       <li class="list-group-item"><b>Are you currently pursuing a post graduate degree?</b> {{ extended_profile.get_grad_degree_display }}</li>
       <div class="card-body">
         <a href="{% url 'sparta-extended-profile-update' pk=extended_profile.pk %}" class="card-link">Edit</a>
-        <a href="{% url 'sparta-extended-profile-create' %}" class="card-link">Add Info</a>
       </div>
     {% else %}
       <li class="list-group-item"><b>Affiliation:</b> N/A</li>
