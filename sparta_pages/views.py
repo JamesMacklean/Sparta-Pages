@@ -161,6 +161,8 @@ class ExtendedRegistrationPageView(View):
     def get(self, request, *args, **kwargs):
         if not SpartaProfile.objects.filter(user=request.user).exists():
             return redirect('sparta-register')
+        if ExtendedSpartaProfile.objects.filter(user=request.user).exists():
+            return redirect('sparta-profile')
         sparta_profile_form = self.sparta_profile_form_class()
         return render(request, self.template_name, {'sparta_profile_form': sparta_profile_form})
 
