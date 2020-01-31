@@ -26,12 +26,16 @@ from opaque_keys.edx.keys import CourseKey
 from openedx.core.djangoapps.content.course_overviews.models import CourseOverview
 from student.models import CourseEnrollment
 
+from .analytics import (
+    get_average_completion_rate, get_student_enrollment_status,
+    get_average_grade_percent,
+)
+from .local_settings import LOCAL_REDOC_SCHEMA_URL
 from .models import (
     Pathway, SpartaCourse, SpartaProfile, PathwayApplication,
     EducationProfile, EmploymentProfile, TrainingProfile,
     APIToken
 )
-from .local_settings import LOCAL_REDOC_SCHEMA_URL
 
 
 @api_view()
@@ -220,50 +224,6 @@ def authenticate(request):
     if not APIToken.objects.filter(is_active=True, key=token_key).exists():
         return False
     return True
-
-
-def get_average_completion_rate(course_id):
-    course_key = CourseKey.from_string(course_id)
-
-    enrollments = CourseEnrollment.objects.filter(
-        course_id=course_key,
-        is_active=True,
-        mode="verified"
-    )
-    modules = StudentModule.objects.filter(course_id=course_key)
-
-    total_seconds_list = []
-    for e in enrollments:
-        user = e.user
-
-        cert_status = certificate_status_for_student(user, course_key)
-        if cert_status and cert_status['mode'] == 'verified' and cert_status['status'] not in  ['unavailable', 'notpassing', 'restricted', 'unverified']:
-            pass
-        else:
-            continue
-
-        student_modules = modules.filter(student=user)
-
-        course_module = student_modules.filter(module_type='course').order_by('created').first()
-        if course_module:
-            started_course_at = course_module.created
-        else:
-            continue
-
-        latest_student_module = student_modules.order_by('-modified').first()
-        if latest_student_module:
-            ended_course_at = latest_student_module.modified
-        else:
-            continue
-
-        finish_duration = ended_course_at - started_course_at
-        finish_duration_decimal = Decimal(finish_duration.total_seconds())
-        total_seconds_list.append(finish_duration_decimal)
-
-    if total_seconds_list:
-        return str(sum(total_seconds_list) / len(total_seconds_list))
-    else:
-        return "unavailable"
 
 
 @api_view(['GET'])
@@ -456,36 +416,6 @@ def course_detail_view(request, id, format=None):
     }
 
     return Response(data, status=status.HTTP_200_OK)
-
-
-def get_student_enrollment_status(student, course_key):
-    cert_status = certificate_status_for_student(student.user, course_key)
-    if cert_status and cert_status['mode'] == 'verified' and cert_status['status'] not in  ['unavailable', 'notpassing', 'restricted', 'unverified']:
-        return "completed"
-
-    modules = StudentModule.objects.filter(course_id=course_key, student=student.user)
-    if modules.exists():
-        latest_student_module = modules.order_by('-modified').first()
-        diff_time =  timezone.now() - latest_student_module.modified
-        diff_time_secs = diff_time.total_seconds()
-        if diff_time_secs > 604800:
-            return "inactive"
-        else:
-            return "in_progress"
-    else:
-        return "unenrolled"
-
-
-def get_average_grade_percent(student, courses_enrolled_in):
-    grades_list = []
-    for course in courses_enrolled_in:
-        course_key = CourseKey.from_string(course['course_id'])
-        grade = CourseGradeFactory().read(student.user, course_key=course_key)
-        grades_list.append(Decimal(grade.percent))
-    if grades_list:
-        return str(round(sum(grades_list) / len(grades_list), 4))
-    else:
-        return "unavailable"
 
 
 @api_view(['GET'])
