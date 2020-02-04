@@ -10,8 +10,11 @@ from openedx.core.djangoapps.content.course_overviews.models import CourseOvervi
 from student.models import CourseEnrollment
 
 from .models import (
-    Pathway, SpartaCourse, SpartaProfile, PathwayApplication,
+    Pathway, SpartaCourse, SpartaProfile, ExtendedSpartaProfile,
+    CourseGroup,
     EducationProfile, EmploymentProfile, TrainingProfile,
+    PathwayApplication, Event, APIToken,
+    SpartaCoupon, StudentCouponRecord
 )
 
 def get_average_completion_rate(course_id):
