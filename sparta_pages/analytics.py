@@ -343,7 +343,7 @@ class Learner:
         for course in self.current_courses:
             get_modules = StudentModule.objects.filter(course_id=CourseKey.from_string(course.course_id), student=self.user)
             if get_modules.exists():
-                modules | = get_modules.order_by('-modified').first()
+                modules |= get_modules.order_by('-modified').first()
         return modules
 
     def _get_latest_module(self):
