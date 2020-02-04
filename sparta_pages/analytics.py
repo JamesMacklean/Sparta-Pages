@@ -352,7 +352,7 @@ class Learner:
             return modules[0]
         return None
 
-    def _get_activity(active=False, inactive=False, dropped_out=False):
+    def _get_activity(self, active=False, inactive=False, dropped_out=False):
         module = self._get_latest_module()
         if module:
             diff_time =  timezone_now - module.modified
