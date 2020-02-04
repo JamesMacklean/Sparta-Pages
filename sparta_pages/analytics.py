@@ -367,15 +367,15 @@ class Learner:
 
     def _active(self):
         """in-progress in at least one (1) course and whose last session is at most thirty (30) days ago"""
-        return _self._get_activity(active=True)
+        return self._get_activity(active=True)
 
     def _inactive(self):
         """in-progress in at least 1 course and whose last session is over 30 days ago but at most 180 days ago"""
-        return _self._get_activity(inactive=True)
+        return self._get_activity(inactive=True)
 
     def _dropped_out(self):
         """in-progress in at least 1 course and whose last session is over 180 days ago"""
-        return _self._get_activity(dropped_out=True)
+        return self._get_activity(dropped_out=True)
 
     def _graduated(self):
         """completed at least 1 pathway"""
