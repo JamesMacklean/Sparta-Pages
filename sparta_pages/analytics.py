@@ -297,7 +297,7 @@ class Learner:
             except CourseOverview.DoesNotExist:
                 continue
             else:
-                enrollments |= CourseEnrollment.filter(course=get_course)
+                enrollments |= CourseEnrollment.objects.filter(course=get_course)
         return enrollments
 
     def _verified_enrollments(self):
