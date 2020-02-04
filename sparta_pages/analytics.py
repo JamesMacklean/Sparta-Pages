@@ -355,14 +355,14 @@ class Learner:
     def _get_activity(self, active=False, inactive=False, dropped_out=False):
         module = self._get_latest_module()
         if module:
-            diff_time =  timezone_now - module.modified
+            diff_time =  self.timezone_now - module.modified
             diff_time_secs = diff_time.total_seconds()
             if active:
-                return diff_time_secs <= xthirtydays
+                return diff_time_secs <= self.xthirtydays
             elif inactive:
-                return diff_time_secs > xthirtydays and diff_time_secs <= xoneeightydays
+                return diff_time_secs > self.xthirtydays and diff_time_secs <= self.xoneeightydays
             elif dropped_out:
-                return diff_time_secs > xoneeightydays
+                return diff_time_secs > self.xoneeightydays
         return False
 
     def _active(self):
