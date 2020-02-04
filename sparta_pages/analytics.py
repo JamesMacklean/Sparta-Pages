@@ -231,6 +231,16 @@ class LearnerManager:
 class Learner:
     """
     Class object for learner analytics
+
+    Initialize by setting SpartaProfile of learner
+    ex. Learner(SpartaProfile.objects.get(id=id))
+
+    Optional pathway argument to filter learner info
+    ex. Learner(profile, pathway=Pathway.objects.get(id=id))
+
+    Optional course argument to filter learner info
+    *Info will be filtered only by course_id of the SpartaCourse indicated
+    ex. Learner(profile, course=SpartaCourse.objects.get(id=id))
     """
     xminute = 60
     xhour = xminute*60
@@ -419,6 +429,7 @@ class Learner:
 
 class OverallAnalytics:
     """
+    Class helper for getting overall data
     """
 
     def __init__(self, *args, **kwargs):
@@ -504,6 +515,8 @@ class OverallAnalytics:
 
 class PathwayAnalytics:
     """
+    Initialize with pathway argument
+    ex. PathwayAnalytics(pathway)
     """
     def __init__(self, pathway, *args, **kwargs):
         self.pathway = pathway
@@ -589,6 +602,8 @@ class PathwayAnalytics:
 
 class CourseAnalytics:
     """
+    Initialize with course argument
+    ex. CourseAnalytics(course)
     """
     def __init__(self, course, *args, **kwargs):
         self.course = course
