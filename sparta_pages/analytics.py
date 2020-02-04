@@ -319,7 +319,7 @@ class Learner:
     def _current_courses(self):
         courses = SpartaCourse.objects.none()
         for app in self.approved_applications:
-            course_set = app.courses.all().filter(is_active=True)
+            course_set = app.pathway.courses.all().filter(is_active=True)
             if self.course is not None:
                 course_set = course_set.filter(course_id=self.course.course_id)
             courses |= course_set
