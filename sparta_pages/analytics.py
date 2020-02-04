@@ -405,7 +405,7 @@ class Learner:
         if pathway is None:
             pathway = self.pathway
 
-        groups = self.pathway.groups.all().filter(is_active=True)
+        groups = pathway.groups.all().filter(is_active=True)
         groups_completed = 0
         for group in groups:
             group_courses = group.courses.all().filter(is_active=True)
@@ -425,7 +425,7 @@ class Learner:
         if course is None:
             course = self.course
 
-        course_key = CourseKey.from_string(self.course.course_id)
+        course_key = CourseKey.from_string(course.course_id)
         cert_status = certificate_status_for_student(self.user, course_key)
         return cert_status and cert_status['mode'] == 'verified' and cert_status['status'] not in ['unavailable', 'notpassing', 'restricted', 'unverified']
 
