@@ -31,6 +31,7 @@ from openedx.core.djangoapps.content.course_overviews.models import CourseOvervi
 from opaque_keys.edx.keys import CourseKey
 from student.models import CourseEnrollment
 
+from .analytics import OverallAnalytics, PathwayAnalytics, CourseAnalytics
 from .forms import (
     SpartaProfileForm, EducationProfileForm, EmploymentProfileForm,
     TrainingProfileForm, PathwayApplicationForm,
