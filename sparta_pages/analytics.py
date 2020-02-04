@@ -384,7 +384,7 @@ class Learner:
         """completed at least 1 pathway"""
         for app in self.applications:
             groups = app.pathway.groups.all().filter(is_active=True)
-            groups_completed = CourseGroup.objects.none()
+            groups_completed = 0
             for group in groups:
                 group_courses = group.courses.all().filter(is_active=True)
                 complete_at_least = group_courses.count() if group.type == 'CO' else group.complete_at_least
@@ -396,8 +396,8 @@ class Learner:
                     if cert_status and cert_status['mode'] == 'verified' and cert_status['status'] not in ['unavailable', 'notpassing', 'restricted', 'unverified']:
                         group_ctr += 1
                 if group_courses and group_ctr == complete_at_least:
-                    groups_completed |= group
-            if groups.count() == groups_completed.count():
+                    groups_completed += 1
+            if groups.count() == groups_completed:
                 return True
         return False
 
@@ -406,7 +406,7 @@ class Learner:
             pathway = self.pathway
 
         groups = self.pathway.groups.all().filter(is_active=True)
-        groups_completed = CourseGroup.objects.none()
+        groups_completed = 0
         for group in groups:
             group_courses = group.courses.all().filter(is_active=True)
             complete_at_least = group_courses.count() if group.type == 'CO' else group.complete_at_least
@@ -418,8 +418,8 @@ class Learner:
                 if cert_status and cert_status['mode'] == 'verified' and cert_status['status'] not in ['unavailable', 'notpassing', 'restricted', 'unverified']:
                     group_ctr += 1
             if group_courses and group_ctr == complete_at_least:
-                groups_completed |= group
-        return groups.count() == groups_completed.count()
+                groups_completed += 1
+        return groups.count() == groups_completed
 
     def _completed_course(self, course=None):
         if course is None:
