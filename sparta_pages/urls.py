@@ -41,6 +41,9 @@ urlpatterns = [
     url(r'^sparta/admin-view/profiles/(?P<id>\d+)/credentials/$', views.admin_credentials_view, name='sparta-admin-credentials'),
     url(r'^sparta/admin-view/applications/$', views.admin_applications_view, name='sparta-admin-applications'),
     url(r'^sparta/admin-view/applications/approve/(?P<id>\d+)/$', views.admin_approve_application_view, name='sparta-admin-approve'),
+    url(r'^sparta/admin-view/analytics/overall/$', views.admin_overall_analytics_view, name='sparta-admin-overall-analytics'),
+    url(r'^sparta/admin-view/analytics/pathways/(?P<slug>[-\w]+)/$', views.admin_pathway_analytics_view, name='sparta-admin-pathway-analytics'),
+    url(r'^sparta/admin-view/analytics/courses/(?P<course_id>[-:+\w]+)/$', views.admin_course_analytics_view, name='sparta-admin-course-analytics'),
 
     url(r'^sparta/dev/profile/$', views.DeveloperProfileView.as_view(), name='sparta-developer-profile'),
     url(r'^sparta/api/v0/pathways/$', api.pathway_list_view, name='sparta-api-pathway-list'),

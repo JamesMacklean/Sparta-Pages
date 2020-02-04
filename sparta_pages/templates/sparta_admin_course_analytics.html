@@ -1,0 +1,157 @@
+{% extends "sparta_base.html" %}
+{% load static %}
+
+{% block sparta_body %}
+<h1>Admin View</h1>
+
+<form action="" method="post">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Export to CSV" />
+</form>
+
+<h2>SPARTA Data Dashboard - Learning Pathway - {{ course.courseoverview.display_name }}</h2>
+
+<div class="row">
+
+  <div class="col col-4 col-sm-4">
+    <div class="card">
+      <div class="card-header">
+        Number of Learners in Progress
+      </div>
+      <div class="card-body">
+        <div class="card-title">
+          {{no_of_learners_in_progress}}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col col-4 col-sm-4">
+    <div class="card">
+      <div class="card-header">
+        % of Learners in Progress
+      </div>
+      <div class="card-body">
+        <div class="card-title">
+          {{percent_of_learners_in_progress}}%
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col col-4 col-sm-4">
+    <div class="card">
+      <div class="card-header">
+        Number of Active Learners
+      </div>
+      <div class="card-body">
+        <div class="card-title">
+          {{no_of_active_learners}}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col col-4 col-sm-4">
+    <div class="card">
+      <div class="card-header">
+        % of Active Learners
+      </div>
+      <div class="card-body">
+        <div class="card-title">
+          {{percent_of_active_learners}}%
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="row">
+
+  <div class="col col-4 col-sm-4">
+    <div class="card">
+      <div class="card-header">
+        Number of Inactive Learners
+      </div>
+      <div class="card-body">
+        <div class="card-title">
+          {{no_of_inactive_learners}}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col col-4 col-sm-4">
+    <div class="card">
+      <div class="card-header">
+        % of Inactive Learners
+      </div>
+      <div class="card-body">
+        <div class="card-title">
+          {{percent_of_inactive_learners}}%
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col col-4 col-sm-4">
+    <div class="card">
+      <div class="card-header">
+        Number of Dropped Out Learners
+      </div>
+      <div class="card-body">
+        <div class="card-title">
+          {{no_of_dropped_out_learners}}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col col-4 col-sm-4">
+    <div class="card">
+      <div class="card-header">
+        Dropout Rate
+      </div>
+      <div class="card-body">
+        <div class="card-title">
+          {{dropout_rate}}%
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="row">
+
+  <div class="col col-4 col-sm-4">
+    <div class="card">
+      <div class="card-header">
+        No of Completed Learners
+      </div>
+      <div class="card-body">
+        <div class="card-title">
+          {{no_of_completed_learners}}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col col-4 col-sm-4">
+    <div class="card">
+      <div class="card-header">
+        Completion Rate
+      </div>
+      <div class="card-body">
+        <div class="card-title">
+          {{completion_rate}}%
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}

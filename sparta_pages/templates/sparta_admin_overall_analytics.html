@@ -1,0 +1,49 @@
+{% extends "sparta_base.html" %}
+{% load static %}
+
+{% block sparta_body %}
+<h1>Admin View</h1>
+
+<form action="" method="post">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Export to CSV" />
+</form>
+
+<h2>SPARTA Data Dashboard</h2>
+
+<div class="row">
+
+{% for pathway in pathways %}
+<div class="col col-6 col-sm-6">
+  <div class="card">
+    <div class="card-body">
+
+      <h3>{{ pathway.name }}</h3>
+      <a class="btn btn-primary btn-sm" href="{% url 'sparta-admin-pathway-analytics' slug=pathway.slug %}">View Data</a>
+      <table class="table table-hover table-sm">
+        <thead>
+          <tr>
+            <th scope="col">Course ID</th>
+            <th scope="col">Title</th>
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for course in pathway.courses %}
+          <tr>
+            <td>{{ course.sparta_course.course_id }}</td>
+            <td>{{ course.course.overview. }}</td>
+            <td><a class="btn btn-primary btn-sm" href="{% url 'sparta-admin-course-analytics' course_id=course.sparta_course.course_id %}">View Data</a></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+</div>
+{% endfor %}
+</div>
+
+{% endblock %}

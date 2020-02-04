@@ -36,7 +36,7 @@ from .forms import (
     TrainingProfileForm, PathwayApplicationForm,
     EducationProfileFormset, EmploymentProfileFormset, TrainingProfileFormset,
     ExportAppsForm, FilterForm, ExportProfilesForm,
-    ExtendedSpartaProfileForm
+    ExtendedSpartaProfileForm, ExportAnalyticsForm
 )
 from .models import (
     Pathway, SpartaCourse, SpartaProfile, ExtendedSpartaProfile,
@@ -1119,4 +1119,263 @@ def admin_credentials_view(request, id):
     context['education_profiles'] = profile.education_profiles.all()
     context['employment_profiles'] = profile.employment_profiles.all()
     context['training_profiles'] = profile.training_profiles.all()
+    return render(request, template_name, context)
+
+
+@login_required
+def admin_overall_analytics_view(request):
+    if not request.user.is_staff:
+        raise Http404
+
+    template_name = "sparta_admin_overall_analytics.html"
+
+    analytics = OverallAnalytics()
+    overall_no_of_enrollees = analytics.overall_no_of_enrollees()
+    overall_no_of_learners_in_progress = analytics.overall_no_of_learners_in_progress()
+    percent_of_learners_in_progress = analytics.percent_of_learners_in_progress()
+    overall_no_of_active_learners = analytics.overall_no_of_active_learners()
+    percent_of_active_learners = analytics.percent_of_active_learners()
+    overall_no_of_inactive_learners = analytics.overall_no_of_inactive_learners()
+    percent_of_inactive_learners = analytics.percent_of_inactive_learners()
+    overall_no_of_dropped_out_learners = analytics.overall_no_of_dropped_out_learners()
+    overall_dropout_rate = analytics.overall_dropout_rate()
+    overall_no_of_graduates = analytics.overall_no_of_graduates()
+    overall_graduation_rate = analytics.overall_graduation_rate()
+    context = {
+        'overall_no_of_enrollees': overall_no_of_enrollees,
+        'overall_no_of_learners_in_progress': overall_no_of_learners_in_progress,
+        'percent_of_learners_in_progress': percent_of_learners_in_progress,
+        'overall_no_of_active_learners': overall_no_of_active_learners,
+        'percent_of_active_learners': percent_of_active_learners,
+        'overall_no_of_inactive_learners': overall_no_of_inactive_learners,
+        'percent_of_inactive_learners': percent_of_inactive_learners,
+        'overall_no_of_dropped_out_learners': overall_no_of_dropped_out_learners,
+        'overall_dropout_rate': overall_dropout_rate,
+        'overall_no_of_graduates': overall_no_of_graduates,
+        'overall_graduation_rate': overall_graduation_rate
+    }
+
+    if request.method == "POST":
+        form = ExportProfilesForm(request.POST)
+        if form.is_valid():
+            tnow = timezone.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
+            filename = "sparta-overall-analytics-{}.csv".format(tnow)
+            response = HttpResponse(content_type='text/csv')
+            response['Content-Disposition'] = 'attachment; filename={}'.format(filename)
+
+            writer = csv.writer(response)
+            writer.writerow([
+                'timestamp',
+                'overall_no_of_enrollees',
+                'overall_no_of_learners_in_progress',
+                'percent_of_learners_in_progress',
+                'overall_no_of_active_learners',
+                'percent_of_active_learners',
+                'overall_no_of_inactive_learners',
+                'percent_of_inactive_learners',
+                'overall_no_of_dropped_out_learners',
+                'overall_dropout_rate',
+                'overall_no_of_graduates',
+                'overall_graduation_rate'
+                ])
+            writer.writerow([
+                tnow,
+                overall_no_of_enrollees,
+                overall_no_of_learners_in_progress,
+                percent_of_learners_in_progress,
+                overall_no_of_active_learners,
+                percent_of_active_learners,
+                overall_no_of_inactive_learners,
+                percent_of_inactive_learners,
+                overall_no_of_dropped_out_learners,
+                overall_dropout_rate,
+                overall_no_of_graduates,
+                overall_graduation_rate
+                ])
+            return response
+
+    context['form'] = ExportAnalyticsForm()
+
+    pathways = []
+    for pathway in Pathway.objects.filter(is_active=True):
+        courses = []
+        for course in pathway.courses.all().filter(is_active=True):
+            course_key = CourseKey.from_string(course.course_id)
+            courseoverview = CourseOverview.get_from_id(course_key)
+            courses.append({'courseoverview': courseoverview, 'sparta_course': course})
+        pathways.append({
+            'pathway': pathway,
+            'courses': courses
+        })
+    context['pathways'] = pathways
+
+    return render(request, template_name, context)
+
+
+@login_required
+def admin_pathway_analytics_view(request, slug):
+    if not request.user.is_staff:
+        raise Http404
+
+    template_name = "sparta_admin_pathway_analytics.html"
+
+    try:
+        pathway = Pathway.objects.get(slug=slug)
+    except Pathway.DoesNotExist:
+        raise Http404
+
+    analytics = PathwayAnalytics(pathway)
+
+    no_of_pathway_enrollees = analytics.no_of_pathway_enrollees()
+    no_of_pathway_learners_in_progress = analytics.no_of_pathway_learners_in_progress()
+    percent_of_pathway_learners_in_progress = analytics.percent_of_pathway_learners_in_progress()
+    no_of_active_pathway_learners = analytics.no_of_active_pathway_learners()
+    percent_of_active_pathway_learners = analytics.percent_of_active_pathway_learners()
+    no_of_inactive_pathway_learners = analytics.no_of_inactive_pathway_learners()
+    percent_of_inactive_pathway_learners = analytics.percent_of_inactive_pathway_learners()
+    no_of_dropped_out_pathway_learners = analytics.no_of_dropped_out_pathway_learners()
+    pathway_dropout_rate = analytics.pathway_dropout_rate()
+    no_of_pathway_graduates = analytics.no_of_pathway_graduates()
+    pathway_graduation_rate = analytics.pathway_graduation_rate()
+
+    context = {
+        'no_of_pathway_enrollees': no_of_pathway_enrollees,
+        'no_of_pathway_learners_in_progress': no_of_pathway_learners_in_progress,
+        'percent_of_pathway_learners_in_progress': percent_of_pathway_learners_in_progress,
+        'no_of_active_pathway_learners': no_of_active_pathway_learners,
+        'percent_of_active_pathway_learners': percent_of_active_pathway_learners,
+        'no_of_inactive_pathway_learners': no_of_inactive_pathway_learners,
+        'percent_of_inactive_pathway_learners': percent_of_inactive_pathway_learners,
+        'no_of_dropped_out_pathway_learners': no_of_dropped_out_pathway_learners,
+        'pathway_dropout_rate': pathway_dropout_rate,
+        'no_of_pathway_graduates': no_of_pathway_graduates,
+        'pathway_graduation_rate': pathway_graduation_rate
+    }
+
+    if request.method == "POST":
+        form = ExportAnalyticsForm(request.POST)
+        if form.is_valid():
+            tnow = timezone.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
+            filename = "sparta-pathway-{}-analytics-{}.csv".format(str(slug), tnow)
+            response = HttpResponse(content_type='text/csv')
+            response['Content-Disposition'] = 'attachment; filename={}'.format(filename)
+
+            writer = csv.writer(response)
+            writer.writerow([
+                'timestamp',
+                'pathway',
+                'no_of_pathway_enrollees',
+                'no_of_pathway_learners_in_progress',
+                'percent_of_pathway_learners_in_progress',
+                'no_of_active_pathway_learners',
+                'percent_of_active_pathway_learners',
+                'no_of_inactive_pathway_learners',
+                'percent_of_inactive_pathway_learners',
+                'no_of_dropped_out_pathway_learners',
+                'pathway_dropout_rate',
+                'no_of_pathway_graduates',
+                'pathway_graduation_rate'
+                ])
+            writer.writerow([
+                tnow,
+                str(slug),
+                no_of_pathway_enrollees,
+                no_of_pathway_learners_in_progress,
+                percent_of_pathway_learners_in_progress,
+                no_of_active_pathway_learners,
+                percent_of_active_pathway_learners,
+                no_of_inactive_pathway_learners,
+                percent_of_inactive_pathway_learners,
+                no_of_dropped_out_pathway_learners,
+                pathway_dropout_rate,
+                no_of_pathway_graduates,
+                pathway_graduation_rate
+                ])
+            return response
+
+    context['form'] = ExportAnalyticsForm()
+
+    return render(request, template_name, context)
+
+
+@login_required
+def admin_course_analytics_view(request, course_id):
+    if not request.user.is_staff:
+        raise Http404
+
+    template_name = "sparta_admin_pathway_analytics.html"
+
+    courses = SpartaCourse.objects.filter(is_active=True).filter(course_id=course_id)
+    if courses.exists():
+        course = courses[0]
+    else:
+        raise Http404
+
+    analytics = CourseAnalytics(course)
+
+    no_of_learners_in_progress = analytics.no_of_learners_in_progress()
+    percent_of_learners_in_progress = analytics.percent_of_learners_in_progress()
+    percent_of_learners_in_progress = analytics.percent_of_learners_in_progress()
+    percent_of_active_learners = analytics.percent_of_active_learners()
+    no_of_inactive_learners = analytics.no_of_inactive_learners()
+    percent_of_inactive_learners = analytics.percent_of_inactive_learners()
+    no_of_dropped_out_learners = analytics.no_of_dropped_out_learners()
+    dropout_rate = analytics.dropout_rate()
+    no_of_completed_learners = analytics.no_of_completed_learners()
+    completion_rate = analytics.completion_rate()
+
+    context = {
+        'no_of_learners_in_progress': no_of_learners_in_progress,
+        'percent_of_learners_in_progress': percent_of_learners_in_progress,
+        'no_of_active_learners': no_of_active_learners,
+        'percent_of_active_learners': percent_of_active_learners,
+        'no_of_inactive_learners': no_of_inactive_learners,
+        'percent_of_inactive_learners': percent_of_inactive_learners,
+        'no_of_dropped_out_learners': no_of_dropped_out_learners,
+        'dropout_rate': dropout_rate,
+        'no_of_completed_learners': no_of_completed_learners,
+        'completion_rate': completion_rate
+    }
+
+    if request.method == "POST":
+        form = ExportAnalyticsForm(request.POST)
+        if form.is_valid():
+            tnow = timezone.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
+            filename = "sparta-pathway-{}-analytics-{}.csv".format(str(slug), tnow)
+            response = HttpResponse(content_type='text/csv')
+            response['Content-Disposition'] = 'attachment; filename={}'.format(filename)
+
+            writer = csv.writer(response)
+            writer.writerow([
+                'timestamp',
+                'course_id',
+                'no_of_learners_in_progress',
+                'percent_of_learners_in_progress',
+                'no_of_active_learners',
+                'percent_of_active_learners',
+                'no_of_inactive_learners',
+                'percent_of_inactive_learners',
+                'no_of_dropped_out_learners',
+                'dropout_rate',
+                'no_of_completed_learners',
+                'completion_rate'
+                ])
+            writer.writerow([
+                tnow,
+                str(course_id),
+                no_of_learners_in_progress,
+                percent_of_learners_in_progress,
+                no_of_active_learners,
+                percent_of_active_learners,
+                no_of_inactive_learners,
+                percent_of_inactive_learners,
+                no_of_dropped_out_learners,
+                dropout_rate,
+                no_of_completed_learners,
+                completion_rate
+                ])
+            return response
+
+    context['form'] = ExportAnalyticsForm()
+
     return render(request, template_name, context)

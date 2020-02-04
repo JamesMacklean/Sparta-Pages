@@ -182,6 +182,11 @@ class ExportProfilesForm(forms.Form):
     """
 
 
+class ExportAnalyticsForm(forms.Form):
+    """
+    """
+
+
 class FilterForm(forms.Form):
     """
     """
