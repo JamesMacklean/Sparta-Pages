@@ -343,13 +343,13 @@ class Learner:
         for course in self.current_courses:
             get_modules = StudentModule.objects.filter(course_id=CourseKey.from_string(course.course_id), student=self.user)
             if get_modules.exists():
-                modules |= get_modules.order_by('-modified').first()
+                modules |= get_modules.order_by('-modified')
         return modules
 
     def _get_latest_module(self):
         modules = self._latest_modules()
         if modules:
-            return modules[0]
+            return modules.order_by('-modified').first()
         return None
 
     def _get_activity(self, active=False, inactive=False, dropped_out=False):
