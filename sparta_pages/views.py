@@ -1344,7 +1344,7 @@ def admin_course_analytics_view(request, course_id):
         form = ExportAnalyticsForm(request.POST)
         if form.is_valid():
             tnow = timezone.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
-            filename = "sparta-pathway-{}-analytics-{}.csv".format(str(slug), tnow)
+            filename = "sparta-pathway-{}-analytics-{}.csv".format(course_id, tnow)
             response = HttpResponse(content_type='text/csv')
             response['Content-Disposition'] = 'attachment; filename={}'.format(filename)
 
@@ -1365,7 +1365,7 @@ def admin_course_analytics_view(request, course_id):
                 ])
             writer.writerow([
                 tnow,
-                str(course_id),
+                course_id,
                 no_of_learners_in_progress,
                 percent_of_learners_in_progress,
                 no_of_active_learners,
