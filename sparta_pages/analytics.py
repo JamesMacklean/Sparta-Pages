@@ -163,13 +163,13 @@ class LearnerManager:
             self.all()
         queryset = self.queryset
 
-        enrolled = self.kwargs.get('enrolled', None)
-        enrolled_verified = self.kwargs.get('enrolled_verified', None)
-        in_progress = self.kwargs.get('in_progress', None)
-        active = self.kwargs.get('active', None)
-        inactive = self.kwargs.get('inactive', None)
-        dropped_out = self.kwargs.get('dropped_out', None)
-        graduated = self.kwargs.get('graduated', None)
+        enrolled = kwargs.get('enrolled', None)
+        enrolled_verified = kwargs.get('enrolled_verified', None)
+        in_progress = kwargs.get('in_progress', None)
+        active = kwargs.get('active', None)
+        inactive = kwargs.get('inactive', None)
+        dropped_out = kwargs.get('dropped_out', None)
+        graduated = kwargs.get('graduated', None)
 
         if enrolled is not None:
             newset = []
@@ -220,9 +220,7 @@ class LearnerManager:
                     newset.append(learner)
             queryset = newset
 
-        self.queryset = queryset
-
-        return self.queryset
+        return queryset
 
     def count(self):
         ctr = 0
