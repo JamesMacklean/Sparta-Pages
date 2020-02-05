@@ -453,7 +453,10 @@ class OverallAnalytics:
         """
         Percentage of enrollees who are in-progress in at least 1 course
         """
-        return self.overall_no_of_learners_in_progress() / self.total
+        if self.total:
+            return self.overall_no_of_learners_in_progress() / self.total
+        else:
+            return 0
 
     def overall_no_of_active_learners(self):
         """
@@ -465,7 +468,10 @@ class OverallAnalytics:
         """
         Percentage of learners who are in-progress in at least 1 course and whose last session is at most 30 days ago
         """
-        return self.overall_no_of_active_learners() / self.total
+        if self.total:
+            return self.overall_no_of_active_learners() / self.total
+        else:
+            return 0
 
     def overall_no_of_inactive_learners(self):
         """
@@ -477,7 +483,10 @@ class OverallAnalytics:
         """
         Percentage of learners who are in-progress in at least 1 course and whose last session is over 30 days ago but at most 180 days ago
         """
-        return self.overall_no_of_inactive_learners() / self.total
+        if self.total:
+            return self.overall_no_of_inactive_learners() / self.total
+        else:
+            return 0
 
     def overall_no_of_dropped_out_learners(self):
         """
@@ -489,7 +498,10 @@ class OverallAnalytics:
         """
         Percentage of learners who are in-progress in at least 1 course and whose last session is over 180 days ago
         """
-        return self.overall_no_of_dropped_out_learners() / self.total
+        if self.total:
+            return self.overall_no_of_dropped_out_learners() / self.total
+        else:
+            return 0
 
     def overall_no_of_graduates(self):
         """
@@ -501,7 +513,10 @@ class OverallAnalytics:
         """
         Percentage of learners completed at least 1 pathway
         """
-        return self.overall_no_of_graduates() / self.total
+        if self.total:
+            return self.overall_no_of_graduates() / self.total
+        else:
+            return 0
 
     def overall_average_session_duration(self):
         """
@@ -540,7 +555,10 @@ class PathwayAnalytics:
         """
         Percentage of enrollees who are in-progress in at least 1 course (pathway-level)
         """
-        return self.no_of_pathway_learners_in_progress() / self.total
+        if self.total:
+            return self.no_of_pathway_learners_in_progress() / self.total
+        else:
+            return 0
 
     def no_of_active_pathway_learners(self):
         """
@@ -552,7 +570,10 @@ class PathwayAnalytics:
         """
         Percentage of learners who are in-progress in at least 1 course and whose last session is at most 30 days ago (pathway-level)
         """
-        return self.no_of_active_pathway_learners() / self.total
+        if self.total:
+            return self.no_of_active_pathway_learners() / self.total
+        else:
+            return 0
 
     def no_of_inactive_pathway_learners(self):
         """
@@ -564,7 +585,10 @@ class PathwayAnalytics:
         """
         Percentage of learners who are in-progress in at least 1 course and whose last session is over 30 days ago but at most 180 days ago (pathway-level)
         """
-        return self.no_of_inactive_pathway_learners() / self.total
+        if self.total:
+            return self.no_of_inactive_pathway_learners() / self.total
+        else:
+            return 0
 
     def no_of_dropped_out_pathway_learners(self):
         """
@@ -576,7 +600,10 @@ class PathwayAnalytics:
         """
         Percentage of learners who are in-progress in at least 1 course and whose last session is over 180 days ago (pathway-level)
         """
-        return self.no_of_dropped_out_pathway_learners() / self.total
+        if self.total:
+            return self.no_of_dropped_out_pathway_learners() / self.total
+        else:
+            return 0
 
     def no_of_pathway_graduates(self):
         """
@@ -588,7 +615,10 @@ class PathwayAnalytics:
         """
         Percentage of learners completed the pathway
         """
-        return self.no_of_pathway_graduates() / self.total
+        if self.total:
+            return self.no_of_pathway_graduates() / self.total
+        else:
+            return 0
 
     def pathway_average_session_duration(self):
         """
@@ -621,7 +651,10 @@ class CourseAnalytics:
         """
         Percentage of enrollees who are in-progress in the course
         """
-        return self.no_of_learners_in_progress() / self.total
+        if self.total:
+            return self.no_of_learners_in_progress() / self.total
+        else:
+            return 0
 
     def no_of_active_learners(self):
         """
@@ -633,7 +666,10 @@ class CourseAnalytics:
         """
         Percentage of learners who are in-progress in the course and whose last session is at most 30 days ago
         """
-        return self.no_of_active_learners() / self.total
+        if self.total:
+            return self.no_of_active_learners() / self.total
+        else:
+            return 0
 
     def no_of_inactive_learners(self):
         """
@@ -645,7 +681,10 @@ class CourseAnalytics:
         """
         Percentage of learners who are in-progress in the course and whose last session is over 30 days ago but at most 180 days ago
         """
-        return self.no_of_inactive_learners() / self.total
+        if self.total:
+            return self.no_of_inactive_learners() / self.total
+        else:
+            return 0
 
     def no_of_dropped_out_learners(self):
         """
@@ -657,7 +696,10 @@ class CourseAnalytics:
         """
         Percentage of learners who are in-progress in the course and whose last session is over 180 days ago
         """
-        return self.no_of_dropped_out_learners() / self.total
+        if self.total:
+            return self.no_of_dropped_out_learners() / self.total
+        else:
+            return 0
 
     def no_of_completed_learners(self):
         """
@@ -669,7 +711,10 @@ class CourseAnalytics:
         """
         Percentage of learners who completed the course
         """
-        return self.no_of_completed_learners() / self.total
+        if self.total:
+            return self.no_of_completed_learners() / self.total
+        else:
+            return 0
 
     def average_session_duration(self):
         """
