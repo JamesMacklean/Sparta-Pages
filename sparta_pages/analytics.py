@@ -401,33 +401,31 @@ class Learner:
                 return True
         return False
 
-    def _completed_pathway(self, pathway=None):
-        if pathway is None:
-            pathway = self.pathway
+    def _completed_pathway(self):
+        if self.pathway is not None:
+            groups = self.pathway.groups.all().filter(is_active=True)
+            groups_completed = 0
+            for group in groups:
+                group_courses = group.courses.all().filter(is_active=True)
+                complete_at_least = group_courses.count() if group.type == 'CO' else group.complete_at_least
+                group_courses = app.pathway.courses.all().filter(is_active=True)
+                group_ctr = 0
+                for course in group_courses:
+                    course_key = CourseKey.from_string(course.course_id)
+                    cert_status = certificate_status_for_student(self.user, course_key)
+                    if cert_status and cert_status['mode'] == 'verified' and cert_status['status'] not in ['unavailable', 'notpassing', 'restricted', 'unverified']:
+                        group_ctr += 1
+                if group_courses and group_ctr == complete_at_least:
+                    groups_completed += 1
+            return groups.count() == groups_completed
+        return False
 
-        groups = pathway.groups.all().filter(is_active=True)
-        groups_completed = 0
-        for group in groups:
-            group_courses = group.courses.all().filter(is_active=True)
-            complete_at_least = group_courses.count() if group.type == 'CO' else group.complete_at_least
-            group_courses = app.pathway.courses.all().filter(is_active=True)
-            group_ctr = 0
-            for course in group_courses:
-                course_key = CourseKey.from_string(course.course_id)
-                cert_status = certificate_status_for_student(self.user, course_key)
-                if cert_status and cert_status['mode'] == 'verified' and cert_status['status'] not in ['unavailable', 'notpassing', 'restricted', 'unverified']:
-                    group_ctr += 1
-            if group_courses and group_ctr == complete_at_least:
-                groups_completed += 1
-        return groups.count() == groups_completed
-
-    def _completed_course(self, course=None):
-        if course is None:
-            course = self.course
-
-        course_key = CourseKey.from_string(course.course_id)
-        cert_status = certificate_status_for_student(self.user, course_key)
-        return cert_status and cert_status['mode'] == 'verified' and cert_status['status'] not in ['unavailable', 'notpassing', 'restricted', 'unverified']
+    def _completed_course(self):
+        if self.course is not None:
+            course_key = CourseKey.from_string(self.course.course_id)
+            cert_status = certificate_status_for_student(self.user, course_key)
+            return cert_status and cert_status['mode'] == 'verified' and cert_status['status'] not in ['unavailable', 'notpassing', 'restricted', 'unverified']
+        return False
 
     manager = LearnerManager()
 
