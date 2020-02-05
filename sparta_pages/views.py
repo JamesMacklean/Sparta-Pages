@@ -1240,6 +1240,7 @@ def admin_pathway_analytics_view(request, slug):
     pathway_graduation_rate = analytics.pathway_graduation_rate()
 
     context = {
+        'pathway': pathway,
         'no_of_pathway_enrollees': no_of_pathway_enrollees,
         'no_of_pathway_learners_in_progress': no_of_pathway_learners_in_progress,
         'percent_of_pathway_learners_in_progress': percent_of_pathway_learners_in_progress,
@@ -1316,7 +1317,7 @@ def admin_course_analytics_view(request, course_id):
 
     no_of_learners_in_progress = analytics.no_of_learners_in_progress()
     percent_of_learners_in_progress = analytics.percent_of_learners_in_progress()
-    percent_of_learners_in_progress = analytics.percent_of_learners_in_progress()
+    no_of_active_learners = analytics.no_of_active_learners()
     percent_of_active_learners = analytics.percent_of_active_learners()
     no_of_inactive_learners = analytics.no_of_inactive_learners()
     percent_of_inactive_learners = analytics.percent_of_inactive_learners()
@@ -1326,6 +1327,7 @@ def admin_course_analytics_view(request, course_id):
     completion_rate = analytics.completion_rate()
 
     context = {
+        'course': course,
         'no_of_learners_in_progress': no_of_learners_in_progress,
         'percent_of_learners_in_progress': percent_of_learners_in_progress,
         'no_of_active_learners': no_of_active_learners,
