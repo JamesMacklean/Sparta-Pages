@@ -33,7 +33,7 @@
           {% for course in p.courses %}
           <tr>
             <td>{{ course.sparta_course.course_id }}</td>
-            <td>{{ course.course.overview. }}</td>
+            <td>{{ course.course.overview.display_name }}</td>
             <td><a class="btn btn-primary btn-sm" href="{% url 'sparta-admin-course-analytics' course_id=course.sparta_course.course_id %}">View Data</a></td>
           </tr>
           {% endfor %}
