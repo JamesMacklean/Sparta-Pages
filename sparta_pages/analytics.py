@@ -406,7 +406,6 @@ class Learner:
             for group in groups:
                 group_courses = group.courses.all().filter(is_active=True)
                 complete_at_least = group_courses.count() if group.type == 'CO' else group.complete_at_least
-                group_courses = app.pathway.courses.all().filter(is_active=True)
                 group_ctr = 0
                 for course in group_courses:
                     course_key = CourseKey.from_string(course.course_id)
