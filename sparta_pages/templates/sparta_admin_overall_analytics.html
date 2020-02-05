@@ -14,13 +14,13 @@
 
 <div class="row">
 
-{% for pathway in pathways %}
+{% for p in pathways %}
 <div class="col col-6 col-sm-6">
   <div class="card">
     <div class="card-body">
 
-      <h3>{{ pathway.name }}</h3>
-      <a class="btn btn-primary btn-sm" href="{% url 'sparta-admin-pathway-analytics' slug=pathway.slug %}">View Data</a>
+      <h3>{{ p.pathway.name }}</h3>
+      <a class="btn btn-primary btn-sm" href="{% url 'sparta-admin-pathway-analytics' slug=p.pathway.slug %}">View Data</a>
       <table class="table table-hover table-sm">
         <thead>
           <tr>
@@ -30,7 +30,7 @@
           </tr>
         </thead>
         <tbody>
-          {% for course in pathway.courses %}
+          {% for course in p.courses %}
           <tr>
             <td>{{ course.sparta_course.course_id }}</td>
             <td>{{ course.course.overview. }}</td>
