@@ -12,6 +12,171 @@
 
 <h2>SPARTA Data Dashboard</h2>
 
+<br />
+<hr />
+<br />
+
+<h4>Overall Analytics</h4>
+
+<div class="row">
+
+  <div class="col col-3 col-sm-3">
+    <div class="card text-center mb-3">
+      <div class="card-header">
+        Overall Number of Enrollees
+      </div>
+      <div class="card-body">
+        <div class="card-title">
+          {{overall_no_of_enrollees}}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col col-3 col-sm-3">
+    <div class="card text-center mb-3">
+      <div class="card-header">
+        Overall Number of Learners in Progress
+      </div>
+      <div class="card-body">
+        <div class="card-title">
+          {{overall_no_of_learners_in_progress}}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col col-3 col-sm-3">
+    <div class="card text-center mb-3">
+      <div class="card-header">
+        % of Learners in progress
+      </div>
+      <div class="card-body">
+        <div class="card-title">
+          {{percent_of_learners_in_progress}}%
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col col-3 col-sm-3">
+    <div class="card text-center mb-3">
+      <div class="card-header">
+        Overall Number of Active Learners
+      </div>
+      <div class="card-body">
+        <div class="card-title">
+          {{overall_no_of_active_learners}}
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="row">
+
+  <div class="col col-3 col-sm-3">
+    <div class="card text-center mb-3">
+      <div class="card-header">
+        % of Active Learners
+      </div>
+      <div class="card-body">
+        <div class="card-title">
+          {{percent_of_active_learners}}%
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col col-3 col-sm-3">
+    <div class="card text-center mb-3">
+      <div class="card-header">
+        Overall Number of Inactive Learners
+      </div>
+      <div class="card-body">
+        <div class="card-title">
+          {{overall_no_of_inactive_learners}}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col col-3 col-sm-3">
+    <div class="card text-center mb-3">
+      <div class="card-header">
+        % of Inactive Learners
+      </div>
+      <div class="card-body">
+        <div class="card-title">
+          {{percent_of_inactive_learners}}%
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col col-3 col-sm-3">
+    <div class="card text-center mb-3">
+      <div class="card-header">
+        Overall Number of Dropped Out Learners
+      </div>
+      <div class="card-body">
+        <div class="card-title">
+          {{overall_no_of_dropped_out_learners}}
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="row">
+
+  <div class="col col-3 col-sm-3">
+    <div class="card text-center mb-3">
+      <div class="card-header">
+        Overall Dropout Rate
+      </div>
+      <div class="card-body">
+        <div class="card-title">
+          {{overall_dropout_rate}}%
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col col-3 col-sm-3">
+    <div class="card text-center mb-3">
+      <div class="card-header">
+        Overall Number of Graduates
+      </div>
+      <div class="card-body">
+        <div class="card-title">
+          {{overall_no_of_graduates}}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col col-3 col-sm-3">
+    <div class="card text-center mb-3">
+      <div class="card-header">
+        Overall Graduationv Rate
+      </div>
+      <div class="card-body">
+        <div class="card-title">
+          {{overall_graduation_rate}}%
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<br />
+<hr />
+<br />
+
 <div class="row">
 
 {% for p in pathways %}
