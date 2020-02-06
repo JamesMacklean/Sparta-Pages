@@ -453,7 +453,7 @@ class OverallAnalytics:
         Percentage of enrollees who are in-progress in at least 1 course
         """
         if self.total:
-            return self.overall_no_of_learners_in_progress() / self.total
+            return 100*(self.overall_no_of_learners_in_progress() / self.total)
         else:
             return 0
 
@@ -468,7 +468,7 @@ class OverallAnalytics:
         Percentage of learners who are in-progress in at least 1 course and whose last session is at most 30 days ago
         """
         if self.total:
-            return self.overall_no_of_active_learners() / self.total
+            return 100*(self.overall_no_of_active_learners() / self.total)
         else:
             return 0
 
@@ -483,7 +483,7 @@ class OverallAnalytics:
         Percentage of learners who are in-progress in at least 1 course and whose last session is over 30 days ago but at most 180 days ago
         """
         if self.total:
-            return self.overall_no_of_inactive_learners() / self.total
+            return 100*(self.overall_no_of_inactive_learners() / self.total)
         else:
             return 0
 
@@ -498,7 +498,7 @@ class OverallAnalytics:
         Percentage of learners who are in-progress in at least 1 course and whose last session is over 180 days ago
         """
         if self.total:
-            return self.overall_no_of_dropped_out_learners() / self.total
+            return 100*(self.overall_no_of_dropped_out_learners() / self.total)
         else:
             return 0
 
@@ -513,7 +513,7 @@ class OverallAnalytics:
         Percentage of learners completed at least 1 pathway
         """
         if self.total:
-            return self.overall_no_of_graduates() / self.total
+            return 100*(self.overall_no_of_graduates() / self.total)
         else:
             return 0
 
@@ -555,7 +555,7 @@ class PathwayAnalytics:
         Percentage of enrollees who are in-progress in at least 1 course (pathway-level)
         """
         if self.total:
-            return self.no_of_pathway_learners_in_progress() / self.total
+            return 100*(self.no_of_pathway_learners_in_progress() / self.total)
         else:
             return 0
 
@@ -570,7 +570,7 @@ class PathwayAnalytics:
         Percentage of learners who are in-progress in at least 1 course and whose last session is at most 30 days ago (pathway-level)
         """
         if self.total:
-            return self.no_of_active_pathway_learners() / self.total
+            return 100*(self.no_of_active_pathway_learners() / self.total)
         else:
             return 0
 
@@ -585,7 +585,7 @@ class PathwayAnalytics:
         Percentage of learners who are in-progress in at least 1 course and whose last session is over 30 days ago but at most 180 days ago (pathway-level)
         """
         if self.total:
-            return self.no_of_inactive_pathway_learners() / self.total
+            return 100*(self.no_of_inactive_pathway_learners() / self.total)
         else:
             return 0
 
@@ -600,7 +600,7 @@ class PathwayAnalytics:
         Percentage of learners who are in-progress in at least 1 course and whose last session is over 180 days ago (pathway-level)
         """
         if self.total:
-            return self.no_of_dropped_out_pathway_learners() / self.total
+            return 100*(self.no_of_dropped_out_pathway_learners() / self.total)
         else:
             return 0
 
@@ -615,7 +615,7 @@ class PathwayAnalytics:
         Percentage of learners completed the pathway
         """
         if self.total:
-            return self.no_of_pathway_graduates() / self.total
+            return 100*(self.no_of_pathway_graduates() / self.total)
         else:
             return 0
 
@@ -651,7 +651,7 @@ class CourseAnalytics:
         Percentage of enrollees who are in-progress in the course
         """
         if self.total:
-            return self.no_of_learners_in_progress() / self.total
+            return 100*(self.no_of_learners_in_progress() / self.total)
         else:
             return 0
 
@@ -666,7 +666,7 @@ class CourseAnalytics:
         Percentage of learners who are in-progress in the course and whose last session is at most 30 days ago
         """
         if self.total:
-            return self.no_of_active_learners() / self.total
+            return 100*(self.no_of_active_learners() / self.total)
         else:
             return 0
 
@@ -681,7 +681,7 @@ class CourseAnalytics:
         Percentage of learners who are in-progress in the course and whose last session is over 30 days ago but at most 180 days ago
         """
         if self.total:
-            return self.no_of_inactive_learners() / self.total
+            return 100*(self.no_of_inactive_learners() / self.total)
         else:
             return 0
 
@@ -696,7 +696,7 @@ class CourseAnalytics:
         Percentage of learners who are in-progress in the course and whose last session is over 180 days ago
         """
         if self.total:
-            return self.no_of_dropped_out_learners() / self.total
+            return 100*(self.no_of_dropped_out_learners() / self.total)
         else:
             return 0
 
@@ -711,7 +711,7 @@ class CourseAnalytics:
         Percentage of learners who completed the course
         """
         if self.total:
-            return self.no_of_completed_learners() / self.total
+            return 100*(self.no_of_completed_learners() / self.total)
         else:
             return 0
 
