@@ -1305,7 +1305,7 @@ def admin_course_analytics_view(request, course_id):
     if not request.user.is_staff:
         raise Http404
 
-    template_name = "sparta_admin_pathway_analytics.html"
+    template_name = "sparta_admin_course_analytics.html"
 
     courses = SpartaCourse.objects.filter(is_active=True).filter(course_id=course_id)
     if courses.exists():
@@ -1328,6 +1328,7 @@ def admin_course_analytics_view(request, course_id):
 
     context = {
         'course': course,
+        'courseoverview': CourseOverview.get_from_id(CourseKey.from_string(course.course_id)),
         'no_of_learners_in_progress': no_of_learners_in_progress,
         'percent_of_learners_in_progress': percent_of_learners_in_progress,
         'no_of_active_learners': no_of_active_learners,
