@@ -1051,12 +1051,10 @@ def export_profiles_to_csv(profiles):
         full_name = profile['full_name']
         approved_pathways_str = ""
         for p in profile['approved_pathways']:
-            approved_pathways_str = approved_pathways_str + p.pathway.name +" | "
+            approved_pathways_str = "{} {} | ".format(approved_pathways_str, p.pathway.name)
         is_active_str = "True" if profile['is_active'] else "False"
 
-        approved_pathways_u = unicode(approved_pathways_str, 'utf-8')
-
-        writer.writerow([username, email, full_name, approved_pathways_u[:-3], is_active_str])
+        writer.writerow([username, email, full_name, approved_pathways_str[:-3], is_active_str])
 
     return response
 
