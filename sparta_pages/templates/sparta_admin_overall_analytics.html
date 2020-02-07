@@ -10,6 +10,12 @@
     <input type="submit" value="Export to CSV" />
 </form>
 
+<form action="{% url 'sparta-admin-overall-analytics' %}" method="get">
+  {% csrf_token %}
+  {{ filter_form }}
+  <input type="submit" value="Filter" />
+</form>
+
 <h2>SPARTA Data Dashboard</h2>
 
 <br />
