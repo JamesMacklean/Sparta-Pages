@@ -130,6 +130,18 @@ class LearnerManager:
             learners.append(Learner(profile=profile))
         return learners
 
+    def filter_profiles(self, start, end):
+        self.queryset = self._filter_profiles(start, end)
+        return self
+
+    def _filter_profiles(self, start, end):
+        profiles = SpartaProfile.objects.filter(is_active=True)
+
+        learners = []
+        for profile in profiles:
+            learners.append(Learner(profile=profile))
+        return learners
+
     def pathway(self, pathway):
         self.queryset = self._pathway(pathway)
         return self
@@ -285,7 +297,7 @@ class Learner:
         return p
 
     def _enrollments(self):
-        courses = SpartaCourse.objects.filter(is_active=True)
+        courses = self.current_courses
         if self.pathway is not None:
             courses = courses.filter(pathway=self.pathway)
         if self.course is not None:
