@@ -130,12 +130,12 @@ class LearnerManager:
             learners.append(Learner(profile=profile))
         return learners
 
-    def filter_profiles(self, start, end):
-        self.queryset = self._filter_profiles(start, end)
+    def interval(self, start, end):
+        self.queryset = self._interval(start, end)
         return self
 
-    def _filter_profiles(self, start, end):
-        profiles = SpartaProfile.objects.filter(is_active=True)
+    def _interval(self, start, end):
+        profiles = SpartaProfile.objects.filter(is_active=True).filter(created_at__gte=start).filter(created_at__lte=end)
 
         learners = []
         for profile in profiles:
@@ -444,8 +444,16 @@ class OverallAnalytics:
     Class helper for getting overall data
     """
 
-    def __init__(self, *args, **kwargs):
-        self.learners = Learner.manager.all()
+    def __init__(self, start=None, end=None, *args, **kwargs):
+        if start is not None or end is not None:
+            if start is None:
+                start = timezone.now()
+            if end is None:
+                end = start.date() + timedelta(days=1)
+            learners = Learner.manager.interval(start, end)
+        else:
+            learners = Learner.manager.all()
+        self.learners = learners
         self.total = self.learners.count()
 
     def overall_no_of_enrollees(self):
@@ -545,9 +553,17 @@ class PathwayAnalytics:
     Initialize with pathway argument
     ex. PathwayAnalytics(pathway)
     """
-    def __init__(self, pathway, *args, **kwargs):
+    def __init__(self, pathway, start=None, end=None, *args, **kwargs):
+        if start is not None or end is not None:
+            if start is None:
+                start = timezone.now()
+            if end is None:
+                end = start.date() + timedelta(days=1)
+            learners = Learner.manager.interval(start, end).pathway(pathway)
+        else:
+            learners = Learner.manager.pathway(pathway)
+        self.learners = learners
         self.pathway = pathway
-        self.learners = Learner.manager.pathway(pathway)
         self.total = self.learners.count()
 
     def no_of_pathway_enrollees(self):
@@ -647,9 +663,17 @@ class CourseAnalytics:
     Initialize with course argument
     ex. CourseAnalytics(course)
     """
-    def __init__(self, course, *args, **kwargs):
+    def __init__(self, course, start=None, end=None, *args, **kwargs):
+        if start is not None or end is not None:
+            if start is None:
+                start = timezone.now()
+            if end is None:
+                end = start.date() + timedelta(days=1)
+            learners = Learner.manager.interval(start, end).course(course)
+        else:
+            learners = Learner.manager.course(course)
+        self.learners = learners
         self.course = course
-        self.learners = Learner.manager.course(course)
         self.total = self.learners.count()
 
     def no_of_learners_in_progress(self):

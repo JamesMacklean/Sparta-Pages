@@ -1132,7 +1132,24 @@ def admin_overall_analytics_view(request):
 
     template_name = "sparta_admin_overall_analytics.html"
 
-    analytics = OverallAnalytics()
+    date_from = timezone.now().date() - timedelta(days=1)
+    date_to = timezone.now()
+
+    date_from_year = request.GET.get('date_from_year', None)
+    date_from_month = request.GET.get('date_from_month', None)
+    date_from_day = request.GET.get('date_from_day', None)
+    if None not in [date_from_year, date_from_month, date_from_day]:
+        date_from_str = "{}-{}-{}".format(date_from_year, date_from_month, date_from_day)
+        date_from = datetime.strptime(date_from_str, "%Y-%m-%d").date()
+
+    date_to_year = request.GET.get('date_to_year', None)
+    date_to_month = request.GET.get('date_to_month', None)
+    date_to_day = request.GET.get('date_to_day', None)
+    if None not in [date_to_year, date_to_month, date_to_day]:
+        date_to_str = "{}-{}-{}".format(date_to_year, date_to_month, date_to_day)
+        date_to = datetime.strptime(date_to_str, "%Y-%m-%d").date()
+
+    analytics = OverallAnalytics(date_from, date_to)
     overall_no_of_enrollees = analytics.overall_no_of_enrollees()
     overall_no_of_learners_in_progress = analytics.overall_no_of_learners_in_progress()
     percent_of_learners_in_progress = analytics.percent_of_learners_in_progress()
@@ -1198,6 +1215,7 @@ def admin_overall_analytics_view(request):
             return response
 
     context['form'] = ExportAnalyticsForm()
+    context['filter_form'] = FilterForm(request.GET or None)
 
     pathways = []
     for pathway in Pathway.objects.filter(is_active=True):
@@ -1227,7 +1245,24 @@ def admin_pathway_analytics_view(request, slug):
     except Pathway.DoesNotExist:
         raise Http404
 
-    analytics = PathwayAnalytics(pathway)
+    date_from = timezone.now().date() - timedelta(days=1)
+    date_to = timezone.now()
+
+    date_from_year = request.GET.get('date_from_year', None)
+    date_from_month = request.GET.get('date_from_month', None)
+    date_from_day = request.GET.get('date_from_day', None)
+    if None not in [date_from_year, date_from_month, date_from_day]:
+        date_from_str = "{}-{}-{}".format(date_from_year, date_from_month, date_from_day)
+        date_from = datetime.strptime(date_from_str, "%Y-%m-%d").date()
+
+    date_to_year = request.GET.get('date_to_year', None)
+    date_to_month = request.GET.get('date_to_month', None)
+    date_to_day = request.GET.get('date_to_day', None)
+    if None not in [date_to_year, date_to_month, date_to_day]:
+        date_to_str = "{}-{}-{}".format(date_to_year, date_to_month, date_to_day)
+        date_to = datetime.strptime(date_to_str, "%Y-%m-%d").date()
+
+    analytics = PathwayAnalytics(pathway, start=date_from, end=date_to)
 
     no_of_pathway_enrollees = analytics.no_of_pathway_enrollees()
     no_of_pathway_learners_in_progress = analytics.no_of_pathway_learners_in_progress()
@@ -1298,6 +1333,7 @@ def admin_pathway_analytics_view(request, slug):
             return response
 
     context['form'] = ExportAnalyticsForm()
+    context['filter_form'] = FilterForm(request.GET or None)
 
     return render(request, template_name, context)
 
@@ -1315,7 +1351,24 @@ def admin_course_analytics_view(request, course_id):
     else:
         raise Http404
 
-    analytics = CourseAnalytics(course)
+    date_from = timezone.now().date() - timedelta(days=1)
+    date_to = timezone.now()
+
+    date_from_year = request.GET.get('date_from_year', None)
+    date_from_month = request.GET.get('date_from_month', None)
+    date_from_day = request.GET.get('date_from_day', None)
+    if None not in [date_from_year, date_from_month, date_from_day]:
+        date_from_str = "{}-{}-{}".format(date_from_year, date_from_month, date_from_day)
+        date_from = datetime.strptime(date_from_str, "%Y-%m-%d").date()
+
+    date_to_year = request.GET.get('date_to_year', None)
+    date_to_month = request.GET.get('date_to_month', None)
+    date_to_day = request.GET.get('date_to_day', None)
+    if None not in [date_to_year, date_to_month, date_to_day]:
+        date_to_str = "{}-{}-{}".format(date_to_year, date_to_month, date_to_day)
+        date_to = datetime.strptime(date_to_str, "%Y-%m-%d").date()
+
+    analytics = CourseAnalytics(course, start=date_from, end=date_to)
 
     no_of_learners_in_progress = analytics.no_of_learners_in_progress()
     percent_of_learners_in_progress = analytics.percent_of_learners_in_progress()
@@ -1383,5 +1436,6 @@ def admin_course_analytics_view(request, course_id):
             return response
 
     context['form'] = ExportAnalyticsForm()
+    context['filter_form'] = FilterForm(request.GET or None)
 
     return render(request, template_name, context)
