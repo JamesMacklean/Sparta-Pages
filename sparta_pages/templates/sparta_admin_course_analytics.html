@@ -10,7 +10,7 @@
     <input type="submit" value="Export to CSV" />
 </form>
 
-<form action="{% url 'sparta-admin-course-analytics' %}" method="get">
+<form action="{% url 'sparta-admin-course-analytics' course_id=course.course_id %}" method="get">
   {% csrf_token %}
   {{ filter_form }}
   <input type="submit" value="Filter" />
