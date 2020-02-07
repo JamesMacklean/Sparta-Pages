@@ -1,4 +1,5 @@
-from decimal import Decimal
+from decimal import Decimal, getcontext
+getcontext().prec = 2
 
 from django.utils import timezone
 
