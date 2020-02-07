@@ -273,11 +273,11 @@ class Learner:
         self.user = profile.user
         self.extended_profile = self._extended_sparta_profile()
 
+        self.current_courses = self._current_courses()
         self.enrollments = self._enrollments()
         self.verified_enrollments = self._verified_enrollments()
         self.applications = self._applications()
         self.approved_applications = self._approved_applications()
-        self.current_courses = self._current_courses()
 
         self.enrolled = self._enrolled()
         self.enrolled_verified = self._enrolled_verified()
