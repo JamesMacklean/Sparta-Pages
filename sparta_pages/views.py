@@ -1038,18 +1038,19 @@ def admin_approve_application_view(request, id):
 
 
 def export_profiles_to_csv(profiles):
+    import unicodecsv
     tnow = timezone.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
     filename = "sparta-scholar-credentials-{}.csv".format(tnow)
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename={}'.format(filename)
 
-    writer = csv.writer(response)
-    # writer.writerow(['Username', 'Email Address', 'Full Name', 'Approved Pathways', 'Is Active'])
+    writer = unicodecsv.writer(response, encoding='utf-8')
     writer.writerow(['Username', 'Email Address', 'Full Name', 'Approved Pathways', 'Is Active'])
     for profile in profiles:
         username = profile['username']
         email = profile['email']
-        full_name = profile['full_name'].decode('utf-8').replace(u"\xf1", "n").replace(u"\xd1", "N")
+        full_name = profile['full_name']
+        # full_name = profile['full_name'].decode('utf-8').replace(u"\xf1", "n").replace(u"\xd1", "N")
         approved_pathways_str = ""
         for p in profile['approved_pathways']:
             approved_pathways_str = "{}{} | ".format(approved_pathways_str, p.pathway.name)
