@@ -1044,17 +1044,18 @@ def export_profiles_to_csv(profiles):
     response['Content-Disposition'] = 'attachment; filename={}'.format(filename)
 
     writer = csv.writer(response)
-    writer.writerow(['Username', 'Email Address', 'Full Name', 'Approved Pathways', 'Is Active'])
+    # writer.writerow(['Username', 'Email Address', 'Full Name', 'Approved Pathways', 'Is Active'])
+    writer.writerow(['Username', 'Email Address', 'Approved Pathways', 'Is Active'])
     for profile in profiles:
         username = profile['username']
         email = profile['email']
-        full_name = profile['full_name']
+        # full_name = profile['full_name']
         approved_pathways_str = ""
         for p in profile['approved_pathways']:
             approved_pathways_str = "{}{} | ".format(approved_pathways_str, p.pathway.name)
         is_active_str = "True" if profile['is_active'] else "False"
 
-        writer.writerow([username, email, full_name, approved_pathways_str[:-3], is_active_str])
+        writer.writerow([username, email, approved_pathways_str[:-3], is_active_str])
 
     return response
 
