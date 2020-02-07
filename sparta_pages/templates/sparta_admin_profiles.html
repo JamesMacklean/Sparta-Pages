@@ -37,7 +37,7 @@
           <td>{{ profile.email }}</td>
           <td>{{ profile.full_name }}</td>
           <td>
-            {% for pathway in profile.approved_pathways %}{{ pathway.name }}, {% endfor %}
+            {% for application in profile.approved_pathways %}{{ application.pathway.name }}, {% endfor %}
           </td>
           <td>
             {% if profile.is_active %}
