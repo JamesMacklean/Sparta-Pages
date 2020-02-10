@@ -1150,6 +1150,7 @@ def admin_overall_analytics_view(request):
         date_to = datetime.strptime(date_to_str, "%Y-%m-%d").date()
 
     analytics = OverallAnalytics(date_from, date_to)
+    overall_no_of_registered_sparta_learners = analytics.total
     overall_no_of_enrollees = analytics.overall_no_of_enrollees()
     overall_no_of_learners_in_progress = analytics.overall_no_of_learners_in_progress()
     percent_of_learners_in_progress = analytics.percent_of_learners_in_progress()
@@ -1162,6 +1163,7 @@ def admin_overall_analytics_view(request):
     overall_no_of_graduates = analytics.overall_no_of_graduates()
     overall_graduation_rate = analytics.overall_graduation_rate()
     context = {
+        'overall_no_of_registered_sparta_learners': overall_no_of_registered_sparta_learners,
         'overall_no_of_enrollees': overall_no_of_enrollees,
         'overall_no_of_learners_in_progress': overall_no_of_learners_in_progress,
         'percent_of_learners_in_progress': percent_of_learners_in_progress,
@@ -1186,6 +1188,7 @@ def admin_overall_analytics_view(request):
             writer = unicodecsv.writer(response, encoding='utf-8')
             writer.writerow([
                 'timestamp',
+                'overall_no_of_registered_sparta_learners',
                 'overall_no_of_enrollees',
                 'overall_no_of_learners_in_progress',
                 'percent_of_learners_in_progress',
@@ -1200,6 +1203,7 @@ def admin_overall_analytics_view(request):
                 ])
             writer.writerow([
                 tnow,
+                overall_no_of_registered_sparta_learners,
                 overall_no_of_enrollees,
                 overall_no_of_learners_in_progress,
                 percent_of_learners_in_progress,
