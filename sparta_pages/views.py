@@ -1153,7 +1153,7 @@ def admin_overall_analytics_view(request):
         date_to = datetime.strptime(date_to_str, "%Y-%m-%d").date()
 
     analytics = OverallAnalytics(date_from, date_to)
-    overall_no_of_registered_sparta_learners = analytics.total
+    overall_no_of_registered_sparta_learners = analytics.learners.count()
     overall_no_of_enrollees = analytics.overall_no_of_enrollees()
     overall_no_of_learners_in_progress = analytics.overall_no_of_learners_in_progress()
     percent_of_learners_in_progress = analytics.percent_of_learners_in_progress()
@@ -1434,6 +1434,7 @@ def admin_course_analytics_view(request, course_id):
 
     analytics = CourseAnalytics(course, start=date_from, end=date_to)
 
+    no_of_course_enrollees = analytics.no_of_course_enrollees()
     no_of_learners_in_progress = analytics.no_of_learners_in_progress()
     percent_of_learners_in_progress = analytics.percent_of_learners_in_progress()
     no_of_active_learners = analytics.no_of_active_learners()
@@ -1448,6 +1449,7 @@ def admin_course_analytics_view(request, course_id):
     context = {
         'course': course,
         'courseoverview': CourseOverview.get_from_id(CourseKey.from_string(course.course_id)),
+        'no_of_course_enrollees': no_of_course_enrollees,
         'no_of_learners_in_progress': no_of_learners_in_progress,
         'percent_of_learners_in_progress': percent_of_learners_in_progress,
         'no_of_active_learners': no_of_active_learners,
@@ -1472,6 +1474,7 @@ def admin_course_analytics_view(request, course_id):
             writer.writerow([
                 'Timestamp',
                 'Course_id',
+                'Number of Course Enrollees',
                 'Number of Learners in Progress',
                 'Percent of Learners in Progress',
                 'Number of Active Learners',
@@ -1486,6 +1489,7 @@ def admin_course_analytics_view(request, course_id):
             writer.writerow([
                 tnow,
                 course_id,
+                no_of_course_enrollees,
                 no_of_learners_in_progress,
                 percent_of_learners_in_progress,
                 no_of_active_learners,
