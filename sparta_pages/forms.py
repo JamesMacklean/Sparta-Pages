@@ -185,8 +185,8 @@ class ExportProfilesForm(forms.Form):
 class ExportAnalyticsForm(forms.Form):
     """
     """
-    TOTALS = "t"
-    LEARNERS = "l"
+    TOTALS = "Totals"
+    LEARNERS = "Learners"
     CHOICES = (
         (TOTALS, "Totals"),
         (LEARNERS, "Learners")

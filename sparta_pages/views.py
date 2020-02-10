@@ -1280,7 +1280,7 @@ def admin_pathway_analytics_view(request, slug):
         form = ExportAnalyticsForm(request.POST)
         if form.is_valid():
             choice = form.cleaned_data['choice']
-            if choice == 't':
+            if choice == 'Totals':
                 data = {
                         'pathway': pathway,
                         'no_of_pathway_enrollees': no_of_pathway_enrollees,
@@ -1296,7 +1296,7 @@ def admin_pathway_analytics_view(request, slug):
                         'pathway_graduation_rate': pathway_graduation_rate
                     }
                 return export_pathway_analytics_to_csv(pathway, data)
-            elif choice == 'l':
+            elif choice == 'Learners':
                 return export_pathway_learners_data_to_csv(pathway, analytics.queryset)
 
     context = {
