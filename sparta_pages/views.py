@@ -1187,19 +1187,19 @@ def admin_overall_analytics_view(request):
 
             writer = unicodecsv.writer(response, encoding='utf-8')
             writer.writerow([
-                'timestamp',
-                'overall_no_of_registered_sparta_learners',
-                'overall_no_of_enrollees',
-                'overall_no_of_learners_in_progress',
-                'percent_of_learners_in_progress',
-                'overall_no_of_active_learners',
-                'percent_of_active_learners',
-                'overall_no_of_inactive_learners',
-                'percent_of_inactive_learners',
-                'overall_no_of_dropped_out_learners',
-                'overall_dropout_rate',
-                'overall_no_of_graduates',
-                'overall_graduation_rate'
+                'Timestamp',
+                'Overall Number of Registered SPARTA Learners',
+                'Overall Number of Enrollees',
+                'Overall Number of Learners in Progress',
+                'Percent of Learners in Progress',
+                'Overall Number of Active Learners',
+                'Percent of Active Learners',
+                'Overall Number of Inactive Learners',
+                'Percent of Inactive Learners',
+                'Overall Number of Dropped Out Learners',
+                'Overall Dropout Rate',
+                'Overall Number of Graduates',
+                'Overall Graduation Rate'
                 ])
             writer.writerow([
                 tnow,
@@ -1333,19 +1333,19 @@ def export_pathway_analytics_to_csv(pathway, data):
 
     writer = unicodecsv.writer(response, encoding='utf-8')
     writer.writerow([
-        'timestamp',
-        'pathway',
-        'no_of_pathway_enrollees',
-        'no_of_pathway_learners_in_progress',
-        'percent_of_pathway_learners_in_progress',
-        'no_of_active_pathway_learners',
-        'percent_of_active_pathway_learners',
-        'no_of_inactive_pathway_learners',
-        'percent_of_inactive_pathway_learners',
-        'no_of_dropped_out_pathway_learners',
-        'pathway_dropout_rate',
-        'no_of_pathway_graduates',
-        'pathway_graduation_rate'
+        'Timestamp',
+        'Pathway',
+        'Number of Pathway Enrollees',
+        'Number of Pathway Learners in Progress',
+        'Percent of Pathway Learners in Progress',
+        'Number of Active Pathway Learners',
+        'Percent of Active Pathway Learners',
+        'Number of Inactive Pathway Learners',
+        'Percent of Inactive Pathway Learners',
+        'Number of Dropped Out Pathway Learners',
+        'Pathway Dropout Rate',
+        'Number of Pathway Graduates',
+        'Pathway Graduation Rate'
         ])
     writer.writerow([
         tnow,
@@ -1467,18 +1467,18 @@ def admin_course_analytics_view(request, course_id):
 
             writer = unicodecsv.writer(response, encoding='utf-8')
             writer.writerow([
-                'timestamp',
-                'course_id',
-                'no_of_learners_in_progress',
-                'percent_of_learners_in_progress',
-                'no_of_active_learners',
-                'percent_of_active_learners',
-                'no_of_inactive_learners',
-                'percent_of_inactive_learners',
-                'no_of_dropped_out_learners',
-                'dropout_rate',
-                'no_of_completed_learners',
-                'completion_rate'
+                'Timestamp',
+                'Course_id',
+                'Number of Learners in Progress',
+                'Percent of Learners in Progress',
+                'Number of Active Learners',
+                'Percent of Active Learners',
+                'Number of Inactive Learners',
+                'Percent of Inactive Learners',
+                'Number of Dropped Out Learners',
+                'Dropout Rate',
+                'Number of Completed Learners',
+                'Completion Rate'
                 ])
             writer.writerow([
                 tnow,
