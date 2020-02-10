@@ -1303,7 +1303,6 @@ def admin_pathway_analytics_view(request, slug):
 
     context = {
         'pathway': pathway,
-        'learners': learners,
         'no_of_pathway_enrollees': no_of_pathway_enrollees,
         'no_of_pathway_learners_in_progress': no_of_pathway_learners_in_progress,
         'percent_of_pathway_learners_in_progress': percent_of_pathway_learners_in_progress,
