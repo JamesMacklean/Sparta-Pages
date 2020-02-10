@@ -117,21 +117,13 @@ class LearnerManager:
     """
     def __init__(self):
         self.queryset = None
-        self.profiles = None
-        self.profiles()
+        self.profiles = self._profiles()
 
     def _profiles(self):
         return SpartaProfile.objects.filter(is_active=True)
 
-    def profiles(self):
-        self.profiles = self._profiles()
-        return self
-
-    def queryset(self):
-        return self.queryset
-
     def all(self):
-        self.profiles()
+        self.profiles = self._profiles()
         self.queryset = self._all()
         return self
 
