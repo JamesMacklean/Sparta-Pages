@@ -1297,7 +1297,7 @@ def admin_pathway_analytics_view(request, slug):
                     }
                 return export_pathway_analytics_to_csv(pathway, data)
             elif choice == 'Learners':
-                return export_pathway_learners_data_to_csv(pathway, analytics.learners.queryset)
+                return export_pathway_learners_data_to_csv(pathway, analytics.queryset())
 
     context = {
         'pathway': pathway,
