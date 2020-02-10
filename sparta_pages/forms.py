@@ -185,6 +185,13 @@ class ExportProfilesForm(forms.Form):
 class ExportAnalyticsForm(forms.Form):
     """
     """
+    TOTALS = "t"
+    LEARNERS = "l"
+    CHOICES = (
+        (TOTALS, "Totals' Data")
+        (LEARNERS, "Learners' Data")
+    )
+    choice = forms.ChoiceField(required=False, choices=CHOICES)
 
 
 class FilterForm(forms.Form):
