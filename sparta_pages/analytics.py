@@ -124,10 +124,10 @@ class LearnerManager:
 
     def all(self):
         self.profiles = self._profiles()
-        self.queryset = self._all()
+        self.queryset = self._queryset()
         return self
 
-    def _all(self):
+    def _queryset(self):
         learners = []
         for profile in self.profiles:
             learners.append(Learner(profile=profile))
@@ -135,7 +135,7 @@ class LearnerManager:
 
     def interval(self, start, end):
         self.profiles = self.profiles.filter(created_at__gte=start).filter(created_at__lte=end)
-        self.queryset = self._all()
+        self.queryset = self._queryset()
         return self
 
     def pathway(self, pathway):
