@@ -458,7 +458,7 @@ class OverallAnalytics:
         self.total = self.learners.count()
 
     def queryset(self):
-        return self.learners.queryset()
+        return self.learners.queryset
 
     def overall_no_of_enrollees(self):
         """
@@ -571,7 +571,7 @@ class PathwayAnalytics:
         self.total = self.learners.count()
 
     def queryset(self):
-        return self.learners.queryset()
+        return self.learners.queryset
 
     def no_of_pathway_enrollees(self):
         """
@@ -684,7 +684,7 @@ class CourseAnalytics:
         self.total = self.learners.count()
 
     def queryset(self):
-        return self.learners.queryset()
+        return self.learners.queryset
 
     def no_of_learners_in_progress(self):
         """
