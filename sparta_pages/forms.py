@@ -185,6 +185,10 @@ class ExportProfilesForm(forms.Form):
 class ExportAnalyticsForm(forms.Form):
     """
     """
+
+class ExportPathwayAnalyticsForm(forms.Form):
+    """
+    """
     TOTALS = "Totals"
     LEARNERS = "Learners"
     CHOICES = (
