@@ -188,8 +188,8 @@ class ExportAnalyticsForm(forms.Form):
     TOTALS = "t"
     LEARNERS = "l"
     CHOICES = (
-        (TOTALS, "Totals' Data")
-        (LEARNERS, "Learners' Data")
+        (TOTALS, "Totals")
+        (LEARNERS, "Learners")
     )
     choice = forms.ChoiceField(required=False, choices=CHOICES)
 
