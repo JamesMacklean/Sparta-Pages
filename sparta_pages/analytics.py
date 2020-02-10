@@ -117,54 +117,55 @@ class LearnerManager:
     """
     def __init__(self):
         self.queryset = None
+        self.profiles = None
+        self.profiles()
+
+    def _profiles(self):
+        return SpartaProfile.objects.filter(is_active=True)
+
+    def profiles(self):
+        self.profiles = self._profiles()
+        return self
 
     def queryset(self):
         return self.queryset
 
     def all(self):
+        self.profiles()
         self.queryset = self._all()
         return self
 
     def _all(self):
         learners = []
-        for profile in SpartaProfile.objects.filter(is_active=True):
+        for profile in self.profiles:
             learners.append(Learner(profile=profile))
         return learners
 
     def interval(self, start, end):
-        self.queryset = self._interval(start, end)
+        self.profiles = self.profiles.filter(created_at__gte=start).filter(created_at__lte=end)
+        self.queryset = self._all()
         return self
 
-    def _interval(self, start, end):
-        profiles = SpartaProfile.objects.filter(is_active=True).filter(created_at__gte=start).filter(created_at__lte=end)
-
-        learners = []
-        for profile in profiles:
-            learners.append(Learner(profile=profile))
-        return learners
-
     def pathway(self, pathway):
+        self.profiles = self.profiles.filter(applications__pathway=pathway)
         self.queryset = self._pathway(pathway)
         return self
 
     def _pathway(self, pathway):
-        if self.queryset is None:
-            self.all()
         learners = []
-        for learner in self.queryset:
-            learners.append(Learner(profile=learner.profile, pathway=pathway))
+        for profile in self.profiles:
+            learners.append(Learner(profile=profile, pathway=pathway))
         return learners
 
     def course(self, course):
+        self.profiles = self.profiles.filter(applications__pathway__courses=course)
         self.queryset = self._course(course)
         return self
 
     def _course(self, course):
-        if self.queryset is None:
-            self.all()
         learners = []
-        for learner in self.queryset:
-            learners.append(Learner(profile=learner.profile, course=course))
+        for profile in self.profiles:
+            learners.append(Learner(profile=profile, course=course))
         return learners
 
     def filter(self, **kwargs):
