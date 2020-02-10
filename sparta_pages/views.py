@@ -1264,6 +1264,8 @@ def admin_pathway_analytics_view(request, slug):
 
     analytics = PathwayAnalytics(pathway, start=date_from, end=date_to)
 
+    learners = analytics.queryset()
+
     no_of_pathway_enrollees = analytics.no_of_pathway_enrollees()
     no_of_pathway_learners_in_progress = analytics.no_of_pathway_learners_in_progress()
     percent_of_pathway_learners_in_progress = analytics.percent_of_pathway_learners_in_progress()
@@ -1297,10 +1299,11 @@ def admin_pathway_analytics_view(request, slug):
                     }
                 return export_pathway_analytics_to_csv(pathway, data)
             elif choice == 'Learners':
-                return export_pathway_learners_data_to_csv(pathway, analytics.queryset())
+                return export_pathway_learners_data_to_csv(pathway, learners)
 
     context = {
         'pathway': pathway,
+        'learners': learners,
         'no_of_pathway_enrollees': no_of_pathway_enrollees,
         'no_of_pathway_learners_in_progress': no_of_pathway_learners_in_progress,
         'percent_of_pathway_learners_in_progress': percent_of_pathway_learners_in_progress,
