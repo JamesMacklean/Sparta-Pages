@@ -191,7 +191,7 @@ class ExportAnalyticsForm(forms.Form):
         (TOTALS, "Totals"),
         (LEARNERS, "Learners")
     )
-    choice = forms.ChoiceField(required=False, choices=CHOICES)
+    choice = forms.ChoiceField(choices=CHOICES)
 
 
 class FilterForm(forms.Form):
