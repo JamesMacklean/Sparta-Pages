@@ -38,7 +38,7 @@ from .forms import (
     TrainingProfileForm, PathwayApplicationForm,
     EducationProfileFormset, EmploymentProfileFormset, TrainingProfileFormset,
     ExportAppsForm, FilterForm, ExportProfilesForm,
-    ExtendedSpartaProfileForm, ExportAnalyticsForm
+    ExtendedSpartaProfileForm, ExportAnalyticsForm, ExportPathwayAnalyticsForm
 )
 from .models import (
     Pathway, SpartaCourse, SpartaProfile, ExtendedSpartaProfile,
@@ -1277,7 +1277,7 @@ def admin_pathway_analytics_view(request, slug):
     pathway_graduation_rate = analytics.pathway_graduation_rate()
 
     if request.method == "POST":
-        form = ExportAnalyticsForm(request.POST)
+        form = ExportPathwayAnalyticsForm(request.POST)
         if form.is_valid():
             choice = form.cleaned_data['choice']
             if choice == 'Totals':
@@ -1297,7 +1297,7 @@ def admin_pathway_analytics_view(request, slug):
                     }
                 return export_pathway_analytics_to_csv(pathway, data)
             elif choice == 'Learners':
-                return export_pathway_learners_data_to_csv(pathway, analytics.queryset)
+                return export_pathway_learners_data_to_csv(pathway, analytics.learners.queryset)
 
     context = {
         'pathway': pathway,
@@ -1313,7 +1313,7 @@ def admin_pathway_analytics_view(request, slug):
         'no_of_pathway_graduates': no_of_pathway_graduates,
         'pathway_graduation_rate': pathway_graduation_rate
     }
-    context['form'] = ExportAnalyticsForm()
+    context['form'] = ExportPathwayAnalyticsForm()
     context['filter_form'] = FilterForm(request.GET or None)
 
     return render(request, template_name, context)
