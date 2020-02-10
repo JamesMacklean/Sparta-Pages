@@ -308,11 +308,7 @@ class Learner:
         return enrollments
 
     def _verified_enrollments(self):
-        enrollments = self.enrollments
-        if enrollments:
-            return enrollments.filter(mode="verified")
-        else:
-            return None
+        return self.enrollments.filter(mode="verified")
 
     def _applications(self):
         applications = self.profile.applications.all()
@@ -333,10 +329,10 @@ class Learner:
         return courses
 
     def _enrolled_verified(self):
-        return self.verified_enrollments is not None
+        return self.verified_enrollments.exists()
 
     def _enrolled(self):
-        return self.enrollments is not None
+        return self.enrollments.exists()
 
     def _in_progress(self):
         """in-progress in at least one (1) course"""
