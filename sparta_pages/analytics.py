@@ -444,7 +444,7 @@ class OverallAnalytics:
         else:
             learners = Learner.manager.all()
         self.learners = learners
-        self.total = self.learners.count()
+        self.total = self.overall_no_of_enrollees()
 
     def queryset(self):
         return self.learners.queryset
@@ -557,7 +557,7 @@ class PathwayAnalytics:
             learners = Learner.manager.pathway(pathway)
         self.learners = learners
         self.pathway = pathway
-        self.total = self.learners.count()
+        self.total = self.no_of_pathway_enrollees()
 
     def queryset(self):
         return self.learners.queryset
@@ -670,10 +670,16 @@ class CourseAnalytics:
             learners = Learner.manager.course(course)
         self.learners = learners
         self.course = course
-        self.total = self.learners.count()
+        self.total = self.no_of_course_enrollees()
 
     def queryset(self):
         return self.learners.queryset
+
+    def no_of_course_enrollees(self):
+        """
+        Number of learners who enrolled in the course as SPARTA scholars
+        """
+        return self.learners.filter(enrolled=True).count()
 
     def no_of_learners_in_progress(self):
         """
