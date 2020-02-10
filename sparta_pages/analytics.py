@@ -457,6 +457,9 @@ class OverallAnalytics:
         self.learners = learners
         self.total = self.learners.count()
 
+    def queryset(self):
+        return self.learners.queryset()
+
     def overall_no_of_enrollees(self):
         """
         Number of learners who enrolled as SPARTA scholars
@@ -567,6 +570,9 @@ class PathwayAnalytics:
         self.pathway = pathway
         self.total = self.learners.count()
 
+    def queryset(self):
+        return self.learners.queryset()
+
     def no_of_pathway_enrollees(self):
         """
         Number of learners who enrolled as SPARTA scholars (pathway-level)
@@ -676,6 +682,9 @@ class CourseAnalytics:
         self.learners = learners
         self.course = course
         self.total = self.learners.count()
+
+    def queryset(self):
+        return self.learners.queryset()
 
     def no_of_learners_in_progress(self):
         """
