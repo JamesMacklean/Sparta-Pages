@@ -1,6 +1,7 @@
 import csv
 import hmac
 import sha
+import unicodecsv
 
 from base64 import b64encode
 from datetime import datetime, timedelta, date
@@ -1009,7 +1010,7 @@ def export_pathway_applications_to_csv(apps):
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename={}'.format(filename)
 
-    writer = csv.writer(response)
+    writer = unicodecsv.writer(response, encoding='utf-8')
     writer.writerow(['username', 'email', 'pathway', 'status', 'created_at'])
     for a in apps:
         username = a.profile.user.username
@@ -1038,7 +1039,6 @@ def admin_approve_application_view(request, id):
 
 
 def export_profiles_to_csv(profiles):
-    import unicodecsv
     tnow = timezone.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
     filename = "sparta-scholar-credentials-{}.csv".format(tnow)
     response = HttpResponse(content_type='text/csv')
@@ -1183,7 +1183,7 @@ def admin_overall_analytics_view(request):
             response = HttpResponse(content_type='text/csv')
             response['Content-Disposition'] = 'attachment; filename={}'.format(filename)
 
-            writer = csv.writer(response)
+            writer = unicodecsv.writer(response, encoding='utf-8')
             writer.writerow([
                 'timestamp',
                 'overall_no_of_enrollees',
@@ -1276,6 +1276,30 @@ def admin_pathway_analytics_view(request, slug):
     no_of_pathway_graduates = analytics.no_of_pathway_graduates()
     pathway_graduation_rate = analytics.pathway_graduation_rate()
 
+    if request.method == "POST":
+        form = ExportAnalyticsForm(request.POST)
+        if form.is_valid():
+            choice = form.cleaned_data.get('choice', None)
+            if choice is not None:
+                if choice == 't':
+                    data = {
+                        'pathway': pathway,
+                        'no_of_pathway_enrollees': no_of_pathway_enrollees,
+                        'no_of_pathway_learners_in_progress': no_of_pathway_learners_in_progress,
+                        'percent_of_pathway_learners_in_progress': percent_of_pathway_learners_in_progress,
+                        'no_of_active_pathway_learners': no_of_active_pathway_learners,
+                        'percent_of_active_pathway_learners': percent_of_active_pathway_learners,
+                        'no_of_inactive_pathway_learners': no_of_inactive_pathway_learners,
+                        'percent_of_inactive_pathway_learners': percent_of_inactive_pathway_learners,
+                        'no_of_dropped_out_pathway_learners': no_of_dropped_out_pathway_learners,
+                        'pathway_dropout_rate': pathway_dropout_rate,
+                        'no_of_pathway_graduates': no_of_pathway_graduates,
+                        'pathway_graduation_rate': pathway_graduation_rate
+                    }
+                    return export_pathway_analytics_to_csv(pathway, data)
+                elif choice == 'l':
+                    return export_pathway_learners_data_to_csv(pathway, analytics.queryset)
+
     context = {
         'pathway': pathway,
         'no_of_pathway_enrollees': no_of_pathway_enrollees,
@@ -1290,52 +1314,84 @@ def admin_pathway_analytics_view(request, slug):
         'no_of_pathway_graduates': no_of_pathway_graduates,
         'pathway_graduation_rate': pathway_graduation_rate
     }
-
-    if request.method == "POST":
-        form = ExportAnalyticsForm(request.POST)
-        if form.is_valid():
-            tnow = timezone.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
-            filename = "sparta-pathway-{}-analytics-{}.csv".format(str(slug), tnow)
-            response = HttpResponse(content_type='text/csv')
-            response['Content-Disposition'] = 'attachment; filename={}'.format(filename)
-
-            writer = csv.writer(response)
-            writer.writerow([
-                'timestamp',
-                'pathway',
-                'no_of_pathway_enrollees',
-                'no_of_pathway_learners_in_progress',
-                'percent_of_pathway_learners_in_progress',
-                'no_of_active_pathway_learners',
-                'percent_of_active_pathway_learners',
-                'no_of_inactive_pathway_learners',
-                'percent_of_inactive_pathway_learners',
-                'no_of_dropped_out_pathway_learners',
-                'pathway_dropout_rate',
-                'no_of_pathway_graduates',
-                'pathway_graduation_rate'
-                ])
-            writer.writerow([
-                tnow,
-                str(slug),
-                no_of_pathway_enrollees,
-                no_of_pathway_learners_in_progress,
-                percent_of_pathway_learners_in_progress,
-                no_of_active_pathway_learners,
-                percent_of_active_pathway_learners,
-                no_of_inactive_pathway_learners,
-                percent_of_inactive_pathway_learners,
-                no_of_dropped_out_pathway_learners,
-                pathway_dropout_rate,
-                no_of_pathway_graduates,
-                pathway_graduation_rate
-                ])
-            return response
-
     context['form'] = ExportAnalyticsForm()
     context['filter_form'] = FilterForm(request.GET or None)
 
     return render(request, template_name, context)
+
+
+def export_pathway_analytics_to_csv(pathway, data):
+    tnow = timezone.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
+    filename = "sparta-pathway-{}-analytics-{}.csv".format(str(pathway.slug), tnow)
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename={}'.format(filename)
+
+    writer = unicodecsv.writer(response, encoding='utf-8')
+    writer.writerow([
+        'timestamp',
+        'pathway',
+        'no_of_pathway_enrollees',
+        'no_of_pathway_learners_in_progress',
+        'percent_of_pathway_learners_in_progress',
+        'no_of_active_pathway_learners',
+        'percent_of_active_pathway_learners',
+        'no_of_inactive_pathway_learners',
+        'percent_of_inactive_pathway_learners',
+        'no_of_dropped_out_pathway_learners',
+        'pathway_dropout_rate',
+        'no_of_pathway_graduates',
+        'pathway_graduation_rate'
+        ])
+    writer.writerow([
+        tnow,
+        str(pathway.slug),
+        data.get('no_of_pathway_enrollees', ""),
+        data.get('no_of_pathway_learners_in_progress', ""),
+        data.get('percent_of_pathway_learners_in_progress', ""),
+        data.get('no_of_active_pathway_learners', ""),
+        data.get('percent_of_active_pathway_learners', ""),
+        data.get('no_of_inactive_pathway_learners', ""),
+        data.get('percent_of_inactive_pathway_learners', ""),
+        data.get('no_of_dropped_out_pathway_learners', ""),
+        data.get('pathway_dropout_rate', ""),
+        data.get('no_of_pathway_graduates', ""),
+        data.get('pathway_graduation_rate', "")
+        ])
+    return response
+
+def export_pathway_learners_data_to_csv(pathway, learners):
+    tnow = timezone.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
+    filename = "sparta-{}-pathway-learners-data-{}.csv".format(pathway.slug, tnow)
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename={}'.format(filename)
+
+    writer = unicodecsv.writer(response, encoding='utf-8')
+    writer.writerow([
+        '#',
+        'Affiliation',
+        'Highest Educational Attainment',
+        'Gender',
+        'Area of Residence'
+        ])
+
+    count = 0
+    for learner in learners:
+        count += 1
+        if learner.extended_profile:
+            affiliation = learner.extended_profile.get_affiliation_display()
+            attainment = learner.extended_profile.get_attainment_display()
+        else:
+            affiliation = ""
+            attainment = learner.user.profile.get_level_of_education_display() or ""
+
+        writer.writerow([
+            count,
+            affiliation,
+            attainment,
+            learner.user.profile.get_gender_display(),
+            learner.user.profile.city
+            ])
+    return response
 
 
 @login_required
@@ -1404,7 +1460,7 @@ def admin_course_analytics_view(request, course_id):
             response = HttpResponse(content_type='text/csv')
             response['Content-Disposition'] = 'attachment; filename={}'.format(filename)
 
-            writer = csv.writer(response)
+            writer = unicodecsv.writer(response, encoding='utf-8')
             writer.writerow([
                 'timestamp',
                 'course_id',
