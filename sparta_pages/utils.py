@@ -278,9 +278,9 @@ def email_sparta_overall_reports():
             ])
 
     email = EmailMessage(
-        'Coursebank - SPARTA Overall Analytics - {}'.format(tnow),
-        'Attached file of SPARTA Overall Analytics',
-        'no-reply-sparta-overall-analytics@coursebank.ph',
+        'Coursebank - SPARTA Overall Report - {}'.format(tnow),
+        'Attached file of SPARTA Overall Report',
+        'no-reply-sparta-overall-report@coursebank.ph',
         [LOCAL_STAFF_EMAIL,],
     )
     email.attach_file(file_name)
@@ -327,8 +327,8 @@ def email_sparta_pathway_learners_reports(slug):
                 ])
 
     email = EmailMessage(
-        'Coursebank - SPARTA {} Pathway Analytics - {}'.format(pathway.name, tnow),
-        'Attached file of SPARTA Pathway Analytics',
+        'Coursebank - SPARTA {} Pathway Learners Report - {}'.format(pathway.name, tnow),
+        'Attached file of SPARTA Pathway Learners Report',
         'no-reply-sparta-pathway-learners-report@coursebank.ph',
         [LOCAL_STAFF_EMAIL,],
     )
@@ -392,8 +392,8 @@ def email_sparta_pathway_reports(slug):
             ])
 
     email = EmailMessage(
-        'Coursebank - SPARTA {} Pathway Analytics - {}'.format(pathway.name, tnow),
-        'Attached file of SPARTA {} Learning Pathway Analytics'.format(pathway.name),
+        'Coursebank - SPARTA {} Pathway Report - {}'.format(pathway.name, tnow),
+        'Attached file of SPARTA {} Learning Pathway Report'.format(pathway.name),
         'no-reply-sparta-pathways-report@coursebank.ph',
         [LOCAL_STAFF_EMAIL,],
     )
