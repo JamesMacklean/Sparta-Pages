@@ -16,4 +16,4 @@ class Command(BaseCommand):
         except Exception as e:
             raise CommandError("Error in getting overall reports: {}".format(str(e)))
 
-        self.stdout.write(self.style.SUCCESS("Successful in getting analytics for report."))
+        self.stdout.write(self.style.SUCCESS("Successful in getting SPARTA Overall Report."))
