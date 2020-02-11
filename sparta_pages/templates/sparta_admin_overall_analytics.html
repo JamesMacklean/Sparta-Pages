@@ -24,6 +24,7 @@
 <hr />
 <br />
 
+{% if local_test %}
 {{analytics}}
 Profiles:
 <ul class="list-group">
@@ -62,6 +63,7 @@ Profiles:
 <br />
 <hr />
 <br />
+{% endif %}
 
 <h4>Overall Analytics</h4>
 
@@ -221,7 +223,7 @@ Profiles:
   <div class="col col-3 col-sm-3">
     <div class="card text-center mb-3">
       <div class="card-header">
-        Overall Graduationv Rate
+        Overall Graduation Rate
       </div>
       <div class="card-body">
         <div class="card-title">
