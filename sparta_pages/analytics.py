@@ -283,6 +283,9 @@ class Learner:
         self.completed_pathway = self._completed_pathway()
         self.completed_course = self._completed_course()
 
+    def __str__(self):
+        return self.user.username
+
     def _extended_sparta_profile(self):
         try:
             p = self.user.extended_sparta_profile
