@@ -25,9 +25,11 @@
 <br />
 
 {{analytics}}
+Profiles:
 <ul class="list-group">
-  <li>Profiles: {{analytics.profiles}}</li>
-  <li>Queryset: {{analytics.queryset}}</li>
+  {% for profile in analytics.learners.profiles %}
+  <li>{{profile}}</li>
+  {% endfor %}
 </ul>
 
 <div class="table-responsive">
