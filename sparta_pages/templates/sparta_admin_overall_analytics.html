@@ -25,7 +25,10 @@
 <br />
 
 <div>
-  {{analytics}}
+  {{analytics}}:
+  {%for learner in analytics.queryset %}
+  {{learner}}
+  {% endfor %}
 </div>
 
 <br />
