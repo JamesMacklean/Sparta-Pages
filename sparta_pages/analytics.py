@@ -116,8 +116,8 @@ class LearnerManager:
     Manager for handling 'querysets' of Learners
     """
     def __init__(self):
-        self.queryset = None
         self.profiles = self._profiles()
+        self.queryset = self._queryset()
 
     def _profiles(self):
         return SpartaProfile.objects.filter(is_active=True)
@@ -445,7 +445,7 @@ class OverallAnalytics:
                 end = start.date() + timedelta(days=1)
             learners = Learner.manager.interval(start, end)
         else:
-            learners = Learner.manager.all()
+            learners = Learner.manager()
         self.learners = learners
         self.total = self.overall_no_of_enrollees()
 
