@@ -159,6 +159,8 @@ class Learner:
         self.completed_pathway = self._completed_pathway()
         self.completed_course = self._completed_course()
 
+        self.count_display = kwargs.get('count_display', None)
+
     def __str__(self):
         return self.user.username
 
@@ -316,8 +318,10 @@ class LearnerSet:
 
     def _queryset(self):
         learners = []
+        ctr = 0
         for profile in self.profiles:
-            learners.append(Learner(profile=profile))
+            ctr += 1
+            learners.append(Learner(profile=profile, {'count_display': ctr}))
         return learners
 
     def interval(self, start, end):
