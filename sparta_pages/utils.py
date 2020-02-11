@@ -242,7 +242,7 @@ def email_sparta_overall_reports():
     overall_no_of_graduates = analytics.overall_no_of_graduates()
     overall_graduation_rate = analytics.overall_graduation_rate()
 
-    file_name = '/home/ubuntu/tempfiles/sparta_coupon_records_file_{}.csv'.format(tnow)
+    file_name = '/home/ubuntu/tempfiles/sparta_overall_analytics_file_{}.csv'.format(tnow)
     with open(file_name, mode='w') as coupons_file:
         writer = csv.writer(coupons_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
 
@@ -295,7 +295,8 @@ def email_sparta_pathway_learners_reports(slug):
     analytics = PathwayAnalytics(pathway)
     learners = analytics.queryset()
 
-    file_name = '/home/ubuntu/tempfiles/sparta_pathway_analytics_file_{}.csv'.format(tnow)
+    _slug = pathway.slug.replace("-", "_")
+    file_name = '/home/ubuntu/tempfiles/sparta_pathway_{}_learners_report_file_{}.csv'.format(_slug, tnow)
     with open(file_name, mode='w') as coupons_file:
         writer = csv.writer(coupons_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
 
@@ -354,7 +355,8 @@ def email_sparta_pathway_reports(slug):
     no_of_pathway_graduates = analytics.no_of_pathway_graduates()
     pathway_graduation_rate = analytics.pathway_graduation_rate()
 
-    file_name = '/home/ubuntu/tempfiles/sparta_pathway_analytics_file_{}.csv'.format(tnow)
+    _slug = pathway.slug.replace("-", "_")
+    file_name = '/home/ubuntu/tempfiles/sparta_pathway_{}_report_file_{}.csv'.format(_slug, tnow)
     with open(file_name, mode='w') as coupons_file:
         writer = csv.writer(coupons_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
 
