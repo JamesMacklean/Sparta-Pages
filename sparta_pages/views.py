@@ -40,6 +40,7 @@ from .forms import (
     ExportAppsForm, FilterForm, ExportProfilesForm,
     ExtendedSpartaProfileForm, ExportAnalyticsForm, ExportPathwayAnalyticsForm
 )
+from .local_settings import LOCAL_TEST
 from .models import (
     Pathway, SpartaCourse, SpartaProfile, ExtendedSpartaProfile,
     EducationProfile, EmploymentProfile, TrainingProfile,
@@ -1182,7 +1183,8 @@ def admin_overall_analytics_view(request):
         'overall_no_of_dropped_out_learners': overall_no_of_dropped_out_learners,
         'overall_dropout_rate': overall_dropout_rate,
         'overall_no_of_graduates': overall_no_of_graduates,
-        'overall_graduation_rate': overall_graduation_rate
+        'overall_graduation_rate': overall_graduation_rate,
+        'local_test': LOCAL_TEST
     }
 
     if request.method == "POST":
