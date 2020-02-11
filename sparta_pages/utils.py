@@ -221,3 +221,178 @@ def get_enrollment_status(email=None, pathway=None):
     )
     email.attach_file(file_name)
     email.send()
+
+
+def email_sparta_overall_reports():
+    """"""
+    tnow = datetime.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
+
+    analytics = OverallAnalytics()
+    overall_no_of_registered_sparta_learners = analytics.profiles.count()
+    overall_no_of_enrollees = analytics.overall_no_of_enrollees()
+    overall_no_of_learners_in_progress = analytics.overall_no_of_learners_in_progress()
+    percent_of_learners_in_progress = analytics.percent_of_learners_in_progress()
+    overall_no_of_active_learners = analytics.overall_no_of_active_learners()
+    percent_of_active_learners = analytics.percent_of_active_learners()
+    overall_no_of_inactive_learners = analytics.overall_no_of_inactive_learners()
+    percent_of_inactive_learners = analytics.percent_of_inactive_learners()
+    overall_no_of_dropped_out_learners = analytics.overall_no_of_dropped_out_learners()
+    overall_dropout_rate = analytics.overall_dropout_rate()
+    overall_no_of_graduates = analytics.overall_no_of_graduates()
+    overall_graduation_rate = analytics.overall_graduation_rate()
+
+    file_name = '/home/ubuntu/tempfiles/sparta_coupon_records_file_{}.csv'.format(tnow)
+    with open(file_name, mode='w') as coupons_file:
+        writer = csv.writer(coupons_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+
+        writer.writerow([
+            'Timestamp',
+            'Overall Number of Registered SPARTA Learners',
+            'Overall Number of Enrollees',
+            'Overall Number of Learners in Progress',
+            'Percent of Learners in Progress',
+            'Overall Number of Active Learners',
+            'Percent of Active Learners',
+            'Overall Number of Inactive Learners',
+            'Percent of Inactive Learners',
+            'Overall Number of Dropped Out Learners',
+            'Overall Dropout Rate',
+            'Overall Number of Graduates',
+            'Overall Graduation Rate'
+            ])
+        writer.writerow([
+            tnow,
+            overall_no_of_registered_sparta_learners,
+            overall_no_of_enrollees,
+            overall_no_of_learners_in_progress,
+            percent_of_learners_in_progress,
+            overall_no_of_active_learners,
+            percent_of_active_learners,
+            overall_no_of_inactive_learners,
+            percent_of_inactive_learners,
+            overall_no_of_dropped_out_learners,
+            overall_dropout_rate,
+            overall_no_of_graduates,
+            overall_graduation_rate
+            ])
+
+    email = EmailMessage(
+        'Coursebank - SPARTA Overall Analytics - {}'.format(tnow),
+        'Attached file of SPARTA Overall Analytics',
+        'no-reply-sparta-overall-analytics@coursebank.ph',
+        [LOCAL_STAFF_EMAIL,],
+    )
+    email.attach_file(file_name)
+    email.send()
+
+
+def email_sparta_pathway_learners_reports(slug):
+    """"""
+    tnow = datetime.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
+
+    pathway = Pathway.objects.get(slug=slug, is_active=True)
+    analytics = PathwayAnalytics(pathway)
+    learners = analytics.queryset()
+
+    file_name = '/home/ubuntu/tempfiles/sparta_pathway_analytics_file_{}.csv'.format(tnow)
+    with open(file_name, mode='w') as coupons_file:
+        writer = csv.writer(coupons_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+
+        writer.writerow([
+            '#',
+            'Affiliation',
+            'Highest Educational Attainment',
+            'Gender',
+            'Area of Residence'
+            ])
+
+        count = 0
+        for learner in learners:
+            count += 1
+            if learner.extended_profile:
+                affiliation = learner.extended_profile.get_affiliation_display()
+                attainment = learner.extended_profile.get_attainment_display()
+            else:
+                affiliation = ""
+                attainment = learner.user.profile.get_level_of_education_display() or ""
+
+            writer.writerow([
+                count,
+                affiliation,
+                attainment,
+                learner.user.profile.get_gender_display(),
+                learner.user.profile.city
+                ])
+
+    email = EmailMessage(
+        'Coursebank - SPARTA {} Pathway Analytics - {}'.format(pathway.name, tnow),
+        'Attached file of SPARTA Pathway Analytics',
+        'no-reply-sparta-pathway-learners-report@coursebank.ph',
+        [LOCAL_STAFF_EMAIL,],
+    )
+    email.attach_file(file_name)
+    email.send()
+
+
+def email_sparta_pathway_reports(slug):
+    """"""
+    tnow = datetime.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
+
+    pathway = Pathway.objects.get(slug=slug, is_active=True)
+    analytics = PathwayAnalytics(pathway)
+
+    no_of_pathway_enrollees = analytics.no_of_pathway_enrollees()
+    no_of_pathway_learners_in_progress = analytics.no_of_pathway_learners_in_progress()
+    percent_of_pathway_learners_in_progress = analytics.percent_of_pathway_learners_in_progress()
+    no_of_active_pathway_learners = analytics.no_of_active_pathway_learners()
+    percent_of_active_pathway_learners = analytics.percent_of_active_pathway_learners()
+    no_of_inactive_pathway_learners = analytics.no_of_inactive_pathway_learners()
+    percent_of_inactive_pathway_learners = analytics.percent_of_inactive_pathway_learners()
+    no_of_dropped_out_pathway_learners = analytics.no_of_dropped_out_pathway_learners()
+    pathway_dropout_rate = analytics.pathway_dropout_rate()
+    no_of_pathway_graduates = analytics.no_of_pathway_graduates()
+    pathway_graduation_rate = analytics.pathway_graduation_rate()
+
+    file_name = '/home/ubuntu/tempfiles/sparta_pathway_analytics_file_{}.csv'.format(tnow)
+    with open(file_name, mode='w') as coupons_file:
+        writer = csv.writer(coupons_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+
+        writer.writerow([
+            'Timestamp',
+            'Pathway',
+            'Number of Pathway Enrollees',
+            'Number of Pathway Learners in Progress',
+            'Percent of Pathway Learners in Progress',
+            'Number of Active Pathway Learners',
+            'Percent of Active Pathway Learners',
+            'Number of Inactive Pathway Learners',
+            'Percent of Inactive Pathway Learners',
+            'Number of Dropped Out Pathway Learners',
+            'Pathway Dropout Rate',
+            'Number of Pathway Graduates',
+            'Pathway Graduation Rate'
+            ])
+        writer.writerow([
+            tnow,
+            pathway.name,
+            no_of_pathway_enrollees,
+            no_of_pathway_learners_in_progress,
+            percent_of_pathway_learners_in_progress,
+            no_of_active_pathway_learners,
+            percent_of_active_pathway_learners,
+            no_of_inactive_pathway_learners,
+            percent_of_inactive_pathway_learners,
+            no_of_dropped_out_pathway_learners,
+            pathway_dropout_rate,
+            no_of_pathway_graduates,
+            pathway_graduation_rate
+            ])
+
+    email = EmailMessage(
+        'Coursebank - SPARTA {} Pathway Analytics - {}'.format(pathway.name, tnow),
+        'Attached file of SPARTA {} Learning Pathway Analytics'.format(pathway.name),
+        'no-reply-sparta-pathways-report@coursebank.ph',
+        [LOCAL_STAFF_EMAIL,],
+    )
+    email.attach_file(file_name)
+    email.send()
