@@ -24,11 +24,30 @@
 <hr />
 <br />
 
-<div>
-  {{analytics}}:
-  {%for learner in learners %}
-  {{learner}}
-  {% endfor %}
+{{analytics}}:
+<div class="table-responsive">
+  <table class="table table-hover table-striped table-dark">
+  <thead>
+    <tr>
+      <th scope="col">User</th>
+      <th scope="col">Approved Applications</th>
+      <th scope="col">Courses</th>
+      <th scope="col">Enrollments</th>
+      <th scope="col">Verified Enrollments</th>
+    </tr>
+  </thead>
+  <tbody>
+    {%for learner in learners %}
+    <tr>
+      <td>{{learner}}</td>
+      <td>{{learner.approved_applications}}</td>
+      <td>{{learner.current_courses}}</td>
+      <td>{{learner.enrollments}}</td>
+      <td>{{learner.verified_enrollments}}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+  </table>
 </div>
 
 <br />
