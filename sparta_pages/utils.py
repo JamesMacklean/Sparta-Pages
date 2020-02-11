@@ -229,7 +229,7 @@ def email_sparta_overall_reports():
     tnow = datetime.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
 
     analytics = OverallAnalytics()
-    overall_no_of_registered_sparta_learners = analytics.profiles.count()
+    overall_no_of_registered_sparta_learners = analytics.learners.profiles.count()
     overall_no_of_enrollees = analytics.overall_no_of_enrollees()
     overall_no_of_learners_in_progress = analytics.overall_no_of_learners_in_progress()
     percent_of_learners_in_progress = analytics.percent_of_learners_in_progress()
