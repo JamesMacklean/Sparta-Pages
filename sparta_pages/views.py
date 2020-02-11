@@ -1153,6 +1153,8 @@ def admin_overall_analytics_view(request):
         date_to = datetime.strptime(date_to_str, "%Y-%m-%d").date()
 
     analytics = OverallAnalytics(date_from, date_to)
+    learners = analytics.queryset()
+
     overall_no_of_registered_sparta_learners = analytics.learners.count()
     overall_no_of_enrollees = analytics.overall_no_of_enrollees()
     overall_no_of_learners_in_progress = analytics.overall_no_of_learners_in_progress()
@@ -1167,6 +1169,7 @@ def admin_overall_analytics_view(request):
     overall_graduation_rate = analytics.overall_graduation_rate()
     context = {
         'analytics': analytics,
+        'learners': learners,
         'overall_no_of_registered_sparta_learners': overall_no_of_registered_sparta_learners,
         'overall_no_of_enrollees': overall_no_of_enrollees,
         'overall_no_of_learners_in_progress': overall_no_of_learners_in_progress,
