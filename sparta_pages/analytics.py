@@ -148,6 +148,8 @@ class Learner:
         self.current_courses = self._current_courses()
         self.enrollments = self._enrollments()
         self.verified_enrollments = self._verified_enrollments()
+        self.latest_modules = self._latest_modules()
+        self.latest_mod = self._get_latest_module()
 
         self.enrolled = self._enrolled()
         self.enrolled_verified = self._enrolled_verified()
@@ -217,8 +219,7 @@ class Learner:
 
     def _in_progress(self):
         """in-progress in at least one (1) course"""
-        for course in self.current_courses:
-            if StudentModule.objects.filter(course_id=CourseKey.from_string(course.course_id), student=self.user).exists():
+        if self.latest_modules.exists():
                 return True
         return False
 
@@ -231,13 +232,13 @@ class Learner:
         return modules
 
     def _get_latest_module(self):
-        modules = self._latest_modules()
+        modules = self.latest_modules
         if modules:
             return modules.order_by('-modified').first()
         return None
 
     def _get_activity(self, active=False, inactive=False, dropped_out=False):
-        module = self._get_latest_module()
+        module = self.latest_mod
         if module:
             diff_time =  self.timezone_now - module.modified
             diff_time_secs = diff_time.total_seconds()
