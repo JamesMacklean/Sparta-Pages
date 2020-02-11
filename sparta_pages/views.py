@@ -1166,6 +1166,7 @@ def admin_overall_analytics_view(request):
     overall_no_of_graduates = analytics.overall_no_of_graduates()
     overall_graduation_rate = analytics.overall_graduation_rate()
     context = {
+        'analytics': analytics,
         'overall_no_of_registered_sparta_learners': overall_no_of_registered_sparta_learners,
         'overall_no_of_enrollees': overall_no_of_enrollees,
         'overall_no_of_learners_in_progress': overall_no_of_learners_in_progress,
