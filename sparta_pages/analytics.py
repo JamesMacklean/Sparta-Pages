@@ -431,7 +431,7 @@ class OverallAnalytics:
                 start = timezone.now()
             if end is None:
                 end = start.date() + timedelta(days=1)
-            learners = LearnerSet.interval(start, end)
+            learners = LearnerSet().interval(start, end)
         else:
             learners = LearnerSet()
         self.learners = learners
@@ -543,9 +543,9 @@ class PathwayAnalytics:
                 start = timezone.now()
             if end is None:
                 end = start.date() + timedelta(days=1)
-            learners = LearnerSet.interval(start, end).pathway(pathway)
+            learners = LearnerSet().interval(start, end).pathway(pathway)
         else:
-            learners = LearnerSet.pathway(pathway)
+            learners = LearnerSet().pathway(pathway)
         self.learners = learners
         self.pathway = pathway
         self.total = self.no_of_pathway_enrollees()
@@ -656,9 +656,9 @@ class CourseAnalytics:
                 start = timezone.now()
             if end is None:
                 end = start.date() + timedelta(days=1)
-            learners = LearnerSet.interval(start, end).course(course)
+            learners = LearnerSet().interval(start, end).course(course)
         else:
-            learners = LearnerSet.course(course)
+            learners = LearnerSet().course(course)
         self.learners = learners
         self.course = course
         self.total = self.no_of_course_enrollees()
