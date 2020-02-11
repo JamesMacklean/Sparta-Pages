@@ -111,130 +111,6 @@ def get_course_id_list():
     return course_id_list
 
 
-class LearnerManager:
-    """
-    Manager for handling 'querysets' of Learners
-    """
-    def __init__(self):
-        self.profiles = self._profiles()
-        self.queryset = self._queryset()
-
-    def _profiles(self):
-        return SpartaProfile.objects.filter(is_active=True)
-
-    def all(self):
-        self.profiles = self._profiles()
-        self.queryset = self._queryset()
-        return self
-
-    def _queryset(self):
-        learners = []
-        for profile in self.profiles:
-            learners.append(Learner(profile=profile))
-        return learners
-
-    def interval(self, start, end):
-        self.profiles = self.profiles.filter(created_at__gte=start).filter(created_at__lte=end)
-        self.queryset = self._queryset()
-        return self
-
-    def pathway(self, pathway):
-        self.profiles = self.profiles.filter(applications__pathway=pathway)
-        self.queryset = self._pathway(pathway)
-        return self
-
-    def _pathway(self, pathway):
-        learners = []
-        for profile in self.profiles:
-            learners.append(Learner(profile=profile, pathway=pathway))
-        return learners
-
-    def course(self, course):
-        self.profiles = self.profiles.filter(applications__pathway__courses=course)
-        self.queryset = self._course(course)
-        return self
-
-    def _course(self, course):
-        learners = []
-        for profile in self.profiles:
-            learners.append(Learner(profile=profile, course=course))
-        return learners
-
-    def filter(self, **kwargs):
-        self.queryset = self._filter(**kwargs)
-        return self
-
-    def _filter(self, **kwargs):
-        if self.queryset is None:
-            self.all()
-        queryset = self.queryset
-
-        enrolled = kwargs.get('enrolled', None)
-        enrolled_verified = kwargs.get('enrolled_verified', None)
-        in_progress = kwargs.get('in_progress', None)
-        active = kwargs.get('active', None)
-        inactive = kwargs.get('inactive', None)
-        dropped_out = kwargs.get('dropped_out', None)
-        graduated = kwargs.get('graduated', None)
-
-        if enrolled is not None:
-            newset = []
-            for learner in queryset:
-                if learner.enrolled:
-                    newset.append(learner)
-            queryset = newset
-
-        if enrolled_verified is not None:
-            newset = []
-            for learner in queryset:
-                if learner.enrolled_verified:
-                    newset.append(learner)
-            queryset = newset
-
-        if in_progress is not None:
-            newset = []
-            for learner in queryset:
-                if learner.in_progress:
-                    newset.append(learner)
-            queryset = newset
-
-        if active is not None:
-            newset = []
-            for learner in queryset:
-                if learner.active:
-                    newset.append(learner)
-            queryset = newset
-
-        if inactive is not None:
-            newset = []
-            for learner in queryset:
-                if learner.inactive:
-                    newset.append(learner)
-            queryset = newset
-
-        if dropped_out is not None:
-            newset = []
-            for learner in queryset:
-                if learner.dropped_out:
-                    newset.append(learner)
-            queryset = newset
-
-        if graduated is not None:
-            newset = []
-            for learner in queryset:
-                if learner.graduated:
-                    newset.append(learner)
-            queryset = newset
-
-        return queryset
-
-    def count(self):
-        ctr = 0
-        for l in self.queryset:
-            ctr += 1
-        return Decimal(ctr)
-
-
 class Learner:
     """
     Class object for learner analytics
@@ -429,7 +305,129 @@ class Learner:
             return cert_status and cert_status['mode'] == 'verified' and cert_status['status'] not in ['unavailable', 'notpassing', 'restricted', 'unverified']
         return False
 
-    manager = LearnerManager()
+
+class LearnerManager:
+    """
+    Manager for handling 'querysets' of Learners
+    """
+    def __init__(self):
+        self.profiles = self._profiles()
+        self.queryset = self._queryset()
+
+    def _profiles(self):
+        return SpartaProfile.objects.filter(is_active=True)
+
+    def all(self):
+        self.profiles = self._profiles()
+        self.queryset = self._queryset()
+        return self
+
+    def _queryset(self):
+        learners = []
+        for profile in self.profiles:
+            learners.append(Learner(profile=profile))
+        return learners
+
+    def interval(self, start, end):
+        self.profiles = self.profiles.filter(created_at__gte=start).filter(created_at__lte=end)
+        self.queryset = self._queryset()
+        return self
+
+    def pathway(self, pathway):
+        self.profiles = self.profiles.filter(applications__pathway=pathway)
+        self.queryset = self._pathway(pathway)
+        return self
+
+    def _pathway(self, pathway):
+        learners = []
+        for profile in self.profiles:
+            learners.append(Learner(profile=profile, pathway=pathway))
+        return learners
+
+    def course(self, course):
+        self.profiles = self.profiles.filter(applications__pathway__courses=course)
+        self.queryset = self._course(course)
+        return self
+
+    def _course(self, course):
+        learners = []
+        for profile in self.profiles:
+            learners.append(Learner(profile=profile, course=course))
+        return learners
+
+    def filter(self, **kwargs):
+        self.queryset = self._filter(**kwargs)
+        return self
+
+    def _filter(self, **kwargs):
+        if self.queryset is None:
+            self.all()
+        queryset = self.queryset
+
+        enrolled = kwargs.get('enrolled', None)
+        enrolled_verified = kwargs.get('enrolled_verified', None)
+        in_progress = kwargs.get('in_progress', None)
+        active = kwargs.get('active', None)
+        inactive = kwargs.get('inactive', None)
+        dropped_out = kwargs.get('dropped_out', None)
+        graduated = kwargs.get('graduated', None)
+
+        if enrolled is not None:
+            newset = []
+            for learner in queryset:
+                if learner.enrolled:
+                    newset.append(learner)
+            queryset = newset
+
+        if enrolled_verified is not None:
+            newset = []
+            for learner in queryset:
+                if learner.enrolled_verified:
+                    newset.append(learner)
+            queryset = newset
+
+        if in_progress is not None:
+            newset = []
+            for learner in queryset:
+                if learner.in_progress:
+                    newset.append(learner)
+            queryset = newset
+
+        if active is not None:
+            newset = []
+            for learner in queryset:
+                if learner.active:
+                    newset.append(learner)
+            queryset = newset
+
+        if inactive is not None:
+            newset = []
+            for learner in queryset:
+                if learner.inactive:
+                    newset.append(learner)
+            queryset = newset
+
+        if dropped_out is not None:
+            newset = []
+            for learner in queryset:
+                if learner.dropped_out:
+                    newset.append(learner)
+            queryset = newset
+
+        if graduated is not None:
+            newset = []
+            for learner in queryset:
+                if learner.graduated:
+                    newset.append(learner)
+            queryset = newset
+
+        return queryset
+
+    def count(self):
+        ctr = 0
+        for l in self.queryset:
+            ctr += 1
+        return Decimal(ctr)
 
 
 class OverallAnalytics:
@@ -443,9 +441,9 @@ class OverallAnalytics:
                 start = timezone.now()
             if end is None:
                 end = start.date() + timedelta(days=1)
-            learners = Learner.manager.interval(start, end)
+            learners = LearnerManager.interval(start, end)
         else:
-            learners = Learner.manager()
+            learners = LearnerManager()
         self.learners = learners
         self.total = self.overall_no_of_enrollees()
 
@@ -555,9 +553,9 @@ class PathwayAnalytics:
                 start = timezone.now()
             if end is None:
                 end = start.date() + timedelta(days=1)
-            learners = Learner.manager.interval(start, end).pathway(pathway)
+            learners = LearnerManager.interval(start, end).pathway(pathway)
         else:
-            learners = Learner.manager.pathway(pathway)
+            learners = LearnerManager.pathway(pathway)
         self.learners = learners
         self.pathway = pathway
         self.total = self.no_of_pathway_enrollees()
@@ -668,9 +666,9 @@ class CourseAnalytics:
                 start = timezone.now()
             if end is None:
                 end = start.date() + timedelta(days=1)
-            learners = Learner.manager.interval(start, end).course(course)
+            learners = LearnerManager.interval(start, end).course(course)
         else:
-            learners = Learner.manager.course(course)
+            learners = LearnerManager.course(course)
         self.learners = learners
         self.course = course
         self.total = self.no_of_course_enrollees()
