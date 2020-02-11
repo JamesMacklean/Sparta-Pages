@@ -7,6 +7,7 @@ from django.core.mail import send_mail, EmailMessage
 from opaque_keys.edx.keys import CourseKey
 from student.models import CourseEnrollment
 
+from .analytics import OverallAnalytics, PathwayAnalytics
 from .local_settings import LOCAL_STAFF_EMAIL, LOCAL_COUPON_WARNING_LIMIT
 from .models import (
     Pathway, SpartaCourse, SpartaProfile,
