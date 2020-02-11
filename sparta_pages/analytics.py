@@ -306,21 +306,13 @@ class Learner:
         return False
 
 
-class LearnerManager:
+class LearnerSet:
     """
     Manager for handling 'querysets' of Learners
     """
     def __init__(self):
-        self.profiles = self._profiles()
+        self.profiles = SpartaProfile.objects.filter(is_active=True)
         self.queryset = self._queryset()
-
-    def _profiles(self):
-        return SpartaProfile.objects.filter(is_active=True)
-
-    def all(self):
-        self.profiles = self._profiles()
-        self.queryset = self._queryset()
-        return self
 
     def _queryset(self):
         learners = []
@@ -360,8 +352,6 @@ class LearnerManager:
         return self
 
     def _filter(self, **kwargs):
-        if self.queryset is None:
-            self.all()
         queryset = self.queryset
 
         enrolled = kwargs.get('enrolled', None)
@@ -441,9 +431,9 @@ class OverallAnalytics:
                 start = timezone.now()
             if end is None:
                 end = start.date() + timedelta(days=1)
-            learners = LearnerManager.interval(start, end)
+            learners = LearnerSet.interval(start, end)
         else:
-            learners = LearnerManager()
+            learners = LearnerSet()
         self.learners = learners
         self.total = self.overall_no_of_enrollees()
 
@@ -553,9 +543,9 @@ class PathwayAnalytics:
                 start = timezone.now()
             if end is None:
                 end = start.date() + timedelta(days=1)
-            learners = LearnerManager.interval(start, end).pathway(pathway)
+            learners = LearnerSet.interval(start, end).pathway(pathway)
         else:
-            learners = LearnerManager.pathway(pathway)
+            learners = LearnerSet.pathway(pathway)
         self.learners = learners
         self.pathway = pathway
         self.total = self.no_of_pathway_enrollees()
@@ -666,9 +656,9 @@ class CourseAnalytics:
                 start = timezone.now()
             if end is None:
                 end = start.date() + timedelta(days=1)
-            learners = LearnerManager.interval(start, end).course(course)
+            learners = LearnerSet.interval(start, end).course(course)
         else:
-            learners = LearnerManager.course(course)
+            learners = LearnerSet.course(course)
         self.learners = learners
         self.course = course
         self.total = self.no_of_course_enrollees()
