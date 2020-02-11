@@ -1152,8 +1152,8 @@ def admin_overall_analytics_view(request):
         date_to_str = "{}-{}-{}".format(date_to_year, date_to_month, date_to_day)
         date_to = datetime.strptime(date_to_str, "%Y-%m-%d").date()
 
-    analytics = OverallAnalytics(date_from, date_to)
-    # analytics = OverallAnalytics()
+    # analytics = OverallAnalytics(date_from, date_to)
+    analytics = OverallAnalytics()
     learners = analytics.queryset()
 
     overall_no_of_registered_sparta_learners = analytics.learners.count()
