@@ -321,7 +321,7 @@ class LearnerSet:
         ctr = 0
         for profile in self.profiles:
             ctr += 1
-            learners.append(Learner(profile=profile, {'count_display': ctr}))
+            learners.append(Learner(profile=profile, **{'count_display': ctr}))
         return learners
 
     def interval(self, start, end):
