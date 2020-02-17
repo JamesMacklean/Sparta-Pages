@@ -2085,3 +2085,22 @@ a.apply-now-2_button.btn.mx-auto:hover {
 #status_container {
     margin-top: 10px;
 }
+
+.dropdown-arrow {
+  border: solid black;
+  border-width: 0 3px 3px 0;
+  display: inline-block;
+  padding: 3px;
+  transform: rotate(-45deg);
+  -webkit-transform: rotate(-45deg);
+}
+
+#headingOne button[aria-expanded='false'] > #dropdown-arrow-one {
+    transform: scale(1.6) rotate(-90deg);
+}
+#headingTwo button[aria-expanded='false'] > #dropdown-arrow-two {
+    transform: scale(1.6) rotate(-90deg);
+}
+#headingThre button[aria-expanded='false'] > #dropdown-arrow-three {
+    transform: scale(1.6) rotate(-90deg);
+}
