@@ -1,8 +1,6 @@
 {% extends "sparta_base.html" %}
 {% load static %}
 
-{% block title %}Coursebank | SPARTA{% endblock %}
-
 {% block sparta_body %}
 
 <div class="container-grid container col header_block">
@@ -61,48 +59,10 @@
   </div>
 </div>
 
-<div class="container-grid how-to-text_container">
-  <h1 class="how-to_headings" style="text-align: left;">How to become a SPARTA Scholar</h1>
+<div class="container-grid how-to-text_container mb-5">
+  <div class="d-flex align-items-center flex-column">
+    <h1 style="text-align: left;" class="how-to_headings pb-2">How to become a SPARTA Scholar</h1><iframe allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="" class="mx-auto" src="https://www.youtube.com/embed/DCYP_kFRq-Y" width="560" height="315" frameborder="0"></iframe>
 </div>
-<div class="container-grid how-to_block">
-  <div class="container-grid how-to_subcontainer row">
-    <div class="container-grid col-sm-6 col-md-6 col-xl-4 col-lg-4 how-to_container1">
-      <div class="container-grid how-to-1_container">
-        <h1 class="number_headings" style="text-align: left;">1 |</h1>
-      </div>
-      <p class="paragraph how-to_paragraph">Interested applicants must create a Coursebank account.</p>
-    </div>
-    <div class="container-grid col-sm-6 col-md-6 col-xl-4 col-lg-4 how-to_container2">
-      <div class="container-grid how-to-2_container">
-        <h1 class="number_headings" style="text-align: left;">2 |</h1>
-      </div>
-      <div class="paragraph how-to_paragraph">Upon logging in to the Coursebank account, applicants can apply to the SPARTA scholarship program through this SPARTA page or through <a href="{% url 'sparta-register' %}">here</a>.</div>
-    </div>
-    <div class="container-grid col-sm-6 col-md-6 col-xl-4 col-lg-4 how-to_container3">
-      <div class="container-grid how-to-3_container">
-        <h1 class="number_headings" style="text-align: left;">3 |</h1>
-      </div>
-      <p class="paragraph how-to_paragraph">Within the application page, register by submitting the requested information and required documentary requirements.</p>
-    </div>
-    <div class="container-grid col-sm-6 col-md-6 col-xl-4 col-lg-4 how-to_container4">
-      <div class="container-grid how-to-4_container">
-        <h1 class="number_headings" style="text-align: left;">4 |</h1>
-      </div>
-      <p class="paragraph how-to_paragraph">Apply for Learning Pathways in the SPARTA Profile page to get free access to corresponding pathway courses.</p>
-    </div>
-    <div class="container-grid col-sm-6 col-md-6 col-xl-4 col-lg-4 how-to_container5">
-      <div class="container-grid how-to-5_container">
-        <h1 class="number_headings" style="text-align: left;">5 |</h1>
-      </div>
-      <div class="paragraph how-to_paragraph">Vouchers will be given to you for each approved application for Verified Access to the corresponding pathway courses. You can find out how to redeem vouchers for enrollment <a href="/coupon">here</a>.</div>
-    </div>
-    <div class="container-grid col-sm-6 col-md-6 col-xl-4 col-lg-4 how-to_container6">
-      <div class="container-grid how-to-6_container">
-        <h1 class="number_headings" style="text-align: left;">6 |</h1>
-      </div>
-      <p class="paragraph how-to_paragraph">Start taking SPARTA courses on data science and analytics.</p>
-    </div>
-  </div>
 </div>
 
 <div class="container-grid container container-10 col">
