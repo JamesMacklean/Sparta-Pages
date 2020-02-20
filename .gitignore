@@ -5,6 +5,7 @@
 # Local files
 sparta_pages/local_settings.py
 sparta_pages/templates/old.*
+sparta_pages/static
 
 ### Python ###
 # Byte-compiled / optimized / DLL files
