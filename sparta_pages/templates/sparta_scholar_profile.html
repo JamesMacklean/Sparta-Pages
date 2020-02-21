@@ -7,6 +7,7 @@ View and update your Scholar Profile information, Education, Employment, and Tra
   <div class="card-body">
     <ul class="list-group list-group-flush">
     {% if extended_profile %}
+      <li class="list-group-item"><b>Address:</b> {{ extended_profile.address }}</li>
       <li class="list-group-item"><b>Affiliation:</b> {{ extended_profile.get_affiliation_display }}</li>
       <li class="list-group-item"><b>Highest Educational Attainment:</b> {{ extended_profile.get_attainment_display }}</li>
       {% if extended_profile.attainment == 'OE'%}

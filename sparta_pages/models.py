@@ -125,6 +125,8 @@ class SpartaProfile(models.Model):
 class ExtendedSpartaProfile(models.Model):
     """
     """
+    CITY_DEFAULT = REF_CITY_DEFAULT
+    CITY_CHOICES = REF_CITY_CHOICES
     PRIVATE = "PR"
     GOVERNMENT = "GO"
     FACULTY = "FA"
@@ -172,7 +174,10 @@ class ExtendedSpartaProfile(models.Model):
         USER_MODEL,
         on_delete=models.CASCADE,
         help_text='User referred with this SPARTA User',
-        related_name='extended_sparta_profile')
+        related_name='extended_sparta_profile'
+    )
+    address = models.TextField(null=True, blank=True)
+    municipality = models.CharField(max_length=2, choices=CITY_CHOICES, default="N/A")
     affiliation = models.CharField(max_length=2, choices=AFFILIATION_CHOICES, default=PRIVATE)
     attainment = models.CharField(max_length=2, choices=ATTAINMENT_CHOICES, default=ELEMENTARY)
     other_attain = models.CharField(max_length=255, null=True, blank=True)

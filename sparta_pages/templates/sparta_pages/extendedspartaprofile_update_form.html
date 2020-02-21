@@ -19,6 +19,11 @@
           <div class="card-body">
             {{ form.non_field_errors }}
             <div class="form-group">
+                {{ form.address.errors }}
+                <label for="{{ form.address.id_for_label }}" style="font-family: inherit;font-style: inherit;">Address:</label>
+                {{ form.address }}
+            </div>
+            <div class="form-group">
                 {{ form.affiliation.errors }}
                 <label for="{{ form.affiliation.id_for_label }}" style="font-family: inherit;font-style: inherit;">Affiliation:</label>
                 {{ form.affiliation }}
