@@ -1,4 +1,5 @@
 import csv
+import logging
 from datetime import datetime
 from django.utils import timezone
 
@@ -15,6 +16,8 @@ from .models import (
     PathwayApplication, Event,
     SpartaCoupon, StudentCouponRecord
 )
+
+logger = logging.getLogger(__name__)
 
 
 def manage_pathway_applications():
@@ -133,7 +136,9 @@ def assign_coupons_to_students():
     """"""
     profiles = SpartaProfile.objects.filter(is_active=True)
     for student in profiles:
+        logger.info('Starting to assig coupons for student {}...'.format(student.user.username))
         assign_coupons_to_single_student(student)
+        logger.info('Finished assigning coupons for student {}...'.format())
 
 
 def email_sparta_student_coupon_records(email=None, pathway=None):
