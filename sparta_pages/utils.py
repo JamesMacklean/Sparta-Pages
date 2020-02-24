@@ -77,13 +77,15 @@ class SpentCouponsException(Exception):
     pass
 
 
-def get_first_clean_coupon(coupons):
+def get_first_clean_coupon(coupons, course_id):
+    if not coupons.exists():
+        raise SpentCouponsException("No more coupons available for course_id {}".format(course_id))
+
     for c in coupons:
         if c.get_records().exists():
             continue
         else:
             return c
-    raise SpentCouponsException("No more coupons available.")
 
 
 def check_if_enough_clean_coupons(course):
@@ -114,7 +116,7 @@ def assign_coupons_to_single_student(student):
                 if not these_screcords.exists():
                     # assign clean coupon to student
                     try:
-                        coup = get_first_clean_coupon(SpartaCoupon.objects.filter(is_active=True).filter(course_id=c.course_id))
+                        coup = get_first_clean_coupon(SpartaCoupon.objects.filter(is_active=True).filter(course_id=c.course_id), c.course_id)
                     except SpentCouponsException as e:
                         raise e
 
