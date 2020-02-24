@@ -79,7 +79,7 @@ class SpentCouponsException(Exception):
 
 def get_first_clean_coupon(coupons):
     for c in coupons:
-        if c.get_records():
+        if c.get_records().exists():
             continue
         else:
             return c
