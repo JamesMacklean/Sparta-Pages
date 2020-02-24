@@ -8,7 +8,7 @@ from opaque_keys.edx.keys import CourseKey
 from student.models import CourseEnrollment
 
 from .analytics import OverallAnalytics, PathwayAnalytics
-from .local_settings import LOCAL_STAFF_EMAIL, LOCAL_COUPON_WARNING_LIMIT
+from .local_settings import LOCAL_STAFF_EMAIL, LOCAL_COUPON_WARNING_LIMIT, LOCAL_INTRO_COURSE_ID
 from .models import (
     Pathway, SpartaCourse, SpartaProfile,
     EducationProfile, EmploymentProfile, TrainingProfile,
@@ -111,6 +111,9 @@ def assign_coupons_to_single_student(student):
 
         for a in applications:
             for c in a.pathway.courses.all():
+                #skip if intro course
+                if c.course_id == LOCAL_INTRO_COURSE_ID:
+                    continue
                 # check if coupon for this course already assigned for this student
                 these_screcords = screcords.filter(coupon__course_id=c.course_id)
                 if not these_screcords.exists():
