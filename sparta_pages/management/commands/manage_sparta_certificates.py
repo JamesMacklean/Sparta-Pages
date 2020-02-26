@@ -83,7 +83,7 @@ class Command(BaseCommand):
         status_interval = 500
 
         ended_courses = []
-        for course in SpartaCourses.objects.filter(is_active=True):
+        for course in SpartaCourse.objects.filter(is_active=True):
             course_key = CourseKey.from_string(course.course_id)
             if course_key not in ended_courses:
                 ended_courses.append(course_key)
