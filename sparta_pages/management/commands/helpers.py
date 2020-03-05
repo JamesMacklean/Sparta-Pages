@@ -30,7 +30,7 @@ def check_if_user_has_answered_this_problem(course_id, student_username, locatio
 
     try:
         admin_user = User.objects.get(username='buri')
-    except User.DoesNotExist:
+    except User.objects.model.DoesNotExist:
         raise Exception('User does not exist.')
 
     course = get_course_overview_with_access(admin_user, 'load', course_key)
