@@ -38,10 +38,9 @@ def check_if_user_has_answered_this_problem(course_id, student_username, locatio
     try:
         history_entries = list(user_state_client.get_history(student_username, usage_key))
     except DjangoXBlockUserStateClient.DoesNotExist:
-        pass
+        return False
     else:
         return True
-    return False
 
 
 def email_list_of_users_problem_status(course_id, location):
@@ -84,28 +83,28 @@ def check_if_user_has_completed_course(student_username, course_id):
     except User.DoesNotExist:
         raise Exception("User does not exist")
 
-	course_key = CourseKey.from_string(course_id)
+    course_key = CourseKey.from_string(course_id)
     course_overview = get_course_overview_with_access(user, 'load', course_key, check_if_enrolled=True)
-    course = modulestore().get_course(course_key)
+    course = modulestore().get_course(course_key
 
     course_block_tree = get_course_outline_block_tree(user, course_id)
     if not course_block_tree:
         raise Exception("Course outline missing X_X")
 
-	course_sections = course_block_tree.get('children')
-	if course_sections is None:
+    course_sections = course_block_tree.get('children')
+    if course_sections is None:
         raise Exception("Course sections missing X_X")
 
-	for section in course_sections:
-		if not section.get('complete'):
-			return False
+    for section in course_sections:
+        if not section.get('complete'):
+            return False
 
-		for subsection in section.get('children', []):
-			if not subsection.get('complete'):
-				return False
+        for subsection in section.get('children', []):
+            if not subsection.get('complete'):
+                return False
 
-			for vertical in subsection.get('children', []):
-				if not vertical.get('complete'):
-					return False
+            for vertical in subsection.get('children', []):
+                if not vertical.get('complete'):
+                    return False
 
-	return True
+    return True
