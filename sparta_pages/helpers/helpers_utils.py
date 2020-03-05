@@ -105,7 +105,7 @@ def get_course_outline_block_tree(user, course_id):
                         block['resume_block'] = True
 
                 completable_blocks = [child for child in block['children']
-                                        if child.get('type') != 'discussion'
+                                        if child.get('category') != 'discussion'
                                     ]
                 if len([child['complete'] for child in block['children']
                         if child['complete']]) == len(completable_blocks):
