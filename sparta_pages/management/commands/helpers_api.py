@@ -66,17 +66,23 @@ def get_blocks(
     transformers += [BlockCompletionTransformer()]
 
     # transform
-    blocks = course_blocks_api.get_course_blocks(user, usage_key, transformers)
+    try:
+        blocks = course_blocks_api.get_course_blocks(user, usage_key, transformers)
+    except Exception as e:
+        raise Exception("course_blocks_api.get_course_blocks.ERROR: {}".format(str(e)))
 
     # filter blocks by types
-    if block_types_filter:
-        block_keys_to_remove = []
-        for block_key in blocks:
-            block_type = blocks.get_xblock_field(block_key, 'category')
-            if block_type not in block_types_filter:
-                block_keys_to_remove.append(block_key)
-        for block_key in block_keys_to_remove:
-            blocks.remove_block(block_key, keep_descendants=True)
+    try:
+        if block_types_filter:
+            block_keys_to_remove = []
+            for block_key in blocks:
+                block_type = blocks.get_xblock_field(block_key, 'category')
+                if block_type not in block_types_filter:
+                    block_keys_to_remove.append(block_key)
+            for block_key in block_keys_to_remove:
+                blocks.remove_block(block_key, keep_descendants=True)
+    except Exception as e:
+        raise Exception("block_types_filter.ERROR: {}".format(str(e)))
 
     # serialize
     serializer_context = {
@@ -84,10 +90,13 @@ def get_blocks(
         'requested_fields': requested_fields or [],
     }
 
-    if return_type == 'dict':
-        serializer = CoursebankBlockDictSerializer(blocks, context=serializer_context, many=False)
-    else:
-        serializer = CoursebankBlockSerializer(blocks, context=serializer_context, many=True)
+    try:
+        if return_type == 'dict':
+            serializer = CoursebankBlockDictSerializer(blocks, context=serializer_context, many=False)
+        else:
+            serializer = CoursebankBlockSerializer(blocks, context=serializer_context, many=True)
+    except Exception as e:
+        raise Exception("CoursebankBlockSerializer.ERROR: {}".format(str(e)))
 
     # return serialized data
     return serializer.data
