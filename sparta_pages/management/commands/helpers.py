@@ -39,7 +39,7 @@ def check_if_user_has_answered_this_problem(course_id, student_username, locatio
         history_entries = list(user_state_client.get_history(student_username, usage_key))
     except DjangoXBlockUserStateClient.DoesNotExist:
         pass
-    else
+    else:
         return True
     return False
 
