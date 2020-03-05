@@ -47,7 +47,8 @@ class Command(BaseCommand):
             raise CommandError("Course does not exist: {}".format(course_id))
 
         try:
-            check_if_user_has_completed_course
+            completion_status = "Completed" if check_if_user_has_completed_course(username, course_id) else "Incomplete"
+            self.stdout.write(self.style.HTTP_INFO("Student {} completion status: {}.".format(username, completion_status)))
         except Exception as e:
             raise CommandError("Error in checking user course completion status: {}".format(str(e)))
         else:
