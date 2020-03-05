@@ -16,7 +16,7 @@ from xmodule.modulestore.django import modulestore
 
 from .helpers_utils import get_course_outline_block_tree
 
-USER_MODEL = getattr(settings, 'AUTH_USER_MODEL', 'auth.User')
+User = getattr(settings, 'AUTH_USER_MODEL', 'auth.User')
 
 
 @ensure_valid_course_key
