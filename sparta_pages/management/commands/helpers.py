@@ -56,7 +56,7 @@ def check_if_user_has_completed_course(student_username, course_id):
     try:
         course_block_tree = get_course_outline_block_tree(user, course_id)
     except Exception as e:
-        raise e
+        raise Exception("get_course_outline_block_tree.ERROR: {}".format(str(e)))
 
     if not course_block_tree:
         raise Exception("Course outline missing X_X")
