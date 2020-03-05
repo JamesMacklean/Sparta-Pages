@@ -102,7 +102,7 @@ def email_list_of_users_problem_status(course_id, location):
 
     email = EmailMessage(
     'Coursebank - SPARTA User Problem Status List - {}'.format(tnow),
-    'Attached file of SPARTA User Problem Status List - {}'.format(date_range),
+    'Attached file of SPARTA User Problem Status List',
     'no-reply-sparta-user-list-problem-status@coursebank.ph',
     [LOCAL_STAFF_EMAIL,],
     )
