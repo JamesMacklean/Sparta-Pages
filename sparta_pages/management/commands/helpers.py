@@ -38,10 +38,11 @@ def check_if_user_has_answered_this_problem(course_id, student_username, locatio
     try:
         history_entries = list(user_state_client.get_history(student_username, usage_key))
     except DjangoXBlockUserStateClient.DoesNotExist:
-		pass
-	else:
-		return True
-	return False
+        pass
+    else
+        return True
+    return False
+
 
 def email_list_of_users_problem_status(course_id, location):
     enrollments = CourseEnrollment.objects.all()
