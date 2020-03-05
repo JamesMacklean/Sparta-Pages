@@ -3,6 +3,7 @@ from datetime import datetime
 
 from django.conf import settings
 from django.core.mail import EmailMessage
+from django.contrib.auth.models import User
 
 from courseware.courses import get_course_overview_with_access
 from courseware.user_state_client import DjangoXBlockUserStateClient
@@ -16,8 +17,6 @@ from xmodule.modulestore.django import modulestore
 
 from .helpers_utils import get_course_outline_block_tree
 
-User = getattr(settings, 'AUTH_USER_MODEL', 'auth.User')
-
 
 @ensure_valid_course_key
 def check_if_user_has_answered_this_problem(course_id, student_username, location):
@@ -30,7 +29,7 @@ def check_if_user_has_answered_this_problem(course_id, student_username, locatio
 
     try:
         admin_user = User.objects.get(username='buri')
-    except User.objects.model.DoesNotExist:
+    except User.DoesNotExist:
         raise Exception('User does not exist.')
 
     course = get_course_overview_with_access(admin_user, 'load', course_key)
