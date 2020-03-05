@@ -104,9 +104,11 @@ def get_course_outline_block_tree(user, course_id):
                     if block['children'][idx]['resume_block'] is True:
                         block['resume_block'] = True
 
-                completable_blocks = [child for child in block['children']
-                                        if child.get('category') != 'discussion'
-                                    ]
+                completable_blocks = []
+                for child in block['children']:
+                    logger.info("recurse_mark_complete.child: {}".format(str(child)))
+                    if child.get('category') != 'discussion':
+                        completable_blocks.append(child)
                 if len([child['complete'] for child in block['children']
                         if child['complete']]) == len(completable_blocks):
                     block['complete'] = True
