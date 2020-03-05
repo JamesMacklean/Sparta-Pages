@@ -134,7 +134,6 @@ def get_course_outline_block_tree(user, course_id):
         'drag-and-drop-v2',
         'poll',
         'word_cloud',
-        'survey'
     ]
     all_blocks = get_blocks(
         course_usage_key,
