@@ -21,18 +21,19 @@ USER_MODEL = getattr(settings, 'AUTH_USER_MODEL', 'auth.User')
 
 @ensure_valid_course_key
 def check_if_user_has_answered_this_problem(course_id, student_username, location):
-    """Find users who answered this problem at this location.
-    Right now this only works for problems because that's all
-    StudentModuleHistory records.
-    """
     course_key = CourseKey.from_string(course_id)
 
     try:
         usage_key = UsageKey.from_string(location).map_into_course(course_key)
     except (InvalidKeyError, AssertionError):
-        return HttpResponse(escape(_(u'Invalid location.')))
+        raise Exception('Invalid location.')
 
-    course = get_course_overview_with_access(request.user, 'load', course_key)
+    try:
+        admin_user = User.objects.get(username='buri')
+    except User.DoesNotExist:
+        raise Exception('User does not exist.')
+
+    course = get_course_overview_with_access(admin_user, 'load', course_key)
     user_state_client = DjangoXBlockUserStateClient()
 
     try:
@@ -43,40 +44,6 @@ def check_if_user_has_answered_this_problem(course_id, student_username, locatio
         return True
 
 
-def email_list_of_users_problem_status(course_id, location):
-    enrollments = CourseEnrollment.objects.all()
-    course_key = CourseKey.from_string(course_id)
-    try:
-        course = CourseOverview.get_from_id(course_key)
-    except CourseOverview.DoesNotExist:
-        raise Exception("Course does not exist: {}".format(course_id))
-
-    student_list = []
-    for enrollment in enrollments.filter(course=course):
-        if check_if_user_has_answered_this_problem(course_id, enrollment.user.username, location):
-            student_list.append(enrollment.user)
-
-    tnow = datetime.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
-
-    file_name = '/home/ubuntu/tempfiles/sparta-list-of-users-problem-status-{}.csv'.format(tnow)
-    with open(file_name, mode='w') as apps_file:
-        writer = csv.writer(apps_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-
-        writer.writerow(['Location:', str(location),])
-        writer.writerow(['Username', 'Email',])
-        for user in student_list:
-            writer.writerow([user.username, user.email])
-
-    email = EmailMessage(
-        'Coursebank - SPARTA User Problem Status List - {}'.format(tnow),
-        'Attached file of SPARTA User Problem Status List - {}'.format(date_range),
-        'no-reply-sparta-user-list-problem-status@coursebank.ph',
-        [LOCAL_STAFF_EMAIL,],
-    )
-    email.attach_file(file_name)
-    email.send()
-
-
 def check_if_user_has_completed_course(student_username, course_id):
     try:
         user = User.objects.get(username=student_username)
@@ -85,7 +52,7 @@ def check_if_user_has_completed_course(student_username, course_id):
 
     course_key = CourseKey.from_string(course_id)
     course_overview = get_course_overview_with_access(user, 'load', course_key, check_if_enrolled=True)
-    course = modulestore().get_course(course_key
+    course = modulestore().get_course(course_key)
 
     course_block_tree = get_course_outline_block_tree(user, course_id)
     if not course_block_tree:
@@ -108,3 +75,37 @@ def check_if_user_has_completed_course(student_username, course_id):
                     return False
 
     return True
+
+
+def email_list_of_users_problem_status(course_id, location):
+    enrollments = CourseEnrollment.objects.all()
+    course_key = CourseKey.from_string(course_id)
+
+    try:
+        course = CourseOverview.get_from_id(course_key)
+    except CourseOverview.DoesNotExist:
+        raise Exception("Course does not exist: {}".format(course_id))
+
+    student_list = []
+    for enrollment in enrollments.filter(course=course):
+        if check_if_user_has_answered_this_problem(course_id, enrollment.user.username, location):
+            student_list.append(enrollment.user)
+
+    tnow = datetime.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
+
+    file_name = '/home/ubuntu/tempfiles/sparta-list-of-users-problem-status-{}.csv'.format(tnow)
+    with open(file_name, mode='w') as apps_file:
+        writer = csv.writer(apps_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+        writer.writerow(['Location:', location,])
+        writer.writerow(['Username', 'Email',])
+        for user in student_list:
+            writer.writerow([user.username, user.email])
+
+    email = EmailMessage(
+    'Coursebank - SPARTA User Problem Status List - {}'.format(tnow),
+    'Attached file of SPARTA User Problem Status List - {}'.format(date_range),
+    'no-reply-sparta-user-list-problem-status@coursebank.ph',
+    [LOCAL_STAFF_EMAIL,],
+    )
+    email.attach_file(file_name)
+    email.send()
