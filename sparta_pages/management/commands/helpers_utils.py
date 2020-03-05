@@ -140,7 +140,6 @@ def get_course_outline_block_tree(user, course_id):
     ]
     all_blocks = get_blocks(
         course_usage_key,
-        user=user,
         nav_depth=3,
         requested_fields=[
             'children',
