@@ -54,12 +54,6 @@ def get_blocks(
     # create ordered list of transformers, adding BlocksAPITransformer at end.
     transformers = BlockStructureTransformers()
 
-    if user is not None:
-        transformers += course_blocks_api.get_course_block_access_transformers()
-        transformers += [MilestonesAndSpecialExamsTransformer(
-            include_special_exams=False,
-            include_gated_sections=False)]
-        transformers += [HiddenContentTransformer()]
     transformers += [
         BlocksAPITransformer(
             block_counts,
