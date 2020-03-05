@@ -11,8 +11,7 @@ from opaque_keys.edx.keys import CourseKey
 from openedx.core.djangoapps.content.course_overviews.models import CourseOverview
 from student.models import CourseEnrollment
 
-from sparta_pages.models import Pathway
-from sparta.helpers.helpers import check_if_user_has_completed_course
+from sparta_pages.helpers.helpers import check_if_user_has_completed_course
 
 
 class Command(BaseCommand):
