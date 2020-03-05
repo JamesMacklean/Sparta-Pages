@@ -104,10 +104,8 @@ def get_course_outline_block_tree(user, course_id):
                     if block['children'][idx]['resume_block'] is True:
                         block['resume_block'] = True
 
-                completable_blocks = [child for child in block['children']
-                                      if child['type'] != 'discussion']
-                if len([child['complete'] for child in block['children']
-                        if child['complete']]) == len(completable_blocks):
+                completable_blocks = [child for child in block['children'] if child.get('type') and child['type'] != 'discussion']
+                if len([child['complete'] for child in block['children'] if child['complete']]) == len(completable_blocks):
                     block['complete'] = True
         except Exception as e:
             raise Exception("recurse_mark_complete.ERROR: {}".format(str(e)))
