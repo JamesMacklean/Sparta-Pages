@@ -15,6 +15,7 @@ from student.models import CourseEnrollment
 from util.views import ensure_valid_course_key
 from xmodule.modulestore.django import modulestore
 
+from sparta_pages.local_settings import LOCAL_STAFF_EMAIL
 from .helpers_utils import get_course_outline_block_tree
 
 
@@ -48,10 +49,6 @@ def check_if_user_has_completed_course(student_username, course_id):
         user = User.objects.get(username=student_username)
     except User.DoesNotExist:
         raise Exception("User does not exist")
-
-    course_key = CourseKey.from_string(course_id)
-    course_overview = get_course_overview_with_access(user, 'load', course_key, check_if_enrolled=True)
-    course = modulestore().get_course(course_key)
 
     course_block_tree = get_course_outline_block_tree(user, course_id)
     if not course_block_tree:
