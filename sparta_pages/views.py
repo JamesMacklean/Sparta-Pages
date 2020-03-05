@@ -1,6 +1,5 @@
 import csv
 import hmac
-import sha
 import unicodecsv
 
 from base64 import b64encode
@@ -865,55 +864,6 @@ class StudentCouponRecordsView(TemplateView):
 
         context = self.get_context_data()
         return render(request, self.template_name, context)
-
-
-def get_upload_params_json(request):
-    def make_policy():
-        policy_object = {
-            "expiration": (datetime.now() + timedelta(hours=24)).strftime('%Y-%m-%dT%H:%M:%S.000Z'),
-            "conditions": [
-                { "bucket": settings.FILE_UPLOAD_STORAGE_BUCKET_NAME },
-                { "acl": "public-read" },
-                ["starts-with", "$key", "sparta_uploads/"],
-                { "success_action_status": "201" }
-            ]
-        }
-        return b64encode(dumps(policy_object).replace('\n', '').replace('\r', ''))
-
-    def sign_policy(policy):
-        return b64encode(hmac.new(settings.AWS_SECRET_ACCESS_KEY, policy, sha).digest())
-
-    policy = make_policy()
-    return {
-        "policy": policy,
-        "signature": sign_policy(policy),
-        "key": "sparta_uploads/" + uuid4().hex + ".bin",
-        "success_action_redirect": "/"
-    }
-
-def get_upload_params(request):
-    def make_policy():
-        policy_object = {
-            "expiration": (datetime.now() + timedelta(hours=24)).strftime('%Y-%m-%dT%H:%M:%S.000Z'),
-            "conditions": [
-                { "bucket": settings.FILE_UPLOAD_STORAGE_BUCKET_NAME },
-                { "acl": "public-read" },
-                ["starts-with", "$key", "sparta_uploads/"],
-                { "success_action_status": "201" }
-            ]
-        }
-        return b64encode(dumps(policy_object).replace('\n', '').replace('\r', ''))
-
-    def sign_policy(policy):
-        return b64encode(hmac.new(settings.AWS_SECRET_ACCESS_KEY, policy, sha).digest())
-
-    policy = make_policy()
-    return HttpResponse(dumps({
-        "policy": policy,
-        "signature": sign_policy(policy),
-        "key": "sparta_uploads/" + uuid4().hex + ".bin",
-        "success_action_redirect": "/"
-    }), content_type="application/json")
 
 
 ###############
