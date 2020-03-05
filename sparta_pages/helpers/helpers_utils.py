@@ -158,7 +158,11 @@ def get_course_outline_block_tree(user, course_id):
             nav_depth=3,
             requested_fields=[
                 'children',
+                'display_name',
                 'type',
+                'due',
+                'graded',
+                'format'
             ],
             block_types_filter=block_types_filter
         )
