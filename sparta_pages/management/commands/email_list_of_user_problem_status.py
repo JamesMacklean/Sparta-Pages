@@ -11,7 +11,7 @@ from opaque_keys.edx.keys import CourseKey
 from openedx.core.djangoapps.content.course_overviews.models import CourseOverview
 from student.models import CourseEnrollment
 
-from .helpers import email_list_of_users_problem_status
+from sparta_pages.helpers.helpers import email_list_of_users_problem_status
 
 
 class Command(BaseCommand):

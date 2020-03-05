@@ -12,7 +12,7 @@ from openedx.core.djangoapps.content.course_overviews.models import CourseOvervi
 from student.models import CourseEnrollment
 
 from sparta_pages.models import Pathway
-from .helpers import check_if_user_has_completed_course
+from sparta.helpers.helpers import check_if_user_has_completed_course
 
 
 class Command(BaseCommand):
