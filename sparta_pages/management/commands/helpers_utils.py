@@ -9,6 +9,9 @@ from opaque_keys.edx.keys import CourseKey
 # from openedx.core.djangoapps.request_cache.middleware import request_cached
 from xmodule.modulestore.django import modulestore
 
+import logging
+logger = logging.getLogger(__name__)
+
 
 # @request_cached
 def get_course_outline_block_tree(user, course_id):

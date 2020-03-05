@@ -1,6 +1,9 @@
 # Custom Block Serializers (to not use requests @_@)
 from lms.djangoapps.course_api.blocks.serializers import BlockDictSerializer, BlockSerializer
 
+import logging
+logger = logging.getLogger(__name__)
+
 
 class CoursebankBlockSerializer(BlockSerializer):  # pylint: disable=abstract-method
     """

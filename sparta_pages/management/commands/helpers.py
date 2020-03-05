@@ -18,6 +18,9 @@ from xmodule.modulestore.django import modulestore
 from sparta_pages.local_settings import LOCAL_STAFF_EMAIL
 from .helpers_utils import get_course_outline_block_tree
 
+import logging
+logger = logging.getLogger(__name__)
+
 
 @ensure_valid_course_key
 def check_if_user_has_answered_this_problem(course_id, student_username, location):
@@ -50,7 +53,11 @@ def check_if_user_has_completed_course(student_username, course_id):
     except User.DoesNotExist:
         raise Exception("User does not exist")
 
-    course_block_tree = get_course_outline_block_tree(user, course_id)
+    try:
+        course_block_tree = get_course_outline_block_tree(user, course_id)
+    except Exception as e:
+        raise e
+
     if not course_block_tree:
         raise Exception("Course outline missing X_X")
 

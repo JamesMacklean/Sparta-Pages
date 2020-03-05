@@ -11,6 +11,9 @@ from lms.djangoapps.course_api.blocks.transformers.blocks_api import BlocksAPITr
 from lms.djangoapps.course_api.blocks.transformers.block_completion import BlockCompletionTransformer
 from lms.djangoapps.course_api.blocks.transformers.milestones import MilestonesAndSpecialExamsTransformer
 
+import logging
+logger = logging.getLogger(__name__)
+
 
 def get_blocks(
         usage_key,
