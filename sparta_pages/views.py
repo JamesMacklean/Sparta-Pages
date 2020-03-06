@@ -510,7 +510,7 @@ class PathwayProgressView(TemplateView):
             # else:
             #     course['completed'] = False
 
-            course['completed'] = check_if_user_has_completed_course(request.user.username, pathway.course_id)
+            course['completed'] = check_if_user_has_completed_course(request.user.username, pathway_course.course_id)
 
             courses.append(course)
         context['courses'] = courses
