@@ -501,16 +501,14 @@ class PathwayProgressView(TemplateView):
             courseoverview = CourseOverview.get_from_id(course_key)
             course['courseoverview'] = courseoverview
 
-            # cert_status = certificate_status_for_student(app.profile.user, course_key)
-            # if cert_status and cert_status['mode'] == 'verified' or cert_status and cert_status['mode'] == 'honor':
-            #     if cert_status['status'] not in  ['unavailable', 'notpassing', 'restricted', 'unverified']:
-            #         course['completed'] = True
-            #     else:
-            #         course['completed'] = False
-            # else:
-            #     course['completed'] = False
-
-            course['completed'] = check_if_user_has_completed_course(request.user.username, pathway_course.course_id)
+            cert_status = certificate_status_for_student(app.profile.user, course_key)
+            if cert_status and cert_status['mode'] == 'verified' or cert_status and cert_status['mode'] == 'honor':
+                if cert_status['status'] not in  ['unavailable', 'notpassing', 'restricted', 'unverified']:
+                    course['completed'] = True
+                else:
+                    course['completed'] = False
+            else:
+                course['completed'] = False
 
             courses.append(course)
         context['courses'] = courses
