@@ -129,7 +129,8 @@ class Command(BaseCommand):
                     if not options['noop']:
 
                         # generate certificate if student passed
-                        if is_course_passed(student, course):
+                        # if is_course_passed(student, course):
+                        if check_if_user_has_completed_course(student.username, text_type(course_key)):
 
                             # Add the certificate request to the queue
                             ret = generate_user_certificates(
