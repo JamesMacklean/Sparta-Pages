@@ -18,6 +18,7 @@ from lms.djangoapps.courseware.views.views import is_course_passed
 from xmodule.modulestore.django import modulestore
 
 from sparta_pages.models import SpartaCourse
+from sparta_pages.helpers.helpers import check_if_user_has_completed_course
 
 LOGGER = logging.getLogger(__name__)
 
