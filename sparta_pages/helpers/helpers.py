@@ -63,7 +63,7 @@ def check_if_user_has_completed_course(student_username, course_id):
 
     course_sections = course_block_tree.get('children')
     if course_sections is None:
-        raise Exception("Course sections missing X_X")
+        return False
 
     for section in course_sections:
         if not section.get('complete'):
