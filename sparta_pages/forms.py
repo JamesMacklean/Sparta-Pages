@@ -76,7 +76,7 @@ class EducationProfileForm(forms.ModelForm):
         started_at = cleaned_data.get('started_at')
         graduated_at = cleaned_data.get('graduated_at')
 
-        if started_at >= graduated_at:
+        if started_at and graduated_at and started_at >= graduated_at:
             msg = "Date for 'started_at' must be before date for 'graduated_at'."
             self.add_error('started_at', msg)
             self.add_error('graduated_at', msg)
@@ -112,7 +112,7 @@ class EmploymentProfileForm(forms.ModelForm):
         started_at = cleaned_data.get('started_at')
         ended_at = cleaned_data.get('ended_at', None)
 
-        if ended_at is not None and started_at >= ended_at:
+        if ended_at is not None and started_at and ended_at and started_at >= ended_at:
             msg = "Date for 'started_at' must be before date for 'ended_at'."
             self.add_error('started_at', msg)
             self.add_error('ended_at', msg)
@@ -148,7 +148,7 @@ class TrainingProfileForm(forms.ModelForm):
         started_at = cleaned_data.get('started_at')
         ended_at = cleaned_data.get('ended_at')
 
-        if started_at > ended_at:
+        if started_at and ended_at and started_at > ended_at:
             msg = "Date for 'started_at' must be the same or before date for 'ended_at'."
             self.add_error('started_at', msg)
             self.add_error('ended_at', msg)
