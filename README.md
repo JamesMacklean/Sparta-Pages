@@ -21,3 +21,5 @@ urlpatterns += [
 
 ## Temporary Directory for manage command
 Make 'tempfiles' in /home/ubuntu/
+
+hello
