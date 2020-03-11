@@ -1,7 +1,8 @@
 import csv
-import logging
 from datetime import datetime
 from django.utils import timezone
+import logging
+import unicodecsv
 
 from django.core.mail import send_mail, EmailMessage
 
@@ -421,7 +422,7 @@ def export_sparta_profiles(email_address=None, is_active=True, *args, **kwargs):
 
     file_name = '/home/ubuntu/tempfiles/export_sparta_profiles_{}.csv'.format(tnow)
     with open(file_name, mode='w') as csv_file:
-        writer = csv.writer(csv_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+        writer = unicodecsv.writer(csv_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL,  encoding='utf-8')
         writer.writerow(['Username', 'Email', 'Is Active', 'Address', 'Affiliation', 'Attainment', 'Other', 'Is Employed?', 'Graduate Degree'])
 
         for profile in profiles:
@@ -465,7 +466,7 @@ def export_sparta_education_credentials(email_address=None, is_active=True, *arg
 
     file_name = '/home/ubuntu/tempfiles/export_sparta_education_credentials_{}.csv'.format(tnow)
     with open(file_name, mode='w') as csv_file:
-        writer = csv.writer(csv_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+        writer = unicodecsv.writer(csv_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL,  encoding='utf-8')
         writer.writerow(['Username', 'Email', 'Degree', 'Course', 'School', 'Address', 'Started', 'Graduated'])
 
         for eprofile in education_profiles:
@@ -499,7 +500,7 @@ def export_sparta_employment_credentials(email_address=None, is_active=True, *ar
 
     file_name = '/home/ubuntu/tempfiles/export_sparta_employment_credentials_{}.csv'.format(tnow)
     with open(file_name, mode='w') as csv_file:
-        writer = csv.writer(csv_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+        writer = unicodecsv.writer(csv_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL,  encoding='utf-8')
         writer.writerow(['Username', 'Email', 'Affiliation', 'Occupation', 'Designation', 'Employer', 'Address', 'Started', 'Ended'])
 
         for eprofile in employment_profiles:
@@ -536,7 +537,7 @@ def export_sparta_training_credentials(email_address=None, is_active=True, *args
 
     file_name = '/home/ubuntu/tempfiles/export_sparta_training_credentials_{}.csv'.format(tnow)
     with open(file_name, mode='w') as csv_file:
-        writer = csv.writer(csv_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+        writer = unicodecsv.writer(csv_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL,  encoding='utf-8')
         writer.writerow(['Username', 'Email', 'Title', 'Organizer', 'Address', 'Started', 'Ended'])
 
         for tprofile in training_profiles:
