@@ -483,7 +483,7 @@ def export_sparta_education_credentials(email_address=None, is_active=True, *arg
             graduated = eprofile.graduated_at.strftime('%Y-%m-%d')
             writer.writerow([
                 eprofile.profile.user.username, eprofile.profile.user.email,
-                eprofile.degree, eprofile.course, eprofile.school,
+                eprofile.get_degree_display(), eprofile.course, eprofile.school,
                 eprofile.address, started, graduated
                 ])
 
@@ -523,7 +523,7 @@ def export_sparta_employment_credentials(email_address=None, is_active=True, *ar
 
             writer.writerow([
                 eprofile.profile.user.username, eprofile.profile.user.email,
-                eprofile.affiliation, eprofile.occupation, eprofile.designation,
+                eprofile.get_affiliation_display(), eprofile.occupation, eprofile.designation,
                 eprofile.employer, eprofile.address, started, ended
                 ])
 
