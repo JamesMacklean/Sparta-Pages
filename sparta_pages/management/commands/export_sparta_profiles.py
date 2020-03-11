@@ -54,13 +54,13 @@ class Command(BaseCommand):
 
         try:
             if profiles:
-                export_sparta_profiles(email=email)
+                export_sparta_profiles(email_address=email)
             if education:
-                export_sparta_education_credentials(email=email)
+                export_sparta_education_credentials(email_address=email)
             if employment:
-                export_sparta_employment_credentials(email=email)
+                export_sparta_employment_credentials(email_address=email)
             if training:
-                export_sparta_training_credentials(email=email)
+                export_sparta_training_credentials(email_address=email)
         except Exception as e:
             raise CommandError("Error in exporting Sparta profiles: {}".format(str(e)))
         else:
