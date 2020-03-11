@@ -326,7 +326,7 @@ def email_sparta_pathway_learners_reports(slug):
                 attainment = learner.extended_profile.get_attainment_display()
             else:
                 affiliation = ""
-                attainment = learner.user.profile.get_level_of_education_display() or ""
+                attainment = learner.user.profile.get_grad_degree_display() or ""
 
             writer.writerow([
                 count,
@@ -409,3 +409,151 @@ def email_sparta_pathway_reports(slug):
     )
     email.attach_file(file_name)
     email.send()
+
+
+def export_sparta_profiles(email_address=None, is_active=True, *args, **kwargs):
+    """"""
+    tnow = datetime.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
+
+    profiles = SpartaProfile.objects.filter(is_active=is_active)
+    if len(kwargs) > 0:
+        profiles = profiles.filter(**kwargs)
+
+    file_name = '/home/ubuntu/tempfiles/sparta_pathway_{}_report_file_{}.csv'.format(_slug, tnow)
+    with open(file_name, mode='w') as csv_file:
+        writer = csv.writer(csv_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+        writer.writerow(['Username', 'Email', 'Is Active', 'Address', 'Affiliation', 'Attainment', 'Other', 'Is Employed?', 'Graduate Degree'])
+
+        for profile in profiles:
+            is_active = "True" if profile.is_active else "False"
+            try:
+                eprofile = ExtendedSpartaProfile.objects.get(user=profile.user)
+            except ExtendedSpartaProfile.DoesNotExist:
+                affiliation = attainment = other_attain = is_employed = grad_degree = ""
+            else:
+                affiliation = eprofile.get_affiliation_display()
+                attainment = eprofile.get_attainment_display()
+                other_attain = eprofile.other_attain
+                is_employed = "True" if eprofile.is_employed else "False"
+                grad_degree = eprofile.get_grad_degree_display()
+            writer.writerow([
+                profile.user.username, profile.user.email, is_active,
+                affiliation, attainment, other_attain,
+                is_employed, grad_degree
+                ])
+
+    if email_address:
+        email = EmailMessage(
+            'Coursebank - SPARTA Profiles',
+            'Attached file of SPARTA Profiles (as of {})'.format(tnow),
+            'no-reply-sparta-profiles@coursebank.ph',
+            [email_address,],
+        )
+        email.attach_file(file_name)
+        email.send()
+
+
+def export_sparta_education_credentials(email_address=None, is_active=True, *args, **kwargs):
+    """"""
+    tnow = datetime.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
+
+    profiles = SpartaProfile.objects.filter(is_active=is_active)
+    if len(kwargs) > 0:
+        profiles = profiles.filter(**kwargs)
+
+    education_profiles = EducationProfile.objects.filter(profile__in=profiles)
+
+    file_name = '/home/ubuntu/tempfiles/sparta_education_credentials_{}.csv'.format(tnow)
+    with open(file_name, mode='w') as csv_file:
+        writer = csv.writer(csv_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+        writer.writerow(['Username', 'Email', 'Degree', 'Course', 'School', 'Address', 'Started', 'Graduated'])
+
+        for eprofile in education_profiles:
+            started = eprofile.started_at.strftime('%Y-%m-%d')
+            graduated = eprofile.graduated_at.strftime('%Y-%m-%d')
+            writer.writerow([
+                eprofile.profile.user.username, eprofile.profile.user.email,
+                eprofile.degree, eprofile.course, eprofile.school,
+                eprofile.address, started, graduated
+                ])
+
+    if email_address:
+        email = EmailMessage(
+            'Coursebank - SPARTA Education Credentials',
+            'Attached file of SPARTA  Education Credentials (as of {})'.format(tnow),
+            'no-reply-sparta-education-credentials@coursebank.ph',
+            [email_address,],
+        )
+        email.attach_file(file_name)
+        email.send()
+
+def export_sparta_employment_credentials(email_address=None, is_active=True, *args, **kwargs):
+    """"""
+    tnow = datetime.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
+
+    profiles = SpartaProfile.objects.filter(is_active=is_active)
+    if len(kwargs) > 0:
+        profiles = profiles.filter(**kwargs)
+
+    employment_profiles = EmploymentProfile.objects.filter(profile__in=profiles)
+
+    file_name = '/home/ubuntu/tempfiles/sparta_employment_credentials_{}.csv'.format(tnow)
+    with open(file_name, mode='w') as csv_file:
+        writer = csv.writer(csv_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+        writer.writerow(['Username', 'Email', 'Affiliation', 'Occupation', 'Designation', 'Employer', 'Address', 'Started', 'Ended'])
+
+        for eprofile in employment_profiles:
+            started = eprofile.started_at.strftime('%Y-%m-%d')
+            ended = eprofile.ended_at
+            if ended is not None:
+                ended = eprofile.ended_at.strftime('%Y-%m-%d')
+
+            writer.writerow([
+                eprofile.profile.user.username, eprofile.profile.user.email,
+                eprofile.affiliation, eprofile.occupation, eprofile.designation,
+                eprofile.employer, eprofile.address, started, ended
+                ])
+
+    if email_address:
+        email = EmailMessage(
+            'Coursebank - SPARTA Employment Credentials',
+            'Attached file of SPARTA Employment Credentials (as of {})'.format(tnow),
+            'no-reply-sparta-employment-credentials@coursebank.ph',
+            [email_address,],
+        )
+        email.attach_file(file_name)
+        email.send()
+
+def export_sparta_training_credentials(email_address=None, is_active=True, *args, **kwargs):
+    """"""
+    tnow = datetime.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
+
+    profiles = SpartaProfile.objects.filter(is_active=is_active)
+    if len(kwargs) > 0:
+        profiles = profiles.filter(**kwargs)
+
+    training_profiles = TrainingProfile.objects.filter(profile__in=profiles)
+
+    file_name = '/home/ubuntu/tempfiles/sparta_training_credentials_{}.csv'.format(tnow)
+    with open(file_name, mode='w') as csv_file:
+        writer = csv.writer(csv_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+        writer.writerow(['Username', 'Email', 'Title', 'Organizer', 'Address', 'Started', 'Ended'])
+
+        for tprofile in training_profiles:
+            is_active = "True" if profile.is_active else "False"
+            writer.writerow([
+                tprofile.profile.user.username, tprofile.profile.user.email,
+                tprofile.title, tprofile.organizer, tprofile.address,
+                tprofile.started_at.strftime('%Y-%m-%d'),
+                tprofile.ended_at.strftime('%Y-%m-%d')
+                ])
+
+    if email_address:
+        email = EmailMessage(
+            'Coursebank - SPARTA Training Credentials',
+            'Attached file of SPARTA Training Credentials (as of {})'.format(tnow),
+            'no-reply-sparta-training-credentials@coursebank.ph',
+            [email_address,],
+        )
+        email.attach_file(file_name)
+        email.send()
