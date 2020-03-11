@@ -419,7 +419,7 @@ def export_sparta_profiles(email_address=None, is_active=True, *args, **kwargs):
     if len(kwargs) > 0:
         profiles = profiles.filter(**kwargs)
 
-    file_name = '/home/ubuntu/tempfiles/sparta_pathway_{}_report_file_{}.csv'.format(_slug, tnow)
+    file_name = '/home/ubuntu/tempfiles/export_sparta_profiles_{}.csv'.format(tnow)
     with open(file_name, mode='w') as csv_file:
         writer = csv.writer(csv_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
         writer.writerow(['Username', 'Email', 'Is Active', 'Address', 'Affiliation', 'Attainment', 'Other', 'Is Employed?', 'Graduate Degree'])
@@ -463,7 +463,7 @@ def export_sparta_education_credentials(email_address=None, is_active=True, *arg
 
     education_profiles = EducationProfile.objects.filter(profile__in=profiles)
 
-    file_name = '/home/ubuntu/tempfiles/sparta_education_credentials_{}.csv'.format(tnow)
+    file_name = '/home/ubuntu/tempfiles/export_sparta_education_credentials_{}.csv'.format(tnow)
     with open(file_name, mode='w') as csv_file:
         writer = csv.writer(csv_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
         writer.writerow(['Username', 'Email', 'Degree', 'Course', 'School', 'Address', 'Started', 'Graduated'])
@@ -497,7 +497,7 @@ def export_sparta_employment_credentials(email_address=None, is_active=True, *ar
 
     employment_profiles = EmploymentProfile.objects.filter(profile__in=profiles)
 
-    file_name = '/home/ubuntu/tempfiles/sparta_employment_credentials_{}.csv'.format(tnow)
+    file_name = '/home/ubuntu/tempfiles/export_sparta_employment_credentials_{}.csv'.format(tnow)
     with open(file_name, mode='w') as csv_file:
         writer = csv.writer(csv_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
         writer.writerow(['Username', 'Email', 'Affiliation', 'Occupation', 'Designation', 'Employer', 'Address', 'Started', 'Ended'])
@@ -534,7 +534,7 @@ def export_sparta_training_credentials(email_address=None, is_active=True, *args
 
     training_profiles = TrainingProfile.objects.filter(profile__in=profiles)
 
-    file_name = '/home/ubuntu/tempfiles/sparta_training_credentials_{}.csv'.format(tnow)
+    file_name = '/home/ubuntu/tempfiles/export_sparta_training_credentials_{}.csv'.format(tnow)
     with open(file_name, mode='w') as csv_file:
         writer = csv.writer(csv_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
         writer.writerow(['Username', 'Email', 'Title', 'Organizer', 'Address', 'Started', 'Ended'])
