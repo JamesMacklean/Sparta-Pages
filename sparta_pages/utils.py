@@ -11,7 +11,7 @@ from student.models import CourseEnrollment
 from .analytics import OverallAnalytics, PathwayAnalytics
 from .local_settings import LOCAL_STAFF_EMAIL, LOCAL_COUPON_WARNING_LIMIT, LOCAL_INTRO_COURSE_ID
 from .models import (
-    Pathway, SpartaCourse, SpartaProfile,
+    Pathway, SpartaCourse, SpartaProfile, ExtendedSpartaProfile,
     EducationProfile, EmploymentProfile, TrainingProfile,
     PathwayApplication, Event,
     SpartaCoupon, StudentCouponRecord
