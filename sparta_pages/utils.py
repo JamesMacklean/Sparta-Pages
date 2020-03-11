@@ -423,15 +423,20 @@ def export_sparta_profiles(email_address=None, is_active=True, *args, **kwargs):
     file_name = '/home/ubuntu/tempfiles/export_sparta_profiles_{}.csv'.format(tnow)
     with open(file_name, mode='w') as csv_file:
         writer = unicodecsv.writer(csv_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL,  encoding='utf-8')
-        writer.writerow(['Username', 'Email', 'Is Active', 'Address', 'Affiliation', 'Attainment', 'Other', 'Is Employed?', 'Graduate Degree'])
+        writer.writerow([
+            'Username', 'Email', 'Is Active',
+            'Address', 'Affiliation', 'Attainment',
+            'Other', 'Is Employed?', 'Graduate Degree'
+            ])
 
         for profile in profiles:
             is_active = "True" if profile.is_active else "False"
             try:
                 eprofile = ExtendedSpartaProfile.objects.get(user=profile.user)
             except ExtendedSpartaProfile.DoesNotExist:
-                affiliation = attainment = other_attain = is_employed = grad_degree = ""
+                address = affiliation = attainment = other_attain = is_employed = grad_degree = ""
             else:
+                address = eprofile.address
                 affiliation = eprofile.get_affiliation_display()
                 attainment = eprofile.get_attainment_display()
                 other_attain = eprofile.other_attain
@@ -439,8 +444,8 @@ def export_sparta_profiles(email_address=None, is_active=True, *args, **kwargs):
                 grad_degree = eprofile.get_grad_degree_display()
             writer.writerow([
                 profile.user.username, profile.user.email, is_active,
-                affiliation, attainment, other_attain,
-                is_employed, grad_degree
+                address, affiliation, attainment,
+                other_attain, is_employed, grad_degree
                 ])
 
     if email_address:
@@ -467,7 +472,11 @@ def export_sparta_education_credentials(email_address=None, is_active=True, *arg
     file_name = '/home/ubuntu/tempfiles/export_sparta_education_credentials_{}.csv'.format(tnow)
     with open(file_name, mode='w') as csv_file:
         writer = unicodecsv.writer(csv_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL,  encoding='utf-8')
-        writer.writerow(['Username', 'Email', 'Degree', 'Course', 'School', 'Address', 'Started', 'Graduated'])
+        writer.writerow([
+            'Username', 'Email',
+            'Degree', 'Course', 'School',
+            'Address', 'Started', 'Graduated'
+            ])
 
         for eprofile in education_profiles:
             started = eprofile.started_at.strftime('%Y-%m-%d')
@@ -501,7 +510,10 @@ def export_sparta_employment_credentials(email_address=None, is_active=True, *ar
     file_name = '/home/ubuntu/tempfiles/export_sparta_employment_credentials_{}.csv'.format(tnow)
     with open(file_name, mode='w') as csv_file:
         writer = unicodecsv.writer(csv_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL,  encoding='utf-8')
-        writer.writerow(['Username', 'Email', 'Affiliation', 'Occupation', 'Designation', 'Employer', 'Address', 'Started', 'Ended'])
+        writer.writerow([
+            'Username', 'Email',
+            'Affiliation', 'Occupation', 'Designation',
+            'Employer', 'Address', 'Started', 'Ended'])
 
         for eprofile in employment_profiles:
             started = eprofile.started_at.strftime('%Y-%m-%d')
@@ -538,7 +550,10 @@ def export_sparta_training_credentials(email_address=None, is_active=True, *args
     file_name = '/home/ubuntu/tempfiles/export_sparta_training_credentials_{}.csv'.format(tnow)
     with open(file_name, mode='w') as csv_file:
         writer = unicodecsv.writer(csv_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL,  encoding='utf-8')
-        writer.writerow(['Username', 'Email', 'Title', 'Organizer', 'Address', 'Started', 'Ended'])
+        writer.writerow([
+            'Username', 'Email',
+            'Title', 'Organizer', 'Address',
+            'Started', 'Ended'])
 
         for tprofile in training_profiles:
             writer.writerow([
