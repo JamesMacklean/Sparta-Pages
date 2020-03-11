@@ -540,7 +540,6 @@ def export_sparta_training_credentials(email_address=None, is_active=True, *args
         writer.writerow(['Username', 'Email', 'Title', 'Organizer', 'Address', 'Started', 'Ended'])
 
         for tprofile in training_profiles:
-            is_active = "True" if profile.is_active else "False"
             writer.writerow([
                 tprofile.profile.user.username, tprofile.profile.user.email,
                 tprofile.title, tprofile.organizer, tprofile.address,
