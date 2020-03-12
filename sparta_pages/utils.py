@@ -6,7 +6,9 @@ import unicodecsv
 
 from django.core.mail import send_mail, EmailMessage
 
+from lms.djangoapps.certificates.models import certificate_status_for_student
 from opaque_keys.edx.keys import CourseKey
+from openedx.core.djangoapps.content.course_overviews.models import CourseOverview
 from student.models import CourseEnrollment
 
 from .analytics import OverallAnalytics, PathwayAnalytics
@@ -568,6 +570,60 @@ def export_sparta_training_credentials(email_address=None, is_active=True, *args
             'Coursebank - SPARTA Training Credentials',
             'Attached file of SPARTA Training Credentials (as of {})'.format(tnow),
             'no-reply-sparta-training-credentials@coursebank.ph',
+            [email_address,],
+        )
+        email.attach_file(file_name)
+        email.send()
+
+
+def export_sparta_completed_courses(email_address=None, course_id=None, is_active=True):
+    """"""
+    tnow = datetime.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
+
+    course_id_list = []
+    if course_id:
+        course_id_list = [course_id]
+
+    sparta_courses = SpartaCourse.objects.filter(is_active=is_active)
+
+    for course in sparta_courses:
+        if course.course_id not in course_id_list:
+            course_id_list.append(course.course_id)
+
+    course_list = []
+    for course_id in course_list:
+        data = {}
+        data['course_id'] = course_id
+
+        course_key = CourseKey.from_string(course_id)
+        courseoverview = CourseOverview.get_from_id(course_key)
+        data['course_name'] = courseoverview.display_name
+
+        enrollments = CourseEnrollment.objects.filter(course=courseoverview).filter(is_active=True).filter(mode__in=['verified', 'honor'])
+
+        cert_count = 0
+        for student in enrollments:
+            cert_status = certificate_status_for_student(student.user, course_key)
+            if cert_status and cert_status['mode'] == 'verified' or cert_status and cert_status['mode'] == 'honor':
+                if cert_status['status'] not in  ['unavailable', 'notpassing', 'restricted', 'unverified']:
+                    cert_count += 1
+        data['completed_count'] = cert_count
+
+    file_name = '/home/ubuntu/tempfiles/export_sparta_course_completion{}.csv'.format(tnow)
+    with open(file_name, mode='w') as csv_file:
+        writer = unicodecsv.writer(csv_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL,  encoding='utf-8')
+        writer.writerow(['Course ID', 'Course Name' 'No. of Learners Completed'])
+
+        for course_data in course_list:
+            writer.writerow([
+                course_data['course_id'], course_data['course_name'], course_data['completed_count']
+            ])
+
+    if email_address:
+        email = EmailMessage(
+            'Coursebank - SPARTA Course Completion',
+            'Attached file of SPARTA Course Completion (as of {})'.format(tnow),
+            'no-reply-sparta-course-completion@coursebank.ph',
             [email_address,],
         )
         email.attach_file(file_name)
