@@ -582,13 +582,11 @@ def export_sparta_completed_courses(email_address=None, course_id=None, is_activ
 
     course_id_list = []
     if course_id is not None:
-        course_id_list = [course_id,]
-
-    sparta_courses = SpartaCourse.objects.filter(is_active=is_active)
-
-    for course in sparta_courses:
-        if course.course_id not in course_id_list:
-            course_id_list.append(course.course_id)
+        course_id_list.append(course_id)
+    else:
+        for course in SpartaCourse.objects.filter(is_active=is_active):
+            if course.course_id not in course_id_list:
+                course_id_list.append(course.course_id)
 
     logger.info("course_id_list: {}".format())
 
