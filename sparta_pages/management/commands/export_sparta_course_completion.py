@@ -39,9 +39,12 @@ class Command(BaseCommand):
         course_id = options.get('course', None)
         is_active = not options.get('nonactive')
 
-        try:
-            export_sparta_completed_courses(email_address=email_address, course_id=course_id, is_active=is_active)
-        except Exception as e:
-            raise CommandError("Error in exporting SPARTA course completions: {}".format(str(e)))
-        else:
-            self.stdout.write(self.style.SUCCESS("Successfully exported SPARTA course completions."))
+        # try:
+        #     export_sparta_completed_courses(email_address=email_address, course_id=course_id, is_active=is_active)
+        # except Exception as e:
+        #     raise CommandError("Error in exporting SPARTA course completions: {}".format(str(e)))
+        # else:
+        #     self.stdout.write(self.style.SUCCESS("Successfully exported SPARTA course completions."))
+
+        export_sparta_completed_courses(email_address=email_address, course_id=course_id, is_active=is_active)
+        self.stdout.write(self.style.SUCCESS("Successfully exported SPARTA course completions."))
