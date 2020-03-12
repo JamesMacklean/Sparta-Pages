@@ -37,7 +37,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         email_address = options.get('email', None)
         course_id = options.get('course', None)
-        is_active = options.get('active')
+        is_active = options.get('active', True)
 
         try:
             export_sparta_completed_courses(email_address=email_address, course_id=course_id, is_active=is_active)
