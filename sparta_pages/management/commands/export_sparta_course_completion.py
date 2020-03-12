@@ -28,8 +28,8 @@ class Command(BaseCommand):
                 help='set filter for course_id',
             )
         parser.add_argument(
-            '-a',
-            '--active',
+            '-n',
+            '--nonactive',
             action='store_true',
             help='set course filter for is_active'
         )
@@ -37,7 +37,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         email_address = options.get('email', None)
         course_id = options.get('course', None)
-        is_active = options.get('active', True)
+        is_active = not options.get('nonactive')
 
         try:
             export_sparta_completed_courses(email_address=email_address, course_id=course_id, is_active=is_active)
