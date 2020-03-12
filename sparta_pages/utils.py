@@ -581,14 +581,16 @@ def export_sparta_completed_courses(email_address=None, course_id=None, is_activ
     tnow = datetime.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
 
     course_id_list = []
-    if course_id:
-        course_id_list = [course_id]
+    if course_id is not None:
+        course_id_list = [course_id,]
 
     sparta_courses = SpartaCourse.objects.filter(is_active=is_active)
 
     for course in sparta_courses:
         if course.course_id not in course_id_list:
             course_id_list.append(course.course_id)
+
+    logger.info("course_id_list: {}".format())
 
     course_list = []
     for course_id in course_list:
@@ -608,6 +610,8 @@ def export_sparta_completed_courses(email_address=None, course_id=None, is_activ
                 if cert_status['status'] not in  ['unavailable', 'notpassing', 'restricted', 'unverified']:
                     cert_count += 1
         data['completed_count'] = cert_count
+
+        logger.info("course_list data: {}".format(data))
 
     file_name = '/home/ubuntu/tempfiles/export_sparta_course_completion{}.csv'.format(tnow)
     with open(file_name, mode='w') as csv_file:
