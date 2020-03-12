@@ -612,7 +612,7 @@ def export_sparta_completed_courses(email_address=None, course_id=None, is_activ
     file_name = '/home/ubuntu/tempfiles/export_sparta_course_completion{}.csv'.format(tnow)
     with open(file_name, mode='w') as csv_file:
         writer = unicodecsv.writer(csv_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL,  encoding='utf-8')
-        writer.writerow(['Course ID', 'Course Name' 'No. of Learners Completed'])
+        writer.writerow(['Course ID', 'Course Name', 'No. of Learners Completed'])
 
         for course_data in course_list:
             writer.writerow([
