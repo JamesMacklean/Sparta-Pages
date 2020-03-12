@@ -588,10 +588,8 @@ def export_sparta_completed_courses(email_address=None, course_id=None, is_activ
             if course.course_id not in course_id_list:
                 course_id_list.append(course.course_id)
 
-    logger.info("course_id_list: {}".format(course_id_list))
-
     course_list = []
-    for course_id in course_list:
+    for course_id in course_id_list:
         data = {}
         data['course_id'] = course_id
 
