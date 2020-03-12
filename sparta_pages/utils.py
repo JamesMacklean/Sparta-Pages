@@ -607,7 +607,7 @@ def export_sparta_completed_courses(email_address=None, course_id=None, is_activ
                     cert_count += 1
         data['completed_count'] = cert_count
 
-        logger.info("course_list data: {}".format(data))
+        course_list.append(data)
 
     file_name = '/home/ubuntu/tempfiles/export_sparta_course_completion{}.csv'.format(tnow)
     with open(file_name, mode='w') as csv_file:
