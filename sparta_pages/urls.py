@@ -3,7 +3,7 @@ from django.conf.urls import url
 from django.views.generic import TemplateView
 
 from . import api
-from . import views
+from .views import views, admin_views
 
 urlpatterns = [
     url(r'^sparta/$', views.main, name='sparta-main'),
@@ -36,16 +36,23 @@ urlpatterns = [
     url(r'^sparta/widthraw/(?P<id>\d+)/$', views.widthraw, name='sparta-withdraw'),
     url(r'^sparta/pathway/(?P<pathway_id>\d+)/coupons/$', views.StudentCouponRecordsView.as_view(), name='sparta-pathway-coupons'),
 
-    url(r'^sparta/admin-view/main/$', views.admin_main_view, name='sparta-admin-main'),
-    url(r'^sparta/admin-view/profiles/$', views.admin_profiles_view, name='sparta-admin-profiles'),
-    url(r'^sparta/admin-view/profiles/(?P<id>\d+)/credentials/$', views.admin_credentials_view, name='sparta-admin-credentials'),
-    url(r'^sparta/admin-view/applications/$', views.admin_applications_view, name='sparta-admin-applications'),
-    url(r'^sparta/admin-view/applications/approve/(?P<id>\d+)/$', views.admin_approve_application_view, name='sparta-admin-approve'),
-    url(r'^sparta/admin-view/analytics/overall/$', views.admin_overall_analytics_view, name='sparta-admin-overall-analytics'),
-    url(r'^sparta/admin-view/analytics/pathways/(?P<slug>[-\w]+)/$', views.admin_pathway_analytics_view, name='sparta-admin-pathway-analytics'),
-    url(r'^sparta/admin-view/analytics/courses/(?P<course_id>[-:+\w]+)/$', views.admin_course_analytics_view, name='sparta-admin-course-analytics'),
+    url(r'^sparta/admin-view/main/$', admin_views.admin_main_view, name='sparta-admin-main'),
+    url(r'^sparta/admin-view/profiles/$', admin_views.admin_profiles_view, name='sparta-admin-profiles'),
+    url(r'^sparta/admin-view/profiles/(?P<id>\d+)/credentials/$', admin_views.admin_credentials_view, name='sparta-admin-credentials'),
+    url(r'^sparta/admin-view/applications/$', admin_views.admin_applications_view, name='sparta-admin-applications'),
+    url(r'^sparta/admin-view/applications/approve/(?P<id>\d+)/$', admin_views.admin_approve_application_view, name='sparta-admin-approve'),
+    url(r'^sparta/admin-view/analytics/overall/$', admin_views.admin_overall_analytics_view, name='sparta-admin-overall-analytics'),
+    url(r'^sparta/admin-view/analytics/pathways/(?P<slug>[-\w]+)/$', admin_views.admin_pathway_analytics_view, name='sparta-admin-pathway-analytics'),
+    url(r'^sparta/admin-view/analytics/courses/(?P<course_id>[-:+\w]+)/$', admin_views.admin_course_analytics_view, name='sparta-admin-course-analytics'),
 
-    url(r'^sparta/dev/profile/$', views.DeveloperProfileView.as_view(), name='sparta-developer-profile'),
+    url(r'^sparta/admin/dashboard/main$', admin_views.data_dashboard_main_view, name='sparta-data-dashboard-main'),
+    url(r'^sparta/admin/dashboard/profiles$', admin_views.data_dashboard_profiles_view, name='sparta-data-dashboard-profiles'),
+    url(r'^sparta/admin/dashboard/education/credentials$', admin_views.data_dashboard_education_credentials_view, name='sparta-data-dashboard-education-credentials'),
+    url(r'^sparta/admin/dashboard/employment/credentials$', admin_views.data_dashboard_employment_credentials_view, name='sparta-data-dashboard-employment-credentials'),
+    url(r'^sparta/admin/dashboard/training/credentials$', admin_views.data_dashboard_training_credentials_view, name='sparta-data-dashboard-training-credentials'),
+    url(r'^sparta/admin/dashboard/courses$', admin_views.data_dashboard_courses_view, name='sparta-data-dashboard-courses'),
+
+    url(r'^sparta/dev/profile/$', admin_views.DeveloperProfileView.as_view(), name='sparta-developer-profile'),
     url(r'^sparta/api/v0/pathways/$', api.pathway_list_view, name='sparta-api-pathway-list'),
     url(r'^sparta/api/v0/pathways/(?P<id>\d+)/$', api.pathway_detail_view, name='sparta-api-pathway-detail'),
     url(r'^sparta/api/v0/courses/$', api.course_list_view, name='sparta-api-course-list'),
