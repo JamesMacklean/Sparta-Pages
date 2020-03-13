@@ -819,7 +819,7 @@ def data_dashboard_courses_view(request):
                     cert_count += 1
         data['no_of_completed'] = cert_count
         data['percent_completed'] = str( 100*(cert_count / enrollments.count()) )
-        course.append(data)
+        courses.append(data)
 
     context = {
         "courses": courses,
