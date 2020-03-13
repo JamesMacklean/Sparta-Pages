@@ -163,6 +163,7 @@ class ExtendedRegistrationPageView(View):
         sparta_profile_form = self.sparta_profile_form_class(request.POST)
         if sparta_profile_form.is_valid():
             address = sparta_profile_form.cleaned_data['address']
+            municipality = sparta_profile_form.cleaned_data['municipality']
             affiliation = sparta_profile_form.cleaned_data['affiliation']
             attainment = sparta_profile_form.cleaned_data['attainment']
             other_attain = sparta_profile_form.cleaned_data['other_attain']
@@ -175,6 +176,7 @@ class ExtendedRegistrationPageView(View):
                 ext_profile = ExtendedSpartaProfile(user=request.user)
 
             ext_profile.address = address
+            ext_profile.municipality = municipality
             ext_profile.affiliation = affiliation
             ext_profile.attainment = attainment
             ext_profile.is_employed = is_employed
@@ -604,6 +606,7 @@ class ExtendedRegistrationCreateView(View):
         sparta_profile_form = self.sparta_profile_form_class(request.POST)
         if sparta_profile_form.is_valid():
             address = sparta_profile_form.cleaned_data['address']
+            municipality = sparta_profile_form.cleaned_data['municipality']
             affiliation = sparta_profile_form.cleaned_data['affiliation']
             attainment = sparta_profile_form.cleaned_data['attainment']
             other_attain = sparta_profile_form.cleaned_data['other_attain']
@@ -616,6 +619,7 @@ class ExtendedRegistrationCreateView(View):
                 ext_profile = ExtendedSpartaProfile(user=request.user)
 
             ext_profile.address = address
+            ext_profile.municipality = municipality
             ext_profile.affiliation = affiliation
             ext_profile.attainment = attainment
             ext_profile.is_employed = is_employed
