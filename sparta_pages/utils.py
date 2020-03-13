@@ -50,7 +50,7 @@ def manage_sparta_enrollments(email_address=None, date_from=None, date_to=None):
             'user': app.profile.user,
             'pathway': app.pathway,
             'courses': app.pathway.courses.all(),
-            'created': app.create_at.strftime('%Y-%m-%dT%H:%M:%S.000Z')
+            'created': app.created_at.strftime('%Y-%m-%dT%H:%M:%S.000Z')
             })
 
     tnow = datetime.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
