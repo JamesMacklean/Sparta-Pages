@@ -1,4 +1,5 @@
-MUNICIPALITIES = (
+MUNICIPALITIES = [
+    'N/A',
     'Abra, Bangued',
     'Abra, Boliney',
     'Abra, Bucay',
@@ -1633,4 +1634,4 @@ MUNICIPALITIES = (
     'Zamboanga Sibugay, Talusan',
     'Zamboanga Sibugay, Titay',
     'Zamboanga Sibugay, Tungawan',
-)
+]
