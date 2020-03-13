@@ -5,6 +5,14 @@
 
 {% block sparta_body %}
 
+{% if has_approved_application %}
+<div class="card">
+  <div class="card-body">
+    <h2>You already have an active Learning Pathway.</h2>
+    <p>For now, you are permitted only one Learning Pathway.</p>
+  </div>
+</div>
+{% else %}
 <div class="card">
   <div class="card-body">
     <h2 class="card-title">Apply for a pathway</h2>
@@ -43,5 +51,6 @@
 
   </div>
 </div>
+{% endif %}
 
 {% endblock %}

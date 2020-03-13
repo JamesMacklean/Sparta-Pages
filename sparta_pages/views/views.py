@@ -40,6 +40,7 @@ from ..models import (
     PathwayApplication, Event,
     SpartaCoupon, StudentCouponRecord
 )
+from ..local_settings import LOCAL_MAX_APPLIED
 
 
 def main(request):
@@ -377,13 +378,17 @@ class ProfilePageView(TemplateView):
             extended_profile = None
 
         applications = PathwayApplication.objects.all().filter(profile=profile).exclude(status='WE')
+        display_applications = []
+        display_applications.append(applications.order_by('created_at').first())
         context['profile'] = profile
         context['extended_profile'] = extended_profile
-        context['applications'] = applications
+        # context['applications'] = applications
+        context['applications'] = display_applications
         context['education_profiles'] = EducationProfile.objects.all().filter(profile=profile)
         context['employment_profiles'] = EmploymentProfile.objects.all().filter(profile=profile)
         context['training_profiles'] = TrainingProfile.objects.all().filter(profile=profile)
-        if applications.count() == Pathway.objects.all().count():
+        max_applied = LOCAL_MAX_APPLIED or Pathway.objects.all().count()
+        if applications.count() >= max_applied:
             context['max_applied'] = True
         return context
 
@@ -413,6 +418,7 @@ class PathwayApplicationView(TemplateView):
             if not apps.exists():
                 pathways.append(p)
         context['pathways'] = pathways
+        context['has_approved_application'] = PathwayApplication.objects.filter(profile=self.request.user.sparta_profile).filter(status='AP').exists()
         return context
 
     def get(self, request, *args, **kwargs):
