@@ -1,10 +1,17 @@
 {% extends "sparta_base.html" %}
 {% load static %}
 
-{% block title %}Coursebank | SPARTA | Admin{% endblock %}
+{% block title %}Coursebank | SPARTA | Data Dashboard | Profiles{% endblock %}
 
 {% block sparta_body %}
 <a href="{% url 'sparta-data-dashboard-main' %}" class="btn btn-outline-primary">Data Dashboard</a>
 
+<form method="GET" action="" id="searchform">
+  <div class="form-group">
+    <label for="searchbox">Search username or email:</label>
+    <input class="searchfield" id="searchbox" name="q" type="text" value="{{ request.GET.q }}" placeholder="Username or email@domain.com"/>
+  </div>
+  <button type="submit" class="btn btn-primary btn-sm">Search</button>
+</form>
 
 {% endblock %}

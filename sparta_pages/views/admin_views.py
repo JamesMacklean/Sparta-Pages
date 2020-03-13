@@ -7,6 +7,8 @@ from uuid import uuid4
 
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.db.models import Q
 from django.http import HttpResponse, Http404
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
@@ -658,7 +660,11 @@ def data_dashboard_profiles_view(request):
 
     profiles = SpartaProfile.objects.all()
 
-    students = []
+    search_term = request.GET.get('q', None)
+    if search_term is not None:
+        profiles = profiles.filter(Q(user__username__icontains=search_term) | Q(user__email__icontains=search_term)).distinct()
+
+    student_list = []
     for profile in profiles:
         data = {}
         is_active = "True" if profile.is_active else "False"
@@ -673,7 +679,7 @@ def data_dashboard_profiles_view(request):
             other_attain = eprofile.other_attain
             is_employed = eprofile.is_employed
             grad_degree = eprofile.get_grad_degree_display()
-        students.append({
+        student_lists.append({
             "username": profile.user.username,
             "email": profile.user.email,
             "is_active": profile.is_active,
@@ -686,6 +692,15 @@ def data_dashboard_profiles_view(request):
             "is_employed": is_employed,
             "grad_degree": grad_degree
         })
+
+    paginator = Paginator(student_list, 100)
+    page = request.GET.get('page')
+    try:
+        students = paginator.page(page)
+    except PageNotAnInteger:
+        students = paginator.page(1)
+    except EmptyPage:
+        students = paginator.page(paginator.num_pages)
 
     context = {
         "profiles": students,
@@ -702,9 +717,14 @@ def data_dashboard_education_credentials_view(request):
     template_name = "sparta_data_dashboard_education_credentials.html"
 
     education_profiles = EducationProfile.objects.all()
-    education_credentials = []
+
+    search_term = request.GET.get('q', None)
+    if search_term is not None:
+        education_profiles = education_profiles.filter(Q(profile__user__username__icontains=search_term) | Q(profile__user__email__icontains=search_term)).distinct()
+
+    credentials_list = []
     for profile in education_profiles:
-        education_credentials.append({
+        credentials_list.append({
             "username": profile.profile.user.username,
             "email": profile.profile.user.email,
             "name": profile.profile.user.profile.name,
@@ -715,6 +735,15 @@ def data_dashboard_education_credentials_view(request):
             "started": profile.started_at.strftime('%Y-%m-%d'),
             "graduated": profile.graduated_at.strftime('%Y-%m-%d')
         })
+
+    paginator = Paginator(credentials_list, 100)
+    page = request.GET.get('page')
+    try:
+        education_credentials = paginator.page(page)
+    except PageNotAnInteger:
+        education_credentials = paginator.page(1)
+    except EmptyPage:
+        education_credentials = paginator.page(paginator.num_pages)
 
     context = {
         "education_credentials": education_credentials,
@@ -732,12 +761,16 @@ def data_dashboard_employment_credentials_view(request):
 
     employment_profiles = EmploymentProfile.objects.all()
 
-    employment_credentials = []
+    search_term = request.GET.get('q', None)
+    if search_term is not None:
+        employment_profiles = employment_profiles.filter(Q(profile__user__username__icontains=search_term) | Q(profile__user__email__icontains=search_term)).distinct()
+
+    credentials_list = []
     for profile in employment_profiles:
         ended = profile.ended_at
         if ended is not None:
             ended = profile.ended_at.strftime('%Y-%m-%d')
-        employment_credentials.append({
+        credentials_list.append({
             "username": profile.profile.user.username,
             "email": profile.profile.user.email,
             "name": profile.profile.user.profile.name,
@@ -749,6 +782,15 @@ def data_dashboard_employment_credentials_view(request):
             "started": profile.started_at.strftime('%Y-%m-%d'),
             "ended": ended
         })
+
+    paginator = Paginator(credentials_list, 100)
+    page = request.GET.get('page')
+    try:
+        employment_credentials = paginator.page(page)
+    except PageNotAnInteger:
+        employment_credentials = paginator.page(1)
+    except EmptyPage:
+        employment_credentials = paginator.page(paginator.num_pages)
 
     context = {
         "employment_credentials": employment_credentials,
@@ -766,9 +808,13 @@ def data_dashboard_training_credentials_view(request):
 
     training_profiles = TrainingProfile.objects.all()
 
-    training_credentials = []
+    search_term = request.GET.get('q', None)
+    if search_term is not None:
+        training_profiles = training_profiles.filter(Q(profile__user__username__icontains=search_term) | Q(profile__user__email__icontains=search_term)).distinct()
+
+    credentials_list = []
     for profile in training_profiles:
-        training_credentials.append({
+        credentials_list.append({
             "username": profile.profile.user.username,
             "email": profile.profile.user.email,
             "name": profile.profile.user.profile.name,
@@ -778,6 +824,15 @@ def data_dashboard_training_credentials_view(request):
             "started": profile.started_at.strftime('%Y-%m-%d'),
             "ended": profile.ended_at.strftime('%Y-%m-%d')
         })
+
+    paginator = Paginator(credentials_list, 100)
+    page = request.GET.get('page')
+    try:
+        training_credentials = paginator.page(page)
+    except PageNotAnInteger:
+        training_credentials = paginator.page(1)
+    except EmptyPage:
+        training_credentials = paginator.page(paginator.num_pages)
 
     context = {
         "training_credentials": training_credentials,
