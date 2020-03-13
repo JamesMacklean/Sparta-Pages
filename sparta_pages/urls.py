@@ -15,7 +15,7 @@ urlpatterns = [
     url(r'^sparta/register/employment$', views.RegisterEmploymentProfileView.as_view(), name='sparta-register-employment'),
     url(r'^sparta/register/training$', views.RegisterTrainingProfileView.as_view(), name='sparta-register-training'),
     url(r'^sparta/register/success$', views.register_success_page, name='sparta-register-success'),
-    url(r'^sparta/profile$', views.ProfilePageView.as_view(), name='sparta-profile'),
+    url(r'^sparta/profile/$', views.ProfilePageView.as_view(), name='sparta-profile'),
 
     url(r'^sparta/profile/info/new$', views.ExtendedRegistrationCreateView.as_view(), name='sparta-extended-profile-create'),
     url(r'^sparta/profile/education/new$', views.EducationProfileCreateView.as_view(), name='sparta-education-create'),
