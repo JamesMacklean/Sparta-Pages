@@ -379,7 +379,8 @@ class ProfilePageView(TemplateView):
 
         applications = PathwayApplication.objects.all().filter(profile=profile).exclude(status='WE')
         display_applications = []
-        display_applications.append(applications.order_by('created_at')[0])
+        if applications.exists():
+            display_applications.append(applications.order_by('created_at')[0])
         context['profile'] = profile
         context['extended_profile'] = extended_profile
         context['applications'] = display_applications
