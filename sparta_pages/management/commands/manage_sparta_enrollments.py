@@ -23,10 +23,17 @@ class Command(BaseCommand):
             type=str,
             help='set to date (format: Y-M-D)',
         )
+        parser.add_argument(
+            '-e',
+            '--email',
+            type=str,
+            help='set email_address to send to',
+        )
 
     def handle(self, *args, **options):
         fromdate = options.get('fromdate', None)
         todate = options.get('todate', None)
+        email_address = options.get('email', None)
 
         if fromdate is not None:
             date_from = datetime.strptime(fromdate, "%Y-%m-%d")
@@ -39,7 +46,7 @@ class Command(BaseCommand):
             date_to = timezone.now()
 
         try:
-            manage_sparta_enrollments(date_from=date_from, date_to=date_to)
+            manage_sparta_enrollments(email_address=email_address, date_from=date_from, date_to=date_to)
         except Exception as e:
             raise CommandError("Error in managing Sparta enrollments: {}".format(str(e)))
         else:
