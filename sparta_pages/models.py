@@ -6,6 +6,8 @@ from opaque_keys.edx.keys import CourseKey
 from student.models import CourseEnrollment
 from rest_framework.authtoken.models import Token as BaseToken
 
+from .cities import MUNICIPALITIES
+
 # Backwards compatible settings.AUTH_USER_MODEL
 USER_MODEL = getattr(settings, 'AUTH_USER_MODEL', 'auth.User')
 
