@@ -51,6 +51,11 @@
               {{ sparta_profile_form.address }}
           </div>
           <div class="form-group">
+              {{ sparta_profile_form.municipality.errors }}
+              <label for="{{ sparta_profile_form.municipality.id_for_label }}" style="font-family: inherit;font-style: inherit;">*Place of Residency:</label>
+              {{ sparta_profile_form.municipality }}
+          </div>
+          <div class="form-group">
               {{ sparta_profile_form.affiliation.errors }}
               <label for="{{ sparta_profile_form.affiliation.id_for_label }}" style="font-family: inherit;font-style: inherit;">*Affiliation:</label>
               {{ sparta_profile_form.affiliation }}

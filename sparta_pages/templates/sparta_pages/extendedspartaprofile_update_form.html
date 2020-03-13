@@ -24,6 +24,11 @@
                 {{ form.address }}
             </div>
             <div class="form-group">
+                {{ form.municipality.errors }}
+                <label for="{{ form.municipality.id_for_label }}" style="font-family: inherit;font-style: inherit;">Place of Residency:</label>
+                {{ form.municipality }}
+            </div>
+            <div class="form-group">
                 {{ form.affiliation.errors }}
                 <label for="{{ form.affiliation.id_for_label }}" style="font-family: inherit;font-style: inherit;">Affiliation:</label>
                 {{ form.affiliation }}

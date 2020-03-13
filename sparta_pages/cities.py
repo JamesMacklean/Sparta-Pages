@@ -1,5 +1,5 @@
 MUNICIPALITIES = [
-    'N/A',
+    '---',
     'Abra, Bangued',
     'Abra, Boliney',
     'Abra, Bucay',
