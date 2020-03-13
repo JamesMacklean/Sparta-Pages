@@ -39,6 +39,7 @@ class ExtendedSpartaProfileForm(forms.ModelForm):
         model = ExtendedSpartaProfile
         fields = [
             'address',
+            'municipality',
             'affiliation',
             'attainment',
             'other_attain','is_employed',
