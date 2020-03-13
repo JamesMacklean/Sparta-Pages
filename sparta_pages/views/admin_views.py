@@ -818,7 +818,8 @@ def data_dashboard_courses_view(request):
                 if cert_status['status'] not in  ['unavailable', 'notpassing', 'restricted', 'unverified']:
                     cert_count += 1
         data['no_of_completed'] = cert_count
-        data['percent_completed'] = str( 100*(cert_count / enrollments.count()) )
+        total_enrollments_count = enrollments.count()
+        data['percent_completed'] = str( 100*(cert_count / total_enrollments_count) ) if total_enrollments_count else "0"
         courses.append(data)
 
     context = {
