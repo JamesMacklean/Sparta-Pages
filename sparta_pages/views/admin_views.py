@@ -679,7 +679,7 @@ def data_dashboard_profiles_view(request):
             other_attain = eprofile.other_attain
             is_employed = eprofile.is_employed
             grad_degree = eprofile.get_grad_degree_display()
-        student_lists.append({
+        student_list.append({
             "username": profile.user.username,
             "email": profile.user.email,
             "is_active": profile.is_active,
