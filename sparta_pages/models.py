@@ -6,7 +6,9 @@ from opaque_keys.edx.keys import CourseKey
 from student.models import CourseEnrollment
 from rest_framework.authtoken.models import Token as BaseToken
 
-from .cities import MUNICIPALITIES
+from .cities import get_municpality_choices
+
+MUNICIPALITY_CHOICES = get_municpality_choices()
 
 # Backwards compatible settings.AUTH_USER_MODEL
 USER_MODEL = getattr(settings, 'AUTH_USER_MODEL', 'auth.User')
@@ -177,7 +179,7 @@ class ExtendedSpartaProfile(models.Model):
         related_name='extended_sparta_profile'
     )
     address = models.TextField(null=True, blank=True)
-    municipality = models.CharField(max_length=255, choices=MUNICIPALITIES, default="---")
+    municipality = models.CharField(max_length=255, choices=MUNICIPALITY_CHOICES, default="---")
     affiliation = models.CharField(max_length=2, choices=AFFILIATION_CHOICES, default=PRIVATE)
     attainment = models.CharField(max_length=2, choices=ATTAINMENT_CHOICES, default=ELEMENTARY)
     other_attain = models.CharField(max_length=255, null=True, blank=True)
