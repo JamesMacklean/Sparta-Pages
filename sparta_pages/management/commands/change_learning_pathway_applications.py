@@ -5,12 +5,12 @@ from pprint import pformat
 import logging
 log = logging.getLogger(__name__)
 
-from django.conf import settings
 from django.core.management.base import BaseCommand, CommandError
 
 from sparta_pages.models import Pathway, SpartaProfile, PathwayApplication
 
-User = getattr(settings, 'AUTH_USER_MODEL', 'auth.User')
+from django.contrib.auth import get_user_model
+User = get_user_model()
 
 
 class Command(BaseCommand):
