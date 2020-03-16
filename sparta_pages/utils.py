@@ -90,16 +90,21 @@ class SpentCouponsException(Exception):
     pass
 
 
-def get_first_clean_coupon(coupons, course_id):
-    if not coupons.exists():
-        raise SpentCouponsException("No more coupons available for course_id {}".format(course_id))
+def get_first_clean_coupon(coupons=None, course_id=None):
+    try:
+        if coupons is None or course_id is None:
+            raise Exception("get_first_clean_coupon_error: No coupons or course_id indicated.")
 
-    for c in coupons:
-        if c.get_records().exists():
-            continue
-        else:
-            return c
+        if not coupons.exists():
+            raise SpentCouponsException("No more coupons available for course_id {}".format(course_id))
 
+        for c in coupons:
+            if c.get_records().exists():
+                continue
+            else:
+                return c
+    except Exception as e:
+        raise Exception("get_first_clean_coupon: {}".format(str(e)))
 
 def check_if_enough_clean_coupons(course):
     coupons = SpartaCoupon.objects.filter(course_id=course.course_id)
@@ -118,28 +123,40 @@ def get_courses_that_need_new_coupons_list():
 
 
 def assign_coupons_to_single_student(student):
-    applications = PathwayApplication.objects.filter(profile=student).filter(status="AP")
-    if applications.exists():
-        screcords = StudentCouponRecord.objects.filter(profile=student)
+    try:
+        applications = PathwayApplication.objects.filter(profile=student).filter(status="AP")
+        if applications.exists():
+            screcords = StudentCouponRecord.objects.filter(profile=student)
 
-        for a in applications:
-            for c in a.pathway.courses.all():
-                #skip if intro course
-                if c.course_id == LOCAL_INTRO_COURSE_ID:
-                    continue
-                # check if coupon for this course already assigned for this student
-                these_screcords = screcords.filter(coupon__course_id=c.course_id)
-                if not these_screcords.exists():
-                    # assign clean coupon to student
-                    try:
-                        coup = get_first_clean_coupon(SpartaCoupon.objects.filter(is_active=True).filter(course_id=c.course_id), c.course_id)
-                    except SpentCouponsException as e:
-                        raise e
+            for a in applications:
+                for c in a.pathway.courses.all():
+                    #skip if intro course
+                    if c.course_id == LOCAL_INTRO_COURSE_ID:
+                        continue
+                    # check if coupon for this course already assigned for this student
+                    these_screcords = screcords.filter(coupon__course_id=c.course_id)
+                    if not these_screcords.exists():
+                        # assign clean coupon to student
+                        try:
+                            coup = get_first_clean_coupon(
+                                coupons=SpartaCoupon.objects.filter(is_active=True).filter(course_id=c.course_id),
+                                course_id=c.course_id
+                                )
+                        except SpentCouponsException as e:
+                            raise e
+                        except Exception as e:
+                            raise e
 
-                    StudentCouponRecord.objects.create(
-                        profile=student,
-                        coupon=coup
-                    )
+                        try:
+                            StudentCouponRecord.objects.create(
+                                profile=student,
+                                coupon=coup
+                            )
+                        except Exception as e:
+                            raise e
+
+    except Exception as e:
+        raise Exception("assign_coupons_to_single_student_error: {}".format(str(e)))
 
 
 def assign_coupons_to_students():
