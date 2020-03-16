@@ -1010,12 +1010,6 @@ def test_data_dashboard_training_credentials_view(request):
 
     template_name = "sparta_data_dashboard_training_credentials.html"
 
-    training_profiles = TrainingProfile.objects.all()
-
-    search_term = request.GET.get('q', None)
-    if search_term is not None:
-        training_profiles = training_profiles.filter(Q(profile__user__username__icontains=search_term) | Q(profile__user__email__icontains=search_term)).distinct()
-
     credentials_list = []
     for i in range(1, 26):
         credentials_list.append({
@@ -1029,7 +1023,7 @@ def test_data_dashboard_training_credentials_view(request):
             "ended": timezone.now().date().strftime('%Y-%m-%d')
         })
 
-    paginator = Paginator(credentials_list, 100)
+    paginator = Paginator(credentials_list, 10)
     page = request.GET.get('page')
     try:
         training_credentials = paginator.page(page)
