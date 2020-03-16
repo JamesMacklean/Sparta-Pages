@@ -117,7 +117,7 @@ class Command(BaseCommand):
             return False
 
         try:
-            for app in applications = PathwayApplication.objects.filter(profile__user=user):
+            for app in PathwayApplication.objects.filter(profile__user=user):
                 app.withdraw()
         except Exception as e:
             logger.error("Error in resetting applications: {}".format(str(e)))
