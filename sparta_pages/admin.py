@@ -85,4 +85,4 @@ class SpartaCouponAdmin(admin.ModelAdmin):
 @admin.register(StudentCouponRecord)
 class StudentCouponRecordAdmin(admin.ModelAdmin):
     list_display = ('profile', 'coupon',)
-    search_fields = ['profile__user__email', 'profile__user__username' 'coupon__course_id', 'coupon__code']
+    search_fields = ['profile__user__email', 'profile__user__username', 'coupon__course_id', 'coupon__code']
