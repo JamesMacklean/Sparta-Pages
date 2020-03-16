@@ -15,9 +15,10 @@ class Command(BaseCommand):
 
 
     def handle(self, *args, **options):
-        try:
-            assign_coupons_to_students()
-        except Exception as e:
-            raise CommandError("Error in assigning Sparta coupons to students: {}".format(str(e)))
-        else:
-            self.stdout.write(self.style.SUCCESS("Successfully assigned Sparta coupons to students."))
+        # try:
+        #     assign_coupons_to_students()
+        # except Exception as e:
+        #     raise CommandError("Error in assigning Sparta coupons to students: {}".format(str(e)))
+        # else:
+        #     self.stdout.write(self.style.SUCCESS("Successfully assigned Sparta coupons to students."))
+        assign_coupons_to_students()
