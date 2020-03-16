@@ -7,11 +7,11 @@
 <a href="{% url 'sparta-data-dashboard-main' %}" class="btn btn-outline-primary">Data Dashboard</a>
 
 {% for course in courses %}
-<ul>
-  <li>{{ course.course_id }}</li>
-  <li>{{ course.name }}</li>
-  <li>{{ course.no_of_completed }}</li>
-  <li>{{ course.percent_completed }}</li>
+<ul class="list-group">
+  <li class="list-group-item">{{ course.course_id }}</li>
+  <li class="list-group-item">{{ course.name }}</li>
+  <li class="list-group-item">{{ course.no_of_completed }}</li>
+  <li class="list-group-item">{{ course.percent_completed }}</li>
 </ul>
 {% endfor %}
 

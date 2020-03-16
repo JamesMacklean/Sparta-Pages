@@ -15,19 +15,19 @@
 </form>
 
 {% for profile in profiles %}
-<ul>
-  <li>{{ profile.username }}</li>
-  <li>{{ profile.email }}</li>
-  <li>{{ profile.is_active }}</li>
-  <li>{{ profile.name }}</li>
-  <li>{{ profile.gender }}</li>
-  <li>{{ profile.address }}</li>
-  <li>{{ profile.municipality }}</li>
-  <li>{{ profile.affiliation }}</li>
-  <li>{{ profile.attainment }}</li>
-  <li>{{ profile.other_attain }}</li>
-  <li>{{ profile.is_employed }}</li>
-  <li>{{ profile.grad_degree }}</li>
+<ul class="list-group">
+  <li class="list-group-item">{{ profile.username }}</li>
+  <li class="list-group-item">{{ profile.email }}</li>
+  <li class="list-group-item">{{ profile.is_active }}</li>
+  <li class="list-group-item">{{ profile.name }}</li>
+  <li class="list-group-item">{{ profile.gender }}</li>
+  <li class="list-group-item">{{ profile.address }}</li>
+  <li class="list-group-item">{{ profile.municipality }}</li>
+  <li class="list-group-item">{{ profile.affiliation }}</li>
+  <li class="list-group-item">{{ profile.attainment }}</li>
+  <li class="list-group-item">{{ profile.other_attain }}</li>
+  <li class="list-group-item">{{ profile.is_employed }}</li>
+  <li class="list-group-item">{{ profile.grad_degree }}</li>
 </ul>
 {% endfor %}
 
