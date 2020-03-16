@@ -99,13 +99,13 @@ class Command(BaseCommand):
             try:
                 user = User.objects.get(username=username)
             except User.DoesNotExist:
-                log.error("Error in resetting applications: User {} does not exist".format(username)
+                log.error("Error in resetting applications: User {} does not exist".format(username))
                 return False
         elif email_address is not None:
             try:
                 user = User.objects.get(email=email_address)
             except User.DoesNotExist:
-                log.error("Error in resetting applications: User {} does not exist".format(email_address)
+                log.error("Error in resetting applications: User {} does not exist".format(email_address))
                 return False
         else:
             return False
@@ -113,7 +113,7 @@ class Command(BaseCommand):
         try:
             pathway = Pathway.objects.get(id=pathway_id)
         except Pathway.DoesNotExist:
-            log.error("Error in resetting applications: Pathway {} does not exist".format(pathway_id)
+            log.error("Error in resetting applications: Pathway {} does not exist".format(pathway_id))
             return False
 
         try:
@@ -126,12 +126,9 @@ class Command(BaseCommand):
         try:
             sparta_profile = SpartaProfile.objects.filter(is_active=True).get(user=user)
         except SpartaProfile.DoesNotExist:
-            log.error("Error in resetting applications: SPARTA Profile for user {} does not exist".format(user.username)
+            log.error("Error in resetting applications: SPARTA Profile for user {} does not exist".format(user.username))
             return False
 
         app, created = PathwayApplication.objects.get_or_create(profile=sparta_profile, pathway=pathway)
         app.approve()
-
-
-
         return True
