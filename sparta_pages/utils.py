@@ -165,7 +165,7 @@ def assign_coupons_to_students():
     for student in profiles:
         logger.info('Starting to assig coupons for student {}...'.format(student.user.username))
         assign_coupons_to_single_student(student)
-        logger.info('Finished assigning coupons for student {}...'.format())
+        logger.info('Finished assigning coupons for student {}...'.format(student.user.username))
 
 
 def email_sparta_student_coupon_records(email=None, pathway=None):
