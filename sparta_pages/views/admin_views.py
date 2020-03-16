@@ -1048,11 +1048,6 @@ def test_data_dashboard_courses_view(request):
 
     template_name = "sparta_data_dashboard_courses.html"
 
-    course_id_list = []
-    for course in SpartaCourse.objects.filter(is_active=True):
-        if course.course_id not in course_id_list:
-            course_id_list.append(course.course_id)
-
     courses = []
     for i in range(1, 31):
         data = {}
