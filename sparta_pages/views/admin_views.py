@@ -1035,7 +1035,6 @@ def test_data_dashboard_training_credentials_view(request):
     context = {
         "training_credentials": training_credentials,
     }
-    context = {}
     return render(request, template_name, context)
 
 
