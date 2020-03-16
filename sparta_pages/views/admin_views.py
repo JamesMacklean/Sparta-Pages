@@ -881,3 +881,193 @@ def data_dashboard_courses_view(request):
         "courses": courses,
     }
     return render(request, template_name, context)
+
+
+#########################
+# TEST: Data Dashboard #
+#######################
+
+@login_required
+def test_data_dashboard_profiles_view(request):
+    """"""
+    if not request.user.is_staff:
+        raise Http404
+
+    template_name = "sparta_data_dashboard_profiles.html"
+
+    student_list = []
+    for i in range(1, 26):
+        student_list.append({
+            "username": "username-{}".format(i),
+            "email": "email{}@example.com".format(i),
+            "is_active": "True/False",
+            "name": "Name {}".format(i),
+            "gender": "Male/Female",
+            "address": "Address {}".format(i),
+            "municipality": "NCR/OTHER",
+            "affiliation": "PRIVATE/PUBLIC",
+            "attainment": "ELEMENTARY/SECONDARY/TERIARY",
+            "other_attain": "OTHER",
+            "is_employed": "True/False",
+            "grad_degree": "Doctorate/Master's/No"
+        })
+
+    paginator = Paginator(student_list, 10)
+    page = request.GET.get('page')
+    try:
+        students = paginator.page(page)
+    except PageNotAnInteger:
+        students = paginator.page(1)
+    except EmptyPage:
+        students = paginator.page(paginator.num_pages)
+
+    context = {
+        "profiles": students,
+    }
+    return render(request, template_name, context)
+
+
+@login_required
+def test_data_dashboard_education_credentials_view(request):
+    """"""
+    if not request.user.is_staff:
+        raise Http404
+
+    template_name = "sparta_data_dashboard_education_credentials.html"
+
+    credentials_list = []
+    for i in range(1, 26):
+        credentials_list.append({
+            "username": "username-{}".format(i),
+            "email": "email{}@example.com".format(i),
+            "name": "Name {}".format(i),
+            "degree": "SECONDARY/BACHELOR/MASTER/DOCTOR",
+            "course": "BS/MS/PHD Course",
+            "school": "School Name {}".format(i),
+            "address": "Address {}".format(i),
+            "started": timezone.now().date().strftime('%Y-%m-%d'),
+            "graduated": timezone.now().date().strftime('%Y-%m-%d')
+        })
+
+    paginator = Paginator(credentials_list, 10)
+    page = request.GET.get('page')
+    try:
+        education_credentials = paginator.page(page)
+    except PageNotAnInteger:
+        education_credentials = paginator.page(1)
+    except EmptyPage:
+        education_credentials = paginator.page(paginator.num_pages)
+
+    context = {
+        "education_credentials": education_credentials,
+    }
+    return render(request, template_name, context)
+
+
+@login_required
+def test_data_dashboard_employment_credentials_view(request):
+    """"""
+    if not request.user.is_staff:
+        raise Http404
+
+    template_name = "sparta_data_dashboard_employment_credentials.html"
+
+    credentials_list = []
+    for i in range(1, 26):
+        credentials_list.append({
+            "username": "username-{}".format(i),
+            "email": "email{}@example.com".format(i),
+            "name": "Name {}".format(i),
+            "affiliation": "Academe/Private/Government",
+            "occupation": "Occupation {}".format(i),
+            "designation": "Designation {}".format(i),
+            "employer": "Employer Name {}".format(i),
+            "address": "Address {}".format(i),
+            "started": timezone.now().date().strftime('%Y-%m-%d'),
+            "ended": timezone.now().date().strftime('%Y-%m-%d')
+        })
+
+    paginator = Paginator(credentials_list, 10)
+    page = request.GET.get('page')
+    try:
+        employment_credentials = paginator.page(page)
+    except PageNotAnInteger:
+        employment_credentials = paginator.page(1)
+    except EmptyPage:
+        employment_credentials = paginator.page(paginator.num_pages)
+
+    context = {
+        "employment_credentials": employment_credentials,
+    }
+    return render(request, template_name, context)
+
+
+@login_required
+def test_data_dashboard_training_credentials_view(request):
+    """"""
+    if not request.user.is_staff:
+        raise Http404
+
+    template_name = "sparta_data_dashboard_training_credentials.html"
+
+    training_profiles = TrainingProfile.objects.all()
+
+    search_term = request.GET.get('q', None)
+    if search_term is not None:
+        training_profiles = training_profiles.filter(Q(profile__user__username__icontains=search_term) | Q(profile__user__email__icontains=search_term)).distinct()
+
+    credentials_list = []
+    for i in range(1, 26):
+        credentials_list.append({
+            "username": "username-{}".format(i),
+            "email": "email{}@example.com".format(i),
+            "name": "Name {}".format(i),
+            "title": "Title {}".format(i),
+            "organizer": "Organizer {}".format(i),
+            "address": "Address {}".format(i),
+            "started": timezone.now().date().strftime('%Y-%m-%d'),
+            "ended": timezone.now().date().strftime('%Y-%m-%d')
+        })
+
+    paginator = Paginator(credentials_list, 100)
+    page = request.GET.get('page')
+    try:
+        training_credentials = paginator.page(page)
+    except PageNotAnInteger:
+        training_credentials = paginator.page(1)
+    except EmptyPage:
+        training_credentials = paginator.page(paginator.num_pages)
+
+    context = {
+        "training_credentials": training_credentials,
+    }
+    context = {}
+    return render(request, template_name, context)
+
+
+@login_required
+def test_data_dashboard_courses_view(request):
+    """"""
+    if not request.user.is_staff:
+        raise Http404
+
+    template_name = "sparta_data_dashboard_courses.html"
+
+    course_id_list = []
+    for course in SpartaCourse.objects.filter(is_active=True):
+        if course.course_id not in course_id_list:
+            course_id_list.append(course.course_id)
+
+    courses = []
+    for i in range(1, 31):
+        data = {}
+        data['course_id'] = "course-v1:DAP+SPXX{}+202X_QX".format(i)
+        data['name'] = "SPARTA Course {}".format(i)
+        data['no_of_completed'] = i*2
+        data['percent_completed'] = "XXX"
+        courses.append(data)
+
+    context = {
+        "courses": courses,
+    }
+    return render(request, template_name, context)

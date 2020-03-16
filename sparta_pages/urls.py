@@ -52,6 +52,12 @@ urlpatterns = [
     url(r'^sparta/admin/dashboard/training/credentials$', admin_views.data_dashboard_training_credentials_view, name='sparta-data-dashboard-training-credentials'),
     url(r'^sparta/admin/dashboard/courses$', admin_views.data_dashboard_courses_view, name='sparta-data-dashboard-courses'),
 
+    url(r'^test/sparta/admin/dashboard/profiles$', admin_views.test_data_dashboard_profiles_view, name='test-sparta-data-dashboard-profiles'),
+    url(r'^test/sparta/admin/dashboard/education/credentials$', admin_views.test_data_dashboard_education_credentials_view, name='test-sparta-data-dashboard-education-credentials'),
+    url(r'^test/sparta/admin/dashboard/employment/credentials$', admin_views.test_data_dashboard_employment_credentials_view, name='test-sparta-data-dashboard-employment-credentials'),
+    url(r'^test/sparta/admin/dashboard/training/credentials$', admin_views.test_data_dashboard_training_credentials_view, name='test-sparta-data-dashboard-training-credentials'),
+    url(r'^test/sparta/admin/dashboard/courses$', admin_views.test_data_dashboard_courses_view, name='test-sparta-data-dashboard-courses'),
+
     url(r'^sparta/dev/profile$', admin_views.DeveloperProfileView.as_view(), name='sparta-developer-profile'),
     url(r'^sparta/api/v0/pathways$', api.pathway_list_view, name='sparta-api-pathway-list'),
     url(r'^sparta/api/v0/pathways/(?P<id>\d+)$', api.pathway_detail_view, name='sparta-api-pathway-detail'),
