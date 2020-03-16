@@ -14,4 +14,38 @@
   <button type="submit" class="btn btn-primary btn-sm">Search</button>
 </form>
 
+{% for profile in profiles %}
+<ul>
+  <li>{{ profile.username }}</li>
+  <li>{{ profile.email }}</li>
+  <li>{{ profile.is_active }}</li>
+  <li>{{ profile.name }}</li>
+  <li>{{ profile.gender }}</li>
+  <li>{{ profile.address }}</li>
+  <li>{{ profile.municipality }}</li>
+  <li>{{ profile.affiliation }}</li>
+  <li>{{ profile.attainment }}</li>
+  <li>{{ profile.other_attain }}</li>
+  <li>{{ profile.is_employed }}</li>
+  <li>{{ profile.grad_degree }}</li>
+</ul>
+{% endfor %}
+
+
+<div class="pagination">
+    <span class="step-links">
+        {% if profiles.has_previous %}
+            <a href="?page={{ profiles.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ profiles.number }} of {{ profiles.paginator.num_pages }}.
+        </span>
+
+        {% if profiles.has_next %}
+            <a href="?page={{ profiles.next_page_number }}">next</a>
+        {% endif %}
+    </span>
+</div>
+
 {% endblock %}
