@@ -674,6 +674,7 @@ def data_dashboard_profiles_view(request):
             address = affiliation = attainment = other_attain = is_employed = grad_degree = ""
         else:
             address = eprofile.address
+            municipality = eprofile.get_municpality_display()
             affiliation = eprofile.get_affiliation_display()
             attainment = eprofile.get_attainment_display()
             other_attain = eprofile.other_attain
@@ -686,6 +687,7 @@ def data_dashboard_profiles_view(request):
             "name": profile.user.profile.name,
             "gender": profile.user.profile.get_gender_display(),
             "address": address,
+            "municipality": municipality,
             "affiliation": affiliation,
             "attainment": attainment,
             "other_attain": other_attain,
