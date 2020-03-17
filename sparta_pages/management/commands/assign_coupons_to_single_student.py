@@ -28,7 +28,7 @@ class Command(BaseCommand):
         try:
             student = SpartaProfile.objects.get(user__username=username)
         except SpartaProfile.DoesNotExist:
-            raise CommandError("User does not exist: {}".format(username)
+            raise CommandError("User does not exist: {}".format(username))
 
         try:
             assign_coupons_to_single_student(student)
