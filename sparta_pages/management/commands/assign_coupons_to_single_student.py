@@ -13,12 +13,13 @@ from sparta_pages.utils import assign_coupons_to_single_student
 class Command(BaseCommand):
     help = 'Manages coupons of learner.'
 
-    parser.add_argument(
-        '-u',
-        '--username',
-        type=str,
-        help='set username',
-    )
+    def add_arguments(self, parser):
+        parser.add_argument(
+            '-u',
+            '--username',
+            type=str,
+            help='set username',
+        )
 
     def handle(self, *args, **options):
         username = options.get('username', None)
