@@ -3,6 +3,17 @@
 
 {% block sparta_body %}
 
+{% if profile %}
+<div class="navbar navbar-light bg-light justify-content-center">
+  <span class="navbar-brand">
+    Go to your SPARTA Scholar Profile to view your Learning Pathways and profile credentials.
+  </span>
+  <div class="navbar-brand">
+    <a href="{% url 'sparta-profile' %}" class="go-to-profile-btn go-to-profile-sparta ">View your profile</a>
+  </div>
+</div>
+{% endif %}
+
 <div class="container-grid container col header_block">
     <div class="responsive-picture sparta_logo mx-auto">
       <picture><img alt="Placeholder Picture" src="https://coursebank-static-assets.s3-ap-northeast-1.amazonaws.com/sparta-logo.png">
