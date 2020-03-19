@@ -4,7 +4,7 @@
 {% block title %}Coursebank | SPARTA | Data Dashboard | Profiles{% endblock %}
 
 {% block sparta_body %}
-<a href="{% url 'sparta-data-dashboard-main' %}" class="btn btn-outline-primary">Data Dashboard</a>
+<a href="{% url 'sparta-data-dashboard-main' %}" class="btn btn-link">&#171; Back to Dashboard</a>
 
 <form method="GET" action="" id="searchform">
   <div class="form-group">
@@ -14,28 +14,53 @@
   <button type="submit" class="btn btn-primary btn-sm">Search</button>
 </form>
 
-{% for profile in profiles %}
-<ul class="list-group">
-  <li class="list-group-item">{{ profile.username }}</li>
-  <li class="list-group-item">{{ profile.email }}</li>
-  <li class="list-group-item">{{ profile.is_active }}</li>
-  <li class="list-group-item">{{ profile.name }}</li>
-  <li class="list-group-item">{{ profile.gender }}</li>
-  <li class="list-group-item">{{ profile.address }}</li>
-  <li class="list-group-item">{{ profile.municipality }}</li>
-  <li class="list-group-item">{{ profile.affiliation }}</li>
-  <li class="list-group-item">{{ profile.attainment }}</li>
-  <li class="list-group-item">{{ profile.other_attain }}</li>
-  <li class="list-group-item">{{ profile.is_employed }}</li>
-  <li class="list-group-item">{{ profile.grad_degree }}</li>
-</ul>
-{% endfor %}
+<div class="card container-fluid">
+  <div class="container-fluid">
+    <h2 style="padding:15px;">SPARTA Profiles<h2>
+    <table class="table table-hover table-responsive">
+      <thead>
+        <tr>
+          <th scope="col">Username</th>
+          <th scope="col">Email</th>
+          <th scope="col">Active</th>
+          <th scope="col">Name</th>
+          <th scope="col">Gender</th>
+          <th scope="col">Address</th>
+          <th scope="col">Municipality</th>
+          <th scope="col">Affiliation</th>
+          <th scope="col">Attainment</th>
+          <th scope="col">Other Attainment</th>
+          <th scope="col">Employed</th>
+          <th scope="col">Graduate Degree</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for profile in profiles %}
+        <tr>
+          <td style="min-width:250px;">{{ profile.username }}</td>
+          <td style="min-width:300px;">{{ profile.email }}</td>
+          <td style="min-width:200px;">{{ profile.is_active }}</td>
+          <td style="min-width:250px;">{{ profile.name }}</td>
+          <td style="min-width:200px;">{{ profile.gender }}</td>
+          <td style="min-width:250px;">{{ profile.address }}</td>
+          <td style="min-width:250px;">{{ profile.municipality }}</td>
+          <td style="min-width:250px;">{{ profile.affiliation }}</td>
+          <td style="min-width:250px;">{{ profile.attainment }}</td>
+          <td style="min-width:250px;">{{ profile.other_attain }}</td>
+          <td style="min-width:200px;">{{ profile.is_employed }}</td>
+          <td style="min-width:200px;">{{ profile.grad_degree }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
 
 
-<div class="pagination">
+<div class="pagination" style="padding:20px;">
     <span class="step-links">
         {% if profiles.has_previous %}
-            <a href="?page={{ profiles.previous_page_number }}">previous</a>
+            <a href="?page={{ profiles.previous_page_number }}" class="btn btn-primary btn-sm">Previous</a>
         {% endif %}
 
         <span class="current">
@@ -43,7 +68,7 @@
         </span>
 
         {% if profiles.has_next %}
-            <a href="?page={{ profiles.next_page_number }}">next</a>
+            <a href="?page={{ profiles.next_page_number }}" class="btn btn-primary btn-sm">Next</a>
         {% endif %}
     </span>
 </div>

@@ -4,15 +4,32 @@
 {% block title %}Coursebank | SPARTA | Data Dashboard | Courses{% endblock %}
 
 {% block sparta_body %}
-<a href="{% url 'sparta-data-dashboard-main' %}" class="btn btn-outline-primary">Data Dashboard</a>
+<a href="{% url 'sparta-data-dashboard-main' %}" class="btn btn-link">&#171; Back to Dashboard</a>
 
-{% for course in courses %}
-<ul class="list-group">
-  <li class="list-group-item">{{ course.course_id }}</li>
-  <li class="list-group-item">{{ course.name }}</li>
-  <li class="list-group-item">{{ course.no_of_completed }}</li>
-  <li class="list-group-item">{{ course.percent_completed }}</li>
-</ul>
-{% endfor %}
+<div class="card container-fluid">
+  <div class="container-fluid">
+    <h2 style="padding:15px;">SPARTA Courses<h2>
+    <table class="table table-hover table-responsive">
+      <thead>
+        <tr>
+          <th scope="col">Course ID</th>
+          <th scope="col">Course Name</th>
+          <th scope="col">Number of Completed Learners</th>
+          <th scope="col">Percentage of Completed Learners</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for course in courses %}
+        <tr>
+          <td style="min-width:500px;">{{ course.course_id }}</td>
+          <td style="min-width:500px;">{{ course.name }}</td>
+          <td style="min-width:500px;">{{ course.no_of_completed }}</td>
+          <td style="min-width:500px;">{{ course.percent_completed }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
 
 {% endblock %}
