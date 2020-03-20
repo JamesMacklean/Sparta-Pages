@@ -6,10 +6,11 @@
 {% block sparta_body %}
 <h1>SPARTA Data Dashboard</h1>
 
-<a href="{% url 'sparta-data-dashboard-profiles' %}" class="btn btn-outline-primary">Profiles</a>
-<a href="{% url 'sparta-data-dashboard-education-credentials' %}" class="btn btn-outline-primary">Education Credentials</a>
-<a href="{% url 'sparta-data-dashboard-employment-credentials' %}" class="btn btn-outline-primary">Employment Credentials</a>
-<a href="{% url 'sparta-data-dashboard-training-credentials' %}" class="btn btn-outline-primary">Training Credentials</a>
-<a href="{% url 'sparta-data-dashboard-courses' %}" class="btn btn-outline-primary">Courses</a>
-
+<div class="text-center">
+  <a href="{% url 'sparta-data-dashboard-profiles' %}" class="btn btn-lg btn-outline-primary">Profiles</a>
+  <a href="{% url 'sparta-data-dashboard-education-credentials' %}" class="btn btn-lg btn-outline-primary">Education Credentials</a>
+  <a href="{% url 'sparta-data-dashboard-employment-credentials' %}" class="btn btn-lg btn-outline-primary">Employment Credentials</a>
+  <a href="{% url 'sparta-data-dashboard-training-credentials' %}" class="btn btn-lg btn-outline-primary">Training Credentials</a>
+  <a href="{% url 'sparta-data-dashboard-courses' %}" class="btn btn-lg btn-outline-primary">Courses</a>
+</div>
 {% endblock %}
