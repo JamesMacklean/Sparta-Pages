@@ -843,30 +843,30 @@ def data_dashboard_training_credentials_view(request):
     return render(request, template_name, context)
 
 
-@login_required
-def data_dashboard_courses_view(request):
-    """"""
-    if not request.user.is_staff:
-        raise Http404
-
-    template_name = "sparta_data_dashboard_courses.html"
-
+def get_sparta_course_id_list():
     course_id_list = []
     for course in SpartaCourse.objects.filter(is_active=True):
         if course.course_id not in course_id_list:
             course_id_list.append(course.course_id)
+    return course_id_list
+
+def get_sparta_courses(course_id_list=None, course_enrollments=None):
+    if course_id_list is None:
+        course_id_list = get_sparta_course_id_list()
+    if course_enrollments is None:
+        course_enrollments = CourseEnrollment.objects.filter(is_active=True)
 
     courses = []
     for course_id in course_id_list:
-        data = {}
-        data['course_id'] = course_id
-
         course_key = CourseKey.from_string(course_id)
         courseoverview = CourseOverview.get_from_id(course_key)
-        data['name'] = courseoverview.display_name
 
-        course_enrollments = CourseEnrollment.objects.filter(course=courseoverview).filter(is_active=True)
-        enrollments = course_enrollments.filter(mode__in=['verified', 'honor'])
+        this_course_enrollments = course_enrollments.filter(course=courseoverview)
+        audit_enrollments = this_course_enrollments.filter(mode='audit')
+        honor_enrollments = this_course_enrollments.filter(mode='honor')
+        verified_enrollments = this_course_enrollments.filter(mode='verified')
+
+        total_enrollments_count = this_course_enrollments.count()
 
         cert_count = 0
         for student in enrollments:
@@ -874,12 +874,169 @@ def data_dashboard_courses_view(request):
             if cert_status and cert_status['mode'] == 'verified' or cert_status and cert_status['mode'] == 'honor':
                 if cert_status['status'] not in  ['unavailable', 'notpassing', 'restricted', 'unverified']:
                     cert_count += 1
-        data['no_of_completed'] = cert_count
-        total_enrollments_count = enrollments.count()
-        data['percent_completed'] = str(100*cert_count/total_enrollments_count) if total_enrollments_count > 0 else "0"
+
+        data = {
+            'course_id': course_id,
+            'name': courseoverview.display_name,
+            'total_no_of_enrollees': total_enrollments_count,
+            'no_of_completed': cert_count,
+            'percent_completed': str(100*cert_count/total_enrollments_count) if total_enrollments_count > 0 else "0"
+        }
+
+        if audit_enrollments.exists():
+            data['no_of_audit_enrollees'] = audit_enrollments.count()
+        if honor_enrollments.exists():
+            data['no_of_honor_enrollees'] = honor_enrollments.count()
+        if verified_enrollments.exists():
+            data['no_of_verified_enrollees'] = verified_enrollments.count()
+
         courses.append(data)
 
+    return courses
+
+
+@login_required
+def data_dashboard_courses_view(request):
+    """"""
+    if not request.user.is_staff:
+        raise Http404
+    template_name = "sparta_data_dashboard_courses.html"
     context = {
-        "courses": courses,
+        "courses": get_sparta_courses(),
+    }
+    return render(request, template_name, context)
+
+
+def get_sparta_enrollees_by_class(profiles=None, extended_profiles=None):
+    if profiles is None:
+        profiles = SpartaProfile.objects.all()
+    if extended_profiles is None:
+        extended_profiles = ExtendedSpartaProfile.objects.all()
+
+    others_diff = profiles.count() - extended_profiles.count()
+
+    data = {
+        'student': extended_profiles.filter(affiliation=ExtendedSpartaProfile.STUDENT).count(),
+        'faculty': extended_profiles.filter(affiliation=ExtendedSpartaProfile.FACULTY).count(),
+        'private': extended_profiles.filter(affiliation=ExtendedSpartaProfile.PRIVATE).count(),
+        'government': extended_profiles.filter(affiliation=ExtendedSpartaProfile.GOVERNMENT).count(),
+        'others': others_diff if others_diff > 0 else 0
+    }
+    return data
+
+
+def get_sparta_enrollees_by_age(profiles=None):
+    if profiles is None:
+        profiles = SpartaProfile.objects.all()
+
+    this_year = datetime.now().year
+
+    data = {}
+    for profile in profiles:
+        try:
+            year_of_birth = profile.user.profile.year_of_birth
+        except:
+            if 'no_age' not in data:
+                data['no_age'] = 0
+            data['no_age'] += 1
+        else:
+            age = this_year - year_of_birth
+            if age not in data:
+                data[str(age)] = 0
+            data[str(age)] += 1
+
+    return data
+
+
+def get_sparta_enrollees_by_gender(profiles=None):
+    if profiles is None:
+        profiles = SpartaProfile.objects.all()
+
+    male_count = 0
+    female_count = 0
+    other_count = 0
+    for profile in profiles:
+        try:
+            gender = profile.user.profile.gender
+        except:
+            other_count += 1
+        else:
+            if gender == 'm':
+                male_count += 1
+            elif gender == 'f':
+                female_count += 1
+            else:
+                other_count += 1
+    return {
+        'male_count': male_count,
+        'female_count': female_count,
+        'other_count': other_count
+    }
+
+
+def get_sparta_enrollees_by_location(profiles=None, extended_profiles=None):
+    if profiles is None:
+        profiles = SpartaProfile.objects.all()
+    if extended_profiles is None:
+        extended_profiles = ExtendedSpartaProfile.objects.all()
+
+    others_diff = profiles.count() - extended_profiles.count()
+
+    data = {}
+    for profile in extended_profiles:
+        municipality = profile.municipality
+        if municipality not in data:
+            data[municipality] = 0
+        data[municipality] += 1
+
+    return data
+
+
+def get_increase_in_enrollees(profiles=profiles, course_id_list=None, course_enrollments=None):
+    if profiles is None:
+        profiles = SpartaProfile.objects.all()
+    if course_id_list is None:
+        course_id_list = get_sparta_course_id_list()
+    if course_enrollments is None:
+        course_enrollments = CourseEnrollment.objects.filter(is_active=True)
+
+    datetime_list = []
+    for i in range(0,31):
+        datetime_list.append(datetime.now() - timedelta(days=i))
+
+    data = {}
+    for d in datetime_list:
+        interval_enrollments = course_enrollments.filter(created__lte=d)
+        enrollment_counter = 0
+        for course_id in course_id_list:
+            course_key = CourseKey.from_string(course_id)
+            courseoverview = CourseOverview.get_from_id(course_key)
+            this_course_enrollments = interval_enrollments.filter(course=courseoverview)
+            enrollment_counter += this_course_enrollments.count()
+        data[d.strftime('%Y-%m-%d')] = enrollment_counter
+
+    return data
+
+@login_required
+def data_dashboard_graphs_view(request):
+    """"""
+    if not request.user.is_staff:
+        raise Http404
+
+    template_name = "sparta_data_dashboard_graphs.html"
+
+    profiles = SpartaProfile.objects.filter(is_active=True)
+    extended_profiles = ExtendedSpartaProfile.objects.filter(user__sparta_profile__is_active=True)
+    course_id_list = get_sparta_course_id_list()
+    course_enrollments = CourseEnrollment.objects.filter(is_active=True)
+
+    context = {
+        "no_of_enrollees_by_class": get_sparta_enrollees_by_class(profiles=profiles, extended_profiles=extended_profiles),
+        "no_of_enrollees_by_age": get_sparta_enrollees_by_age(profiles=profiles),
+        "no_of_enrollees_by_gender": get_sparta_enrollees_by_gender(profiles=profiles),
+        "no_of_enrollees_by_location": get_sparta_enrollees_by_location(profiles=profiles, extended_profiles=extended_profiles),
+        "courses": get_sparta_courses(course_id_list=course_id_list, course_enrollments=course_enrollments),
+        "no_of_enrollees_by_date": get_increase_in_enrollees(profiles=profiles, course_id_list=course_id_list, course_enrollments=course_enrollments)
+
     }
     return render(request, template_name, context)
