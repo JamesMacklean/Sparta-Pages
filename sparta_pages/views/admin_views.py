@@ -999,7 +999,13 @@ def get_sparta_enrollees_by_location(profiles=None, extended_profiles=None):
             data[municipality] = 0
         data[municipality] += 1
 
-    return data
+    list_data = []
+    for m in data:
+        list_data.append({
+            'city': m,
+            'count': data[m]
+        })
+    return list_data
 
 
 def get_increase_in_enrollees(profiles=None, course_id_list=None, course_enrollments=None):
