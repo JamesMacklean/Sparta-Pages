@@ -850,6 +850,7 @@ def get_sparta_course_id_list():
             course_id_list.append(course.course_id)
     return course_id_list
 
+
 def get_sparta_courses(course_id_list=None, course_enrollments=None):
     if course_id_list is None:
         course_id_list = get_sparta_course_id_list()
@@ -869,7 +870,7 @@ def get_sparta_courses(course_id_list=None, course_enrollments=None):
         total_enrollments_count = this_course_enrollments.count()
 
         cert_count = 0
-        for student in enrollments:
+        for student in this_course_enrollments:
             cert_status = certificate_status_for_student(student.user, course_key)
             if cert_status and cert_status['mode'] == 'verified' or cert_status and cert_status['mode'] == 'honor':
                 if cert_status['status'] not in  ['unavailable', 'notpassing', 'restricted', 'unverified']:
