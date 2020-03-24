@@ -8,12 +8,11 @@
 
 <h3>No. of enrollees by Class</h3>
 <ul>
-  {% for class in no_of_enrollees_by_class %}
-  <li>Student: {{ class.student }}</li>
-  <li>Faculty: {{ class.faculty }}</li>
-  <li>Private: {{ class.private }}</li>
-  <li>Government: {{ class.government }}</li>
-  {% endfor %}
+  <li>Student: {{ no_of_enrollees_by_class.student }}</li>
+  <li>Faculty: {{ no_of_enrollees_by_class.faculty }}</li>
+  <li>Private: {{ no_of_enrollees_by_class.private }}</li>
+  <li>Government: {{ no_of_enrollees_by_class.government }}</li>
+  <li>Others: {{ no_of_enrollees_by_class.government }}</li>
 </ul>
 
 <br>
@@ -33,11 +32,9 @@
 
 <h3>No. of enrollees by Gender</h3>
 <ul>
-  {% for g in no_of_enrollees_by_gender %}
-  <li>Male: {{ g.male }}</li>
-  <li>Female: {{ g.female }}</li>
-  <li>Other: {{ g.other }}</li>
-  {% endfor %}
+  <li>Male: {{ no_of_enrollees_by_gender.male }}</li>
+  <li>Female: {{ no_of_enrollees_by_gender.female }}</li>
+  <li>Other: {{ no_of_enrollees_by_gender.other }}</li>
 </ul>
 
 <br>
