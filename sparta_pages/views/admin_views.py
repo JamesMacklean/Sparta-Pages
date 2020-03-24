@@ -948,7 +948,14 @@ def get_sparta_enrollees_by_age(profiles=None):
             else:
                 data['no_age'] += 1
 
-    return data
+    list_data = []
+    for k,v in data:
+        list_data.append({
+            'age': str(k),
+            'count': v
+        })
+
+    return list_data
 
 
 def get_sparta_enrollees_by_gender(profiles=None):
@@ -1018,7 +1025,14 @@ def get_increase_in_enrollees(profiles=None, course_id_list=None, course_enrollm
             enrollment_counter += this_course_enrollments.count()
         data[d.strftime('%Y-%m-%d')] = enrollment_counter
 
-    return data
+    list_data = []
+    for k,v in data:
+        list_data.append({
+            'date': str(k),
+            'count': v
+        })
+
+    return list_data
 
 @login_required
 def data_dashboard_graphs_view(request):

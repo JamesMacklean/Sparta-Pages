@@ -8,8 +8,11 @@
 
 <h3>No. of enrollees by Class</h3>
 <ul>
-  {% for key,value in no_of_enrollees_by_class %}
-  <li>{{ key }}: {{ value }}</li>
+  {% for class in no_of_enrollees_by_class %}
+  <li>Student: {{ class.student }}</li>
+  <li>Faculty: {{ class.faculty }}</li>
+  <li>Private: {{ class.private }}</li>
+  <li>Government: {{ class.government }}</li>
   {% endfor %}
 </ul>
 
@@ -19,8 +22,8 @@
 
 <h3>No. of enrollees by Age</h3>
 <ul>
-  {% for key,value in no_of_enrollees_by_age %}
-  <li>{{ key }}: {{ value }}</li>
+  {% for a in no_of_enrollees_by_age %}
+  <li>{{ a.age }}: {{ a.count }}</li>
   {% endfor %}
 </ul>
 
@@ -30,8 +33,10 @@
 
 <h3>No. of enrollees by Gender</h3>
 <ul>
-  {% for key,value in no_of_enrollees_by_gender %}
-  <li>{{ key }}: {{ value }}</li>
+  {% for g in no_of_enrollees_by_gender %}
+  <li>Male: {{ g.male }}</li>
+  <li>Female: {{ g.female }}</li>
+  <li>Other: {{ g.other }}</li>
   {% endfor %}
 </ul>
 
@@ -41,8 +46,8 @@
 
 <h3>No. of enrollees by Location</h3>
 <ul>
-  {% for key,value in no_of_enrollees_by_location %}
-  <li>{{ key }}: {{ value }}</li>
+  {% for c in no_of_enrollees_by_location %}
+  <li>{{ c.city }}: {{ c.count }}</li>
   {% endfor %}
 </ul>
 
@@ -70,8 +75,8 @@
 
 <h3>No. of enrollees by Date</h3>
 <ul>
-  {% for key,value in no_of_enrollees_by_date %}
-  <li>{{ key }}: {{ value }}</li>
+  {% for d in no_of_enrollees_by_date %}
+  <li>{{ d.date }}: {{ d.count }}</li>
   {% endfor %}
 </ul>
 
