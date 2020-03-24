@@ -992,7 +992,7 @@ def get_sparta_enrollees_by_location(profiles=None, extended_profiles=None):
     return data
 
 
-def get_increase_in_enrollees(profiles=profiles, course_id_list=None, course_enrollments=None):
+def get_increase_in_enrollees(profiles=None, course_id_list=None, course_enrollments=None):
     if profiles is None:
         profiles = SpartaProfile.objects.all()
     if course_id_list is None:
