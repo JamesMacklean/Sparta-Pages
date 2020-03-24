@@ -951,7 +951,7 @@ def get_sparta_enrollees_by_age(profiles=None):
     list_data = []
     for a in data:
         list_data.append({
-            'age': str(age),
+            'age': str(a),
             'count': data[a]
         })
 
