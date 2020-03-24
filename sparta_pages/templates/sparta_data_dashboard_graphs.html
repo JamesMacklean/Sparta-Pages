@@ -8,37 +8,71 @@
 
 <h3>No. of enrollees by Class</h3>
 <ul>
-  <li></li>
+  {% for key,value in no_of_enrollees_by_class %}
+  <li>{{ key }}: {{ value }}</li>
+  {% endfor %}
 </ul>
+
+<br>
+<hr>
+<br>
 
 <h3>No. of enrollees by Age</h3>
 <ul>
-  <li></li>
+  {% for key,value in no_of_enrollees_by_age %}
+  <li>{{ key }}: {{ value }}</li>
+  {% endfor %}
 </ul>
+
+<br>
+<hr>
+<br>
 
 <h3>No. of enrollees by Gender</h3>
 <ul>
-  <li></li>
-  <li></li>
-  <li></li>
+  {% for key,value in no_of_enrollees_by_gender %}
+  <li>{{ key }}: {{ value }}</li>
+  {% endfor %}
 </ul>
+
+<br>
+<hr>
+<br>
 
 <h3>No. of enrollees by Location</h3>
 <ul>
-  <li></li>
+  {% for key,value in no_of_enrollees_by_location %}
+  <li>{{ key }}: {{ value }}</li>
+  {% endfor %}
 </ul>
 
+<br>
+<hr>
+<br>
+
 <h3>Courses</h3>
+{% for course in courses %}
 <ul>
-  <li></li>
-  <li></li>
-  <li></li>
-  <li></li>
+  <li>Course_ID: {{ course.course_id }}</li>
+  <li>Name: {{ course.name }}</li>
+  <li>No. of Completed: {{ course.no_of_completed }}</li>
+  <li>Percent Completed: {{ course.percent_completed }}</li>
+  <li>No. of Audit Enrollees: {{ course.no_of_audit_enrollees }}</li>
+  <li>No. of Honor Enrollees: {{ course.no_of_honor_enrollees }}</li>
+  <li>No. of Verified Enrollees: {{ course.no_of_verified_enrollees }}</li>
+  <li>Total No. of Enrollees: {{ course.total_no_of_enrollees }}</li>
 </ul>
+{% endfor %}
+
+<br>
+<hr>
+<br>
 
 <h3>No. of enrollees by Date</h3>
 <ul>
-  <li></li>
+  {% for key,value in no_of_enrollees_by_date %}
+  <li>{{ key }}: {{ value }}</li>
+  {% endfor %}
 </ul>
 
 {% endblock %}
