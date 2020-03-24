@@ -939,7 +939,7 @@ def get_sparta_enrollees_by_age(profiles=None):
         except:
             data['no_age'] += 1
         else:
-            if age is not None:
+            if year_of_birth is not None:
                 age = this_year - year_of_birth
                 if age not in data:
                     data[str(age)] = 0
