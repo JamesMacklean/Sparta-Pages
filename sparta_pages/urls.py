@@ -51,6 +51,7 @@ urlpatterns = [
     url(r'^sparta/admin/dashboard/employment/credentials$', admin_views.data_dashboard_employment_credentials_view, name='sparta-data-dashboard-employment-credentials'),
     url(r'^sparta/admin/dashboard/training/credentials$', admin_views.data_dashboard_training_credentials_view, name='sparta-data-dashboard-training-credentials'),
     url(r'^sparta/admin/dashboard/courses$', admin_views.data_dashboard_courses_view, name='sparta-data-dashboard-courses'),
+    url(r'^sparta/admin/dashboard/graphs$', admin_views.data_dashboard_graphs_view, name='sparta-data-dashboard-graphs'),
 
     url(r'^sparta/dev/profile$', admin_views.DeveloperProfileView.as_view(), name='sparta-developer-profile'),
     url(r'^sparta/api/v0/pathways$', api.pathway_list_view, name='sparta-api-pathway-list'),
