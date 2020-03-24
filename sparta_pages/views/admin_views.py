@@ -932,18 +932,20 @@ def get_sparta_enrollees_by_age(profiles=None):
     this_year = datetime.now().year
 
     data = {}
+    data['no_age'] = 0
     for profile in profiles:
         try:
             year_of_birth = profile.user.profile.year_of_birth
         except:
-            if 'no_age' not in data:
-                data['no_age'] = 0
             data['no_age'] += 1
         else:
-            age = this_year - year_of_birth
-            if age not in data:
-                data[str(age)] = 0
-            data[str(age)] += 1
+            if age is not None:
+                age = this_year - year_of_birth
+                if age not in data:
+                    data[str(age)] = 0
+                data[str(age)] += 1
+            else:
+                data['no_age'] += 1
 
     return data
 
