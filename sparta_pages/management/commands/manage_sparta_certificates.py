@@ -60,6 +60,19 @@ class Command(BaseCommand):
             help='Will generate new certificates for only those users whose entry in the certificate table matches '
             'STATUS. STATUS can be generating, unavailable, deleted, error or notpassing.'
         )
+        parser.add_argument(
+            '-c', '--course',
+            metavar='COURSE_ID',
+            dest='course',
+            help='Grade and generate certificates for a specific course'
+        )
+        parser.add_argument(
+            '-u', '--user',
+            action='store_true',
+            dest='user',
+            help="Username to generate certificate for"
+        )
+
 
     def handle(self, *args, **options):
         LOGGER.info(
@@ -84,10 +97,18 @@ class Command(BaseCommand):
         status_interval = 500
 
         ended_courses = []
-        for course in SpartaCourse.objects.filter(is_active=True):
-            course_key = CourseKey.from_string(course.course_id)
-            if course_key not in ended_courses:
-                ended_courses.append(course_key)
+
+        username = options.get('user', None)
+        course_id = options.get('course', None)
+
+        if course_id is not None:
+            course = CourseKey.from_string(course_id)
+            ended_courses = [course,]
+        else:
+            for course in SpartaCourse.objects.filter(is_active=True):
+                course_key = CourseKey.from_string(course.course_id)
+                if course_key not in ended_courses:
+                    ended_courses.append(course_key)
 
         for course_key in ended_courses:
             # prefetch all chapters/sequentials by saying depth=2
@@ -96,6 +117,9 @@ class Command(BaseCommand):
             enrolled_students = User.objects.filter(
                 courseenrollment__course_id=course_key
             )
+
+            if username is not None:
+                enrolled_students = enrolled_students.filter(username=username)
 
             total = enrolled_students.count()
             count = 0
