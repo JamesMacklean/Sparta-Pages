@@ -68,7 +68,7 @@ class Command(BaseCommand):
         )
         parser.add_argument(
             '-u', '--user',
-            action='store_true',
+            metavar='USERNAME',
             dest='user',
             help="Username to generate certificate for"
         )
