@@ -108,10 +108,10 @@ class Command(BaseCommand):
 
 
     def _deactivate_single_profile(self, username):
-        """ update coupon """
+        """ deactivate SPARTA profile """
         try:
             profile = SpartaProfile.objects.get(user_username=username)
-        except SpartaCoupon.DoesNotExist:
+        except SpartaProfile.DoesNotExist:
             log.info("SpartaProfile for {} does not exist!".format(username))
             return False
         else:
