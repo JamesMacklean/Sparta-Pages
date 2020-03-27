@@ -168,18 +168,18 @@ def export_profiles_to_csv(profiles):
     response['Content-Disposition'] = 'attachment; filename={}'.format(filename)
 
     writer = unicodecsv.writer(response, encoding='utf-8')
-    writer.writerow(['Username', 'Email Address', 'Full Name', 'Approved Pathways', 'Is Active'])
+    writer.writerow(['Username', 'Email', 'Full Name', 'Address', 'Approved Pathways', 'Is Active'])
     for profile in profiles:
         username = profile['username']
         email = profile['email']
         full_name = profile['full_name']
-        # full_name = profile['full_name'].decode('utf-8').replace(u"\xf1", "n").replace(u"\xd1", "N")
+        address = profile['extended_sparta_profile']
         approved_pathways_str = ""
         for p in profile['approved_pathways']:
             approved_pathways_str = "{}{} | ".format(approved_pathways_str, p.pathway.name)
         is_active_str = "True" if profile['is_active'] else "False"
 
-        writer.writerow([username, email, full_name, approved_pathways_str[:-3], is_active_str])
+        writer.writerow([username, email, full_name, address, approved_pathways_str[:-3], is_active_str])
 
     return response
 
@@ -211,11 +211,19 @@ def admin_profiles_view(request):
 
     profiles = []
     for profile in SpartaProfile.objects.filter(created_at__gte=date_from).filter(created_at__lte=date_to):
+        try:
+            extended_sparta_profile = profile.user.extended_sparta_profile
+        except:
+            address = ""
+        else:
+            address = extended_sparta_profile.address
+
         data = {
             'id': profile.id,
             'username': profile.user.username,
             'email': profile.user.email,
             'full_name': profile.user.profile.name,
+            'address': address
             'approved_pathways': profile.applications.all().filter(status='AP'),
             'is_active': profile.is_active
         }
@@ -241,7 +249,14 @@ def admin_credentials_view(request, id):
     context = {}
 
     profile = get_object_or_404(SpartaProfile, id=id)
+
+    try:
+        extended_profile = profile.user.extended_sparta_profile
+    except:
+        extended_profile = None
+
     context['profile'] = profile
+    context['extended_profile'] = extended_profile
     context['education_profiles'] = profile.education_profiles.all()
     context['employment_profiles'] = profile.employment_profiles.all()
     context['training_profiles'] = profile.training_profiles.all()
