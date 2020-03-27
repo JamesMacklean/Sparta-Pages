@@ -173,7 +173,7 @@ def export_profiles_to_csv(profiles):
         username = profile['username']
         email = profile['email']
         full_name = profile['full_name']
-        address = profile['extended_sparta_profile']
+        address = profile['address']
         approved_pathways_str = ""
         for p in profile['approved_pathways']:
             approved_pathways_str = "{}{} | ".format(approved_pathways_str, p.pathway.name)
