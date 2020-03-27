@@ -223,7 +223,7 @@ def admin_profiles_view(request):
             'username': profile.user.username,
             'email': profile.user.email,
             'full_name': profile.user.profile.name,
-            'address': address
+            'address': address,
             'approved_pathways': profile.applications.all().filter(status='AP'),
             'is_active': profile.is_active
         }
