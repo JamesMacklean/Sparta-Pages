@@ -177,31 +177,26 @@
 <a href="{% url 'sparta-data-dashboard-main' %}" class="btn btn-link">&#171; Back to Dashboard</a>
 
 <br>
-<div class="d-flex flex-column">
+<div class="d-flex flex-column ">
 
   <div class="p-2 flex-fill justify-content-center">
-    <h3>Number of Enrollees by Class</h3>
-    <div id="Enrollees_by_class_div" style="width: 800px; height: 500px;"></div>
+    <div id="Enrollees_by_class_div" class="mx-auto" style="width: 800px; height: 500px;"></div>
   </div>
 
   <div class="p-2 flex-fill justify-content-center">
-    <h3>Number of Enrollees by Age</h3>
-    <div id="Enrollees_by_age_div" style="width: 800px; height: 500px;"></div>
+    <div id="Enrollees_by_age_div" class="mx-auto" style="width: 800px; height: 500px;"></div>
   </div>
 
   <div class="p-2 flex-fill justify-content-center">
-    <h3>Number of Enrollees by Gender</h3>
-    <div id="Enrollees_by_gender_div" style="width: 800px; height: 500px;"></div>
+    <div id="Enrollees_by_gender_div" class="mx-auto" style="width: 800px; height: 500px;"></div>
   </div>
 
   <div class="p-2 flex-fill justify-content-center">
-    <h3>Number of Enrollees by Location</h3>
-    <div id="Enrollees_by_location_div" style="width: 800px; height: 500px;"></div>
+    <div id="Enrollees_by_location_div" class="mx-auto" style="width: 800px; height: 500px;"></div>
   </div>
 
   <div class="p-2 flex-fill justify-content-center">
-    <h3>Number of Enrollees by Date</h3>
-    <div id="Enrollees_by_date_div" style="width: 800px; height: 500px;"></div>
+    <div id="Enrollees_by_date_div" class="mx-auto" style="width: 800px; height: 500px;"></div>
   </div>
 
   <div class="p-2 flex-fill justify-content-center" style="padding:20px;">
@@ -217,11 +212,8 @@
       <h3>Course: {{ course.name }}</h3>
       <h3>Course ID: {{ course.course_id }}</h3>
       <h4>Total Number of Enrollees: {{ course.total_no_of_enrollees }}</h4>
-      <br>
-      <h4>Percent by Enrollment Modes:</h4>
-      <div id="Enrollees_type_chart_div_{{ course.slug }}"></div>
-      <h4>Percent by Completion:</h4>
-      <div id="Enrollees_status_chart_div_{{ course.slug }}"></div>
+      <div id="Enrollees_type_chart_div_{{ course.slug }}" class="mx-auto" style="width: 900px; height: 500px;"></div>
+      <div id="Enrollees_status_chart_div_{{ course.slug }}" class="mx-auto" style="width: 900px; height: 500px;"></div>
     </div>
     {% endfor %}
 
