@@ -973,7 +973,7 @@ def get_sparta_enrollees_by_age(profiles=None):
             'count': data[a]
         })
 
-    return list_data
+    return list_data[::-1]
 
 
 def get_sparta_enrollees_by_gender(profiles=None):
@@ -1039,7 +1039,7 @@ def get_increase_in_enrollees(profiles=None, course_id_list=None, course_enrollm
         datetime_list.append(datetime.now() - timedelta(days=i))
 
     list_data = []
-    for d in datetime_list:
+    for d in datetime_list[::-1]:
         interval_enrollments = course_enrollments.filter(created__lte=d)
         enrollment_counter = 0
         for course_id in course_id_list:
