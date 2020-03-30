@@ -4,77 +4,212 @@
 {% block title %}Coursebank | SPARTA | Data Dashboard{% endblock %}
 
 {% block sparta_body %}
-<a href="{% url 'sparta-data-dashboard-main' %}" class="btn btn-link">&#171; Back to Dashboard</a>
 
-<h3>No. of enrollees by Class</h3>
-<ul>
-  <li>Student: {{ no_of_enrollees_by_class.student }}</li>
-  <li>Faculty: {{ no_of_enrollees_by_class.faculty }}</li>
-  <li>Private: {{ no_of_enrollees_by_class.private }}</li>
-  <li>Government: {{ no_of_enrollees_by_class.government }}</li>
-  <li>Others: {{ no_of_enrollees_by_class.government }}</li>
-</ul>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+<script type="text/javascript">
+
+  google.charts.load('current', {'packages':['corechart']});
+
+  google.charts.setOnLoadCallback(drawEnrolleesByClassChart);
+  google.charts.setOnLoadCallback(drawEnrolleesByAgeChart);
+  google.charts.setOnLoadCallback(drawEnrolleesByGenderChart);
+  google.charts.setOnLoadCallback(drawEnrolleesByLocationChart);
+  google.charts.setOnLoadCallback(drawEnrolleesStatusChart);
+  google.charts.setOnLoadCallback(drawEnrolleesTypeChart);
+  google.charts.setOnLoadCallback(drawEnrolleesByDateChart);
+
+  function drawEnrolleesByClassChart() {
+
+    var data = new google.visualization.arrayToDataTable([
+      ['Class', 'Count'],
+      ['Student', {{ no_of_enrollees_by_class.student }}],
+      ['Faculty', {{ no_of_enrollees_by_class.faculty }}],
+      ['Private', {{ no_of_enrollees_by_class.private }}],
+      ['Government', {{ no_of_enrollees_by_class.government }}]
+    ]);
+
+    var options = {title:'Number of Enrollees by Class',
+                   'width':900,
+                   'height':550
+                  };
+
+    var chart = new google.visualization.ColumnChart(document.getElementById('Enrollees_by_class_div'));
+    chart.draw(data, options);
+  }
+
+  function drawEnrolleesByAgeChart() {
+
+    var data = new google.visualization.arrayToDataTable([
+      ['Age', 'Count'],
+      {% for student in no_of_enrollees_by_age %}
+      ["{{ student.age }}", {{ student.count }}],
+      {% endfor %}
+    ]);
+
+    var options = {title:'Number of Enrollees by Age',
+                   'width':900,
+                   'height':550
+                  };
+
+    var chart = new google.visualization.ColumnChart(document.getElementById('Enrollees_by_age_div'));
+    chart.draw(data, options);
+  }
+
+  function drawEnrolleesByGenderChart() {
+
+    var data = new google.visualization.arrayToDataTable([
+      ['Gender', 'Count'],
+      ['Male', {{ no_of_enrollees_by_gender.male }}],
+      ['Female', {{ no_of_enrollees_by_gender.female }}],
+      ['Other', {{ no_of_enrollees_by_gender.other }}],
+    ]);
+
+    var options = {title:'Number of Enrollees by Gender',
+                   'width':900,
+                   'height':550
+                  };
+
+    var chart = new google.visualization.ColumnChart(document.getElementById('Enrollees_by_gender_div'));
+    chart.draw(data, options);
+  }
+
+  function drawEnrolleesByLocationChart() {
+
+    var data = new google.visualization.arrayToDataTable([
+      ['Location', 'Count'],
+      {% for student in no_of_enrollees_by_location %}
+      ["{{ student.city }}", {{ student.count }}],
+      {% endfor %}
+    ]);
+
+    var options = {title:'Number of Enrollees by Location',
+                   'width':900,
+                   'height':550
+                  };
+
+    var chart = new google.visualization.ColumnChart(document.getElementById('Enrollees_by_location_div'));
+    chart.draw(data, options);
+  }
+
+  function drawEnrolleesStatusChart() {
+
+    var data = new google.visualization.arrayToDataTable([
+      ['Status', 'Count'],
+      {% for course in courses %}
+      ["Completed", {{ course.no_of_completed }}],
+      ["Unfinished", {{ course.no_of_unfinished }}],
+      {% endfor %}
+    ]);
+
+    var options = {'title':'Enrollees Status per Course',
+                   'width':900,
+                   'height':550
+                  };
+
+    var chart = new google.visualization.PieChart(document.getElementById('Enrollees_status_chart_div'));
+    chart.draw(data, options);
+  }
+
+
+  function drawEnrolleesTypeChart() {
+
+    var data = new google.visualization.arrayToDataTable([
+      ['Type', 'Count'],
+      {% for course in courses %}
+      ['Audit', {{ course.no_of_audit_enrollees }}],
+      ['Honor', {{ course.no_of_honor_enrollees }}],
+      ['Verified', {{ course.no_of_verified_enrollees }}],
+      {% endfor %}
+    ]);
+
+    var options = {'title':'Enrollees Type per Course',
+                  'width':900,
+                  'height':550
+                  };
+
+    var chart = new google.visualization.PieChart(document.getElementById('Enrollees_type_chart_div'));
+    chart.draw(data, options);
+  }
+
+  function drawEnrolleesByDateChart() {
+
+    var data = new google.visualization.arrayToDataTable([
+      ['Date', 'Count'],
+      {% for student in no_of_enrollees_by_date %}
+      ["{{ student.date }}", {{ student.count }}],
+      {% endfor %}
+    ]);
+
+    var options = {title:'Number of Enrollees by Date',
+                   'width':900,
+                   'height':550
+                  };
+
+    var chart = new google.visualization.ColumnChart(document.getElementById('Enrollees_by_date_div'));
+    chart.draw(data, options);
+  }
+
+  $(document).ready(function(){
+    $("select").change(function(){
+        $(this).find("option:selected").each(function(){
+            var optionValue = $(this).attr("value");
+            if(optionValue){
+                $(".sparta").not("." + optionValue).hide();
+                $("." + optionValue).show();
+            } else{
+                $(".sparta").hide();
+            }
+        });
+    }).change();
+  });
+
+</script>
+
+<a href="{% url 'test-sparta-data-dashboard-main' %}" class="btn btn-link">&#171; Back to Dashboard</a>
 
 <br>
-<hr>
-<br>
+<div class="d-flex flex-column">
 
-<h3>No. of enrollees by Age</h3>
-<ul>
-  {% for a in no_of_enrollees_by_age %}
-  <li>{{ a.age }}: {{ a.count }}</li>
-  {% endfor %}
-</ul>
+  <div class="p-2 flex-fill justify-content-center">
+    <h3>Number of Enrollees by Class</h3>
+    <div id="Enrollees_by_class_div"></div>
+  </div>
 
-<br>
-<hr>
-<br>
+  <div class="p-2 flex-fill justify-content-center">
+    <h3>Number of Enrollees by Age</h3>
+    <div id="Enrollees_by_age_div"></div>
+  </div>
 
-<h3>No. of enrollees by Gender</h3>
-<ul>
-  <li>Male: {{ no_of_enrollees_by_gender.male }}</li>
-  <li>Female: {{ no_of_enrollees_by_gender.female }}</li>
-  <li>Other: {{ no_of_enrollees_by_gender.other }}</li>
-</ul>
+  <div class="p-2 flex-fill justify-content-center">
+    <h3>Number of Enrollees by Gender</h3>
+    <div id="Enrollees_by_gender_div"></div>
+  </div>
 
-<br>
-<hr>
-<br>
+  <div class="p-2 flex-fill justify-content-center">
+    <h3>Number of Enrollees by Location</h3>
+    <div id="Enrollees_by_location_div"></div>
+  </div>
 
-<h3>No. of enrollees by Location</h3>
-<ul>
-  {% for c in no_of_enrollees_by_location %}
-  <li>{{ c.city }}: {{ c.count }}</li>
-  {% endfor %}
-</ul>
+  <div class="p-2 flex-fill justify-content-center">
+    <h3>Number of Enrollees by Date</h3>
+    <div id="Enrollees_by_date_div"></div>
+  </div>
 
-<br>
-<hr>
-<br>
-
-<h3>Courses</h3>
-{% for course in courses %}
-<ul>
-  <li>Course_ID: {{ course.course_id }}</li>
-  <li>Name: {{ course.name }}</li>
-  <li>No. of Completed: {{ course.no_of_completed }}</li>
-  <li>Percent Completed: {{ course.percent_completed }}</li>
-  <li>No. of Audit Enrollees: {{ course.no_of_audit_enrollees }}</li>
-  <li>No. of Honor Enrollees: {{ course.no_of_honor_enrollees }}</li>
-  <li>No. of Verified Enrollees: {{ course.no_of_verified_enrollees }}</li>
-  <li>Total No. of Enrollees: {{ course.total_no_of_enrollees }}</li>
-</ul>
-{% endfor %}
-
-<br>
-<hr>
-<br>
-
-<h3>No. of enrollees by Date</h3>
-<ul>
-  {% for d in no_of_enrollees_by_date %}
-  <li>{{ d.date }}: {{ d.count }}</li>
-  {% endfor %}
-</ul>
+  <div class="p-2 flex-fill justify-content-center" style="padding:20px;">
+    <h3>Number of Enrollees by Course</h3>
+    {% for course in courses %}
+    <select>
+      <option value="{{ course.course_id }}">{{ course.name }}</option>
+    </select>
+    <div class="p-2 flex-fill justify-content-center {{ course.course_id }} sparta">
+      <h3>Course: {{ course.name }}</h3>
+      <h3>Course ID: {{ course.course_id }}</h3>
+      <h4>Total Number of Enrollees: {{ course.total_no_of_enrollees }}</h4>
+      <div id="Enrollees_type_chart_div"></div>
+      <div id="Enrollees_status_chart_div"></div>
+    </div>
+    {% endfor %}
+  </div>
 
 {% endblock %}
