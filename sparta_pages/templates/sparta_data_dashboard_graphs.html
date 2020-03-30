@@ -29,10 +29,17 @@
       ['Government', {{ no_of_enrollees_by_class.government }}]
     ]);
 
-    var options = {'title':'Number of Enrollees by Class', 'width':900, 'height':550};
+    var options = {
+      chart: {
+        title: 'Number of Enrollees by Class',
+        subtitle: 'Student, Faculty, Private, Government'
+      }
+    };
 
-    var chart = new google.visualization.ColumnChart(document.getElementById('Enrollees_by_class_div'));
-    chart.draw(data, options);
+    // var chart = new google.visualization.ColumnChart(document.getElementById('Enrollees_by_class_div'));
+    // chart.draw(data, options);
+    var chart = new google.charts.Bar(document.getElementById('Enrollees_by_class_div'));
+    chart.draw(data, google.charts.Bar.convertOptions(options));
   }
 
   function drawEnrolleesByAgeChart() {
