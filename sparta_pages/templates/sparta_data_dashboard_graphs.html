@@ -200,12 +200,12 @@
     <h3>Number of Enrollees by Course</h3>
     <select>
       {% for course in courses %}
-      <option value="{{ course.course_id }}">{{ course.name }}</option>
+      <option value="{{ course.slug }}">{{ course.name }}</option>
       {% endfor %}
     </select>
 
     {% for course in courses %}
-    <div class="p-2 flex-fill justify-content-center sparta sparta {{ course.course_id }}">
+    <div class="p-2 flex-fill justify-content-center sparta sparta {{ course.slug }}" style="display: none;">
       <h3>Course: {{ course.name }}</h3>
       <h3>Course ID: {{ course.course_id }}</h3>
       <h4>Total Number of Enrollees: {{ course.total_no_of_enrollees }}</h4>
@@ -232,13 +232,6 @@ $(document).ready(function(){
             }
         });
     }).change();
-
-    console.log("no_of_enrollees_by_class: " + {{ no_of_enrollees_by_class }});
-    console.log("no_of_enrollees_by_age: " + {{ no_of_enrollees_by_age }});
-    console.log("no_of_enrollees_by_gender: " + {{ no_of_enrollees_by_gender }});
-    console.log("no_of_enrollees_by_location: " + {{ no_of_enrollees_by_location }});
-    console.log("no_of_enrollees_by_date: " + {{ no_of_enrollees_by_date }});
-    console.log("courses: " + {{ courses }});
 });
 </script>
 {% endblock %}
