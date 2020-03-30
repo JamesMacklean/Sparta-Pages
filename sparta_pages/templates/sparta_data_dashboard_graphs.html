@@ -106,7 +106,7 @@
     var data_{{ course.slug }} = new google.visualization.arrayToDataTable([
       ['Status', 'Count'],
       ['Completed', {{ course.no_of_completed }}],
-      ['Unfinished', {{ course.no_of_unfinished }}],
+      ['Unfinished', {{ course.no_of_unfinished }}]
     ]);
 
     var options_{{ course.slug }} = {
