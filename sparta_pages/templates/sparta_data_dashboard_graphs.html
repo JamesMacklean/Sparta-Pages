@@ -110,7 +110,9 @@
     ]);
 
     var options_{{ course.slug }} = {
-      title: 'Enrollees Status per Course'
+      title: 'Enrollees Status per Course',
+      width: 800,
+      height: 500
     };
 
     var chart_{{ course.slug }} = new google.visualization.PieChart(document.getElementById('Enrollees_status_chart_div_{{ course.slug }}'));
@@ -130,7 +132,9 @@
     ]);
 
     var options_{{ course.slug }} = {
-      title: 'Enrollees Type per Course'
+      title: 'Enrollees Type per Course',
+      width: 800,
+      height: 500
     };
 
     var chart_{{ course.slug }} = new google.visualization.PieChart(document.getElementById('Enrollees_type_chart_div_{{ course.slug }}'));
@@ -212,8 +216,8 @@
       <div class="font-roboto">Course: {{ course.name }}</div>
       <div class="font-roboto">Course ID: {{ course.course_id }}</div>
       <div class="font-roboto">Total Number of Enrollees: {{ course.total_no_of_enrollees }}</div>
-      <div id="Enrollees_type_chart_div_{{ course.slug }}" class="mx-auto" style="width: 800px; height: 500px;"></div>
-      <div id="Enrollees_status_chart_div_{{ course.slug }}" class="mx-auto" style="width: 800px; height: 500px;"></div>
+      <div id="Enrollees_type_chart_div_{{ course.slug }}" class="mx-auto"></div>
+      <div id="Enrollees_status_chart_div_{{ course.slug }}" class="mx-auto"></div>
     </div>
     {% endfor %}
 
