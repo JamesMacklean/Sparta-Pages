@@ -106,7 +106,7 @@
                    'height':550
                   };
 
-    var chart_{{ course.slug }} = new google.visualization.PieChart(document.getElementById('Enrollees_status_chart_div'));
+    var chart_{{ course.slug }} = new google.visualization.PieChart(document.getElementById('Enrollees_status_chart_div_{{ course.slug }}'));
     chart_{{ course.slug }}.draw(data_{{ course.slug }}, options_{{ course.slug }});
     {% endfor %}
   }
