@@ -803,7 +803,17 @@ def average_rating():
     Average Rating
     """
 
-def average_session_duration():
+def average_session_duration(user, course_id):
     """
-    Average Session Duration per Course Unit
+    Average Session Duration per Course
     """
+
+    get_modules = StudentModule.objects.filter(course_id=CourseKey.from_string(course_id), student=user)
+
+    total_duration = 0
+    for module in get_modules:
+        if module.module_type not in ['course', 'chapter', 'sequential']:
+            time_diff = module.modified - module.created
+            total_duration += time_diff.total_seconds()
+
+    return total_duration
