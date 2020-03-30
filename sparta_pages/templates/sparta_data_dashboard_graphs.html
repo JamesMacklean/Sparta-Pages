@@ -29,10 +29,7 @@
       ['Government', {{ no_of_enrollees_by_class.government }}]
     ]);
 
-    var options = {'title':'Number of Enrollees by Class',
-                   'width':900,
-                   'height':550
-                  };
+    var options = {'title':'Number of Enrollees by Class', 'width':900, 'height':550};
 
     var chart = new google.visualization.ColumnChart(document.getElementById('Enrollees_by_class_div'));
     chart.draw(data, options);
@@ -47,10 +44,7 @@
       {% endfor %}
     ]);
 
-    var options = {'title':'Number of Enrollees by Age',
-                   'width':900,
-                   'height':550
-                  };
+    var options = {'title':'Number of Enrollees by Age', 'width':900, 'height':550};
 
     var chart = new google.visualization.ColumnChart(document.getElementById('Enrollees_by_age_div'));
     chart.draw(data, options);
@@ -65,10 +59,7 @@
       ['Other', {{ no_of_enrollees_by_gender.other }}],
     ]);
 
-    var options = {'title':'Number of Enrollees by Gender',
-                   'width':900,
-                   'height':550
-                  };
+    var options = {'title':'Number of Enrollees by Gender', 'width':900, 'height':550};
 
     var chart = new google.visualization.ColumnChart(document.getElementById('Enrollees_by_gender_div'));
     chart.draw(data, options);
@@ -83,10 +74,7 @@
       {% endfor %}
     ]);
 
-    var options = {'title':'Number of Enrollees by Location',
-                   'width':900,
-                   'height':550
-                  };
+    var options = {'title':'Number of Enrollees by Location', 'width':900, 'height':550};
 
     var chart = new google.visualization.ColumnChart(document.getElementById('Enrollees_by_location_div'));
     chart.draw(data, options);
@@ -101,10 +89,7 @@
       ['Unfinished', {{ course.no_of_unfinished }}],
     ]);
 
-    var options_{{ course.slug }} = {'title':'Enrollees Status per Course',
-                   'width':900,
-                   'height':550
-                  };
+    var options_{{ course.slug }} = {'title':'Enrollees Status per Course', 'width':900, 'height':550};
 
     var chart_{{ course.slug }} = new google.visualization.PieChart(document.getElementById('Enrollees_status_chart_div_{{ course.slug }}'));
     chart_{{ course.slug }}.draw(data_{{ course.slug }}, options_{{ course.slug }});
@@ -122,10 +107,7 @@
       {% if course.no_of_verified_enrollees %}['Verified', {{ course.no_of_verified_enrollees }}]{% endif %}
     ]);
 
-    var options_{{ course.slug }} = {'title':'Enrollees Type per Course',
-                  'width':900,
-                  'height':550
-                  };
+    var options_{{ course.slug }} = {'title':'Enrollees Type per Course', 'width':900, 'height':550};
 
     var chart_{{ course.slug }} = new google.visualization.PieChart(document.getElementById('Enrollees_type_chart_div_{{ course.slug }}'));
     chart_{{ course.slug }}.draw(data_{{ course.slug }}, options_{{ course.slug }});
@@ -141,10 +123,7 @@
       {% endfor %}
     ]);
 
-    var options = {'title':'Number of Enrollees by Date',
-                   'width':900,
-                   'height':550
-                  };
+    var options = {'title':'Number of Enrollees by Date', 'width':900, 'height':550};
 
     var chart = new google.visualization.ColumnChart(document.getElementById('Enrollees_by_date_div'));
     chart.draw(data, options);
