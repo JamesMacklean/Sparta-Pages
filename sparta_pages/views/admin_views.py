@@ -938,13 +938,13 @@ def get_sparta_enrollees_by_class(profiles=None, extended_profiles=None):
     student_count = student_queryset.count() if student_queryset.exists() else 0
 
     faculty_queryset = extended_profiles.filter(affiliation=ExtendedSpartaProfile.FACULTY)
-    faculty_count = faculty_queryset.count() if student_queryset.exists() else 0
+    faculty_count = faculty_queryset.count() if faculty_queryset.exists() else 0
 
     private_queryset = extended_profiles.filter(affiliation=ExtendedSpartaProfile.PRIVATE)
-    private_count = private_queryset.count() if student_queryset.exists() else 0
+    private_count = private_queryset.count() if private_queryset.exists() else 0
 
     government_queryset = extended_profiles.filter(affiliation=ExtendedSpartaProfile.GOVERNMENT)
-    government_count = government_queryset.count() if student_queryset.exists() else 0
+    government_count = government_queryset.count() if government_queryset.exists() else 0
 
     data = {
         'student': student_count,
