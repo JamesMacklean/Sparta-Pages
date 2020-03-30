@@ -117,9 +117,9 @@
     {% for course in courses %}
     var data_{{ course.slug }} = new google.visualization.arrayToDataTable([
       ['Type', 'Count'],
-      {% if course.no_of_audit_enrollees %}['Audit', {{ course.no_of_audit_enrollees }}],{% endfor %}
-      {% if course.no_of_honor_enrollees %}['Honor', {{ course.no_of_honor_enrollees }}],{% endfor %}
-      {% if course.no_of_verified_enrollees %}['Verified', {{ course.no_of_verified_enrollees }}]{% endfor %}
+      {% if course.no_of_audit_enrollees %}['Audit', {{ course.no_of_audit_enrollees }}],{% endif %}
+      {% if course.no_of_honor_enrollees %}['Honor', {{ course.no_of_honor_enrollees }}],{% endif %}
+      {% if course.no_of_verified_enrollees %}['Verified', {{ course.no_of_verified_enrollees }}]{% endif %}
     ]);
 
     var options_{{ course.slug }} = {'title':'Enrollees Type per Course',
