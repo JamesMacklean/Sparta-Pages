@@ -1074,20 +1074,7 @@ def data_dashboard_graphs_view(request):
 
     template_name = "sparta_data_dashboard_graphs.html"
 
-    profiles = SpartaProfile.objects.filter(is_active=True)
-    extended_profiles = ExtendedSpartaProfile.objects.filter(user__sparta_profile__is_active=True)
-    course_id_list = get_sparta_course_id_list()
-    course_enrollments = CourseEnrollment.objects.filter(is_active=True)
-
-    context = {
-        "no_of_enrollees_by_class": get_sparta_enrollees_by_class(profiles=profiles, extended_profiles=extended_profiles),
-        "no_of_enrollees_by_age": get_sparta_enrollees_by_age(profiles=profiles),
-        "no_of_enrollees_by_gender": get_sparta_enrollees_by_gender(profiles=profiles),
-        "no_of_enrollees_by_location": get_sparta_enrollees_by_location(profiles=profiles, extended_profiles=extended_profiles),
-        "courses": get_sparta_courses(course_id_list=course_id_list, course_enrollments=course_enrollments),
-        "no_of_enrollees_by_date": get_increase_in_enrollees(profiles=profiles, course_id_list=course_id_list, course_enrollments=course_enrollments)
-
-    }
+    context = {}
     return render(request, template_name, context)
 
 @login_required
