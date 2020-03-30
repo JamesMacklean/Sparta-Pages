@@ -110,9 +110,7 @@
     ]);
 
     var options_{{ course.slug }} = {
-      title: 'Enrollees Status per Course',
-      width: 800,
-      height: 500
+      title: 'Enrollees Status per Course'
     };
 
     var chart_{{ course.slug }} = new google.visualization.PieChart(document.getElementById('Enrollees_status_chart_div_{{ course.slug }}'));
@@ -132,9 +130,7 @@
     ]);
 
     var options_{{ course.slug }} = {
-      title: 'Enrollees Type per Course',
-      width: 800,
-      height:500
+      title: 'Enrollees Type per Course'
     };
 
     var chart_{{ course.slug }} = new google.visualization.PieChart(document.getElementById('Enrollees_type_chart_div_{{ course.slug }}'));
@@ -204,8 +200,8 @@
   </div>
 
   <div class="p-2 flex-fill justify-content-center" style="padding:20px;">
-    <h3>Number of Enrollees by Course</h3>
-    <select>
+    <h5 class="font-roboto"><b>Number of Enrollees by Course</b></h5>
+    <select class="font-roboto">
       {% for course in courses %}
       <option value="{{ course.slug }}">{{ course.name }}</option>
       {% endfor %}
@@ -213,11 +209,11 @@
 
     {% for course in courses %}
     <div class="p-2 flex-fill justify-content-center sparta sparta {{ course.slug }}" style="display: none;">
-      <h3>Course: {{ course.name }}</h3>
-      <h3>Course ID: {{ course.course_id }}</h3>
-      <h4>Total Number of Enrollees: {{ course.total_no_of_enrollees }}</h4>
-      <div id="Enrollees_type_chart_div_{{ course.slug }}" class="mx-auto"></div>
-      <div id="Enrollees_status_chart_div_{{ course.slug }}" class="mx-auto"></div>
+      <div class="font-roboto">Course: {{ course.name }}</div>
+      <div class="font-roboto">Course ID: {{ course.course_id }}</div>
+      <div class="font-roboto">Total Number of Enrollees: {{ course.total_no_of_enrollees }}</div>
+      <div id="Enrollees_type_chart_div_{{ course.slug }}" class="mx-auto" style="width: 800px; height: 500px;"></div>
+      <div id="Enrollees_status_chart_div_{{ course.slug }}" class="mx-auto" style="width: 800px; height: 500px;"></div>
     </div>
     {% endfor %}
 
