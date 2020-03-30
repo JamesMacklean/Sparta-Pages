@@ -894,7 +894,7 @@ def get_sparta_courses(course_id_list=None, course_enrollments=None):
         name = courseoverview.display_name
         data = {
             'course_id': course_id,
-            'slug': name.lower().replace(" ", "_"),
+            'slug': name.lower().replace(" ", "_").replace("-", "_"),
             'name': name,
             'total_no_of_enrollees': total_enrollments_count,
             'no_of_completed': cert_count,
