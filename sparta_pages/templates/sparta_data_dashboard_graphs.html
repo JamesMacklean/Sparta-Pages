@@ -94,42 +94,42 @@
 
   function drawEnrolleesStatusChart() {
 
+    {% for course in courses %}
     var data = new google.visualization.arrayToDataTable([
       ['Status', 'Count'],
-      {% for course in courses %}
       ["Completed", {{ course.no_of_completed }}],
       ["Unfinished", {{ course.no_of_unfinished }}],
-      {% endfor %}
     ]);
 
-    var options = {'title':'Enrollees Status per Course',
+    var options_{{ course.slug }} = {'title':'Enrollees Status per Course',
                    'width':900,
                    'height':550
                   };
 
-    var chart = new google.visualization.PieChart(document.getElementById('Enrollees_status_chart_div'));
-    chart.draw(data, options);
+    var chart_{{ course.slug }} = new google.visualization.PieChart(document.getElementById('Enrollees_status_chart_div'));
+    chart_{{ course.slug }}.draw(data_{{ course.slug }}, options_{{ course.slug }});
+    {% endfor %}
   }
 
 
   function drawEnrolleesTypeChart() {
 
-    var data = new google.visualization.arrayToDataTable([
+    {% for course in courses %}
+    var data_{{ course.slug }} = new google.visualization.arrayToDataTable([
       ['Type', 'Count'],
-      {% for course in courses %}
       ['Audit', {{ course.no_of_audit_enrollees }}],
       ['Honor', {{ course.no_of_honor_enrollees }}],
       ['Verified', {{ course.no_of_verified_enrollees }}],
-      {% endfor %}
     ]);
 
-    var options = {'title':'Enrollees Type per Course',
+    var options_{{ course.slug }} = {'title':'Enrollees Type per Course',
                   'width':900,
                   'height':550
                   };
 
-    var chart = new google.visualization.PieChart(document.getElementById('Enrollees_type_chart_div'));
-    chart.draw(data, options);
+    var chart_{{ course.slug }} = new google.visualization.PieChart(document.getElementById('Enrollees_type_chart_div_{{ course.slug }}'));
+    chart_{{ course.slug }}.draw(data_{{ course.slug }}, options_{{ course.slug }});
+    {% endfor %}
   }
 
   function drawEnrolleesByDateChart() {
@@ -209,8 +209,8 @@
       <h3>Course: {{ course.name }}</h3>
       <h3>Course ID: {{ course.course_id }}</h3>
       <h4>Total Number of Enrollees: {{ course.total_no_of_enrollees }}</h4>
-      <div id="Enrollees_type_chart_div"></div>
-      <div id="Enrollees_status_chart_div"></div>
+      <div id="Enrollees_type_chart_div_{{ course.slug }}"></div>
+      <div id="Enrollees_status_chart_div_{{ course.slug }}"></div>
     </div>
     {% endfor %}
 
