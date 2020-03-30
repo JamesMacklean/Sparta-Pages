@@ -1089,3 +1089,98 @@ def data_dashboard_graphs_view(request):
 
     }
     return render(request, template_name, context)
+
+@login_required
+def data_dashboard_graphs_by_class_view(request):
+    """"""
+    if not request.user.is_staff:
+        raise Http404
+
+    template_name = "sparta_data_dashboard_graphs_class.html"
+
+    profiles = SpartaProfile.objects.filter(is_active=True)
+    extended_profiles = ExtendedSpartaProfile.objects.filter(user__sparta_profile__is_active=True)
+
+    context = {
+        "no_of_enrollees_by_class": get_sparta_enrollees_by_class(profiles=profiles, extended_profiles=extended_profiles),
+    }
+    return render(request, template_name, context)
+
+@login_required
+def data_dashboard_graphs_by_age_view(request):
+    """"""
+    if not request.user.is_staff:
+        raise Http404
+
+    template_name = "sparta_data_dashboard_graphs_age.html"
+
+    profiles = SpartaProfile.objects.filter(is_active=True)
+
+    context = {
+        "no_of_enrollees_by_age": get_sparta_enrollees_by_age(profiles=profiles),
+    }
+    return render(request, template_name, context)
+
+@login_required
+def data_dashboard_graphs_by_gender_view(request):
+    """"""
+    if not request.user.is_staff:
+        raise Http404
+
+    template_name = "sparta_data_dashboard_graphs_gender.html"
+
+    profiles = SpartaProfile.objects.filter(is_active=True)
+
+    context = {
+        "no_of_enrollees_by_gender": get_sparta_enrollees_by_gender(profiles=profiles),
+    }
+    return render(request, template_name, context)
+
+@login_required
+def data_dashboard_graphs_by_location_view(request):
+    """"""
+    if not request.user.is_staff:
+        raise Http404
+
+    template_name = "sparta_data_dashboard_graphs_location.html"
+
+    profiles = SpartaProfile.objects.filter(is_active=True)
+    extended_profiles = ExtendedSpartaProfile.objects.filter(user__sparta_profile__is_active=True)
+
+    context = {
+        "no_of_enrollees_by_location": get_sparta_enrollees_by_location(profiles=profiles, extended_profiles=extended_profiles),
+    }
+    return render(request, template_name, context)
+
+@login_required
+def data_dashboard_graphs_courses_view(request):
+    """"""
+    if not request.user.is_staff:
+        raise Http404
+
+    template_name = "sparta_data_dashboard_graphs_courses.html"
+
+    course_id_list = get_sparta_course_id_list()
+    course_enrollments = CourseEnrollment.objects.filter(is_active=True)
+
+    context = {
+        "courses": get_sparta_courses(course_id_list=course_id_list, course_enrollments=course_enrollments),
+    }
+    return render(request, template_name, context)
+
+@login_required
+def data_dashboard_graphs_by_date_view(request):
+    """"""
+    if not request.user.is_staff:
+        raise Http404
+
+    template_name = "sparta_data_dashboard_graphs_date.html"
+
+    profiles = SpartaProfile.objects.filter(is_active=True)
+    course_id_list = get_sparta_course_id_list()
+    course_enrollments = CourseEnrollment.objects.filter(is_active=True)
+
+    context = {
+        "no_of_enrollees_by_date": get_increase_in_enrollees(profiles=profiles, course_id_list=course_id_list, course_enrollments=course_enrollments)
+    }
+    return render(request, template_name, context)

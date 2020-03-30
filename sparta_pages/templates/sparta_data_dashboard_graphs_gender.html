@@ -1,0 +1,48 @@
+{% extends "sparta_base.html" %}
+{% load static %}
+
+{% block title %}Coursebank | SPARTA | Data Dashboard{% endblock %}
+
+{% block sparta_body %}
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+<script type="text/javascript">
+
+  google.charts.load('current', {'packages':['corechart', 'bar']});
+
+  google.charts.setOnLoadCallback(drawEnrolleesByGenderChart);
+
+  function drawEnrolleesByGenderChart() {
+
+    var data = new google.visualization.arrayToDataTable([
+      ['Gender', 'Count', { role: 'style'} ],
+      ['Male', {{ no_of_enrollees_by_gender.male }}, 'color: blue'],
+      ['Female', {{ no_of_enrollees_by_gender.female }}, 'color: red'],
+      ['Other', {{ no_of_enrollees_by_gender.other }}, 'color: other'],
+    ]);
+
+    var options = {
+      chart: {
+        title: 'Number of Enrollees by Gender',
+        subtitle: 'Male, Female, Other (did not say)'
+      }
+    };
+
+    var chart = new google.charts.Bar(document.getElementById('Enrollees_by_gender_div'));
+    chart.draw(data, google.charts.Bar.convertOptions(options));
+  }
+
+</script>
+
+<a href="{% url 'sparta-data-dashboard-main' %}" class="btn btn-link">&#171; Back to Dashboard</a>
+
+<br>
+<div class="d-flex flex-column ">
+
+  <div class="p-2 flex-fill justify-content-center">
+    <div id="Enrollees_by_gender_div" class="mx-auto" style="width: 800px; height: 500px;"></div>
+  </div>
+
+</div>
+{% endblock %}

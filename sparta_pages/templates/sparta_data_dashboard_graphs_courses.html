@@ -1,0 +1,121 @@
+{% extends "sparta_base.html" %}
+{% load static %}
+
+{% block title %}Coursebank | SPARTA | Data Dashboard{% endblock %}
+
+{% block sparta_body %}
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+<script type="text/javascript">
+
+  google.charts.load('current', {'packages':['corechart', 'bar']});
+
+  google.charts.setOnLoadCallback(drawEnrolleesStatusChart);
+  google.charts.setOnLoadCallback(drawEnrolleesTypeChart);
+
+
+  function drawEnrolleesStatusChart() {
+
+    {% for course in courses %}
+    var data_{{ course.slug }} = new google.visualization.arrayToDataTable([
+      ['Status', 'Count'],
+      ['Completed', {{ course.no_of_completed }}],
+      ['Unfinished', {{ course.no_of_unfinished }}]
+    ]);
+
+    var options_{{ course.slug }} = {
+      title: 'Enrollees Status per Course',
+      width: 800,
+      height: 500
+    };
+
+    var chart_{{ course.slug }} = new google.visualization.PieChart(document.getElementById('Enrollees_status_chart_div_{{ course.slug }}'));
+    chart_{{ course.slug }}.draw(data_{{ course.slug }}, options_{{ course.slug }});
+    {% endfor %}
+  }
+
+
+  function drawEnrolleesTypeChart() {
+
+    {% for course in courses %}
+    var data_{{ course.slug }} = new google.visualization.arrayToDataTable([
+      ['Type', 'Count'],
+      {% if course.no_of_audit_enrollees %}['Audit', {{ course.no_of_audit_enrollees }}],{% endif %}
+      {% if course.no_of_honor_enrollees %}['Honor', {{ course.no_of_honor_enrollees }}],{% endif %}
+      {% if course.no_of_verified_enrollees %}['Verified', {{ course.no_of_verified_enrollees }}]{% endif %}
+    ]);
+
+    var options_{{ course.slug }} = {
+      title: 'Enrollees Type per Course',
+      width: 800,
+      height: 500
+    };
+
+    var chart_{{ course.slug }} = new google.visualization.PieChart(document.getElementById('Enrollees_type_chart_div_{{ course.slug }}'));
+    chart_{{ course.slug }}.draw(data_{{ course.slug }}, options_{{ course.slug }});
+    {% endfor %}
+  }
+
+  $(document).ready(function(){
+    $("select").change(function(){
+        $(this).find("option:selected").each(function(){
+            var optionValue = $(this).attr("value");
+            if(optionValue){
+                $(".sparta").not("." + optionValue).hide();
+                $("." + optionValue).show();
+            } else{
+                $(".sparta").hide();
+            }
+        });
+    }).change();
+  });
+
+</script>
+
+<a href="{% url 'sparta-data-dashboard-main' %}" class="btn btn-link">&#171; Back to Dashboard</a>
+
+<br>
+<div class="d-flex flex-column ">
+
+  <div class="p-2 flex-fill justify-content-center" style="padding:20px;">
+    <h5 class="font-roboto"><b>Number of Enrollees by Course</b></h5>
+    <div class="form-group w-50">
+      <select class="form-control font-roboto">
+        {% for course in courses %}
+        <option value="{{ course.slug }}">{{ course.name }}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    {% for course in courses %}
+    <div class="p-2 flex-fill justify-content-center sparta sparta {{ course.slug }}" style="display: none;">
+      <div class="font-roboto">Course: {{ course.name }}</div>
+      <div class="font-roboto">Course ID: {{ course.course_id }}</div>
+      <div class="font-roboto">Total Number of Enrollees: {{ course.total_no_of_enrollees }}</div>
+      <div id="Enrollees_type_chart_div_{{ course.slug }}" class="mx-auto"></div>
+      <div id="Enrollees_status_chart_div_{{ course.slug }}" class="mx-auto"></div>
+    </div>
+    {% endfor %}
+
+  </div>
+
+{% endblock %}
+
+{% block sparta_extra_script %}
+<script>
+$(document).ready(function(){
+    $("select").change(function(){
+        $(this).find("option:selected").each(function(){
+            var optionValue = $(this).attr("value");
+            if(optionValue){
+                $(".sparta").not("." + optionValue).hide();
+                $("." + optionValue).show();
+            } else{
+                $(".sparta").hide();
+            }
+        });
+    }).change();
+});
+</script>
+{% endblock %}

@@ -52,6 +52,12 @@ urlpatterns = [
     url(r'^sparta/admin/dashboard/training/credentials$', admin_views.data_dashboard_training_credentials_view, name='sparta-data-dashboard-training-credentials'),
     url(r'^sparta/admin/dashboard/courses$', admin_views.data_dashboard_courses_view, name='sparta-data-dashboard-courses'),
     url(r'^sparta/admin/dashboard/graphs$', admin_views.data_dashboard_graphs_view, name='sparta-data-dashboard-graphs'),
+    url(r'^sparta/admin/dashboard/graphs/class$', admin_views.data_dashboard_graphs_by_class_view, name='sparta-data-dashboard-graphs-class'),
+    url(r'^sparta/admin/dashboard/graphs/age$', admin_views.data_dashboard_graphs_by_age_view, name='sparta-data-dashboard-graphs-age'),
+    url(r'^sparta/admin/dashboard/graphs/gender$', admin_views.data_dashboard_graphs_by_gender_view, name='sparta-data-dashboard-graphs-gender'),
+    url(r'^sparta/admin/dashboard/graphs/location$', admin_views.data_dashboard_graphs_by_location_view, name='sparta-data-dashboard-graphs-location'),
+    url(r'^sparta/admin/dashboard/graphs/courses$', admin_views.data_dashboard_graphs_courses_view, name='sparta-data-dashboard-graphs-courses'),
+    url(r'^sparta/admin/dashboard/graphs/date$', admin_views.data_dashboard_graphs_by_date_view, name='sparta-data-dashboard-graphs-date'),
 
     url(r'^sparta/dev/profile$', admin_views.DeveloperProfileView.as_view(), name='sparta-developer-profile'),
     url(r'^sparta/api/v0/pathways$', api.pathway_list_view, name='sparta-api-pathway-list'),
