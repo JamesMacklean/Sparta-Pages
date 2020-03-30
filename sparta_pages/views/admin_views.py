@@ -891,9 +891,11 @@ def get_sparta_courses(course_id_list=None, course_enrollments=None):
                 if cert_status['status'] not in  ['unavailable', 'notpassing', 'restricted', 'unverified']:
                     cert_count += 1
 
+        name = courseoverview.display_name
         data = {
             'course_id': course_id,
-            'name': courseoverview.display_name,
+            'slug': name.lower().replace(" ", "_"),
+            'name': name,
             'total_no_of_enrollees': total_enrollments_count,
             'no_of_completed': cert_count,
             'percent_completed': str(100*cert_count/total_enrollments_count) if total_enrollments_count > 0 else "0"
