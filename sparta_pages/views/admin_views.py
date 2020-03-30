@@ -898,6 +898,7 @@ def get_sparta_courses(course_id_list=None, course_enrollments=None):
             'name': name,
             'total_no_of_enrollees': total_enrollments_count,
             'no_of_completed': cert_count,
+            'no_of_unfinished': total_enrollments_count - cert_count,
             'percent_completed': str(100*cert_count/total_enrollments_count) if total_enrollments_count > 0 else "0"
         }
 
