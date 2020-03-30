@@ -995,9 +995,9 @@ def get_sparta_enrollees_by_gender(profiles=None):
             else:
                 other_count += 1
     return {
-        'male_count': male_count,
-        'female_count': female_count,
-        'other_count': other_count
+        'male': male_count,
+        'female': female_count,
+        'other': other_count
     }
 
 
