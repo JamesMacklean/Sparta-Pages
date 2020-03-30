@@ -111,7 +111,8 @@
 
     var options_{{ course.slug }} = {
       title: 'Enrollees Status per Course',
-      chartArea: {width:'800', height:'500'}
+      width: 800,
+      height: 500
     };
 
     var chart_{{ course.slug }} = new google.visualization.PieChart(document.getElementById('Enrollees_status_chart_div_{{ course.slug }}'));
@@ -132,7 +133,8 @@
 
     var options_{{ course.slug }} = {
       title: 'Enrollees Type per Course',
-      chartArea: {width:'800', height:'500'}
+      width: 800,
+      height:500
     };
 
     var chart_{{ course.slug }} = new google.visualization.PieChart(document.getElementById('Enrollees_type_chart_div_{{ course.slug }}'));
