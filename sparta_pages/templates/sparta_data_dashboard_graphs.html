@@ -22,11 +22,11 @@
   function drawEnrolleesByClassChart() {
 
     var data = new google.visualization.arrayToDataTable([
-      ['Class', 'Count'],
-      ['Student', {{ no_of_enrollees_by_class.student }}],
-      ['Faculty', {{ no_of_enrollees_by_class.faculty }}],
-      ['Private', {{ no_of_enrollees_by_class.private }}],
-      ['Government', {{ no_of_enrollees_by_class.government }}]
+      ['Class', 'Count', { role: 'style'} ],
+      ['Student', {{ no_of_enrollees_by_class.student }}, 'color: yellow'],
+      ['Faculty', {{ no_of_enrollees_by_class.faculty }}, 'color: orange'],
+      ['Private', {{ no_of_enrollees_by_class.private }}, 'color: blue'],
+      ['Government', {{ no_of_enrollees_by_class.government }}, 'color: gray']
     ]);
 
     var options = {
@@ -36,8 +36,6 @@
       }
     };
 
-    // var chart = new google.visualization.ColumnChart(document.getElementById('Enrollees_by_class_div'));
-    // chart.draw(data, options);
     var chart = new google.charts.Bar(document.getElementById('Enrollees_by_class_div'));
     chart.draw(data, google.charts.Bar.convertOptions(options));
   }
@@ -51,25 +49,35 @@
       {% endfor %}
     ]);
 
-    var options = {'title':'Number of Enrollees by Age', 'width':900, 'height':550};
+    var options = {
+      chart: {
+        title: 'Number of Enrollees by Age',
+        subtitle: 'Range of ages registered by learners'
+      }
+    };
 
-    var chart = new google.visualization.ColumnChart(document.getElementById('Enrollees_by_age_div'));
-    chart.draw(data, options);
+    var chart = new google.charts.Bar(document.getElementById('Enrollees_by_age_div'));
+    chart.draw(data, google.charts.Bar.convertOptions(options));
   }
 
   function drawEnrolleesByGenderChart() {
 
     var data = new google.visualization.arrayToDataTable([
-      ['Gender', 'Count'],
-      ['Male', {{ no_of_enrollees_by_gender.male }}],
-      ['Female', {{ no_of_enrollees_by_gender.female }}],
-      ['Other', {{ no_of_enrollees_by_gender.other }}],
+      ['Gender', 'Count', { role: 'style'} ],
+      ['Male', {{ no_of_enrollees_by_gender.male }}, 'color: blue'],
+      ['Female', {{ no_of_enrollees_by_gender.female }}, 'color: red'],
+      ['Other', {{ no_of_enrollees_by_gender.other }}, 'color: other'],
     ]);
 
-    var options = {'title':'Number of Enrollees by Gender', 'width':900, 'height':550};
+    var options = {
+      chart: {
+        title: 'Number of Enrollees by Gender',
+        subtitle: 'Male, Female, Other (did not say)'
+      }
+    };
 
-    var chart = new google.visualization.ColumnChart(document.getElementById('Enrollees_by_gender_div'));
-    chart.draw(data, options);
+    var chart = new google.charts.Bar(document.getElementById('Enrollees_by_gender_div'));
+    chart.draw(data, google.charts.Bar.convertOptions(options));
   }
 
   function drawEnrolleesByLocationChart() {
@@ -81,10 +89,15 @@
       {% endfor %}
     ]);
 
-    var options = {'title':'Number of Enrollees by Location', 'width':900, 'height':550};
+    var options = {
+      chart: {
+        title:'Number of Enrollees by Location',
+        subtitle: 'List of locations as registered by learners'
+      }
+    };
 
-    var chart = new google.visualization.ColumnChart(document.getElementById('Enrollees_by_location_div'));
-    chart.draw(data, options);
+    var chart = new google.charts.Bar(document.getElementById('Enrollees_by_location_div'));
+    chart.draw(data, google.charts.Bar.convertOptions(options));
   }
 
   function drawEnrolleesStatusChart() {
@@ -96,7 +109,9 @@
       ['Unfinished', {{ course.no_of_unfinished }}],
     ]);
 
-    var options_{{ course.slug }} = {'title':'Enrollees Status per Course', 'width':900, 'height':550};
+    var options_{{ course.slug }} = {
+      title':'Enrollees Status per Course'
+    };
 
     var chart_{{ course.slug }} = new google.visualization.PieChart(document.getElementById('Enrollees_status_chart_div_{{ course.slug }}'));
     chart_{{ course.slug }}.draw(data_{{ course.slug }}, options_{{ course.slug }});
@@ -114,7 +129,9 @@
       {% if course.no_of_verified_enrollees %}['Verified', {{ course.no_of_verified_enrollees }}]{% endif %}
     ]);
 
-    var options_{{ course.slug }} = {'title':'Enrollees Type per Course', 'width':900, 'height':550};
+    var options_{{ course.slug }} = {
+      title':'Enrollees Type per Course'
+    };
 
     var chart_{{ course.slug }} = new google.visualization.PieChart(document.getElementById('Enrollees_type_chart_div_{{ course.slug }}'));
     chart_{{ course.slug }}.draw(data_{{ course.slug }}, options_{{ course.slug }});
@@ -130,10 +147,15 @@
       {% endfor %}
     ]);
 
-    var options = {'title':'Number of Enrollees by Date', 'width':900, 'height':550};
+    var options = {
+      chart: {
+        title':'Number of Enrollees by Date',
+        subtitle: 'Up to last 30 Days'
+      }
+    };
 
-    var chart = new google.visualization.ColumnChart(document.getElementById('Enrollees_by_date_div'));
-    chart.draw(data, options);
+    var chart = new google.charts.Bar(document.getElementById('Enrollees_by_date_div'));
+    chart.draw(data, google.charts.Bar.convertOptions(options));
   }
 
   $(document).ready(function(){
