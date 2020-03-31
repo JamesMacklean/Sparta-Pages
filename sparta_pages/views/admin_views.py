@@ -879,7 +879,6 @@ def get_sparta_courses(course_id_list=None, course_enrollments=None):
 
         this_course_enrollments = course_enrollments.filter(course=courseoverview)
         audit_enrollments = this_course_enrollments.filter(mode='audit')
-        honor_enrollments = this_course_enrollments.filter(mode='honor')
         verified_enrollments = this_course_enrollments.filter(mode='verified')
 
         total_enrollments_count = this_course_enrollments.count()
@@ -904,10 +903,13 @@ def get_sparta_courses(course_id_list=None, course_enrollments=None):
 
         if audit_enrollments.exists():
             data['no_of_audit_enrollees'] = audit_enrollments.count()
-        if honor_enrollments.exists():
-            data['no_of_honor_enrollees'] = honor_enrollments.count()
+        else:
+            data['no_of_audit_enrollees'] = 0
+
         if verified_enrollments.exists():
             data['no_of_verified_enrollees'] = verified_enrollments.count()
+        else:
+            data['no_of_verified_enrollees'] = 0
 
         courses.append(data)
 
