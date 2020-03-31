@@ -1037,7 +1037,7 @@ def get_sparta_enrollees_by_location(profiles=None, extended_profiles=None):
             'city': m,
             'count': data[m]
         })
-    return list_data
+    return sorted(list_data, key = lambda i: i['count'], reverse=True)
 
 
 def get_increase_in_enrollees(profiles=None, course_id_list=None, course_enrollments=None):
