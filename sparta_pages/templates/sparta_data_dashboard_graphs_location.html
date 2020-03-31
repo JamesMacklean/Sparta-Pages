@@ -18,19 +18,19 @@
     var data = new google.visualization.arrayToDataTable([
       ['Location', 'Count'],
       {% for student in no_of_enrollees_by_location %}
-      ['{{ student.city }}', {{ student.count }}],
+      ["{{ student.city }}", {{ student.count }}],
       {% endfor %}
     ]);
 
-    var options = {
-      chart: {
-        title: 'Number of Enrollees by Location',
-        subtitle: 'List of locations as registered by learners'
-      }
-    };
+    var options = {title:'Number of Enrollees by Location',
+                   subtitle: 'List of locations as registered by learners',
+                   'width':900,
+                   'height':550,
+                   'sliceVisibilityThreshold': .08
+                  };
 
-    var chart = new google.charts.Bar(document.getElementById('Enrollees_by_location_div'));
-    chart.draw(data, google.charts.Bar.convertOptions(options));
+    var chart = new google.visualization.PieChart(document.getElementById('Enrollees_by_location_div'));
+    chart.draw(data, options);
   }
 
 </script>
@@ -41,7 +41,7 @@
 <div class="d-flex flex-column ">
 
   <div class="p-2 flex-fill justify-content-center">
-    <div id="Enrollees_by_location_div" class="mx-auto" style="width: 800px; height: 500px;"></div>
+    <div id="Enrollees_by_location_div" class="mx-auto"></div>
   </div>
 
 </div>

@@ -16,22 +16,24 @@
   function drawEnrolleesByClassChart() {
 
     var data = new google.visualization.arrayToDataTable([
-      ['Class', 'Count', { role: 'style'} ],
-      ['Student', {{ no_of_enrollees_by_class.student }}, 'color: yellow'],
-      ['Faculty', {{ no_of_enrollees_by_class.faculty }}, 'color: orange'],
-      ['Private', {{ no_of_enrollees_by_class.private }}, 'color: blue'],
-      ['Government', {{ no_of_enrollees_by_class.government }}, 'color: gray']
+      ['Class', 'Student', 'Faculty', 'Private', 'Government', {role: 'annotation'}],
+      ['Enrollees',
+      {{ no_of_enrollees_by_class.student }},
+      {{ no_of_enrollees_by_class.faculty }},
+      {{ no_of_enrollees_by_class.private }},
+      {{ no_of_enrollees_by_class.government }}, ''],
     ]);
 
-    var options = {
-      chart: {
-        title: 'Number of Enrollees by Class',
-        subtitle: 'Student, Faculty, Private, Government'
-      }
-    };
+    var options = {title:'Number of Enrollees by Class',
+                   subtitle: 'Student, Faculty, Private, Government',
+                   'width':900,
+                   'height':200,
+                   'isStacked':true,
+                   'legend': {position: 'top', maxLines: '2'}
+                  };
 
-    var chart = new google.charts.Bar(document.getElementById('Enrollees_by_class_div'));
-    chart.draw(data, google.charts.Bar.convertOptions(options));
+    var chart = new google.visualization.BarChart(document.getElementById('Enrollees_by_class_div'));
+    chart.draw(data, options);
   }
 
 </script>
@@ -42,7 +44,7 @@
 <div class="d-flex flex-column ">
 
   <div class="p-2 flex-fill justify-content-center">
-    <div id="Enrollees_by_class_div" class="mx-auto" style="width: 800px; height: 500px;"></div>
+    <div id="Enrollees_by_class_div" class="mx-auto"></div>
   </div>
 
 </div>
