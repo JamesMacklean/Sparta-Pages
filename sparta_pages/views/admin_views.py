@@ -1033,6 +1033,8 @@ def get_sparta_enrollees_by_location(profiles=None, extended_profiles=None):
 
     list_data = []
     for m in data:
+        if m == "---":
+            continue
         list_data.append({
             'city': m,
             'count': data[m]
