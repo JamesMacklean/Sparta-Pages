@@ -1040,7 +1040,15 @@ def get_sparta_enrollees_by_location(profiles=None, extended_profiles=None):
     return sorted(list_data, key = lambda i: i['count'], reverse=True)[:10]
 
 
-def get_increase_in_enrollees(profiles=None, course_id_list=None, course_enrollments=None):
+def weeklydates(start_date, end_date, weekday=2):
+    d = start_date
+    d += timedelta(days = weekday - d.weekday())
+    while d <= end_date:
+        yield d
+        d += timedelta(days = 7)
+
+
+def get_increase_in_enrollees(profiles=None, course_id_list=None, course_enrollments=None, start_date=None):
     if profiles is None:
         profiles = SpartaProfile.objects.all()
     if course_id_list is None:
@@ -1049,11 +1057,14 @@ def get_increase_in_enrollees(profiles=None, course_id_list=None, course_enrollm
         course_enrollments = CourseEnrollment.objects.filter(is_active=True)
 
     datetime_list = []
-    for i in range(0,31):
-        datetime_list.append(datetime.now() - timedelta(days=i))
+    if start_date is None:
+        start_date = date(2020,1,1)
+    end_date = datetime.now().date()
+    for d in weeklydates(start_date, end_date):
+        datetime_list.append(d)
 
     list_data = []
-    for d in datetime_list[::-1]:
+    for d in datetime_list:
         interval_enrollments = course_enrollments.filter(created__lte=d)
         enrollment_counter = 0
         for course_id in course_id_list:
