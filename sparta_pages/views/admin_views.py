@@ -1081,6 +1081,7 @@ def get_increase_in_enrollees(profiles=None, course_id_list=None, course_enrollm
 
     return list_data
 
+
 @login_required
 def data_dashboard_graphs_view(request):
     """"""
@@ -1091,6 +1092,7 @@ def data_dashboard_graphs_view(request):
 
     context = {}
     return render(request, template_name, context)
+
 
 @login_required
 def data_dashboard_graphs_by_class_view(request):
@@ -1108,6 +1110,7 @@ def data_dashboard_graphs_by_class_view(request):
     }
     return render(request, template_name, context)
 
+
 @login_required
 def data_dashboard_graphs_by_age_view(request):
     """"""
@@ -1123,6 +1126,7 @@ def data_dashboard_graphs_by_age_view(request):
     }
     return render(request, template_name, context)
 
+
 @login_required
 def data_dashboard_graphs_by_gender_view(request):
     """"""
@@ -1137,6 +1141,7 @@ def data_dashboard_graphs_by_gender_view(request):
         "no_of_enrollees_by_gender": get_sparta_enrollees_by_gender(profiles=profiles),
     }
     return render(request, template_name, context)
+
 
 @login_required
 def data_dashboard_graphs_by_location_view(request):
@@ -1154,6 +1159,7 @@ def data_dashboard_graphs_by_location_view(request):
     }
     return render(request, template_name, context)
 
+
 @login_required
 def data_dashboard_graphs_courses_view(request):
     """"""
@@ -1169,6 +1175,7 @@ def data_dashboard_graphs_courses_view(request):
         "courses": get_sparta_courses(course_id_list=course_id_list, course_enrollments=course_enrollments),
     }
     return render(request, template_name, context)
+
 
 @login_required
 def data_dashboard_graphs_by_date_view(request):
