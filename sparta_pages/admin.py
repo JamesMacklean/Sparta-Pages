@@ -86,3 +86,4 @@ class SpartaCouponAdmin(admin.ModelAdmin):
 class StudentCouponRecordAdmin(admin.ModelAdmin):
     list_display = ('profile', 'coupon',)
     search_fields = ['profile__user__email', 'profile__user__username', 'coupon__course_id', 'coupon__code']
+    autocomplete_fields = ['profile', 'coupon']
