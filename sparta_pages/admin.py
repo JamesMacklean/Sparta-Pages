@@ -86,4 +86,4 @@ class SpartaCouponAdmin(admin.ModelAdmin):
 class StudentCouponRecordAdmin(admin.ModelAdmin):
     list_display = ('profile', 'coupon',)
     search_fields = ['profile__user__email', 'profile__user__username', 'coupon__course_id', 'coupon__code']
-    readonly_fields = ('profile', 'coupon',)
+    readonly_fields = ('profile', 'coupon', 'created', 'modified')
