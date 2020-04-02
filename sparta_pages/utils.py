@@ -466,7 +466,10 @@ def export_sparta_profiles(email_address=None, is_active=True, *args, **kwargs):
             else:
                 address = eprofile.address
                 municipality = eprofile.get_municipality_display()
-                age = datetime.now().year - user_profile.year_of_birth
+                if user_profile.year_of_birth is not None:
+                    age = datetime.now().year - user_profile.year_of_birth
+                else:
+                    age = None
                 gender = user_profile.get_gender_display()
                 affiliation = eprofile.get_affiliation_display()
                 attainment = eprofile.get_attainment_display()
