@@ -4,7 +4,7 @@ from django.utils import timezone
 from django.core.management.base import BaseCommand, CommandError
 
 from sparta_pages.models import Pathway, SpartaCourse, PathwayApplication
-from sparta_pages.utils import manage_sparta_enrollments
+from sparta_pages.utils import manage_sparta_applications_list
 
 
 class Command(BaseCommand):
@@ -38,15 +38,15 @@ class Command(BaseCommand):
         if fromdate is not None:
             date_from = datetime.strptime(fromdate, "%Y-%m-%d")
         else:
-            date_from = timezone.now().date() - timedelta(days=1)
+            date_from = datetime.now().date() - timedelta(days=1)
 
         if todate is not None:
             date_to = datetime.strptime(todate, "%Y-%m-%d")
         else:
-            date_to = timezone.now()
+            date_to = datetime.now()
 
         try:
-            manage_sparta_enrollments(email_address=email_address, date_from=date_from, date_to=date_to)
+            manage_sparta_applications_list(email_address=email_address, date_from=date_from, date_to=date_to)
         except Exception as e:
             raise CommandError("Error in managing Sparta enrollments: {}".format(str(e)))
         else:

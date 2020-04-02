@@ -77,8 +77,8 @@ def admin_applications_view(request):
     template_name = "sparta_admin_applications.html"
     context = {}
 
-    date_from = timezone.now().date() - timedelta(days=1)
-    date_to = timezone.now()
+    date_from = timezone.now().date()
+    date_to = timezone.now() + timedelta(days=1)
 
     date_from_year = request.GET.get('date_from_year', None)
     date_from_month = request.GET.get('date_from_month', None)

@@ -29,7 +29,7 @@ def manage_pathway_applications():
         app.approve()
 
 
-def manage_sparta_enrollments(email_address=None, date_from=None, date_to=None):
+def manage_sparta_applications_list(email_address=None, date_from=None, date_to=None):
     applications = PathwayApplication.objects.all()
 
     datefrom_str = ""
