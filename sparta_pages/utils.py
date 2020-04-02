@@ -451,7 +451,7 @@ def export_sparta_profiles(email_address=None, is_active=True, *args, **kwargs):
         writer = unicodecsv.writer(csv_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL,  encoding='utf-8')
         writer.writerow([
             'Username', 'Email', 'Is Active', 'Name',
-            'Address', 'Affiliation', 'Attainment',
+            'Address', 'Municipality', 'Affiliation', 'Attainment',
             'Other', 'Is Employed?', 'Graduate Degree'
             ])
 
@@ -463,6 +463,7 @@ def export_sparta_profiles(email_address=None, is_active=True, *args, **kwargs):
                 address = affiliation = attainment = other_attain = is_employed = grad_degree = ""
             else:
                 address = eprofile.address
+                municipality = eprofile.get_municipality_display()
                 affiliation = eprofile.get_affiliation_display()
                 attainment = eprofile.get_attainment_display()
                 other_attain = eprofile.other_attain
@@ -470,7 +471,7 @@ def export_sparta_profiles(email_address=None, is_active=True, *args, **kwargs):
                 grad_degree = eprofile.get_grad_degree_display()
             writer.writerow([
                 profile.user.username, profile.user.email, is_active, profile.user.profile.name,
-                address, affiliation, attainment,
+                address, municipality, affiliation, attainment,
                 other_attain, is_employed, grad_degree
                 ])
 
