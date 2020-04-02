@@ -25,6 +25,7 @@
         <tr>
           <th scope="col">Username</th>
           <th scope="col">Email</th>
+          <th scope="col">Full Name</th>
           <th scope="col">Pathway</th>
           <th scope="col">Status</th>
           <th scope="col">Action</th>
@@ -35,6 +36,7 @@
         <tr>
           <td>{{ a.profile.user.username }}</td>
           <td>{{ a.profile.user.email }}</td>
+          <td>{{ a.profile.user.profile.name }}</td>
           <td>{{ a.pathway.name }}</td>
           <td>{{ a.get_status_display }}</td>
           <td><div type="div" class="btn btn-outline-success btn-sm" style="cursor: pointer" data-toggle="modal" data-target="#approveModal">Approve</div></td>

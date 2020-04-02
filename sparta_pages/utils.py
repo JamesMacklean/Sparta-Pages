@@ -451,7 +451,8 @@ def export_sparta_profiles(email_address=None, is_active=True, *args, **kwargs):
         writer = unicodecsv.writer(csv_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL,  encoding='utf-8')
         writer.writerow([
             'Username', 'Email', 'Is Active', 'Name',
-            'Address', 'Municipality', 'Affiliation', 'Attainment',
+            'Address', 'Municipality', 'Age', 'Gender',
+            'Affiliation', 'Attainment',
             'Other', 'Is Employed?', 'Graduate Degree'
             ])
 
@@ -459,19 +460,24 @@ def export_sparta_profiles(email_address=None, is_active=True, *args, **kwargs):
             is_active = "True" if profile.is_active else "False"
             try:
                 eprofile = ExtendedSpartaProfile.objects.get(user=profile.user)
-            except ExtendedSpartaProfile.DoesNotExist:
-                address = affiliation = attainment = other_attain = is_employed = grad_degree = ""
+                user_profile = eprofile.user.profile
+            except:
+                address = municipality = age = gender = affiliation = attainment = other_attain = is_employed = grad_degree = ""
             else:
                 address = eprofile.address
                 municipality = eprofile.get_municipality_display()
+                age = datetime.now().year - user_profile.year_of_birth
+                gender = user_profile.get_gender_display()
                 affiliation = eprofile.get_affiliation_display()
                 attainment = eprofile.get_attainment_display()
                 other_attain = eprofile.other_attain
                 is_employed = "True" if eprofile.is_employed else "False"
                 grad_degree = eprofile.get_grad_degree_display()
+
             writer.writerow([
                 profile.user.username, profile.user.email, is_active, profile.user.profile.name,
-                address, municipality, affiliation, attainment,
+                address, municipality, age, gender,
+                affiliation, attainment,
                 other_attain, is_employed, grad_degree
                 ])
 
