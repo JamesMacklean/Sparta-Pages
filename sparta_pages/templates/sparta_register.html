@@ -57,6 +57,15 @@
               {{ sparta_profile_form.tos_yes }}
               <label for="{{ sparta_profile_form.tos_yes.id_for_label }}" style="font-family: inherit;font-style: inherit;">I agree to the <a href="{% url 'sparta-tos' %}" target="_blank">SPARTA Scholarship Terms and Conditions</a> and <a href="/honor" target="_blank">Coursebank Honor Code</a>*</label>
           </div>
+          <div class="form-group">
+              {{ sparta_profile_form.citizenship.errors }}
+              {{ sparta_profile_form.citizenship }}
+              <p>
+                The SPARTA Scholarship program is only open for Filipinos currently in the Philippines. At this time, the program is not accepting applications from learners outside of the country.  Please confirm below to start your application to the SPARTA Scholarship program. We hope that you be honest in confirming so and know that revocation of scholarship is highly likely for individuals that will not adhere to the guidelines set forth.
+              </p>
+              <label for="{{ sparta_profile_form.citizenship.id_for_label }}" style="font-family: inherit;font-style: inherit;">I am confirming that I am a Filipino citizen currently residing in the Philippines.*</label>
+          </div>
+
           <div class="d-flex justify-content-center">
             <input type="submit" value="Submit Eligibility Documents" />
             <span class="pl-2 icon fa fa-angle-double-right fa-2x"></span>
