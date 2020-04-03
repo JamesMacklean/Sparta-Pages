@@ -18,7 +18,7 @@ class Command(BaseCommand):
 
     example:
         # Enroll a user test@example.com into the demo course
-        manage.py ... enroll_user_in_course -e test@example.com -c edX/Open_DemoX/edx_demo_course
+        manage.py ... change_user_enrollment_in_course -u testexample -c edX/Open_DemoX/edx_demo_course
 
         This command can be run multiple times on the same user+course (i.e. it is idempotent).
     """
@@ -29,7 +29,7 @@ class Command(BaseCommand):
             '-u', '--username',
             nargs=1,
             required=True,
-            help='Email for user'
+            help='Username for user'
         )
         parser.add_argument(
             '-c', '--course',
@@ -46,7 +46,7 @@ class Command(BaseCommand):
         """
         Get and enroll a user in the given course. Mode is optional and defers to the enrollment API for defaults.
         """
-        username = options['email'][0]
+        username = options['username'][0]
         course = options['course'][0]
         mode = options['mode'][0]
 
