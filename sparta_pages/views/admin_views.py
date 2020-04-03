@@ -134,18 +134,26 @@ def export_pathway_applications_to_csv(apps):
     response['Content-Disposition'] = 'attachment; filename={}'.format(filename)
 
     writer = unicodecsv.writer(response, encoding='utf-8')
-    writer.writerow(['username', 'email', 'full_name', 'pathway', 'status', 'created_at'])
+    writer.writerow(['username', 'email', 'full_name', 'pathway', 'municipality', 'status', 'created_at'])
     for a in apps:
         username = a.profile.user.username
         email = a.profile.user.email
+
         try:
             full_name = a.profile.user.profile.name
         except:
             full_name = username
+
+        try:
+            extended_profile = profile.user.extended_sparta_profile
+            municipality = extended_profile.get_municipality_display()
+        except:
+            municipality = None
+
         pathway = a.pathway.name
         status = a.status
         created_at = str(a.created_at)
-        writer.writerow([username, email, full_name, pathway, status, created_at])
+        writer.writerow([username, email, full_name, municipality, pathway, status, created_at])
 
     return response
 
