@@ -98,11 +98,14 @@ def get_first_clean_coupon(coupons=None, course_id=None, all_sc_records=None):
         if not coupons.exists():
             raise SpentCouponsException("No more coupons available for course_id {}".format(course_id))
 
+        coup = None
         for c in coupons:
             if all_sc_records.filter(coupon=c).exists():
                 continue
             else:
-                return c
+                coup = c
+
+        return coup
     except Exception as e:
         raise Exception("get_first_clean_coupon: {}".format(str(e)))
 
@@ -149,13 +152,16 @@ def assign_coupons_to_single_student(student):
                         except Exception as e:
                             raise Exception("Error in getting first clean coupon: {}".format(str(e)))
 
-                        try:
-                            StudentCouponRecord.objects.create(
-                                profile=student,
-                                coupon=coup
-                            )
-                        except Exception as e:
-                            raise Exception("Error in creating StudentCouponRecord: {}".format(str(e)))
+                        if coup is not None:
+                            try:
+                                StudentCouponRecord.objects.create(
+                                    profile=student,
+                                    coupon=coup
+                                )
+                            except Exception as e:
+                                raise Exception("Error in creating StudentCouponRecord: {}".format(str(e)))
+                        else:
+                            logger.info("No more coupons available for {}.".format(c.course_id))
 
     except Exception as e:
         error_str = "assign_coupons_to_single_student_error: {}".format(str(e))
