@@ -1,48 +1,54 @@
 {% extends "sparta_base.html" %}
 {% load static %}
 
-{% block title %}Coursebank | SPARTA | Data Dashboard{% endblock %}
+{% block title %}Coursebank | SPARTA | Admin{% endblock %}
 
 {% block sparta_body %}
 
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 
-<script type="text/javascript">
-
-  google.charts.load('current', {'packages':['corechart', 'bar']});
-
-  google.charts.setOnLoadCallback(drawEnrolleesByDateChart);
-
-  function drawEnrolleesByDateChart() {
-
-    var data = new google.visualization.arrayToDataTable([
-      ['Date', 'Count'],
-      {% for student in no_of_enrollees_by_date %}
-      ["{{ student.date }}", {{ student.count }}],
-      {% endfor %}
-    ]);
-
-    var options = {
-      chart: {
-        title: 'Number of Enrollees by Date',
-        subtitle: 'Up to last 30 Days'
-      }
-    };
-
-    var chart = new google.charts.Bar(document.getElementById('Enrollees_by_date_div'));
-    chart.draw(data, google.charts.Bar.convertOptions(options));
-  }
-
-</script>
-
-<a href="{% url 'sparta-data-dashboard-graphs' %}" class="btn btn-link">&#171; Back to Dashboard</a>
+<a href="{% url 'test-sparta-data-dashboard-main' %}" class="btn btn-link">&#171; Back to Dashboard</a>
 
 <br>
-<div class="d-flex flex-column ">
+<div class="d-flex flex-column">
 
   <div class="p-2 flex-fill justify-content-center">
-    <div id="Enrollees_by_date_div" class="mx-auto" style="width: 800px; height: 500px;"></div>
+    <h3>Number of Enrollees by Date</h3>
+    <div class="chart-container" style="height:1000px; width:1000px;">
+      <canvas id="Enrollees_by_date" style="height:200px; width:500px;"></canvas>
+    </div>
   </div>
 
-</div>
+  <script>
+
+    var ctx = document.getElementById('Enrollees_by_date');
+    var byDate = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: [{% for student in no_of_enrollees_by_date %}"{{ student.date }}", {% endfor %}],
+        datasets: [{
+          label: 'Enrollees',
+          data: [{% for student in no_of_enrollees_by_date %}{{ student.count }}, {% endfor %}],
+          backgroundColor: "#45c490"
+          }
+        ]
+      },
+      options: {
+        title: {
+          display: true,
+          text: 'Number of Enrollees by Date',
+          fontSize: 20
+        },
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero: true
+            }
+          }]
+        }
+      }
+    });
+
+  </script>
+
 {% endblock %}

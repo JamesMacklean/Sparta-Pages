@@ -1,0 +1,48 @@
+{% extends "sparta_base.html" %}
+{% load static %}
+
+{% block title %}Coursebank | SPARTA | Data Dashboard{% endblock %}
+
+{% block sparta_body %}
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+<script type="text/javascript">
+
+  google.charts.load('current', {'packages':['corechart', 'bar']});
+
+  google.charts.setOnLoadCallback(drawEnrolleesByDateChart);
+
+  function drawEnrolleesByDateChart() {
+
+    var data = new google.visualization.arrayToDataTable([
+      ['Date', 'Count'],
+      {% for student in no_of_enrollees_by_date %}
+      ["{{ student.date }}", {{ student.count }}],
+      {% endfor %}
+    ]);
+
+    var options = {
+      chart: {
+        title: 'Number of Enrollees by Date',
+        subtitle: 'Up to last 30 Days'
+      }
+    };
+
+    var chart = new google.charts.Bar(document.getElementById('Enrollees_by_date_div'));
+    chart.draw(data, google.charts.Bar.convertOptions(options));
+  }
+
+</script>
+
+<a href="{% url 'sparta-data-dashboard-graphs' %}" class="btn btn-link">&#171; Back to Dashboard</a>
+
+<br>
+<div class="d-flex flex-column ">
+
+  <div class="p-2 flex-fill justify-content-center">
+    <div id="Enrollees_by_date_div" class="mx-auto" style="width: 800px; height: 500px;"></div>
+  </div>
+
+</div>
+{% endblock %}

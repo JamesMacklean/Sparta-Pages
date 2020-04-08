@@ -1,49 +1,46 @@
 {% extends "sparta_base.html" %}
 {% load static %}
 
-{% block title %}Coursebank | SPARTA | Data Dashboard{% endblock %}
+{% block title %}Coursebank | SPARTA | Admin{% endblock %}
 
 {% block sparta_body %}
 
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 
-<script type="text/javascript">
-
-  google.charts.load('current', {'packages':['corechart',]});
-
-  google.charts.setOnLoadCallback(drawEnrolleesByLocationChart);
-
-  function drawEnrolleesByLocationChart() {
-
-    var data = new google.visualization.arrayToDataTable([
-      ['Location', 'Count'],
-      {% for student in no_of_enrollees_by_location %}
-      ["{{ student.city }}", {{ student.count }}],
-      {% endfor %}
-    ]);
-
-    var options = {title:'Number of Enrollees by Location',
-                   subtitle: 'List of locations as registered by learners',
-                   width: 900,
-                   height: 550,
-                   sliceVisibilityThreshold: .08
-                  };
-
-    var chart = new google.visualization.PieChart(document.getElementById('Enrollees_by_location_div'));
-    chart.draw(data, options);
-  }
-
-</script>
-
-<a href="{% url 'sparta-data-dashboard-graphs' %}" class="btn btn-link">&#171; Back to Dashboard</a>
+<a href="{% url 'test-sparta-data-dashboard-main' %}" class="btn btn-link">&#171; Back to Dashboard</a>
 
 <br>
-<div class="d-flex flex-column ">
+<div class="d-flex flex-column">
 
   <div class="p-2 flex-fill justify-content-center">
-    <div id="Enrollees_by_location_div" class="mx-auto"></div>
+    <h3>Number of Enrollees by Location</h3>
+    <div class="chart-container" style="height:1000px; width:1000px;">
+      <canvas id="Enrollees_by_location" style="height:200px; width:500px;"></canvas>
+    </div>
   </div>
 
-</div>
+  <script>
+
+    var ctx = document.getElementById('Enrollees_by_location');
+    var byLocation = new Chart(ctx, {
+      type: 'pie',
+      data: {
+        labels: [{% for student in no_of_enrollees_by_location %}"{{ student.city }}", {% endfor %}],
+        datasets: [{
+          data: [{% for student in no_of_enrollees_by_location %}{{ student.count }}, {% endfor %}],
+          backgroundColor: ["#caf270", "#45c490", '#008d93', '#2e5468', '#07268e', '#099aec']
+          }
+        ]
+      },
+      options: {
+        title: {
+          display: true,
+          text: 'Number of Enrollees by Location',
+          fontSize: 20
+        }
+      }
+    });
+
+  </script>
 
 {% endblock %}
