@@ -90,16 +90,16 @@ class SpentCouponsException(Exception):
     pass
 
 
-def get_first_clean_coupon(coupons=None, course_id=None):
+def get_first_clean_coupon(coupons=None, course_id=None, all_sc_records=None):
     try:
-        if coupons is None or course_id is None:
-            raise Exception("get_first_clean_coupon_error: No coupons or course_id indicated.")
+        if coupons is None or course_id is None or all_sc_records is None:
+            raise Exception("get_first_clean_coupon_error: No coupons or course_id or all_sc_records indicated.")
 
         if not coupons.exists():
             raise SpentCouponsException("No more coupons available for course_id {}".format(course_id))
 
         for c in coupons:
-            if c.get_records().exists():
+            if all_sc_records.filter(coupon=c).exists():
                 continue
             else:
                 return c
@@ -125,8 +125,9 @@ def get_courses_that_need_new_coupons_list():
 def assign_coupons_to_single_student(student):
     try:
         applications = PathwayApplication.objects.filter(profile=student).filter(status="AP")
+        all_sc_records = StudentCouponRecord.objects.all()
         if applications.exists():
-            screcords = StudentCouponRecord.objects.filter(profile=student)
+            screcords = all_sc_records.filter(profile=student)
 
             for a in applications:
                 for c in a.pathway.courses.all():
@@ -139,8 +140,9 @@ def assign_coupons_to_single_student(student):
                         # assign clean coupon to student
                         try:
                             coup = get_first_clean_coupon(
-                                coupons=SpartaCoupon.objects.filter(is_active=True).filter(course_id=c.course_id),
-                                course_id=c.course_id
+                                coupons=SpartaCoupon.objects.filter(is_active=True).filter(course_id=c.course_id).order_by('-created'),
+                                course_id=c.course_id,
+                                all_sc_records=all_sc_records
                                 )
                         except SpentCouponsException as e:
                             raise e
@@ -156,16 +158,18 @@ def assign_coupons_to_single_student(student):
                             raise e
 
     except Exception as e:
-        raise Exception("assign_coupons_to_single_student_error: {}".format(str(e)))
+        error_str = "assign_coupons_to_single_student_error: {}".format(str(e))
+        logger.info(error_str)
+        raise Exception(error_str)
 
 
 def assign_coupons_to_students():
     """"""
     profiles = SpartaProfile.objects.filter(is_active=True)
     for student in profiles:
-        logger.info('Starting to assig coupons for student {}...'.format(student.user.username))
+        logger.info('Starting to assign coupons for student {}...'.format(student.user.username))
         assign_coupons_to_single_student(student)
-        logger.info('Finished assigning coupons for student {}...'.format(student.user.username))
+        logger.info('Finished assigning coupons for student {}!'.format(student.user.username))
 
 
 def email_sparta_student_coupon_records(email=None, pathway=None):
