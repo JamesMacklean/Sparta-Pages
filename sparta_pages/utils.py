@@ -147,7 +147,7 @@ def assign_coupons_to_single_student(student):
                         except SpentCouponsException as e:
                             raise e
                         except Exception as e:
-                            raise e
+                            raise Exception("Error in getting first clean coupon: {}".format(str(e)))
 
                         try:
                             StudentCouponRecord.objects.create(
@@ -155,7 +155,7 @@ def assign_coupons_to_single_student(student):
                                 coupon=coup
                             )
                         except Exception as e:
-                            raise e
+                            raise Exception("Error in creating StudentCouponRecord: {}".format(str(e)))
 
     except Exception as e:
         error_str = "assign_coupons_to_single_student_error: {}".format(str(e))
