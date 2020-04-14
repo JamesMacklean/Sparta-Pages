@@ -26,15 +26,22 @@ from opaque_keys.edx.keys import CourseKey
 from openedx.core.djangoapps.content.course_overviews.models import CourseOverview
 from student.models import CourseEnrollment
 
-from .analytics import (
+from ..analytics import (
     get_average_completion_rate, get_student_enrollment_status,
     get_average_grade_percent,
 )
-from .local_settings import LOCAL_REDOC_SCHEMA_URL
-from .models import (
+from ..local_settings import LOCAL_REDOC_SCHEMA_URL
+from ..local_settings import LOCAL_SECRET_TOKEN as SECRET_TOKEN
+from ..models import (
     Pathway, SpartaCourse, SpartaProfile, PathwayApplication,
     EducationProfile, EmploymentProfile, TrainingProfile,
     APIToken
+)
+from .utils import (
+    get_applications_count_per_pathway,
+    get_applications_count_per_status,
+    get_applications_count_per_week,
+    get_weekly_enrollments_count_by_pathway
 )
 
 
@@ -224,6 +231,200 @@ def authenticate(request):
     if not APIToken.objects.filter(is_active=True, key=token_key).exists():
         return False
     return True
+
+def basic_auth(request):
+    token = get_header_token(request)
+    token_decoded = base64.b64decode(token)
+    token_key = token_decoded.strip(':')
+    if token_key != SECRET_TOKEN:
+        return False
+    return True
+
+
+@api_view(['GET'])
+@authentication_classes([])
+def pathway_applications_count_view(request, format=None):
+    try:
+        auth = basic_auth(request)
+    except Exception as e:
+        return Response("Request unauthorized: {}".format(str(e)), status=status.HTTP_401_UNAUTHORIZED)
+    if not auth:
+        return Response("Request unauthorized", status=status.HTTP_401_UNAUTHORIZED)
+
+    queryset = PathwayApplication.objects.all()
+
+    data = {
+        "total_count": queryset.count(),
+        "pathways": get_applications_count_per_pathway(applications=queryset),
+        "statuses": get_applications_count_per_status(applications=queryset),
+        "weekly": get_applications_count_per_week(applications=queryset)
+    }
+    return Response(data, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+@authentication_classes([])
+def enrollments_count_view(request, format=None):
+    try:
+        auth = basic_auth(request)
+    except Exception as e:
+        return Response("Request unauthorized: {}".format(str(e)), status=status.HTTP_401_UNAUTHORIZED)
+    if not auth:
+        return Response("Request unauthorized", status=status.HTTP_401_UNAUTHORIZED)
+
+    course_enrollments = CourseEnrollment.objects.filter(is_active=True)
+
+    query_params = request.query_params
+    courses = query_params.get('courses', None)
+    course_list = []
+    if courses is not None:
+        for course_id in courses.split(','):
+            course_list.append(course_id)
+    else:
+        course_list = get_sparta_course_id_list()
+
+    data = []
+    for course_id in course_list:
+        data.append(get_course_weekly_enrollments(course_id, course_enrollments=course_enrollments))
+
+    return Response(data, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+@authentication_classes([])
+def completion_rates_view(request, format=None):
+    try:
+        auth = basic_auth(request)
+    except Exception as e:
+        return Response("Request unauthorized: {}".format(str(e)), status=status.HTTP_401_UNAUTHORIZED)
+    if not auth:
+        return Response("Request unauthorized", status=status.HTTP_401_UNAUTHORIZED)
+
+    course_enrollments = CourseEnrollment.objects.filter(is_active=True)
+
+    query_params = request.query_params
+    courses = query_params.get('courses', None)
+    course_list = []
+    if courses is not None:
+        for course_id in courses.split(','):
+            course_list.append(course_id)
+    else:
+        course_list = get_sparta_course_id_list()
+
+    data = []
+    for course_id in course_list:
+        this_course_enrollments = course_enrollments.filter(course=CourseOverview.get_from_id(CourseKey.from_string(course_id)))
+        data.append({
+            "course_id": course_id,
+            "completion_rates": get_course_completion_rates(course_id, course_enrollments=this_course_enrollments)
+        })
+
+    return Response(data, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+@authentication_classes([])
+def learner_activity_view(request, format=None):
+    try:
+        auth = basic_auth(request)
+    except Exception as e:
+        return Response("Request unauthorized: {}".format(str(e)), status=status.HTTP_401_UNAUTHORIZED)
+    if not auth:
+        return Response("Request unauthorized", status=status.HTTP_401_UNAUTHORIZED)
+
+    course_enrollments = CourseEnrollment.objects.filter(is_active=True)
+
+    query_params = request.query_params
+    courses = query_params.get('courses', None)
+    course_list = []
+    if courses is not None:
+        for course_id in courses.split(','):
+            course_list.append(course_id)
+    else:
+        course_list = get_sparta_course_id_list()
+
+    data = []
+    for course_id in course_list:
+        course_key = CourseKey.from_string(course_id)
+        this_course_enrollments = course_enrollments.filter(course=CourseOverview.get_from_id(course_key))
+        this_course_modules = StudentModule.objects.filter(course_id=course_key)
+        data.append({
+            "course_id": course_id,
+            "learner_activity": get_course_learner_activity(course_id, course_enrollments=this_course_enrollments, modules=this_course_modules)
+        })
+
+
+    return Response(data, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+@authentication_classes([])
+def ages_count_view(request, format=None):
+    try:
+        auth = basic_auth(request)
+    except Exception as e:
+        return Response("Request unauthorized: {}".format(str(e)), status=status.HTTP_401_UNAUTHORIZED)
+    if not auth:
+        return Response("Request unauthorized", status=status.HTTP_401_UNAUTHORIZED)
+
+    data = get_sparta_enrollees_by_age()
+    return Response(data, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+@authentication_classes([])
+def gender_count_view(request, format=None):
+    try:
+        auth = basic_auth(request)
+    except Exception as e:
+        return Response("Request unauthorized: {}".format(str(e)), status=status.HTTP_401_UNAUTHORIZED)
+    if not auth:
+        return Response("Request unauthorized", status=status.HTTP_401_UNAUTHORIZED)
+
+    data = get_sparta_enrollees_by_gender()
+    return Response(data, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+@authentication_classes([])
+def affiliation_count_view(request, format=None):
+    try:
+        auth = basic_auth(request)
+    except Exception as e:
+        return Response("Request unauthorized: {}".format(str(e)), status=status.HTTP_401_UNAUTHORIZED)
+    if not auth:
+        return Response("Request unauthorized", status=status.HTTP_401_UNAUTHORIZED)
+
+    data = get_sparta_enrollees_by_affiliation()
+    return Response(data, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+@authentication_classes([])
+def attainment_count_view(request, format=None):
+    try:
+        auth = basic_auth(request)
+    except Exception as e:
+        return Response("Request unauthorized: {}".format(str(e)), status=status.HTTP_401_UNAUTHORIZED)
+    if not auth:
+        return Response("Request unauthorized", status=status.HTTP_401_UNAUTHORIZED)
+
+    data = get_sparta_enrollees_by_attainment()
+    return Response(data, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+@authentication_classes([])
+def location_count_view(request, format=None):
+    try:
+        auth = basic_auth(request)
+    except Exception as e:
+        return Response("Request unauthorized: {}".format(str(e)), status=status.HTTP_401_UNAUTHORIZED)
+    if not auth:
+        return Response("Request unauthorized", status=status.HTTP_401_UNAUTHORIZED)
+
+    data = get_sparta_enrollees_by_location()
+    return Response(data, status=status.HTTP_200_OK)
 
 
 @api_view(['GET'])
