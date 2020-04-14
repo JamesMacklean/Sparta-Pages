@@ -144,18 +144,18 @@ def get_course_outline_block_tree(user, course_id):
     # Deeper query for course tree traversing/marking complete
     # and last completed block
     block_types_filter = [
-        'course',
-        'chapter',
-        'sequential',
-        'vertical',
-        'html',
+        # 'course',
+        # 'chapter',
+        # 'sequential',
+        # 'vertical',
+        # 'html',
         'problem',
-        'video',
-        'discussion',
+        # 'video',
+        # 'discussion',
         'drag-and-drop-v2',
-        'poll',
+        # 'poll',
         'word_cloud',
-        'survey'
+        # 'survey'
     ]
     try:
         all_blocks = get_blocks(
