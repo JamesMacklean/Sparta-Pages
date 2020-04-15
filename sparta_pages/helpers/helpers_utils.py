@@ -107,7 +107,7 @@ def get_course_outline_block_tree(user, course_id):
                 completable_blocks = []
                 for child in block['children']:
                     # logger.info("recurse_mark_complete.child: {}".format(str(child)))
-                    if 'type@discussion' not in child.get('id') and 'type@html' not in child.get('id'):
+                    if 'type@discussion' not in child.get('id') and 'type@html' not in child.get('id') and 'type@video' not in child.get('id'):
                         completable_blocks.append(child)
                 if len([child['complete'] for child in block['children']
                         if child['complete']]) >= len(completable_blocks):
@@ -144,17 +144,17 @@ def get_course_outline_block_tree(user, course_id):
     # Deeper query for course tree traversing/marking complete
     # and last completed block
     block_types_filter = [
-        # 'course',
-        # 'chapter',
-        # 'sequential',
-        # 'vertical',
+        'course',
+        'chapter',
+        'sequential',
+        'vertical',
         # 'html',
         'problem',
         # 'video',
         # 'discussion',
-        'drag-and-drop-v2',
+        # 'drag-and-drop-v2',
         # 'poll',
-        'word_cloud',
+        # 'word_cloud',
         # 'survey'
     ]
     try:
