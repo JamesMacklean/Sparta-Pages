@@ -286,6 +286,7 @@ def get_sparta_enrollees_by_attainment(profiles=None, extended_profiles=None):
         "unknown": unknown_count
     }
 
+
 def weeklydates(start_date, end_date, weekday=2):
     d = start_date
     d += timedelta(days = weekday - d.weekday())
@@ -452,7 +453,7 @@ def get_course_completion_rates(course_id, course_enrollments=None):
             else:
                 completion_less_10_percent_count += 1
 
-    return = {
+    return {
         "completed": completed_count,
         "completion_75_to_99_percent": completion_75_to_99_percent_count,
         "completion_50_to_74_percent": completion_50_to_74_percent_count,
