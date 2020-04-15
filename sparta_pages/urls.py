@@ -1,8 +1,8 @@
 from django.conf import settings
-from django.conf.urls import url
+from django.conf.urls import url, include
 from django.views.generic import TemplateView
 
-from . import api
+from .api.urls import urlpatterns as api_urls
 from .views import views, admin_views
 
 urlpatterns = [
@@ -60,13 +60,6 @@ urlpatterns = [
     url(r'^sparta/admin/dashboard/graphs/date$', admin_views.data_dashboard_graphs_by_date_view, name='sparta-data-dashboard-graphs-date'),
 
     url(r'^sparta/dev/profile$', admin_views.DeveloperProfileView.as_view(), name='sparta-developer-profile'),
-    url(r'^sparta/api/v0/pathways$', api.pathway_list_view, name='sparta-api-pathway-list'),
-    url(r'^sparta/api/v0/pathways/(?P<id>\d+)$', api.pathway_detail_view, name='sparta-api-pathway-detail'),
-    url(r'^sparta/api/v0/courses$', api.course_list_view, name='sparta-api-course-list'),
-    url(r'^sparta/api/v0/courses/(?P<id>\d+)$', api.course_detail_view, name='sparta-api-course-detail'),
-    url(r'^sparta/api/v0/students$', api.student_list_view, name='sparta-api-student-list'),
-    url(r'^sparta/api/v0/students/(?P<id>\d+)$', api.student_detail_view, name='sparta-api-student-detail'),
 
-    url(r'^sparta/api/v0/schema$', api.schema_view, name='sparta-schema'),
-    url(r'^sparta/api/v0/redoc$', api.RedocView.as_view(), name='sparta-redoc'),
+    url(r'^', include(api_urls)),
 ]
