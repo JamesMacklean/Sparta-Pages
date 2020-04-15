@@ -391,7 +391,7 @@ def get_course_weekly_enrollments(course_id, course_enrollments=None):
         datetime_list.append(d)
 
     list_data = []
-    for i in range(0, len(datetime_list):
+    for i in range(0, len(datetime_list)):
         start_date = datetime_list[i]
         interval_enrollments = course_enrollments.filter(created__gte=start_date)
 
