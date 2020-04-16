@@ -19,6 +19,20 @@ class CoursebankBlockSerializer(BlockSerializer):  # pylint: disable=abstract-me
             'block_id': unicode(block_key.block_id),
         }
 
+        # add additional requested fields that are supported by the various transformers
+        for supported_field in SUPPORTED_FIELDS:
+            if supported_field.requested_field_name in self.context['requested_fields']:
+                field_value = self._get_field(
+                    block_key,
+                    supported_field.transformer,
+                    supported_field.block_field_name,
+                    supported_field.default_value,
+                )
+                if field_value is not None:
+                    # only return fields that have data
+                    data[supported_field.serializer_field_name] = field_value
+
+
         if 'children' in self.context['requested_fields']:
             children = self.context['block_structure'].get_children(block_key)
             if children:
