@@ -65,22 +65,26 @@ def check_if_user_has_completed_course(student_username, course_id):
     if course_sections is None:
         return False
 
+    incomplete_graded_problems = 0
     for section in course_sections:
-        logger.info("course_block_tree.section: {}".format(str(section)))
-        if not section.get('complete'):
-            return False
-
+        # logger.info("course_block_tree.section: {}".format(str(section)))
+        # if not section.get('complete'):
+        #     return False
         for subsection in section.get('children', []):
-            logger.info("course_block_tree.section.subsection: {}".format(str(subsection)))
-            if not subsection.get('complete'):
-                return False
-
+            # logger.info("course_block_tree.section.subsection: {}".format(str(subsection)))
+            # if not subsection.get('complete'):
+            #     return False
             for vertical in subsection.get('children', []):
-                logger.info("course_block_tree.section.vertical: {}".format(str(vertical)))
-                if not vertical.get('complete'):
-                    return False
+                # logger.info("course_block_tree.section.vertical: {}".format(str(vertical)))
+                # if not vertical.get('complete'):
+                #     return False
+                for unit in vertical.get('children', []):
+                    logger.info("course_block_tree.section.unit: {}".format(str(unit)))
+                    if 'type@problem' in unit.get('id') and unit.get('graded') not unit.get('complete'):
+                        incomplete_graded_problems += 1
+    not_complete = incomplete_problems > 0
 
-    return True
+    return not not_complete
 
 
 def email_list_of_users_problem_status(course_id, location):
