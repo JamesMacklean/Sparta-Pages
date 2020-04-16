@@ -6,7 +6,9 @@ import unicodecsv
 
 from django.core.mail import send_mail, EmailMessage
 
+from courseware.models import StudentModule
 from lms.djangoapps.certificates.models import certificate_status_for_student
+from lms.djangoapps.certificates.api import get_certificate_for_user
 from opaque_keys.edx.keys import CourseKey
 from openedx.core.djangoapps.content.course_overviews.models import CourseOverview
 from student.models import CourseEnrollment
@@ -668,6 +670,113 @@ def export_sparta_completed_courses(email_address=None, course_id=None, is_activ
             'Coursebank - SPARTA Course Completion',
             'Attached file of SPARTA Course Completion (as of {})'.format(tnow),
             'no-reply-sparta-course-completion@coursebank.ph',
+            [email_address,],
+        )
+        email.attach_file(file_name)
+        email.send()
+
+
+def export_sparta_user_logins(email_address=None):
+    """"""
+    tnow = datetime.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
+
+    user_list = []
+    for p in  SpartaProfile.objects.all():
+        user_list.append({
+            "username": p.user.username,
+            "email": p.user.email,
+            "name": p.user.profile.name,
+            "last_login": p.user.last_login.strftime('%Y-%m-%dT%H:%M:%S.000Z')
+        })
+
+    file_name = '/home/ubuntu/tempfiles/export_sparta_user_logins_{}.csv'.format(tnow)
+    with open(file_name, mode='w') as csv_file:
+        writer = unicodecsv.writer(csv_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL,  encoding='utf-8')
+        writer.writerow([
+            'username',
+            'email',
+            'name',
+            'last_login'
+            ])
+
+        for u in user_list:
+            writer.writerow([
+                u['username'],
+                u['email'],
+                u['name'],
+                u['last_login'],
+            ])
+
+    if email_address:
+        email = EmailMessage(
+            'Coursebank - SPARTA User Logins',
+            'Attached file of SPARTA User Logins (as of {})'.format(tnow),
+            'no-reply-sparta-user-logins@coursebank.ph',
+            [email_address,],
+        )
+        email.attach_file(file_name)
+        email.send()
+
+
+def export_sparta_student_module_timestamps(course_id, email_address=None):
+    """"""
+    tnow = datetime.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
+
+    course_key = CourseKey.from_string(course_id)
+    modules = StudentModule.objects.filter(course_id=course_key)
+
+    user_list = []
+    for p in  SpartaProfile.objects.all():
+        student_modules = modules.filter(student=user)
+
+        course_module = student_modules.filter(module_type='course').order_by('created').first()
+        if course_module:
+            earliest_created = course_module.created.strftime('%Y-%m-%dT%H:%M:%S.000Z')
+        else:
+            earliest_created = None
+
+        latest_student_module = student_modules.order_by('-modified').first()
+        if latest_student_module:
+            latest_modified = latest_student_module.modified.strftime('%Y-%m-%dT%H:%M:%S.000Z')
+        else:
+            latest_modified = None
+
+        cert = get_certificate_for_user(p.user.username, course_key)
+        if cert is not None and cert['status'] == "downloadable":
+            date_completed = cert.created_date.strftime('%Y-%m-%dT%H:%M:%S.000Z')
+        else:
+            date_completed = None
+
+        user_list.append({
+            "username": p.user.username,
+            "email": p.user.email,
+            "earliest_created": earliest_created,
+            "latest_modified": latest_modified,
+            "date_completed" date_completed
+        })
+
+    file_name = '/home/ubuntu/tempfiles/export_sparta_activity_timestamps{}.csv'.format(tnow)
+    with open(file_name, mode='w') as csv_file:
+        writer = unicodecsv.writer(csv_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL,  encoding='utf-8')
+        writer.writerow([
+            'username',
+            'email',
+            ])
+
+        for u in user_list:
+            writer.writerow([
+                u['username'],
+                u['email'],
+                u['earliest_created'],
+                u['latest_modified'],
+                u['date_completed'],
+            ])
+
+    if email_address:
+        email = EmailMessage(
+            'Coursebank - SPARTA Activity Timestamps - {}'.format(course_id),
+            'Attached file of SPARTA Activity Timestamps for course {} (as of {})'.format(course_id, tnow),
+            'no-reply-sparta-activity-timestamps@coursebank.ph',
             [email_address,],
         )
         email.attach_file(file_name)
