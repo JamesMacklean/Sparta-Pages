@@ -752,7 +752,7 @@ def export_sparta_student_module_timestamps(course_id, email_address=None):
             "email": p.user.email,
             "earliest_created": earliest_created,
             "latest_modified": latest_modified,
-            "date_completed" date_completed
+            "date_completed": date_completed
         })
 
     file_name = '/home/ubuntu/tempfiles/export_sparta_activity_timestamps{}.csv'.format(tnow)
@@ -761,6 +761,9 @@ def export_sparta_student_module_timestamps(course_id, email_address=None):
         writer.writerow([
             'username',
             'email',
+            'earliest_created',
+            'latest_modified',
+            'date_completed'
             ])
 
         for u in user_list:
