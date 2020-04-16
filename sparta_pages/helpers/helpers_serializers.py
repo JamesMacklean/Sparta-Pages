@@ -1,5 +1,6 @@
 # Custom Block Serializers (to not use requests @_@)
 from lms.djangoapps.course_api.blocks.serializers import BlockDictSerializer, BlockSerializer
+from lms.djangoapps.course_api.blocks.transformers import SUPPORTED_FIELDS
 
 import logging
 logger = logging.getLogger(__name__)
