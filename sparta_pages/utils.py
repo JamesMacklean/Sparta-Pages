@@ -724,10 +724,18 @@ def export_sparta_student_module_timestamps(course_id, email_address=None):
 
     course_key = CourseKey.from_string(course_id)
     modules = StudentModule.objects.filter(course_id=course_key)
+    enrollments = CourseEnrollment.objects.filter(
+        course_id=course_key,
+        is_active=True
+    )
+    profiles = SpartaProfile.objects.all()
 
     user_list = []
-    for p in  SpartaProfile.objects.all():
-        student_modules = modules.filter(student=p.user)
+    for e in enrollments:
+        if not profiles.filter(user=e.user).exists():
+            continue
+
+        student_modules = modules.filter(student=e.user)
 
         course_module = student_modules.filter(module_type='course').order_by('created').first()
         if course_module:
@@ -741,15 +749,15 @@ def export_sparta_student_module_timestamps(course_id, email_address=None):
         else:
             latest_modified = None
 
-        cert = get_certificate_for_user(p.user.username, course_key)
+        cert = get_certificate_for_user(e.user.username, course_key)
         if cert is not None and cert['status'] == "downloadable":
             date_completed = cert['created'].strftime('%Y-%m-%dT%H:%M:%S.000Z')
         else:
             date_completed = None
 
         user_list.append({
-            "username": p.user.username,
-            "email": p.user.email,
+            "username": e.user.username,
+            "email": e.user.email,
             "earliest_created": earliest_created,
             "latest_modified": latest_modified,
             "date_completed": date_completed
