@@ -66,14 +66,17 @@ def check_if_user_has_completed_course(student_username, course_id):
         return False
 
     for section in course_sections:
+        logger.info("course_block_tree.section: {}".format(str(section)))
         if not section.get('complete'):
             return False
 
         for subsection in section.get('children', []):
+            logger.info("course_block_tree.section.subsection: {}".format(str(subsection)))
             if not subsection.get('complete'):
                 return False
 
             for vertical in subsection.get('children', []):
+                logger.info("course_block_tree.section.vertical: {}".format(str(vertical)))
                 if not vertical.get('complete'):
                     return False
 
