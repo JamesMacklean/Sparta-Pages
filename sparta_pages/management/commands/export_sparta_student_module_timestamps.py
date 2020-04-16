@@ -20,7 +20,6 @@ class Command(BaseCommand):
             type=str,
             help='set email to send to',
         )
-    def add_arguments(self, parser):
         parser.add_argument(
             '-c',
             '--course',
