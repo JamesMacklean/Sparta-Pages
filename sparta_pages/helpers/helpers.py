@@ -80,9 +80,9 @@ def check_if_user_has_completed_course(student_username, course_id):
                 #     return False
                 for unit in vertical.get('children', []):
                     logger.info("course_block_tree.section.unit: {}".format(str(unit)))
-                    if 'type@problem' in unit.get('id') and unit.get('graded') not unit.get('complete'):
+                    if 'type@problem' in unit.get('id') and unit.get('graded') and not unit.get('complete'):
                         incomplete_graded_problems += 1
-    not_complete = incomplete_problems > 0
+    not_complete = incomplete_graded_problems > 0
 
     return not not_complete
 
