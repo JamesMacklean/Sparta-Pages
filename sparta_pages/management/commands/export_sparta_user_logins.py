@@ -30,5 +30,3 @@ class Command(BaseCommand):
             raise CommandError("Error in exporting SPARTA user logins: {}".format(str(e)))
         else:
             self.stdout.write(self.style.SUCCESS("Successfully exported SPARTA user logins."))
-
-        self.stdout.write(self.style.SUCCESS("Successfully exported SPARTA user logins."))

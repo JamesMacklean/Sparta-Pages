@@ -20,18 +20,12 @@ class Command(BaseCommand):
             type=str,
             help='set email to send to',
         )
-        def add_arguments(self, parser):
-            parser.add_argument(
-                '-c',
-                '--course',
-                type=str,
-                help='set filter for course_id',
-            )
+    def add_arguments(self, parser):
         parser.add_argument(
-            '-n',
-            '--nonactive',
-            action='store_true',
-            help='set course filter for is_active'
+            '-c',
+            '--course',
+            type=str,
+            help='set filter for course_id',
         )
 
     def handle(self, *args, **options):
@@ -47,5 +41,3 @@ class Command(BaseCommand):
             raise CommandError("Error in exporting SPARTA student module timestamps: {}".format(str(e)))
         else:
             self.stdout.write(self.style.SUCCESS("Successfully exported SPARTA student module timestamps."))
-
-        self.stdout.write(self.style.SUCCESS("Successfully exported SPARTA student module timestamps."))
