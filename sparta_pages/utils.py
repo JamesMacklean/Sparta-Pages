@@ -727,7 +727,7 @@ def export_sparta_student_module_timestamps(course_id, email_address=None):
 
     user_list = []
     for p in  SpartaProfile.objects.all():
-        student_modules = modules.filter(student=user)
+        student_modules = modules.filter(student=p.user)
 
         course_module = student_modules.filter(module_type='course').order_by('created').first()
         if course_module:
