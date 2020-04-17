@@ -374,7 +374,7 @@ def get_applications_count_per_week(applications=None, start_date=None):
     return data
 
 
-def get_course_weekly_enrollments(course_id, course_enrollments=None):
+def get_course_weekly_enrollments(course_id, course_enrollments=None, start_date=None):
     """"""
     if course_enrollments is None:
         course_enrollments = CourseEnrollment.objects.filter(is_active=True)
