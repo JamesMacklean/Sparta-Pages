@@ -346,10 +346,10 @@ def get_applications_count_per_status(applications=None):
         applications = PathwayApplication.objects.all()
 
     return {
-        "approved": queryset.filter(status="AP").count(),
-        "pending": queryset.filter(status="PE").count(),
-        "widthrew": queryset.filter(status="WE").count(),
-        "disapproved": queryset.filter(status="DE").count()
+        "approved": applications.filter(status="AP").count(),
+        "pending": applications.filter(status="PE").count(),
+        "widthrew": applications.filter(status="WE").count(),
+        "disapproved": applications.filter(status="DE").count()
     }
 
 
@@ -502,7 +502,7 @@ def get_course_learner_activity(course_id, course_enrollments=None, modules=None
     active_count = 0
     inactive_count = 0
     for student_enrolled in course_enrollments:
-        this_modules = modules.filter(student=user)
+        this_modules = modules.filter(student=student_enrolled.user)
         status = get_learner_activity_status(student_enrolled.user, course_key, modules=this_modules)
         if status == "active":
             active_count += 1
