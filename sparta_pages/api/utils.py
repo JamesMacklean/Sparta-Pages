@@ -1,5 +1,7 @@
 from datetime import datetime, timedelta, date
 
+from django.utils import timezone
+
 from courseware.models import StudentModule
 from lms.djangoapps.certificates.models import certificate_status_for_student
 from lms.djangoapps.courseware.courses import get_course_by_id
@@ -470,7 +472,7 @@ def get_learner_activity_status(user, course_key, modules=None):
 
     if modules.exists():
         latest_student_module = modules.order_by('-modified').first()
-        diff_time =  datetime.now() - latest_student_module.modified
+        diff_time =  timezone.now() - latest_student_module.modified
         diff_time_secs = diff_time.total_seconds()
         xminute = 60
         xhour = xminute*60
