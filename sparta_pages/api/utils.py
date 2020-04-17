@@ -470,7 +470,7 @@ def get_learner_activity_status(user, course_key, modules=None):
 
     if modules.exists():
         latest_student_module = modules.order_by('-modified').first()
-        diff_time =  timezone.now() - latest_student_module.modified
+        diff_time =  datetime.now() - latest_student_module.modified
         diff_time_secs = diff_time.total_seconds()
         xminute = 60
         xhour = xminute*60
