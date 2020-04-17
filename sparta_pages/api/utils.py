@@ -138,7 +138,8 @@ def get_sparta_enrollees_by_age(profiles=None):
             'count': data[a]
         })
 
-    return list_data[::-1]
+    # return list_data[::-1]
+    return sorted(list_data, key = lambda i: i['age'])
 
 
 def get_sparta_enrollees_by_gender(profiles=None):
