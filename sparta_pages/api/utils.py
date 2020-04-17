@@ -367,14 +367,33 @@ def get_applications_count_per_week(applications=None, start_date=None):
     for d in weeklydates(start_date, end_date):
         datetime_list.append(d)
 
-    data = []
-    for d in datetime_list:
-        data.append({
-            'date': d.strftime('%Y-%m-%d'),
-            'count': applications.filter(created_at__lte=d).count()
+    # data = []
+    # for d in datetime_list:
+    #     data.append({
+    #         'date': d.strftime('%Y-%m-%d'),
+    #         'count': applications.filter(created_at__lte=d).count()
+    #     })
+
+    list_data = []
+    for i in range(0, len(datetime_list)):
+        start_date = datetime_list[i]
+        interval_applications = applications.filter(created_at__gte=start_date)
+
+        i_plus_one = i + 1
+        if i_plus_one < len(datetime_list):
+            end_date = datetime_list[i+1]
+            interval_applications = interval_applications.filter(created_at__lte=end_date)
+            end_date_str = end_date.strftime('%Y-%m-%d')
+        else:
+            end_date_str = ""
+
+        list_data.append({
+            'start_date': start_date.strftime('%Y-%m-%d'),
+            'end_date': end_date_str,
+            'count': interval_applications.count()
         })
 
-    return data
+    return list_data
 
 
 def get_course_weekly_enrollments(course_id, course_enrollments=None, start_date=None):
