@@ -298,7 +298,10 @@ def enrollments_count_view(request, format=None):
 
     data = []
     for course_id in course_list:
-        data.append(get_course_weekly_enrollments(course_id, course_enrollments=course_enrollments))
+        data.append({
+            "course_id": course_id,
+            "weeks": get_course_weekly_enrollments(course_id, course_enrollments=course_enrollments)
+        })
 
     return Response(data, status=status.HTTP_200_OK)
 
