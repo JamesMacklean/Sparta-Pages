@@ -41,7 +41,16 @@ from .utils import (
     get_applications_count_per_pathway,
     get_applications_count_per_status,
     get_applications_count_per_week,
-    get_weekly_enrollments_count_by_pathway
+    get_weekly_enrollments_count_by_pathway,
+    get_sparta_course_id_list,
+    get_course_weekly_enrollments,
+    get_course_completion_rates,
+    get_course_learner_activity,
+    get_sparta_enrollees_by_age,
+    get_sparta_enrollees_by_gender,
+    get_sparta_enrollees_by_affiliation,
+    get_sparta_enrollees_by_attainment,
+    get_sparta_enrollees_by_location
 )
 
 
@@ -247,9 +256,11 @@ def pathway_applications_count_view(request, format=None):
     try:
         auth = basic_auth(request)
     except Exception as e:
-        return Response("Request unauthorized: {}".format(str(e)), status=status.HTTP_401_UNAUTHORIZED)
+        data = {"error": "unauthorized", "error_description": "Request unauthorized: {}".format(str(e))}
+        return Response(data, status=status.HTTP_401_UNAUTHORIZED)
     if not auth:
-        return Response("Request unauthorized", status=status.HTTP_401_UNAUTHORIZED)
+        data = {"error": "unauthorized", "error_description": "Request unauthorized"}
+        return Response(data, status=status.HTTP_401_UNAUTHORIZED)
 
     queryset = PathwayApplication.objects.all()
 
@@ -268,9 +279,11 @@ def enrollments_count_view(request, format=None):
     try:
         auth = basic_auth(request)
     except Exception as e:
-        return Response("Request unauthorized: {}".format(str(e)), status=status.HTTP_401_UNAUTHORIZED)
+        data = {"error": "unauthorized", "error_description": "Request unauthorized: {}".format(str(e))}
+        return Response(data, status=status.HTTP_401_UNAUTHORIZED)
     if not auth:
-        return Response("Request unauthorized", status=status.HTTP_401_UNAUTHORIZED)
+        data = {"error": "unauthorized", "error_description": "Request unauthorized"}
+        return Response(data, status=status.HTTP_401_UNAUTHORIZED)
 
     course_enrollments = CourseEnrollment.objects.filter(is_active=True)
 
@@ -296,9 +309,11 @@ def completion_rates_view(request, format=None):
     try:
         auth = basic_auth(request)
     except Exception as e:
-        return Response("Request unauthorized: {}".format(str(e)), status=status.HTTP_401_UNAUTHORIZED)
+        data = {"error": "unauthorized", "error_description": "Request unauthorized: {}".format(str(e))}
+        return Response(data, status=status.HTTP_401_UNAUTHORIZED)
     if not auth:
-        return Response("Request unauthorized", status=status.HTTP_401_UNAUTHORIZED)
+        data = {"error": "unauthorized", "error_description": "Request unauthorized"}
+        return Response(data, status=status.HTTP_401_UNAUTHORIZED)
 
     course_enrollments = CourseEnrollment.objects.filter(is_active=True)
 
@@ -328,9 +343,11 @@ def learner_activity_view(request, format=None):
     try:
         auth = basic_auth(request)
     except Exception as e:
-        return Response("Request unauthorized: {}".format(str(e)), status=status.HTTP_401_UNAUTHORIZED)
+        data = {"error": "unauthorized", "error_description": "Request unauthorized: {}".format(str(e))}
+        return Response(data, status=status.HTTP_401_UNAUTHORIZED)
     if not auth:
-        return Response("Request unauthorized", status=status.HTTP_401_UNAUTHORIZED)
+        data = {"error": "unauthorized", "error_description": "Request unauthorized"}
+        return Response(data, status=status.HTTP_401_UNAUTHORIZED)
 
     course_enrollments = CourseEnrollment.objects.filter(is_active=True)
 
@@ -363,9 +380,11 @@ def ages_count_view(request, format=None):
     try:
         auth = basic_auth(request)
     except Exception as e:
-        return Response("Request unauthorized: {}".format(str(e)), status=status.HTTP_401_UNAUTHORIZED)
+        data = {"error": "unauthorized", "error_description": "Request unauthorized: {}".format(str(e))}
+        return Response(data, status=status.HTTP_401_UNAUTHORIZED)
     if not auth:
-        return Response("Request unauthorized", status=status.HTTP_401_UNAUTHORIZED)
+        data = {"error": "unauthorized", "error_description": "Request unauthorized"}
+        return Response(data, status=status.HTTP_401_UNAUTHORIZED)
 
     data = get_sparta_enrollees_by_age()
     return Response(data, status=status.HTTP_200_OK)
@@ -377,9 +396,11 @@ def gender_count_view(request, format=None):
     try:
         auth = basic_auth(request)
     except Exception as e:
-        return Response("Request unauthorized: {}".format(str(e)), status=status.HTTP_401_UNAUTHORIZED)
+        data = {"error": "unauthorized", "error_description": "Request unauthorized: {}".format(str(e))}
+        return Response(data, status=status.HTTP_401_UNAUTHORIZED)
     if not auth:
-        return Response("Request unauthorized", status=status.HTTP_401_UNAUTHORIZED)
+        data = {"error": "unauthorized", "error_description": "Request unauthorized"}
+        return Response(data, status=status.HTTP_401_UNAUTHORIZED)
 
     data = get_sparta_enrollees_by_gender()
     return Response(data, status=status.HTTP_200_OK)
@@ -391,9 +412,11 @@ def affiliation_count_view(request, format=None):
     try:
         auth = basic_auth(request)
     except Exception as e:
-        return Response("Request unauthorized: {}".format(str(e)), status=status.HTTP_401_UNAUTHORIZED)
+        data = {"error": "unauthorized", "error_description": "Request unauthorized: {}".format(str(e))}
+        return Response(data, status=status.HTTP_401_UNAUTHORIZED)
     if not auth:
-        return Response("Request unauthorized", status=status.HTTP_401_UNAUTHORIZED)
+        data = {"error": "unauthorized", "error_description": "Request unauthorized"}
+        return Response(data, status=status.HTTP_401_UNAUTHORIZED)
 
     data = get_sparta_enrollees_by_affiliation()
     return Response(data, status=status.HTTP_200_OK)
@@ -405,9 +428,11 @@ def attainment_count_view(request, format=None):
     try:
         auth = basic_auth(request)
     except Exception as e:
-        return Response("Request unauthorized: {}".format(str(e)), status=status.HTTP_401_UNAUTHORIZED)
+        data = {"error": "unauthorized", "error_description": "Request unauthorized: {}".format(str(e))}
+        return Response(data, status=status.HTTP_401_UNAUTHORIZED)
     if not auth:
-        return Response("Request unauthorized", status=status.HTTP_401_UNAUTHORIZED)
+        data = {"error": "unauthorized", "error_description": "Request unauthorized"}
+        return Response(data, status=status.HTTP_401_UNAUTHORIZED)
 
     data = get_sparta_enrollees_by_attainment()
     return Response(data, status=status.HTTP_200_OK)
@@ -419,9 +444,11 @@ def location_count_view(request, format=None):
     try:
         auth = basic_auth(request)
     except Exception as e:
-        return Response("Request unauthorized: {}".format(str(e)), status=status.HTTP_401_UNAUTHORIZED)
+        data = {"error": "unauthorized", "error_description": "Request unauthorized: {}".format(str(e))}
+        return Response(data, status=status.HTTP_401_UNAUTHORIZED)
     if not auth:
-        return Response("Request unauthorized", status=status.HTTP_401_UNAUTHORIZED)
+        data = {"error": "unauthorized", "error_description": "Request unauthorized"}
+        return Response(data, status=status.HTTP_401_UNAUTHORIZED)
 
     data = get_sparta_enrollees_by_location()
     return Response(data, status=status.HTTP_200_OK)
