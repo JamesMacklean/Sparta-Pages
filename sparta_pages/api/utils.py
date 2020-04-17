@@ -119,6 +119,11 @@ def get_sparta_enrollees_by_age(profiles=None):
 
     data = {}
     data['no_age'] = 0
+    data['age_below_18'] = 0
+    data['age_18_to_34'] = 0
+    data['age_35_to_50'] = 0
+    data['age_51_to_69'] = 0
+    data['age_70_up'] = 0
     for profile in profiles:
         try:
             year_of_birth = profile.user.profile.year_of_birth
@@ -127,9 +132,18 @@ def get_sparta_enrollees_by_age(profiles=None):
         else:
             if year_of_birth is not None:
                 age = this_year - year_of_birth
-                if age not in data:
-                    data[str(age)] = 0
-                data[str(age)] += 1
+                if age < 18:
+                    data['age_below_18'] += 1
+                elif age >= 18 and age <= 34:
+                    data['age_18_to_34'] += 1
+                elif age >= 35 and age <= 50:
+                    data['age_35_to_50'] += 1
+                elif age >= 51 and age <= 69:
+                    data['age_51_to_69'] += 1
+                elif age >= 70:
+                    data['age_70_up'] += 1
+                else:
+                    data['no_age'] += 1
             else:
                 data['no_age'] += 1
 
