@@ -303,7 +303,7 @@ def enrollments_count_view(request, format=None):
             "weeks": get_course_weekly_enrollments(course_id, course_enrollments=course_enrollments)
         })
 
-    for i in len(course_list):
+    for i in range(0, len(course_list)):
         y = 3
         z = i % y
         if z == 0:
@@ -347,7 +347,7 @@ def completion_rates_view(request, format=None):
             "completion_rates": get_course_completion_rates(course_id, course_enrollments=this_course_enrollments)
         })
 
-    for i in len(course_list):
+    for i in range(0, len(course_list)):
         y = 3
         z = i % y
         if z == 0:
@@ -393,7 +393,7 @@ def learner_activity_view(request, format=None):
             "learner_activity": get_course_learner_activity(course_id, course_enrollments=this_course_enrollments, modules=this_course_modules)
         })
 
-    for i in len(course_list):
+    for i in range(0, len(course_list)):
         y = 3
         z = i % y
         if z == 0:
