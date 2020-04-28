@@ -303,15 +303,15 @@ def enrollments_count_view(request, format=None):
             "weeks": get_course_weekly_enrollments(course_id, course_enrollments=course_enrollments)
         })
 
-    for i in range(0, len(course_list)):
+    for i in range(0, len(data)):
         y = 3
         z = i % y
         if z == 0:
-            course_list[i]['color'] = "#caf270"
+            data[i]['color'] = "#caf270"
         elif z == 1:
-            course_list[i]['color'] = "#45c490"
+            data[i]['color'] = "#45c490"
         else:
-            course_list[i]['color'] = "#008d93"
+            data[i]['color'] = "#008d93"
 
     return Response(data, status=status.HTTP_200_OK)
 
@@ -347,15 +347,15 @@ def completion_rates_view(request, format=None):
             "completion_rates": get_course_completion_rates(course_id, course_enrollments=this_course_enrollments)
         })
 
-    for i in range(0, len(course_list)):
+    for i in range(0, len(data)):
         y = 3
         z = i % y
         if z == 0:
-            course_list[i]['color'] = "#caf270"
+            data[i]['color'] = "#caf270"
         elif z == 1:
-            course_list[i]['color'] = "#45c490"
+            data[i]['color'] = "#45c490"
         else:
-            course_list[i]['color'] = "#008d93"
+            data[i]['color'] = "#008d93"
 
     return Response(data, status=status.HTTP_200_OK)
 
@@ -393,15 +393,15 @@ def learner_activity_view(request, format=None):
             "learner_activity": get_course_learner_activity(course_id, course_enrollments=this_course_enrollments, modules=this_course_modules)
         })
 
-    for i in range(0, len(course_list)):
+    for i in range(0, len(data)):
         y = 3
         z = i % y
         if z == 0:
-            course_list[i]['color'] = "#caf270"
+            data[i]['color'] = "#caf270"
         elif z == 1:
-            course_list[i]['color'] = "#45c490"
+            data[i]['color'] = "#45c490"
         else:
-            course_list[i]['color'] = "#008d93"
+            data[i]['color'] = "#008d93"
 
     return Response(data, status=status.HTTP_200_OK)
 
