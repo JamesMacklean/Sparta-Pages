@@ -1,3 +1,6 @@
+import logging
+logger = logging.getLogger(__name__)
+
 from datetime import datetime, timedelta, date
 
 from django.utils import timezone
@@ -40,7 +43,11 @@ def get_sparta_courses(course_id_list=None, course_enrollments=None):
     courses = []
     for course_id in course_id_list:
         course_key = CourseKey.from_string(course_id)
-        courseoverview = CourseOverview.get_from_id(course_key)
+        try:
+            courseoverview = CourseOverview.get_from_id(course_key)
+        except Exception as e:
+            logger.info(str(e))
+            continue
 
         this_course_enrollments = course_enrollments.filter(course=courseoverview)
         audit_enrollments = this_course_enrollments.filter(mode='audit')
@@ -331,15 +338,24 @@ def get_increase_in_enrollees(course_id_list=None, course_enrollments=None, star
     for d in datetime_list:
         interval_enrollments = course_enrollments.filter(created__lte=d)
         enrollment_counter = 0
+        courses_with_errors = []
         for course_id in course_id_list:
             course_key = CourseKey.from_string(course_id)
-            courseoverview = CourseOverview.get_from_id(course_key)
+            try:
+                courseoverview = CourseOverview.get_from_id(course_key)
+            except Exception as e:
+                logger.info(str(e))
+                courses_with_errors.append(course_id)
             this_course_enrollments = interval_enrollments.filter(course=courseoverview)
             enrollment_counter += this_course_enrollments.count()
-        list_data.append({
+        this_data = {
             'date': d.strftime('%Y-%m-%d'),
             'count': enrollment_counter
-        })
+        }
+        if len(courses_with_errors) > 0:
+            this_data['courses_with_errors'] = courses_with_errors
+
+        list_data.append(this_data)
 
     return list_data
 
@@ -416,7 +432,13 @@ def get_course_weekly_enrollments(course_id, course_enrollments=None, start_date
         course_enrollments = CourseEnrollment.objects.filter(is_active=True)
 
     course_key = CourseKey.from_string(course_id)
-    courseoverview = CourseOverview.get_from_id(course_key)
+
+    try:
+        courseoverview = CourseOverview.get_from_id(course_key)
+    except Exception as e:
+        logger.info(str(e))
+        raise e
+
     this_course_enrollments = course_enrollments.filter(course=courseoverview)
     enrollments_count = this_course_enrollments.count()
 
@@ -441,8 +463,6 @@ def get_course_weekly_enrollments(course_id, course_enrollments=None, start_date
             end_date_str = ""
 
         enrollment_counter = 0
-        course_key = CourseKey.from_string(course_id)
-        courseoverview = CourseOverview.get_from_id(course_key)
         this_course_enrollments = interval_enrollments.filter(course=courseoverview)
 
         list_data.append({
@@ -459,7 +479,12 @@ def get_course_completion_rates(course_id, course_enrollments=None):
     course_key = CourseKey.from_string(course_id)
 
     if course_enrollments is None:
-        course_enrollments = CourseEnrollment.objects.filter(is_active=True).filter(course=CourseOverview.get_from_id(course_key))
+        try:
+            courseoverview = CourseOverview.get_from_id(course_key)
+        except Exception as e:
+            logger.info(str(e))
+            raise e
+        course_enrollments = CourseEnrollment.objects.filter(is_active=True).filter(course=courseoverview)
 
     course = get_course_by_id(course_key)
 
@@ -530,7 +555,12 @@ def get_course_learner_activity(course_id, course_enrollments=None, modules=None
     course_key = CourseKey.from_string(course_id)
 
     if course_enrollments is None:
-        course_enrollments = CourseEnrollment.objects.filter(is_active=True).filter(course=CourseOverview.get_from_id(course_key))
+        try:
+            courseoverview = CourseOverview.get_from_id(course_key)
+        except Exception as e:
+            logger.info(str(e))
+            raise e
+        course_enrollments = CourseEnrollment.objects.filter(is_active=True).filter(course=courseoverview)
 
     if modules is None:
         modules = StudentModule.objects.filter(course_id=course_key)
