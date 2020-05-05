@@ -298,10 +298,21 @@ def enrollments_count_view(request, format=None):
 
     data = []
     for course_id in course_list:
-        data.append({
-            "course_id": course_id,
-            "weeks": get_course_weekly_enrollments(course_id, course_enrollments=course_enrollments)
-        })
+        try:
+            course_data = {
+                "course_id": course_id,
+                "weeks": get_course_weekly_enrollments(course_id, course_enrollments=course_enrollments)
+            }
+        except Exception as e:
+            course_data = {
+                "course_id": course_id,
+                "weeks": None,
+                "error": {
+                    "detail": str(e)
+                }
+            }
+
+        data.append(course_data)
 
     for i in range(0, len(data)):
         y = 3
@@ -341,11 +352,21 @@ def completion_rates_view(request, format=None):
 
     data = []
     for course_id in course_list:
-        this_course_enrollments = course_enrollments.filter(course=CourseOverview.get_from_id(CourseKey.from_string(course_id)))
-        data.append({
-            "course_id": course_id,
-            "completion_rates": get_course_completion_rates(course_id, course_enrollments=this_course_enrollments)
-        })
+        try:
+            this_course_enrollments = course_enrollments.filter(course=CourseOverview.get_from_id(CourseKey.from_string(course_id)))
+            course_data = {
+                "course_id": course_id,
+                "completion_rates": get_course_completion_rates(course_id, course_enrollments=this_course_enrollments)
+            }
+        except Exception as e:
+            course_data = {
+                "course_id": course_id,
+                "completion_rates": None,
+                "error": {
+                    "detail": str(e)
+                }
+            }
+        data.append(course_data)
 
     for i in range(0, len(data)):
         y = 3
@@ -385,13 +406,24 @@ def learner_activity_view(request, format=None):
 
     data = []
     for course_id in course_list:
-        course_key = CourseKey.from_string(course_id)
-        this_course_enrollments = course_enrollments.filter(course=CourseOverview.get_from_id(course_key))
-        this_course_modules = StudentModule.objects.filter(course_id=course_key)
-        data.append({
-            "course_id": course_id,
-            "learner_activity": get_course_learner_activity(course_id, course_enrollments=this_course_enrollments, modules=this_course_modules)
-        })
+        try:
+            course_key = CourseKey.from_string(course_id)
+            this_course_enrollments = course_enrollments.filter(course=CourseOverview.get_from_id(course_key))
+            this_course_modules = StudentModule.objects.filter(course_id=course_key)
+            course_data = {
+                "course_id": course_id,
+                "learner_activity": get_course_learner_activity(course_id, course_enrollments=this_course_enrollments, modules=this_course_modules)
+            }
+        except Exception as e:
+            course_data = {
+                "course_id": course_id,
+                "learner_activity": None,
+                "error": {
+                    "detail": str(e)
+                }
+            }
+
+        data.append(course_data)
 
     for i in range(0, len(data)):
         y = 3
