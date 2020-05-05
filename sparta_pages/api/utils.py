@@ -431,7 +431,11 @@ def get_course_weekly_enrollments(course_id, course_enrollments=None, start_date
     if course_enrollments is None:
         course_enrollments = CourseEnrollment.objects.filter(is_active=True)
 
-    course_key = CourseKey.from_string(course_id)
+    try:
+        course_key = CourseKey.from_string(course_id)
+    except Exception as e:
+        logger.info(str(e))
+        raise e
 
     try:
         courseoverview = CourseOverview.get_from_id(course_key)
@@ -476,7 +480,11 @@ def get_course_weekly_enrollments(course_id, course_enrollments=None, start_date
 
 def get_course_completion_rates(course_id, course_enrollments=None):
     """"""
-    course_key = CourseKey.from_string(course_id)
+    try:
+        course_key = CourseKey.from_string(course_id)
+    except Exception as e:
+        logger.info(str(e))
+        raise e
 
     if course_enrollments is None:
         try:
@@ -552,7 +560,11 @@ def get_learner_activity_status(user, course_key, modules=None):
 
 def get_course_learner_activity(course_id, course_enrollments=None, modules=None):
     """"""
-    course_key = CourseKey.from_string(course_id)
+    try:
+        course_key = CourseKey.from_string(course_id)
+    except Exception as e:
+        logger.info(str(e))
+        raise e
 
     if course_enrollments is None:
         try:
