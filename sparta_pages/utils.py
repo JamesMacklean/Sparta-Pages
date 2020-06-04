@@ -14,6 +14,7 @@ from openedx.core.djangoapps.content.course_overviews.models import CourseOvervi
 from student.models import CourseEnrollment
 
 from .analytics import OverallAnalytics, PathwayAnalytics
+from .api.utils import get_sparta_course_id_list
 from .local_settings import LOCAL_STAFF_EMAIL, LOCAL_COUPON_WARNING_LIMIT, LOCAL_INTRO_COURSE_ID
 from .models import (
     Pathway, SpartaCourse, SpartaProfile, ExtendedSpartaProfile,
@@ -788,6 +789,114 @@ def export_sparta_student_module_timestamps(course_id, email_address=None):
             'Coursebank - SPARTA Activity Timestamps - {}'.format(course_id),
             'Attached file of SPARTA Activity Timestamps for course {} (as of {})'.format(course_id, tnow),
             'no-reply-sparta-activity-timestamps@coursebank.ph',
+            [email_address,],
+        )
+        email.attach_file(file_name)
+        email.send()
+
+
+def export_sparta_data_for_dashboard(email_address=None):
+    """"""
+    student_list = []
+
+    for application in PathwayApplication.objects.all():
+        student_id = None
+
+        for course in application.pathway.courses.filter(is_active):
+            course_id = course.course_id
+
+            if any(d['COURSE'] == course_id and d['STUDENT_ID'] == student_id for d in student_list):
+                continue
+
+    for course_id in get_sparta_course_id_list():
+        for profile in SpartaProfile.objects.filter(is_active=True): 
+            applications_for_this_course = profile.applications.filter(pathway__courses__course_id=course_id)
+            if not applications_for_this_course.exists():
+                continue
+            
+            user = profile.user
+
+            student_id = None
+
+            try:
+                eprofile = ExtendedSpartaProfile.objects.get(user=user)
+                user_profile = .user.profile
+            except:
+                municipality = region = None
+            else:
+                municipality = eprofile.municipality
+                region = get_region_from_municipality(municipality)
+
+            pathway_application = applications_for_this_course[0]
+            pathway_name = pathway_application.name
+            application_status = pathway_application.get_status_display()
+
+            try:
+                course_enrollment = CourseEnrollment.objects.get()
+            except:
+                pass
+
+            verification_status = None            
+            
+            grade = None
+
+            progress = None
+
+            is_active = course_enrollment.is_active
+
+            data = {}
+            data['STUDENT_ID'] = student_id
+            data['MUNICIPALITY'] = municipality
+            data['REGION'] = region
+            data['PATHWAY'] = pathway_name
+            data['APPLICATION_STATUS'] = application_status
+            data['ENROLLMENT_TRACK'] = enrollment_track
+            data['VERIFICATION_STATUS'] = verification_status
+            data['COURSE'] = course_id
+            data['PROGRESS'] = progress
+            data['GRADE'] = grade
+            data['IS_ACTIVE'] = is_active
+
+            student_list.append(data)
+
+    tnow = datetime.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
+    file_name = '/home/ubuntu/tempfiles/export_sparta_data_for_dashboard_{}.csv'.format(tnow)
+    with open(file_name, mode='w') as csv_file:
+        writer = unicodecsv.writer(csv_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL,  encoding='utf-8')
+        writer.writerow([
+            'STUDENT_ID',
+            'MUNICIPALITY',
+            'REGION',
+            'PATHWAY',
+            'APPLICATION_STATUS',
+            'ENROLLMENT_TRACK',
+            'VERIFICATION_STATUS',
+            'COURSE',
+            'PROGRESS',
+            'GRADE',
+            'IS_ACTIVE'
+            ])
+
+        for student in student_list:
+            writer.writerow([
+                student['STUDENT_ID'],
+                student['MUNICIPALITY'],
+                student['REGION'],
+                student['PATHWAY'],
+                student['APPLICATION_STATUS'],
+                student['ENROLLMENT_TRACK'],
+                student['VERIFICATION_STATUS'],
+                student['COURSE'],
+                student['PROGRESS'],
+                student['GRADE'],
+                student['IS_ACTIVE'],
+            ])
+
+    if email_address:
+        email = EmailMessage(
+            'Coursebank - SPARTA Data for Dashboard',
+            'Attached file of SPARTA Data for Dashboard (as of {})'.format(tnow),
+            'no-reply-sparta-data-for-dashboard@coursebank.ph',
             [email_address,],
         )
         email.attach_file(file_name)
