@@ -3283,4 +3283,4 @@ MAPPING_DICT = {
 }
 
 def get_region_from_municipality(mstring):
-    return MAPPING_DICT.get(mstring, None)
+    return MAPPING_DICT.get(mstring, None).get('REGION', None)
