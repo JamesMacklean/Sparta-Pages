@@ -9,12 +9,17 @@ from django.core.mail import send_mail, EmailMessage
 from courseware.models import StudentModule
 from lms.djangoapps.certificates.models import certificate_status_for_student
 from lms.djangoapps.certificates.api import get_certificate_for_user
+from lms.djangoapps.courseware.courses import get_course_by_id
+from lms.djangoapps.grades.course_grade_factory import CourseGradeFactory
+from lms.djangoapps.verify_student.services import IDVerificationService
 from opaque_keys.edx.keys import CourseKey
 from openedx.core.djangoapps.content.course_overviews.models import CourseOverview
 from student.models import CourseEnrollment
 
 from .analytics import OverallAnalytics, PathwayAnalytics
 from .api.utils import get_sparta_course_id_list
+from .cities import get_region_from_municipality
+from .helpers_utils import get_course_outline_block_tree
 from .local_settings import LOCAL_STAFF_EMAIL, LOCAL_COUPON_WARNING_LIMIT, LOCAL_INTRO_COURSE_ID
 from .models import (
     Pathway, SpartaCourse, SpartaProfile, ExtendedSpartaProfile,
@@ -795,12 +800,37 @@ def export_sparta_student_module_timestamps(course_id, email_address=None):
         email.send()
 
 
+def get_course_graded_problems_progress(user, course_id):
+    try:
+        course_block_tree = get_course_outline_block_tree(user, course_id)
+    except Exception as e:
+        raise Exception("get_course_graded_problems_progress.ERROR: {}".format(str(e)))
+
+    if not course_block_tree:
+        raise Exception("get_course_graded_problems_progress.ERROR: Course outline missing X_X")
+
+    total_problems = 0
+    completed_problems = 0
+
+    for section in course_block_tree.get('children'):
+        for subsection in section.get('children', []):
+            for vertical in subsection.get('children', []):
+                for unit in vertical.get('children', []):
+                    if 'type@problem' in unit.get('id') and unit.get('graded'):
+                        total_problems += 1
+                    if unit.get('complete'):
+                        completed_problems += 1
+
+    return completed_problems, total_problems
+
+
 def export_sparta_data_for_dashboard(email_address=None):
     """"""
     student_list = []
 
     for application in PathwayApplication.objects.all():
-        student_id = None
+       user = application.profile.user
+       student_id = user.id
 
         for course in application.pathway.courses.filter(is_active):
             course_id = course.course_id
@@ -808,39 +838,42 @@ def export_sparta_data_for_dashboard(email_address=None):
             if any(d['COURSE'] == course_id and d['STUDENT_ID'] == student_id for d in student_list):
                 continue
 
-    for course_id in get_sparta_course_id_list():
-        for profile in SpartaProfile.objects.filter(is_active=True): 
-            applications_for_this_course = profile.applications.filter(pathway__courses__course_id=course_id)
-            if not applications_for_this_course.exists():
-                continue
-            
-            user = profile.user
-
-            student_id = None
-
             try:
                 eprofile = ExtendedSpartaProfile.objects.get(user=user)
-                user_profile = .user.profile
+                user_profile = user.profile
             except:
                 municipality = region = None
             else:
                 municipality = eprofile.municipality
                 region = get_region_from_municipality(municipality)
 
-            pathway_application = applications_for_this_course[0]
-            pathway_name = pathway_application.name
+            pathway_name = application.pathway.name
             application_status = pathway_application.get_status_display()
 
             try:
-                course_enrollment = CourseEnrollment.objects.get()
+                course_key = CourseKey.from_string(course_id)
+            except Exception as e:
+                logger.info("export_sparta_data_for_dashboard.CourseKeyError: " + str(e))
+                continue
+
+            try:
+                enrollment = CourseEnrollment.objects.get(course_id=course_key, user=user)
             except:
-                pass
+                enrollment_track = None
+            else:
+                enrollment_track = enrollment.mode
 
-            verification_status = None            
+            verification_status = IDVerificationService.verification_status_for_user(user, enrollment_track)       
             
-            grade = None
+            course_grade = CourseGradeFactory().read(user, get_course_by_id(course_key))
+            grade_summary = course_grade.summary
+            course_grade_percent = grade_summary['percent']
 
-            progress = None
+            completed_problems, total_problems = get_course_graded_problems_progress(user, course_id)
+            if total_problems != 0:
+                progress = completed_problems / total_problems
+            else:
+                progress = 0
 
             is_active = course_enrollment.is_active
 
@@ -854,7 +887,7 @@ def export_sparta_data_for_dashboard(email_address=None):
             data['VERIFICATION_STATUS'] = verification_status
             data['COURSE'] = course_id
             data['PROGRESS'] = progress
-            data['GRADE'] = grade
+            data['GRADE'] = course_grade_percent
             data['IS_ACTIVE'] = is_active
 
             student_list.append(data)
