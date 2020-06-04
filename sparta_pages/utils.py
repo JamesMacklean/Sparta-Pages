@@ -812,7 +812,7 @@ def get_course_graded_problems_progress(user, course_id):
     total_problems = 0
     completed_problems = 0
 
-    for section in course_block_tree.get('children'):
+    for section in course_block_tree.get('children', []):
         for subsection in section.get('children', []):
             for vertical in subsection.get('children', []):
                 for unit in vertical.get('children', []):
