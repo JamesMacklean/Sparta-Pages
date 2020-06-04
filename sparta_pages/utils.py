@@ -832,7 +832,7 @@ def export_sparta_data_for_dashboard(email_address=None):
         user = application.profile.user
         student_id = user.id
         
-        for course in application.pathway.courses.filter(is_active):
+        for course in application.pathway.courses.filter(is_active=True):
             course_id = course.course_id
 
             if any(d['COURSE'] == course_id and d['STUDENT_ID'] == student_id for d in student_list):
