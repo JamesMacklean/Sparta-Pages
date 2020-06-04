@@ -848,7 +848,7 @@ def export_sparta_data_for_dashboard(email_address=None):
                 region = get_region_from_municipality(municipality)
 
             pathway_name = application.pathway.name
-            application_status = pathway_application.get_status_display()
+            application_status = application.get_status_display()
 
             try:
                 course_key = CourseKey.from_string(course_id)
