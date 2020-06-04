@@ -829,9 +829,9 @@ def export_sparta_data_for_dashboard(email_address=None):
     student_list = []
 
     for application in PathwayApplication.objects.all():
-       user = application.profile.user
-       student_id = user.id
-
+        user = application.profile.user
+        student_id = user.id
+        
         for course in application.pathway.courses.filter(is_active):
             course_id = course.course_id
 
