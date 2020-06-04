@@ -19,7 +19,7 @@ from student.models import CourseEnrollment
 from .analytics import OverallAnalytics, PathwayAnalytics
 from .api.utils import get_sparta_course_id_list
 from .cities import get_region_from_municipality
-from ..helpers.helpers_utils import get_course_outline_block_tree
+from .helpers.helpers_utils import get_course_outline_block_tree
 from .local_settings import LOCAL_STAFF_EMAIL, LOCAL_COUPON_WARNING_LIMIT, LOCAL_INTRO_COURSE_ID
 from .models import (
     Pathway, SpartaCourse, SpartaProfile, ExtendedSpartaProfile,
