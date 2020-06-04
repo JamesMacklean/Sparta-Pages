@@ -875,7 +875,7 @@ def export_sparta_data_for_dashboard(email_address=None):
             else:
                 progress = 0
 
-            is_active = course_enrollment.is_active
+            is_active = enrollment.is_active
 
             data = {}
             data['STUDENT_ID'] = student_id
