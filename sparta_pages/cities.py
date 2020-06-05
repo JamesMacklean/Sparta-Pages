@@ -1646,6 +1646,7 @@ def get_municpality_choices():
     return MUNICIPALITY_CHOICES
 
 MAPPING_DICT = {
+    '---': {'PROVINCE': '---','CITY': '---','REGION': '---',},
     'Abra, Bangued': {'PROVINCE': 'Abra','CITY': 'Bangued','REGION': 'CAR',},
     'Abra, Boliney': {'PROVINCE': 'Abra','CITY': 'Boliney','REGION': 'CAR',},
     'Abra, Bucay': {'PROVINCE': 'Abra','CITY': 'Bucay','REGION': 'CAR',},
@@ -3283,4 +3284,4 @@ MAPPING_DICT = {
 }
 
 def get_region_from_municipality(mstring):
-    return MAPPING_DICT.get(mstring, None).get('REGION', None)
+    return MAPPING_DICT.get(mstring, {}).get('REGION', None)
