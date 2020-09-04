@@ -102,6 +102,16 @@ class CourseGroup(models.Model):
 class SpartaProfile(models.Model):
     """
     """
+    COLLEAGUE = "CL"
+    FRIEND = "FR"
+    EMAIL = "EM"
+    NEWS = "NE"
+    FACEBOOK = "FB"
+    SPARTAWEB = "SW"
+    LINKEDIN = "LI"
+    YOUTUBE = "YT"
+    GOVERNMENT = "GO"
+    COMPANY = "CM"
     DISCOVERY_CHOICES = (
         (COLLEAGUE, "A colleague referred it to me" ),
         (FRIEND, "A friend referred it to me"),
@@ -126,7 +136,7 @@ class SpartaProfile(models.Model):
     modified_at = models.DateTimeField(auto_now=True)
     first_timer = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
-    discovery = models.CharField(max_length=50, choices=DISCOVERY_CHOICES, default=COLLEAGUE)
+    discovery = models.CharField(max_length=2, choices=DISCOVERY_CHOICES, default=COLLEAGUE)
 
     class Meta:
         verbose_name_plural = "3. Sparta Profiles"
