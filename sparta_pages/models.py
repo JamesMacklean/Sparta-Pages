@@ -102,6 +102,19 @@ class CourseGroup(models.Model):
 class SpartaProfile(models.Model):
     """
     """
+    DISCOVERY_CHOICES = (
+        (COLLEAGUE, "A colleague referred it to me" ),
+        (FRIEND, "A friend referred it to me"),
+        (EMAIL, "Email"),
+        (NEWS, "News"),
+        (FACEBOOK, "Facebook Page/Group" ),
+        (SPARTAWEB, "SPARTA Website"),
+        (LINKEDIN, "LinkedIn"),
+        (YOUTUBE, "Youtube"),
+        (GOVERNMENT, "Local Government Unit"),
+        (COMPANY, "Company"),
+    )
+
     user = models.OneToOneField(
         USER_MODEL,
         on_delete=models.CASCADE,
@@ -113,6 +126,7 @@ class SpartaProfile(models.Model):
     modified_at = models.DateTimeField(auto_now=True)
     first_timer = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
+    discovery = models.CharField(max_length=50, choices=DISCOVERY_CHOICES, default=COLLEAGUE)
 
     class Meta:
         verbose_name_plural = "3. Sparta Profiles"

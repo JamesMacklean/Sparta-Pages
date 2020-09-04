@@ -21,6 +21,7 @@ class SpartaProfileForm(forms.Form):
     proof_of_education_file = forms.ImageField(widget=forms.FileInput, required=True,label='Proof of Education',help_text='Select a clear image of your Proof of Education that is no more than 2MB.')
     tos_yes = forms.BooleanField(required=True)
     citizenship = forms.BooleanField(required=True)
+    discovery = forms.CharField(required=True, widget=forms.Select(choices=DISCOVERY_CHOICES))
 
 
 class ExtendedSpartaProfileForm(forms.ModelForm):
