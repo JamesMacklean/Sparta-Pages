@@ -1,0 +1,62 @@
+from rest_framework import serializers
+
+from ..models import (
+    Pathway, SpartaCourse,
+    SpartaProfile, ExtendedSpartaProfile,
+    PathwayApplication,
+    EducationProfile, EmploymentProfile
+)
+
+
+class Field(serializers.RelatedField):
+    def to_representation(self, value):
+        return value
+
+
+class SpartaProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SpartaProfile
+        fields = [
+            'id',
+            'is_active', 'discovery'
+            ]
+        read_only_fields = fields
+
+
+class ExtendedSpartaProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ExtendedSpartaProfile
+        fields = [
+            'address', 'municipality', 'affiliation', 'attainment',
+            'other_attain', 'is_employed', 'grad_degree'
+            ]
+        read_only_fields = fields
+
+
+class EducationProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = EducationProfile
+        fields = [
+            'profile', 'degree', 'course', 'school', 'address',
+            'started_at', 'graduated_at'
+            ]
+        read_only_fields = fields
+
+
+class EmploymentProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = EmploymentProfile
+        fields = [
+            'profile', 'affiliation', 'occupation', 'designation',
+            'employer', 'address', 'started_at', 'ended_at'
+            ]
+        read_only_fields = fields
+
+
+class PathwayApplicationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PathwayApplication
+        fields = [
+            'profile', 'pathway', 'status', 'create_at'
+            ]
+        read_only_fields = fields
