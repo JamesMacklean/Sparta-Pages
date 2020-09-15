@@ -1,3 +1,5 @@
+import six
+
 from django.contrib.auth import get_user_model
 User = get_user_model()
 
@@ -260,16 +262,45 @@ def pathway_application_detail(request, id, format=None):
 
 
 @api_view(['GET'])
-def grade_list(request, format=None):
+def grade_list(request, course_id, format=None):
     authenticate_request(request)
-
     data = {}
     return Response(data, status=status.HTTP_200_OK)
 
 
 @api_view(['GET'])
-def grade_detail(request, course_id, format=None):
+def user_grade_detail(request, profile_id, course_id, format=None):
     authenticate_request(request)
 
-    data = {}
+    try:
+        sparta_profile = SpartaProfile.objects.get(id=profile_id)
+    except SpartaProfile.DoesNotExist:
+        msg = "SpartaProfile with id {} not found.".format(profile_id)
+        err_data = {"error": "not_found", "message": msg}
+        return Response(err_data, status=status.HTTP_404_NOT_FOUND)
+    else:
+        user = sparta_profile.user
+
+    try:
+        course_key = CourseKey.from_string(course_id)
+    except Exception as e:
+        msg = str(e)
+        err_data = {"error": "course_key_error", "message": msg}
+        return Response(err_data, status=status.HTTP_400_BAD_REQUEST)
+
+    grade = CourseGradeFactory().read(user, course_key)
+
+    sections_list = []
+    for section in grade.summary[u'section_breakdown']:
+        sections_list.append({
+            "label": section['label'].encode('utf-8') if six.PY2 else section['label'],
+            "percent": section.get('percent', 0.0)
+        })
+
+    data = {
+        "profile_id": profile_id,
+        "course_id": course_id,
+        "grade": grade.summary.percent
+        "sections": sections_list
+    }
     return Response(data, status=status.HTTP_200_OK)
