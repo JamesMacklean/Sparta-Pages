@@ -301,7 +301,7 @@ def user_grade_detail(request, profile_id, course_id, format=None):
     data = {
         "profile_id": profile_id,
         "course_id": course_id,
-        "grade": grade.summary.percent
+        "grade": grade.summary.percent,
         "sections": sections_list
     }
     return Response(data, status=status.HTTP_200_OK)
