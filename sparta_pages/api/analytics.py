@@ -67,7 +67,7 @@ class CustomAuth():
 authenticate_request = CustomAuth().authenticate
 
 def merge(d1, d2):
-    return {**d1, **d2}
+    return (d2.update(d1))
 
 @api_view(['GET'])
 def sparta_profiles_list(request, format=None):
@@ -96,7 +96,8 @@ def sparta_profiles_list(request, format=None):
             esp = {}
         else:
             ext_sparta_prof_data = ExtendedSpartaProfileSerializer(esp).data
-        result_data.append(merge(sparta_profile_data, ext_sparta_prof_data))
+        merge(sparta_profile_data, ext_sparta_prof_data)
+        result_data.append(ext_sparta_prof_data)
 
     data = {
         "count": queryset.count(),
