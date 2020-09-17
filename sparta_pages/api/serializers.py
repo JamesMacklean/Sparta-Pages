@@ -88,6 +88,7 @@ class EmploymentProfileSerializer(serializers.ModelSerializer):
 
 
 class PathwayApplicationSerializer(serializers.ModelSerializer):
+    pathway = serializers.SerializerMethodField()
     status = serializers.SerializerMethodField()
 
     class Meta:
@@ -96,6 +97,9 @@ class PathwayApplicationSerializer(serializers.ModelSerializer):
             'profile', 'pathway', 'status', 'created_at'
             ]
         read_only_fields = fields
+    
+    def get_pathway(self):
+        return obj.pathway.name
     
     def get_status(self, obj):
         return obj.get_status_display()
