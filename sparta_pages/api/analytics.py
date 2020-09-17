@@ -15,6 +15,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from .serializers import (
+    PathwaySerializer, SpartaCourseSerializer,
     SpartaProfileSerializer, ExtendedSpartaProfileSerializer,
     EmploymentProfileSerializer, EducationProfileSerializer,
     PathwayApplicationSerializer
@@ -67,7 +68,7 @@ class CustomAuth():
 authenticate_request = CustomAuth().authenticate
 
 def merge(d1, d2):
-    return (d2.update(d1))
+    return (d1.update(d2))
 
 @api_view(['GET'])
 def sparta_profiles_list(request, format=None):
@@ -97,7 +98,7 @@ def sparta_profiles_list(request, format=None):
         else:
             ext_sparta_prof_data = ExtendedSpartaProfileSerializer(esp).data
         merge(sparta_profile_data, ext_sparta_prof_data)
-        result_data.append(ext_sparta_prof_data)
+        result_data.append(sparta_profile_data)
 
     data = {
         "count": queryset.count(),
@@ -304,4 +305,50 @@ def user_grade_detail(request, profile_id, course_id, format=None):
         "grade": grade.summary.get('percent', 0.0),
         "sections": sections_list
     }
+    return Response(data, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+def course_list(request, format=None):
+    authenticate_request(request)
+
+    queryset = SpartaCourse.objects.all()
+
+    course_id = request.query_params.get('course_id', None)
+    pathway = request.query_params.get('pathway', None)
+
+    if course_id is not None:
+        queryset = queryset.filter(course_id__icontains=course_id)
+    if pathway is not None:
+        queryset = queryset.filter(pathway__name__icontains=pathway)
+
+    offset = request.query_params.get('offset', None)
+    if offset is not None and offset != '':
+        of = int(offset)
+        queryset = queryset[of:]
+    limit = request.query_params.get('limit', None)
+    if limit is not None and limit != '':
+        lim = int(limit)
+        queryset = queryset[:lim]
+
+    data = SpartaCourseSerializer(queryset, many=True).data
+    return Response(data, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+def pathway_list(request, format=None):
+    authenticate_request(request)
+
+    queryset = Pathway.objects.all()
+
+    offset = request.query_params.get('offset', None)
+    if offset is not None and offset != '':
+        of = int(offset)
+        queryset = queryset[of:]
+    limit = request.query_params.get('limit', None)
+    if limit is not None and limit != '':
+        lim = int(limit)
+        queryset = queryset[:lim]
+
+    data = PathwaySerializer(queryset, many=True).data
     return Response(data, status=status.HTTP_200_OK)

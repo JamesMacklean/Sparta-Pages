@@ -13,12 +13,29 @@ class Field(serializers.RelatedField):
         return value
 
 
+class PathwaySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Pathway
+        fields = [
+            'id', 'name',
+        ]
+        read_only_fields = fields
+
+
+class SpartaCourseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SpartaCourse
+        fields = [
+            'id', 'course_id', 'pathway'            
+        ]
+        read_only_fields = fields
+
+
 class SpartaProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = SpartaProfile
         fields = [
-            'id',
-            'is_active', 'discovery'
+            'id', 'is_active', 'discovery'
             ]
         read_only_fields = fields
 

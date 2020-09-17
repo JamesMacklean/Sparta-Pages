@@ -42,4 +42,6 @@ urlpatterns = [
         analytics.pathway_application_detail, name='analytics-sparta-pathway-application-detail'),
     url(r'^sparta/api/v1/profiles/(?P<profile_id>\d+)/course/{}/grades'.format(settings.COURSE_ID_PATTERN), analytics.user_grade_detail,
         name='analytics-sparta-user-grade-detail'),
+    url(r'^sparta/api/v1/courses$', analytics.course_list,
+        name='analytics-sparta-course-list'),
 ]
