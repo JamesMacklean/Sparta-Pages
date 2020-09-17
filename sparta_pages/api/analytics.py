@@ -115,14 +115,21 @@ def sparta_profiles_detail(request, id, format=None):
     authenticate_request(request)
 
     try:
-        sparta_profile = SpartaProfile.objects.all()
+        sparta_profile = SpartaProfile.objects.get(id=id)
     except SpartaProfile.DoesNotExist:
         msg = "SpartaProfile with id {} not found.".format(id)
         err_data = {"error": "not_found", "message": msg}
         return Response(err_data, status=status.HTTP_404_NOT_FOUND)
-
-    data = SpartaProfileSerializer(sparta_profile).data
-    return Response(data, status=status.HTTP_200_OK)
+    
+    try:
+        esp = p.user.extended_sparta_profile
+    except:
+        ext_sparta_prof_data = {}
+    else:
+        ext_sparta_prof_data = ExtendedSpartaProfileSerializer(esp).data
+    sparta_profile_data = SpartaProfileSerializer(sparta_profile).data
+    merge(sparta_profile_data, ext_sparta_prof_data)
+    return Response(sparta_profile_data, status=status.HTTP_200_OK)
 
 
 @api_view(['GET'])
