@@ -93,7 +93,7 @@ def sparta_profiles_list(request, format=None):
         try:
             esp = p.user.extended_sparta_profile
         except:
-            esp = {}
+            ext_sparta_prof_data = {}
         else:
             ext_sparta_prof_data = ExtendedSpartaProfileSerializer(esp).data
         merge(sparta_profile_data, ext_sparta_prof_data)
@@ -289,7 +289,7 @@ def user_grade_detail(request, profile_id, course_id, format=None):
         err_data = {"error": "course_key_error", "message": msg}
         return Response(err_data, status=status.HTTP_400_BAD_REQUEST)
 
-    grade = CourseGradeFactory().read(user, course_key)
+    grade = CourseGradeFactory().read(user, course_key=course_key)
 
     sections_list = []
     for section in grade.summary[u'section_breakdown']:
