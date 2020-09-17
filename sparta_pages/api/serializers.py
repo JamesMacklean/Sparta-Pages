@@ -32,15 +32,23 @@ class SpartaCourseSerializer(serializers.ModelSerializer):
 
 
 class SpartaProfileSerializer(serializers.ModelSerializer):
+    discovery = serializers.SerializerMethodField()
     class Meta:
         model = SpartaProfile
         fields = [
             'id', 'is_active', 'discovery'
             ]
         read_only_fields = fields
+    
+    def get_discovery(self, obj):
+        return obj.get_discovery_display()
 
 
 class ExtendedSpartaProfileSerializer(serializers.ModelSerializer):
+    affiliation = serializers.SerializerMethodField()
+    attainment = serializers.SerializerMethodField()
+    grad_degree = serializers.SerializerMethodField()
+
     class Meta:
         model = ExtendedSpartaProfile
         fields = [
@@ -48,6 +56,15 @@ class ExtendedSpartaProfileSerializer(serializers.ModelSerializer):
             'other_attain', 'is_employed', 'grad_degree'
             ]
         read_only_fields = fields
+    
+    def get_affiliation(self, obj):
+        return obj.get_affiliation_display()
+    
+    def get_attainment(self, obj):
+        return obj.get_attainment_display()
+    
+    def get_grad_degree(self, obj):
+        return obj.get_grad_degree_display()
 
 
 class EducationProfileSerializer(serializers.ModelSerializer):
@@ -71,9 +88,14 @@ class EmploymentProfileSerializer(serializers.ModelSerializer):
 
 
 class PathwayApplicationSerializer(serializers.ModelSerializer):
+    status = serializers.SerializerMethodField()
+
     class Meta:
         model = PathwayApplication
         fields = [
-            'profile', 'pathway', 'status', 'create_at'
+            'profile', 'pathway', 'status', 'created_at'
             ]
         read_only_fields = fields
+    
+    def get_status(self, obj):
+        return obj.get_status_display()
