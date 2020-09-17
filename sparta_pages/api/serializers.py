@@ -98,7 +98,7 @@ class PathwayApplicationSerializer(serializers.ModelSerializer):
             ]
         read_only_fields = fields
     
-    def get_pathway(self):
+    def get_pathway(self, obj):
         return obj.pathway.name
     
     def get_status(self, obj):
