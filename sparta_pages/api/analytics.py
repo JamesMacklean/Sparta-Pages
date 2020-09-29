@@ -1,3 +1,4 @@
+import base64
 import six
 
 from django.contrib.auth import get_user_model
