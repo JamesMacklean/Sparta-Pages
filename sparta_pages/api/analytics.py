@@ -25,6 +25,8 @@ from ..models import (
     EducationProfile, EmploymentProfile
 )
 
+class UnauthorizedError(Exception):
+    pass
 
 class CustomAuth():
     def get_header_token(self, request):
@@ -55,15 +57,11 @@ class CustomAuth():
     
     def authenticate(self, request):
         try:
-            auth = basic_auth(request)
+            auth = self.basic_auth(request)
         except Exception as e:
-            data = {"error": "unauthorized",
-                    "error_description": "Request unauthorized: {}".format(str(e))}
-            return Response(data, status=status.HTTP_401_UNAUTHORIZED)
+            raise UnauthorizedError(str(e))
         if not auth:
-            data = {"error": "unauthorized",
-                    "error_description": "Request unauthorized"}
-            return Response(data, status=status.HTTP_401_UNAUTHORIZED)
+            raise UnauthorizedError("No token found.")
 
 authenticate_request = CustomAuth().authenticate
 
@@ -75,7 +73,12 @@ def sparta_profiles_list(request, format=None):
     """
     /sparta/api/v1/profiles/
     """
-    authenticate_request(request)
+    try:
+        authenticate_request(request)
+    except UnauthorizedError as e:
+        data = {"error": "unauthorized",
+                "error_description": "Request unauthorized: {}".format(str(e))}
+        return Response(data, status=status.HTTP_401_UNAUTHORIZED)
 
     queryset = SpartaProfile.objects.all()
 
@@ -112,7 +115,12 @@ def sparta_profiles_detail(request, id, format=None):
     """
     /sparta/api/v1/profiles/:id
     """
-    authenticate_request(request)
+    try:
+        authenticate_request(request)
+    except UnauthorizedError as e:
+        data = {"error": "unauthorized",
+                "error_description": "Request unauthorized: {}".format(str(e))}
+        return Response(data, status=status.HTTP_401_UNAUTHORIZED)
 
     try:
         sparta_profile = SpartaProfile.objects.get(id=id)
@@ -137,7 +145,12 @@ def education_credentials_list(request, id, format=None):
     """
     /sparta/api/v1/profiles/:id/educationcredentials
     """
-    authenticate_request(request)
+    try:
+        authenticate_request(request)
+    except UnauthorizedError as e:
+        data = {"error": "unauthorized",
+                "error_description": "Request unauthorized: {}".format(str(e))}
+        return Response(data, status=status.HTTP_401_UNAUTHORIZED)
 
     try:
         sparta_profile = SpartaProfile.objects.get(id=id)
@@ -169,7 +182,12 @@ def education_credentials_detail(request, id, format=None):
     """
     /sparta/api/v1/educationcredentials/:id
     """
-    authenticate_request(request)
+    try:
+        authenticate_request(request)
+    except UnauthorizedError as e:
+        data = {"error": "unauthorized",
+                "error_description": "Request unauthorized: {}".format(str(e))}
+        return Response(data, status=status.HTTP_401_UNAUTHORIZED)
 
     try:
         e = EducationProfile.objects.get(id=id)
@@ -187,7 +205,13 @@ def employment_credentials_list(request, id, format=None):
     """
     /sparta/api/v1/profiles/:id/employmentcredentials
     """
-    authenticate_request(request)
+    try:
+        authenticate_request(request)
+    except UnauthorizedError as e:
+        data = {"error": "unauthorized",
+                "error_description": "Request unauthorized: {}".format(str(e))}
+        return Response(data, status=status.HTTP_401_UNAUTHORIZED)
+
     try:
         sparta_profile = SpartaProfile.objects.get(id=id)
     except SpartaProfile.DoesNotExist:
@@ -218,7 +242,13 @@ def employment_credentials_detail(request, id, format=None):
     """
     /sparta/api/v1/employmentcredentials/:id
     """
-    authenticate_request(request)
+    try:
+        authenticate_request(request)
+    except UnauthorizedError as e:
+        data = {"error": "unauthorized",
+                "error_description": "Request unauthorized: {}".format(str(e))}
+        return Response(data, status=status.HTTP_401_UNAUTHORIZED)
+
     try:
         e = EmploymentProfile.objects.get(id=id)
     except EmploymentProfile.DoesNotExist:
@@ -235,7 +265,12 @@ def pathway_application_list(request, format=None):
     """
     /sparta/api/v1/pathwayapplications
     """
-    authenticate_request(request)
+    try:
+        authenticate_request(request)
+    except UnauthorizedError as e:
+        data = {"error": "unauthorized",
+                "error_description": "Request unauthorized: {}".format(str(e))}
+        return Response(data, status=status.HTTP_401_UNAUTHORIZED)
 
     queryset = PathwayApplication.objects.all()
 
@@ -257,7 +292,12 @@ def pathway_application_list(request, format=None):
 
 @api_view(['GET'])
 def pathway_application_detail(request, id, format=None):
-    authenticate_request(request)
+    try:
+        authenticate_request(request)
+    except UnauthorizedError as e:
+        data = {"error": "unauthorized",
+                "error_description": "Request unauthorized: {}".format(str(e))}
+        return Response(data, status=status.HTTP_401_UNAUTHORIZED)
 
     try:
         pa = PathwayApplication.objects.get(id=id)
@@ -279,7 +319,12 @@ def grade_list(request, course_id, format=None):
 
 @api_view(['GET'])
 def user_grade_detail(request, profile_id, course_id, format=None):
-    authenticate_request(request)
+    try:
+        authenticate_request(request)
+    except UnauthorizedError as e:
+        data = {"error": "unauthorized",
+                "error_description": "Request unauthorized: {}".format(str(e))}
+        return Response(data, status=status.HTTP_401_UNAUTHORIZED)
 
     try:
         sparta_profile = SpartaProfile.objects.get(id=profile_id)
@@ -317,7 +362,12 @@ def user_grade_detail(request, profile_id, course_id, format=None):
 
 @api_view(['GET'])
 def course_list(request, format=None):
-    authenticate_request(request)
+    try:
+        authenticate_request(request)
+    except UnauthorizedError as e:
+        data = {"error": "unauthorized",
+                "error_description": "Request unauthorized: {}".format(str(e))}
+        return Response(data, status=status.HTTP_401_UNAUTHORIZED)
 
     queryset = SpartaCourse.objects.all()
 
@@ -344,7 +394,12 @@ def course_list(request, format=None):
 
 @api_view(['GET'])
 def pathway_list(request, format=None):
-    authenticate_request(request)
+    try:
+        authenticate_request(request)
+    except UnauthorizedError as e:
+        data = {"error": "unauthorized",
+                "error_description": "Request unauthorized: {}".format(str(e))}
+        return Response(data, status=status.HTTP_401_UNAUTHORIZED)
 
     queryset = Pathway.objects.all()
 
