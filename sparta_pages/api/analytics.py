@@ -11,7 +11,7 @@ from openedx.core.djangoapps.content.course_overviews.models import CourseOvervi
 from student.models import CourseEnrollment
 
 from rest_framework import status, renderers
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, authentication_classes
 from rest_framework.response import Response
 
 from ..local_settings import LOCAL_SECRET_TOKEN as SECRET_TOKEN
@@ -70,6 +70,7 @@ def merge(d1, d2):
     return (d1.update(d2))
 
 @api_view(['GET'])
+@authentication_classes([])
 def sparta_profiles_list(request, format=None):
     """
     /sparta/api/v1/profiles/
@@ -112,6 +113,7 @@ def sparta_profiles_list(request, format=None):
 
 
 @api_view(['GET'])
+@authentication_classes([])
 def sparta_profiles_detail(request, id, format=None):
     """
     /sparta/api/v1/profiles/:id
@@ -142,6 +144,7 @@ def sparta_profiles_detail(request, id, format=None):
 
 
 @api_view(['GET'])
+@authentication_classes([])
 def education_credentials_list(request, id, format=None):
     """
     /sparta/api/v1/profiles/:id/educationcredentials
@@ -179,6 +182,7 @@ def education_credentials_list(request, id, format=None):
 
 
 @api_view(['GET'])
+@authentication_classes([])
 def education_credentials_detail(request, id, format=None):
     """
     /sparta/api/v1/educationcredentials/:id
@@ -202,6 +206,7 @@ def education_credentials_detail(request, id, format=None):
 
 
 @api_view(['GET'])
+@authentication_classes([])
 def employment_credentials_list(request, id, format=None):
     """
     /sparta/api/v1/profiles/:id/employmentcredentials
@@ -239,6 +244,7 @@ def employment_credentials_list(request, id, format=None):
 
 
 @api_view(['GET'])
+@authentication_classes([])
 def employment_credentials_detail(request, id, format=None):
     """
     /sparta/api/v1/employmentcredentials/:id
@@ -262,6 +268,7 @@ def employment_credentials_detail(request, id, format=None):
 
 
 @api_view(['GET'])
+@authentication_classes([])
 def pathway_application_list(request, format=None):
     """
     /sparta/api/v1/pathwayapplications
@@ -292,6 +299,7 @@ def pathway_application_list(request, format=None):
 
 
 @api_view(['GET'])
+@authentication_classes([])
 def pathway_application_detail(request, id, format=None):
     try:
         authenticate_request(request)
@@ -312,6 +320,7 @@ def pathway_application_detail(request, id, format=None):
 
 
 @api_view(['GET'])
+@authentication_classes([])
 def grade_list(request, course_id, format=None):
     authenticate_request(request)
     data = {}
@@ -319,6 +328,7 @@ def grade_list(request, course_id, format=None):
 
 
 @api_view(['GET'])
+@authentication_classes([])
 def user_grade_detail(request, profile_id, course_id, format=None):
     try:
         authenticate_request(request)
@@ -362,6 +372,7 @@ def user_grade_detail(request, profile_id, course_id, format=None):
 
 
 @api_view(['GET'])
+@authentication_classes([])
 def course_list(request, format=None):
     try:
         authenticate_request(request)
@@ -394,6 +405,7 @@ def course_list(request, format=None):
 
 
 @api_view(['GET'])
+@authentication_classes([])
 def pathway_list(request, format=None):
     try:
         authenticate_request(request)
