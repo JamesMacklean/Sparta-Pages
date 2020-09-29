@@ -14,6 +14,7 @@ from rest_framework import status, renderers
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
+from ..local_settings import LOCAL_SECRET_TOKEN as SECRET_TOKEN
 from .serializers import (
     PathwaySerializer, SpartaCourseSerializer,
     SpartaProfileSerializer, ExtendedSpartaProfileSerializer,
@@ -61,7 +62,7 @@ class CustomAuth():
         except Exception as e:
             raise UnauthorizedError(str(e))
         if not auth:
-            raise UnauthorizedError("No token found.")
+            raise UnauthorizedError("Invalid token.")
 
 authenticate_request = CustomAuth().authenticate
 
