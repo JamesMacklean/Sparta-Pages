@@ -50,7 +50,7 @@ class SpartaProfileSerializer(serializers.ModelSerializer):
     
     def get_age(self, obj):
         try:
-            yob = obj.profile.year_of_birth
+            yob = obj.user.profile.year_of_birth
         except:
             return None
         else:
@@ -58,7 +58,7 @@ class SpartaProfileSerializer(serializers.ModelSerializer):
 
     def get_gender(self, obj):
         try:
-            g = obj.profile.gender
+            g = obj.user.profile.gender
         except:
             return None
         else:
