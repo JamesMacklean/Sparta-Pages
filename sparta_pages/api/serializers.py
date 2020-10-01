@@ -60,9 +60,9 @@ class SpartaProfileSerializer(serializers.ModelSerializer):
 
     def get_gender(self, obj):
         try:
-            g = obj.user.profile.gender
+            g = obj.user.profile.get_gender_display()
         except:
-            return None
+            return "Other/Prefer Not to Say"
         else:
             return g
 
