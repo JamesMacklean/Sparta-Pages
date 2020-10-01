@@ -83,7 +83,8 @@ def sparta_profiles_list(request, format=None):
                 "error_description": "Request unauthorized: {}".format(str(e))}
         return Response(data, status=status.HTTP_401_UNAUTHORIZED)
 
-    queryset = SpartaProfile.objects.all()
+    queryset = SpartaProfile.objects.select_related(
+        'user', 'extended_sparta_profile')
 
     offset = request.query_params.get('offset', None)
     if offset is not None and offset != '':
