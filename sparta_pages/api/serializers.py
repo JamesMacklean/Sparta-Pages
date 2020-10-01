@@ -53,8 +53,10 @@ class SpartaProfileSerializer(serializers.ModelSerializer):
             yob = obj.user.profile.year_of_birth
         except:
             return None
-        else:
+        if yob is not None:
             return timezone.now().year - yob
+        else:
+            return None
 
     def get_gender(self, obj):
         try:
