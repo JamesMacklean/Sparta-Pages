@@ -1,3 +1,5 @@
+from django.utils import timezone  
+
 from rest_framework import serializers
 
 from ..models import (
@@ -32,14 +34,38 @@ class SpartaCourseSerializer(serializers.ModelSerializer):
 
 
 class SpartaProfileSerializer(serializers.ModelSerializer):
+    age = serializers.SerializerMethodField()
+    gender = serializers.SerializerMethodField()
     discovery = serializers.SerializerMethodField()
     class Meta:
         model = SpartaProfile
         fields = [
-            'id', 'is_active', 'discovery'
+            'id',
+            'age',
+            'gender',
+            'discovery',
+            'is_active'
             ]
         read_only_fields = fields
     
+    def get_age(self, obj):
+        try:
+            yob = obj.user.profile.year_of_birth
+        except:
+            return None
+        if yob is not None:
+            return timezone.now().year - yob
+        else:
+            return None
+
+    def get_gender(self, obj):
+        try:
+            g = obj.user.profile.get_gender_display()
+        except:
+            return "Other/Prefer Not to Say"
+        else:
+            return g
+
     def get_discovery(self, obj):
         return obj.get_discovery_display()
 
