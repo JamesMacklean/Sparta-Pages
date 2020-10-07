@@ -499,7 +499,8 @@ def sparta_student_module_timestamps(request, profile_id, course_id, format=None
         err_data = {"error": "not_found", "message": msg}
         return Response(err_data, status=status.HTTP_404_NOT_FOUND)
 
-    modules = StudentModule.objects.filter(course_id=course_key, student=user)
+    student_modules = StudentModule.objects.filter(
+        course_id=course_key, student=user)
 
     course_module = student_modules.filter(module_type='course').order_by('created').first()
     if course_module:
