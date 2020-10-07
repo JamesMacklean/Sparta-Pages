@@ -5,6 +5,7 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 
 from courseware.models import StudentModule
+from lms.djangoapps.certificates.api import get_certificate_for_user
 from lms.djangoapps.certificates.models import certificate_status_for_student
 from lms.djangoapps.grades.course_grade_factory import CourseGradeFactory
 from opaque_keys.edx.keys import CourseKey
@@ -322,6 +323,35 @@ def pathway_application_detail(request, id, format=None):
 
 @api_view(['GET'])
 @authentication_classes([])
+def profile_pathway_application_detail(request, id, format=None):
+    try:
+        authenticate_request(request)
+    except UnauthorizedError as e:
+        data = {"error": "unauthorized",
+                "error_description": "Request unauthorized: {}".format(str(e))}
+        return Response(data, status=status.HTTP_401_UNAUTHORIZED)
+
+    try:
+        sparta_profile = SpartaProfile.objects.get(id=id)
+    except SpartaProfile.DoesNotExist:
+        msg = "SpartaProfile with id {} not found.".format(id)
+        err_data = {"error": "not_found", "message": msg}
+        return Response(err_data, status=status.HTTP_404_NOT_FOUND)
+    
+    applications = sparta_profile.applications.filter(status="AP")
+
+    if not applications.exists():
+        msg = "No approved PathwayApplications for profile id {} found.".format(id)
+        err_data = {"error": "not_found", "message": msg}
+        return Response(err_data, status=status.HTTP_404_NOT_FOUND)
+
+    app = applications.order_by('-created_at')[0]
+    data = PathwayApplicationSerializer(app).data
+    return Response(data, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+@authentication_classes([])
 def grade_list(request, course_id, format=None):
     authenticate_request(request)
     data = {}
@@ -427,4 +457,71 @@ def pathway_list(request, format=None):
         queryset = queryset[:lim]
 
     data = PathwaySerializer(queryset, many=True).data
+    return Response(data, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+@authentication_classes([])
+def sparta_student_module_timestamps(request, profile_id, course_id, format=None):
+    """
+    /sparta/api/v1/profiles/:id/courses/:id/timestamps
+    """
+    try:
+        authenticate_request(request)
+    except UnauthorizedError as e:
+        data = {"error": "unauthorized",
+                "error_description": "Request unauthorized: {}".format(str(e))}
+        return Response(data, status=status.HTTP_401_UNAUTHORIZED)
+    
+    try:
+        sparta_profile = SpartaProfile.objects.get(id=profile_id)
+    except SpartaProfile.DoesNotExist:
+        msg = "SpartaProfile with id {} not found.".format(profile_id)
+        err_data = {"error": "not_found", "message": msg}
+        return Response(err_data, status=status.HTTP_404_NOT_FOUND)
+    else:
+        user = sparta_profile.user
+
+    try:
+        course_key = CourseKey.from_string(course_id)
+    except Exception as e:
+        msg = str(e)
+        err_data = {"error": "course_key_error", "message": msg}
+        return Response(err_data, status=status.HTTP_400_BAD_REQUEST)
+
+    try:
+        enrollment = CourseEnrollment.objects.get(
+            user=user,
+            course_id=course_key
+        )
+    except CourseEnrollment.DoesNotExist:
+        msg = "CourseEnrollment for SpartaProfile with id {} not found.".format(profile_id)
+        err_data = {"error": "not_found", "message": msg}
+        return Response(err_data, status=status.HTTP_404_NOT_FOUND)
+
+    modules = StudentModule.objects.filter(course_id=course_key, student=user)
+
+    course_module = student_modules.filter(module_type='course').order_by('created').first()
+    if course_module:
+        earliest_created = course_module.created.strftime('%Y-%m-%dT%H:%M:%S.000Z')
+    else:
+        earliest_created = None
+
+    latest_student_module = student_modules.order_by('-modified').first()
+    if latest_student_module:
+        latest_modified = latest_student_module.modified.strftime('%Y-%m-%dT%H:%M:%S.000Z')
+    else:
+        latest_modified = None
+
+    cert = get_certificate_for_user(e.user.username, course_key)
+    if cert is not None and cert['status'] == "downloadable":
+        date_completed = cert['created'].strftime('%Y-%m-%dT%H:%M:%S.000Z')
+    else:
+        date_completed = None
+
+    data = {
+        "earliest_created": earliest_created,
+        "latest_modified": latest_modified,
+        "date_completed": date_completed
+    }
     return Response(data, status=status.HTTP_200_OK)
