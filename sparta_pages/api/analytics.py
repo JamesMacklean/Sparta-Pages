@@ -514,7 +514,7 @@ def sparta_student_module_timestamps(request, profile_id, course_id, format=None
     else:
         latest_modified = None
 
-    cert = get_certificate_for_user(e.user.username, course_key)
+    cert = get_certificate_for_user(user.username, course_key)
     if cert is not None and cert['status'] == "downloadable":
         date_completed = cert['created'].strftime('%Y-%m-%dT%H:%M:%S.000Z')
     else:
