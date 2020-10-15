@@ -831,7 +831,7 @@ def export_sparta_data_for_dashboard(email_address=None):
     for application in PathwayApplication.objects.all():
         user = application.profile.user
         student_id = user.id
-        
+
         for course in application.pathway.courses.filter(is_active=True):
             course_id = course.course_id
 
@@ -863,8 +863,8 @@ def export_sparta_data_for_dashboard(email_address=None):
             else:
                 enrollment_track = enrollment.mode
 
-            verification_status = IDVerificationService.verification_status_for_user(user, enrollment_track)       
-            
+            verification_status = IDVerificationService.verification_status_for_user(user, enrollment_track)
+
             course_grade = CourseGradeFactory().read(user, get_course_by_id(course_key))
             grade_summary = course_grade.summary
             course_grade_percent = grade_summary['percent']

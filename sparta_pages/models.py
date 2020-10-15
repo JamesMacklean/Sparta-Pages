@@ -453,9 +453,3 @@ class StudentCouponRecord(models.Model):
         if enrollment:
             return enrollment.is_active and enrollment.mode == "verified"
         return False
-
-class SixMonthAccess(models.Model):
-    """
-    """
-    enrollment = models.ForeignKey('CourseEnrollment', on_delete=models.CASCADE)
-    reenroll = models.DateTimeField()
