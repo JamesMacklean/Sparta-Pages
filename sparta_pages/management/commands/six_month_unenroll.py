@@ -4,7 +4,7 @@ from student.models import CourseEnrollment, UserProfile
 from django.core.management.base import BaseCommand, CommandError
 from django.core.mail import send_mail, EmailMessage
 
-from sparta_pages.models import SixMonthAccess
+from sparta_pages.models import SpartaReEnrollment
 
 
 class Command(BaseCommand):
@@ -29,12 +29,6 @@ class Command(BaseCommand):
         course_id = options.get('course', None)
         user = options.get('user', None)
 
-        enrollments = CourseEnrollment.objects.filter(
-            course_id=course_key,
-            is_active=True,
-            created=created
-        )
-
         if course_id is None:
             raise CommandError("Arguments course_id -c --course is required.")
 
@@ -43,16 +37,24 @@ class Command(BaseCommand):
         except Exception as e:
             raise CommandError("Course does not exist: {}".format(str(e)))
 
+        tnow = datetime.datetime.now()
+        date_filter = tnow - datetime.timedelta(months=6)
+
+        enrollments = CourseEnrollment.objects.filter(
+            course_id=course_key,
+            is_active=True,
+            created__gt=date_filter,
+        )
+
         for e in enrollments:
-            try:
-                check_date = SixMonthAccess.objects.get(reenroll=reenroll)
-            except SixMonthAccess.DoesNotExist:
-                check_date = CourseEnrollment.objects.get(created=e.created)
+            reenrollments = SpartaReEnrollment.objects.filter(enrollment=e)
+            if reenrollments.exists()
+                lastest_reenrollment = reenrollment.order_by('-created').first()
+                check_date = lastest_reenrollment
 
-            tnow = datetime.now()
-            tdelta = check_date - tnow
+            tdelta = tnow - check_date
 
-            if CourseEnrollment.objects.get(is_active=e.is_active) == True and tdelta.months >= 6
+            if tdelta.months >= 6
                 CourseEnrollment.unenroll(e.user, course_id, skip_refund=True)
                 email = EmailMessage(
                     'Course Six Month Access Unenrollment',
