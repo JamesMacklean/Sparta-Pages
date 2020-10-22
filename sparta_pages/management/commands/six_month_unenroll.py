@@ -48,15 +48,15 @@ class Command(BaseCommand):
 
         for e in enrollments:
             reenrollments = SpartaReEnrollment.objects.filter(enrollment=e)
-            if reenrollments.exists()
+            if reenrollments.exists():
                 lastest_reenrollment = reenrollments.order_by('-reenroll_date').first()
                 check_date = lastest_reenrollment.reenroll_date
-            else
+            else:
                 check_date = e.created
 
             tdelta = tnow - check_date
 
-            if tdelta.months >= 6
+            if tdelta.months >= 6:
                 CourseEnrollment.unenroll(e.user, course_id, skip_refund=True)
                 email = EmailMessage(
                     'Course Six Month Access Unenrollment',
