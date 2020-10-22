@@ -458,4 +458,4 @@ class SpartaReEnrollment(models.Model):
     """
     """
     enrollment = models.ForeignKey('CourseEnrollment', on_delete=models.CASCADE)
-    renroll_date = models.DateTimeField()
+    reenroll_date = models.DateTimeField(auto_now_add=True)

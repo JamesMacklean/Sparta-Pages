@@ -43,14 +43,16 @@ class Command(BaseCommand):
         enrollments = CourseEnrollment.objects.filter(
             course_id=course_key,
             is_active=True,
-            created__gt=date_filter,
+            created__lt=date_filter,
         )
 
         for e in enrollments:
             reenrollments = SpartaReEnrollment.objects.filter(enrollment=e)
             if reenrollments.exists()
-                lastest_reenrollment = reenrollment.order_by('-created').first()
-                check_date = lastest_reenrollment
+                lastest_reenrollment = reenrollments.order_by('-reenroll_date').first()
+                check_date = lastest_reenrollment.reenroll_date
+            else
+                check_date = e.created
 
             tdelta = tnow - check_date
 
