@@ -41,7 +41,7 @@ class Command(BaseCommand):
             raise CommandError("Course does not exist: {}".format(str(e)))
 
         tnow = timezone.now()
-        date_filter = tnow - datetime.timedelta(months=6)
+        date_filter = tnow - datetime.timedelta(days=180)
 
         enrollments = CourseEnrollment.objects.filter(
             course_id=course_key,
