@@ -457,5 +457,5 @@ class StudentCouponRecord(models.Model):
 class SpartaReEnrollment(models.Model):
     """
     """
-    enrollment = models.ForeignKey('CourseEnrollment', on_delete=models.CASCADE)
+    enrollment = models.ForeignKey(CourseEnrollment, on_delete=models.CASCADE)
     reenroll_date = models.DateTimeField(auto_now_add=True)
