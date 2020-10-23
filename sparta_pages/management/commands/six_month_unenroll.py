@@ -42,15 +42,25 @@ class Command(BaseCommand):
 
         tnow = timezone.now()
         date_filter = tnow - datetime.timedelta(days=183)
+        self.stdout.write("date_filter: {}".format(date_filter))
 
-        enrollments = CourseEnrollment.objects.filter(
-            course_id=course_key,
-            is_active=True,
-            created__lt=date_filter,
-        )
+        if user is None:
+            enrollments = CourseEnrollment.objects.filter(
+                course_id=course_key,
+                is_active=True,
+                created__lt=date_filter,
+            )
+        else:
+            enrollments = CourseEnrollment.objects.filter(
+                course_id=course_key,
+                is_active=True,
+                created__lt=date_filter,
+                user__username=user
+            )
 
         for e in enrollments:
             reenrollments = SpartaReEnrollment.objects.filter(enrollment=e)
+            self.stdout.write("e.user.username: {}".format(e.user.username))
             if reenrollments.exists():
                 lastest_reenrollment = reenrollments.order_by('-reenroll_date').first()
                 check_date = lastest_reenrollment.reenroll_date
@@ -58,13 +68,19 @@ class Command(BaseCommand):
                 check_date = e.created
 
             tdelta = tnow - check_date
+            self.stdout.write("tdelta: {}".format(tdelta))
 
-            if tdelta.months >= 6:
-                CourseEnrollment.unenroll(e.user, course_id, skip_refund=True)
-                email = EmailMessage(
-                    'Course Six Month Access Unenrollment',
-                    'You have been unenrolled',
-                    'learn@coursebank.ph',
-                    [e.user.email,],
-                )
-                email.send()
+            try:
+                if tdelta.months >= 6:
+                    CourseEnrollment.unenroll(e.user, course_id, skip_refund=True)
+                    email = EmailMessage(
+                        'Course Six Month Access Unenrollment',
+                        'You have been unenrolled',
+                        'learn@coursebank.ph',
+                        [e.user.email,],
+                    )
+                    email.send()
+            except Exception as e:
+                raise CommandError("Error in unenrolling learner: {}".format(str(e)))
+            else:
+                self.stdout.write(self.style.SUCCESS("Successfully unenrolled learner."))
