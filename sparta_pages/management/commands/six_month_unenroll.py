@@ -1,3 +1,6 @@
+from datetime import datetime
+from django.utils import timezone
+
 from django.contrib.auth.models import User
 from opaque_keys.edx.keys import CourseKey
 from student.models import CourseEnrollment, UserProfile
