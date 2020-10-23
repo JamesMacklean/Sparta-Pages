@@ -71,7 +71,7 @@ class Command(BaseCommand):
             self.stdout.write("tdelta: {}".format(tdelta))
 
             try:
-                if tdelta.months >= 6:
+                if tdelta.days >= 183:
                     CourseEnrollment.unenroll(e.user, course_id, skip_refund=True)
                     email = EmailMessage(
                         'Course Six Month Access Unenrollment',
