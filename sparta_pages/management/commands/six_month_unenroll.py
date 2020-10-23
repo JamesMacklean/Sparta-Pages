@@ -73,7 +73,7 @@ class Command(BaseCommand):
 
             try:
                 if tdelta.days >= 183:
-                    CourseEnrollment.unenroll(e.user, course_id, skip_refund=True)
+                    CourseEnrollment.unenroll(e.user, course_key, skip_refund=True)
                     email = EmailMessage(
                         'Course Six Month Access Unenrollment',
                         'You have been unenrolled',
