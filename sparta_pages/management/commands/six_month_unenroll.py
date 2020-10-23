@@ -40,7 +40,7 @@ class Command(BaseCommand):
         except Exception as e:
             raise CommandError("Course does not exist: {}".format(str(e)))
 
-        tnow = datetime.datetime.now()
+        tnow = timezone.now()
         date_filter = tnow - datetime.timedelta(months=6)
 
         enrollments = CourseEnrollment.objects.filter(
