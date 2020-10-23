@@ -14,13 +14,13 @@ class Command(BaseCommand):
 
         parser.add_argument(
             '-c', '--course',
-            nargs=1,
+            type=str,
             required=True,
             help='course ID to unenroll the user from'
             )
         parser.add_argument(
             '-u', '--user',
-            nargs=1,
+            type=str,
             required=True,
             help='Username for user'
         )
