@@ -37,7 +37,7 @@ class Command(BaseCommand):
 
         try:
             course_key = CourseKey.from_string(course_id)
-            self.stdout.write("course_key: {}".format(courer_key))
+            self.stdout.write("course_key: {}".format(course_key))
         except Exception as e:
             raise CommandError("Course does not exist: {}".format(str(e)))
 
