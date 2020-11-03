@@ -27,10 +27,17 @@ class Command(BaseCommand):
             required=True,
             help='Username for user'
         )
+        parser.add_argument(
+            '-m', '--mins',
+            type=str,
+            required=True,
+            help='Course time limit'
+        )
 
     def handle(self, *args, **options):
         course_id = options.get('course', None)
         user = options.get('user', None)
+        sec = options.get('secs', None)
 
         if course_id is None:
             raise CommandError("Arguments course_id -c --course is required.")
@@ -41,8 +48,12 @@ class Command(BaseCommand):
         except Exception as e:
             raise CommandError("Course does not exist: {}".format(str(e)))
 
+        if sec is None:
+            date_filter = tnow - datetime.timedelta(days=183)
+        else:
+            date_filter = tnow - datetime.timedelta(seconds=sec)
+
         tnow = timezone.now()
-        date_filter = tnow - datetime.timedelta(days=183)
         self.stdout.write("date_filter: {}".format(date_filter))
 
         if user is None:
@@ -72,7 +83,7 @@ class Command(BaseCommand):
             self.stdout.write("tdelta: {}".format(tdelta))
 
             try:
-                if tdelta.days >= 183:
+                if tdelta.seconds >= sec:
                     CourseEnrollment.unenroll(e.user, course_key, skip_refund=True)
                     email = EmailMessage(
                         'Course Six Month Access Unenrollment',
