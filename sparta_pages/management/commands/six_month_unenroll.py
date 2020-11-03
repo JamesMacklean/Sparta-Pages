@@ -28,7 +28,7 @@ class Command(BaseCommand):
             help='Username for user'
         )
         parser.add_argument(
-            '-m', '--mins',
+            '-s', '--secs',
             type=str,
             required=True,
             help='Course time limit'
@@ -37,7 +37,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         course_id = options.get('course', None)
         user = options.get('user', None)
-        sec = options.get('secs', None)
+        sec = options.get('secs', 183*24*60*60)
 
         if course_id is None:
             raise CommandError("Arguments course_id -c --course is required.")
@@ -48,11 +48,7 @@ class Command(BaseCommand):
         except Exception as e:
             raise CommandError("Course does not exist: {}".format(str(e)))
 
-        if sec is None:
-            date_filter = tnow - datetime.timedelta(days=183)
-        else:
-            date_filter = tnow - datetime.timedelta(seconds=sec)
-
+        date_filter = tnow - datetime.timedelta(seconds=sec)
         tnow = timezone.now()
         self.stdout.write("date_filter: {}".format(date_filter))
 
