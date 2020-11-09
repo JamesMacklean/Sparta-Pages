@@ -48,8 +48,8 @@ class Command(BaseCommand):
         except Exception as e:
             raise CommandError("Course does not exist: {}".format(str(e)))
 
-        date_filter = tnow - datetime.timedelta(seconds=sec)
         tnow = timezone.now()
+        date_filter = tnow - datetime.timedelta(seconds=sec)
         self.stdout.write("date_filter: {}".format(date_filter))
 
         if user is None:
