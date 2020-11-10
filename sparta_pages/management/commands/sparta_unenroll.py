@@ -29,7 +29,7 @@ class Command(BaseCommand):
         )
         parser.add_argument(
             '-s', '--secs',
-            type=str,
+            type=int,
             required=True,
             help='Course time limit'
         )
@@ -49,7 +49,7 @@ class Command(BaseCommand):
             raise CommandError("Course does not exist: {}".format(str(e)))
 
         tnow = timezone.now()
-        date_filter = tnow - datetime.timedelta(seconds=int(sec))
+        date_filter = tnow - datetime.timedelta(seconds=sec)
         self.stdout.write("date_filter: {}".format(date_filter))
 
         if user is None:
@@ -79,7 +79,7 @@ class Command(BaseCommand):
             self.stdout.write("tdelta: {}".format(tdelta))
 
             try:
-                if tdelta.seconds >= int(sec):
+                if tdelta.seconds >= sec:
                     CourseEnrollment.unenroll(e.user, course_key, skip_refund=True)
                     email = EmailMessage(
                         'Course Six Month Access Unenrollment',

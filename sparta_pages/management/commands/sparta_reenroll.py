@@ -4,6 +4,7 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 from opaque_keys.edx.keys import CourseKey
 from student.models import CourseEnrollment, UserProfile
+from course_modes.models import CourseMode
 from django.core.management.base import BaseCommand, CommandError
 from django.core.mail import send_mail, EmailMessage
 
@@ -22,7 +23,7 @@ class Command(BaseCommand):
             help='course ID to unenroll the user from'
             )
         parser.add_argument(
-            '-u', '--user',
+            '-u', '--username',
             type=str,
             required=True,
             help='Username for user'
@@ -37,7 +38,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         course_id = options.get('course', None)
-        user = options.get('user', None)
+        username = options.get('username', None)
         mode = options.get('mode', None)
 
         if course_id is None:
@@ -45,34 +46,35 @@ class Command(BaseCommand):
 
         try:
             course_key = CourseKey.from_string(course_id)
-            self.stdout.write("course_key: {}".format(course_key))
         except Exception as e:
             raise CommandError("Course does not exist: {}".format(str(e)))
 
         tnow = timezone.now()
 
-        if user is None:
-            enrollments = CourseEnrollment.objects.filter(
-                course_id=course_key,
-                is_active=True
-            )
-        else:
-            enrollments = CourseEnrollment.objects.filter(
-                course_id=course_key,
-                is_active=True,
-                user__username=user
-            )
-
-        for e in enrollments:
-            if mode is None:
-                use_mode = e.mode
-            else:
-                use_mode = mode
-
+        if username is not None:
             try:
-                CourseEnrollment.enroll(e.user, course_key, mode=use_mode, check_access=False, can_upgrade=False)
-                reenrollments = SpartaReEnrollment.objects.create(reenroll_date=tnow)
+                user = User.objects.get(username=username)
             except Exception as e:
                 raise CommandError("Error in reenrolling learner: {}".format(str(e)))
             else:
                 self.stdout.write(self.style.SUCCESS("Successfully reenrolled learner."))
+        else:
+            enrollments = CourseEnrollment.objects.filter(
+                course_id=course_key,
+                is_active=True
+            )
+            try:
+                for e in enrollments:
+                    if mode is None:
+                        course_mode = CourseMode.objects.filter(mode_slug=e)
+                        use_mode = e.course_mode
+                    else:
+                        use_mode = mode
+
+                    try:
+                        CourseEnrollment.enroll(e.user.username, course_key, mode=use_mode, check_access=False, can_upgrade=False)
+                        reenrollments = SpartaReEnrollment.objects.create(reenroll_date=tnow)
+                    except Exception as e:
+                        raise CommandError("Error in reenrolling learner: {}".format(str(e)))
+                    else:
+                        self.stdout.write(self.style.SUCCESS("Successfully reenrolled learner."))
