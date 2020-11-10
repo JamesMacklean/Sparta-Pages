@@ -55,7 +55,8 @@ class Command(BaseCommand):
 
         enrollments = CourseEnrollment.objects.filter(
             course_id=course_key,
-            is_active=True
+            is_active=True,
+            user__username=user
         )
 
         for e in enrollments:
@@ -68,6 +69,8 @@ class Command(BaseCommand):
                 if e.is_active == False:
                     CourseEnrollment.enroll(e.user, course_key, mode=use_mode, check_access=False, can_upgrade=False)
                     reenrollments = SpartaReEnrollment.objects.create(reenroll_date=tnow)
+                else:
+                    self.stdout.write(self.style.WARNING("User {} still has an active enrollment for this course.".format(e.user.username)))
             except Exception as e:
                 raise CommandError("Error in reenrolling learner: {}".format(str(e)))
             else:
