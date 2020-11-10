@@ -65,13 +65,13 @@ class Command(BaseCommand):
             else:
                 use_mode = mode
 
-            try:
-                if e.is_active == False:
+            if e.is_active == False:
+                try:
                     CourseEnrollment.enroll(e.user, course_key, mode=use_mode, check_access=False, can_upgrade=False)
                     reenrollments = SpartaReEnrollment.objects.create(reenroll_date=tnow)
+                except Exception as e:
+                    raise CommandError("Error in reenrolling learner: {}".format(str(e)))
                 else:
-                    self.stdout.write(self.style.WARNING("User {} still has an active enrollment for this course.".format(e.user.username)))
-            except Exception as e:
-                raise CommandError("Error in reenrolling learner: {}".format(str(e)))
+                    self.stdout.write(self.style.SUCCESS("Successfully reenrolled learner."))
             else:
-                self.stdout.write(self.style.SUCCESS("Successfully reenrolled learner."))
+                self.stdout.write(self.style.WARNING("User {} still has an active enrollment for this course.".format(e.user.username)))
