@@ -58,6 +58,8 @@ class Command(BaseCommand):
             user__username=user
         )
 
+        self.stdout.write("enrollments: {}".format(enrollments))
+
         for e in enrollments:
             if mode is None:
                 use_mode = e.mode
