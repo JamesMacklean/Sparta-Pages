@@ -31,7 +31,6 @@ class Command(BaseCommand):
         parser.add_argument(
             '-m', '--mode',
             type=str,
-            required=False,
             help='course enrollment mode to enroll user in'
         )
 
