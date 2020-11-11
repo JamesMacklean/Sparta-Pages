@@ -58,7 +58,8 @@ class Command(BaseCommand):
             user__username=user
         )
 
-        self.stdout.write("enrollments: {}".format(enrollments))
+        if enrollments.exists() == False:
+            self.stdout.write("No enrollments found. course id: {}. user__username: {}".format(course_key,user))
 
         for e in enrollments:
             if mode is None:
