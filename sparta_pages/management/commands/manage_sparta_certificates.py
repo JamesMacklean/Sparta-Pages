@@ -111,6 +111,7 @@ class Command(BaseCommand):
                     ended_courses.append(course_key)
 
         for course_key in ended_courses:
+            self.stdout.write("Current generating certificate: {}".format(course_key))
             # prefetch all chapters/sequentials by saying depth=2
             course = modulestore().get_course(course_key, depth=2)
 
@@ -205,3 +206,4 @@ class Command(BaseCommand):
                 ),
                 text_type(course_key)
             )
+            self.stdout.write("Finished generating certificate: {}".format(course_key))

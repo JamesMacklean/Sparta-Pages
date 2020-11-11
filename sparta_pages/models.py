@@ -453,3 +453,9 @@ class StudentCouponRecord(models.Model):
         if enrollment:
             return enrollment.is_active and enrollment.mode == "verified"
         return False
+
+class SpartaReEnrollment(models.Model):
+    """
+    """
+    enrollment = models.ForeignKey(CourseEnrollment, on_delete=models.CASCADE)
+    reenroll_date = models.DateTimeField(auto_now_add=True)
