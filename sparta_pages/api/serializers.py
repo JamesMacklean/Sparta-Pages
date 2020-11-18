@@ -1,4 +1,4 @@
-from django.utils import timezone  
+from django.utils import timezone
 
 from rest_framework import serializers
 
@@ -28,7 +28,7 @@ class SpartaCourseSerializer(serializers.ModelSerializer):
     class Meta:
         model = SpartaCourse
         fields = [
-            'id', 'course_id', 'pathway'            
+            'id', 'course_id', 'pathway'
         ]
         read_only_fields = fields
 
@@ -47,7 +47,7 @@ class SpartaProfileSerializer(serializers.ModelSerializer):
             'is_active'
             ]
         read_only_fields = fields
-    
+
     def get_age(self, obj):
         try:
             yob = obj.user.profile.year_of_birth
@@ -82,13 +82,13 @@ class ExtendedSpartaProfileSerializer(serializers.ModelSerializer):
             'other_attain', 'is_employed', 'grad_degree'
             ]
         read_only_fields = fields
-    
+
     def get_affiliation(self, obj):
         return obj.get_affiliation_display()
-    
+
     def get_attainment(self, obj):
         return obj.get_attainment_display()
-    
+
     def get_grad_degree(self, obj):
         return obj.get_grad_degree_display()
 
@@ -97,6 +97,7 @@ class EducationProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = EducationProfile
         fields = [
+            'id',
             'profile', 'degree', 'course', 'school', 'address',
             'started_at', 'graduated_at'
             ]
@@ -107,6 +108,7 @@ class EmploymentProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = EmploymentProfile
         fields = [
+            'id',
             'profile', 'affiliation', 'occupation', 'designation',
             'employer', 'address', 'started_at', 'ended_at'
             ]
@@ -123,9 +125,9 @@ class PathwayApplicationSerializer(serializers.ModelSerializer):
             'profile', 'pathway', 'status', 'created_at'
             ]
         read_only_fields = fields
-    
+
     def get_pathway(self, obj):
         return obj.pathway.name
-    
+
     def get_status(self, obj):
         return obj.get_status_display()
