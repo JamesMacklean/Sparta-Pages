@@ -57,7 +57,7 @@ class CustomAuth():
         if token_key != SECRET_TOKEN:
             return False
         return True
-    
+
     def authenticate(self, request):
         try:
             auth = self.basic_auth(request)
@@ -98,6 +98,8 @@ def sparta_profiles_list(request, format=None):
     result_data = []
     for p in queryset:
         sparta_profile_data = SpartaProfileSerializer(p).data
+        sparta_profile_data['username'] = p.user.username
+        sparta_profile_data['email'] = p.user.email
         try:
             esp = p.user.extended_sparta_profile
         except:
@@ -133,7 +135,7 @@ def sparta_profiles_detail(request, id, format=None):
         msg = "SpartaProfile with id {} not found.".format(id)
         err_data = {"error": "not_found", "message": msg}
         return Response(err_data, status=status.HTTP_404_NOT_FOUND)
-    
+
     try:
         esp = p.user.extended_sparta_profile
     except:
@@ -337,7 +339,7 @@ def profile_pathway_application_detail(request, id, format=None):
         msg = "SpartaProfile with id {} not found.".format(id)
         err_data = {"error": "not_found", "message": msg}
         return Response(err_data, status=status.HTTP_404_NOT_FOUND)
-    
+
     applications = sparta_profile.applications.filter(status="AP")
 
     if not applications.exists():
@@ -472,7 +474,7 @@ def sparta_student_module_timestamps(request, profile_id, course_id, format=None
         data = {"error": "unauthorized",
                 "error_description": "Request unauthorized: {}".format(str(e))}
         return Response(data, status=status.HTTP_401_UNAUTHORIZED)
-    
+
     try:
         sparta_profile = SpartaProfile.objects.get(id=profile_id)
     except SpartaProfile.DoesNotExist:

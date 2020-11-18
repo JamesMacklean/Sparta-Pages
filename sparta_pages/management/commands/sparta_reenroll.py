@@ -54,7 +54,7 @@ class Command(BaseCommand):
 
         enrollments = CourseEnrollment.objects.filter(
             course_id=course_key,
-            is_active=True,
+            is_active=False,
             user__username=user
         )
 

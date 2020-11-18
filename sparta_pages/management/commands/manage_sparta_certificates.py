@@ -164,6 +164,8 @@ class Command(BaseCommand):
                                 course=course,
                                 insecure=options['insecure']
                             )
+                            
+                            self.stdout.write("Generated certificate for User: {}".format(student.username))
 
                             if ret == 'generating':
                                 LOGGER.info(

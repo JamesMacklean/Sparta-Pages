@@ -32,7 +32,7 @@ urlpatterns = [
         name='analytics-sparta-education-profiles-list'),
     url(r'^sparta/api/v1/educationcredentials/(?P<id>\d+)$', analytics.education_credentials_detail,
         name='analytics-sparta-education-profiles-detail'),
-    url(r'^sparta/api/v1/profile/(?P<id>\d+)$/employmentcredentials$', analytics.employment_credentials_list,
+    url(r'^sparta/api/v1/profiles/(?P<id>\d+)/employmentcredentials$', analytics.employment_credentials_list,
         name='analytics-sparta-employment-profiles-list'),
     url(r'^sparta/api/v1/employmentcredentials/(?P<id>\d+)$',
         analytics.employment_credentials_detail, name='analytics-sparta-employment-profiles-detail'),
