@@ -4,7 +4,8 @@ from .models import (
     SpartaProfile, PathwayApplication, ExtendedSpartaProfile,
     EducationProfile, EmploymentProfile, TrainingProfile,
     Event, APIToken,
-    SpartaCoupon, StudentCouponRecord
+    SpartaCoupon, StudentCouponRecord,
+    SpartaReEnrollment
 )
 
 @admin.register(Pathway)
