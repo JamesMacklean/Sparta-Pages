@@ -30,17 +30,20 @@ class Command(BaseCommand):
         parser.add_argument(
             '-s', '--secs',
             type=int,
-            required=True,
+            required=False,
             help='Course time limit'
         )
 
     def handle(self, *args, **options):
         course_id = options.get('course', None)
         user = options.get('user', None)
-        sec = options.get('secs', 183*24*60*60)
+        sec = options.get('secs', None)
 
         if course_id is None:
             raise CommandError("Arguments course_id -c --course is required.")
+
+        if sec is None:
+            sec = 183*24*60*60
 
         try:
             course_key = CourseKey.from_string(course_id)

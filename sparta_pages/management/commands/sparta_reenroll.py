@@ -69,8 +69,8 @@ class Command(BaseCommand):
 
             if e.is_active == False:
                 try:
-                    CourseEnrollment.enroll(e.user, course_key, mode=use_mode, check_access=False, can_upgrade=False)
-                    reenrollments = SpartaReEnrollment.objects.create(reenroll_date=tnow)
+                    enrollment = CourseEnrollment.enroll(e.user, course_key, mode=use_mode, check_access=False)
+                    reenrollment = SpartaReEnrollment.objects.create(enrollment=enrollment,reenroll_date=tnow)
                 except Exception as e:
                     raise CommandError("Error in reenrolling learner: {}".format(str(e)))
                 else:
