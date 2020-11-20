@@ -30,6 +30,7 @@ class Command(BaseCommand):
         parser.add_argument(
             '-s', '--secs',
             type=int,
+            required=False,
             help='Course time limit'
         )
 
