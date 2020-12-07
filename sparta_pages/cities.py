@@ -1,8 +1,7 @@
 # coding=utf-8
 
-def get_municpality_choices():  
+def get_municpality_choices():
     MUNICIPALITIES = [
-        "---",
         "Abra, Bangued",
         "Abra, Boliney",
         "Abra, Bucay",
