@@ -947,24 +947,34 @@ def export_learner_pathway_progress(email_address=None):
 
     user_list = []
     for p in profiles:
-        application = p.applications.filter(status="AP").order_by('-created_at').first()
-        total_count = pathway_dict[application.pathway.name]
-        finished = 0
+        applications = p.applications.filter(status="AP")
+        if application.exists():
+            application = applications.order_by('-created_at').first()
 
-        for course in application.pathway.courses.all():
-            course_key = CourseKey.from_string(course.course_id)
+            total_count = pathway_dict[application.pathway.name]
+            finished = 0
 
-            cert = get_certificate_for_user(p.user.username, course_key)
+            for course in application.pathway.courses.all():
+                course_key = CourseKey.from_string(course.course_id)
 
-            if cert is not None:
-                finished += 1
+                cert = get_certificate_for_user(p.user.username, course_key)
 
-        user_list.append({
-            "username": p.user.username,
-            "email": p.user.email,
-            "pathway": application.pathway.name,
-            "progress": str(finished) + "/" + str(total_count)
-        })
+                if cert is not None:
+                    finished += 1
+
+            user_list.append({
+                "username": p.user.username,
+                "email": p.user.email,
+                "pathway": application.pathway.name,
+                "progress": str(finished) + "/" + str(total_count)
+            })
+        else:
+            user_list.append({
+                "username": p.user.username,
+                "email": p.user.email,
+                "pathway": "No Approved Application",
+                "progress": "0/0"
+            })
 
     file_name = '/home/ubuntu/tempfiles/export_learner_pathway_progress_{}.csv'.format(tnow)
     with open(file_name, mode='w') as csv_file:
