@@ -934,3 +934,60 @@ def export_sparta_data_for_dashboard(email_address=None):
         )
         email.attach_file(file_name)
         email.send()
+
+def export_learner_pathway_progress(email_address=None):
+    """"""
+    profiles = SpartaProfile.objects.prefetch_related('applications')
+
+    pathway_dict = {}
+    for pathway in Pathway.objects.all():
+        pathway_dict[pathway.name] = SpartaCourse.objects.filter(pathway=pathway).count()
+
+    user_list = []
+    for p in profiles:
+        application = p.applications.filter(status="AP").order_by('-created_at').first()
+        total_count = pathway_dict[application.pathway.name]
+        finished = 0
+
+        for course in application.pathway.courses.all()
+            course_key = CourseKey.from_string(course.course_id)
+
+            cert = get_certificate_for_user(p.user.username, course_key)
+
+            if cert is not None:
+                finished += 1
+
+        user_list.append({
+            "username": p.user.username,
+            "email": p.user.email,
+            "pathway": application.pathway.name,
+            "progress": str(finished) + "/" + str(total_count)
+        })
+
+    file_name = '/home/ubuntu/tempfiles/export_learner_pathway_progress_{}.csv'.format(tnow)
+    with open(file_name, mode='w') as csv_file:
+        writer = unicodecsv.writer(csv_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL,  encoding='utf-8')
+        writer.writerow([
+            'username',
+            'email',
+            'pathway',
+            'progress'
+            ])
+
+        for u in user_list:
+            writer.writerow([
+                u['username'],
+                u['email'],
+                u['pathway'],
+                u['progress'],
+            ])
+
+    if email_address:
+        email = EmailMessage(
+            'Coursebank - SPARTA Learner Pathway Progress',
+            'Attached file of SPARTA Learner Pathway Progress (as of {})'.format(tnow),
+            'no-reply-sparta-user-logins@coursebank.ph',
+            [email_address,],
+        )
+        email.attach_file(file_name)
+        email.send()
