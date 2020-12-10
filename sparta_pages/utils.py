@@ -951,7 +951,7 @@ def export_learner_pathway_progress(email_address=None):
         total_count = pathway_dict[application.pathway.name]
         finished = 0
 
-        for course in application.pathway.courses.all()
+        for course in application.pathway.courses.all():
             course_key = CourseKey.from_string(course.course_id)
 
             cert = get_certificate_for_user(p.user.username, course_key)
