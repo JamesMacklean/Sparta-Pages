@@ -948,7 +948,7 @@ def export_learner_pathway_progress(email_address=None):
     user_list = []
     for p in profiles:
         applications = p.applications.filter(status="AP")
-        if application.exists():
+        if applications.exists():
             application = applications.order_by('-created_at').first()
 
             total_count = pathway_dict[application.pathway.name]
