@@ -966,14 +966,14 @@ def export_learner_pathway_progress(email_address=None):
                 "username": p.user.username,
                 "email": p.user.email,
                 "pathway": application.pathway.name,
-                "progress": str(finished) + "/" + str(total_count)
+                "progress": str(finished) + " out of " + str(total_count)
             })
         else:
             user_list.append({
                 "username": p.user.username,
                 "email": p.user.email,
                 "pathway": "No Approved Application",
-                "progress": "0/0"
+                "progress": "N/A"
             })
 
     file_name = '/home/ubuntu/tempfiles/export_learner_pathway_progress_{}.csv'.format(tnow)
