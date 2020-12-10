@@ -937,6 +937,8 @@ def export_sparta_data_for_dashboard(email_address=None):
 
 def export_learner_pathway_progress(email_address=None):
     """"""
+    tnow = datetime.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
+
     profiles = SpartaProfile.objects.prefetch_related('applications')
 
     pathway_dict = {}
