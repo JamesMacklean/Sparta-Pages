@@ -951,11 +951,11 @@ def export_learner_pathway_progress(email_address=None, date_from=None, date_to=
     user_list = []
     for p in profiles:
         if date_from:
-            applications = applications.filter(created_at__gte=date_from,status="AP")
+            applications = p.applications.filter(created_at__gte=date_from,status="AP")
             datefrom_str = date_from.strftime('%Y-%m-%dT%H:%M:%S.000Z')
 
         if date_to:
-            applications = applications.filter(created_at__lte=date_to,status="AP")
+            applications = p.applications.filter(created_at__lte=date_to,status="AP")
             dateto_str = date_to.strftime('%Y-%m-%dT%H:%M:%S.000Z')
 
         if applications.exists():
