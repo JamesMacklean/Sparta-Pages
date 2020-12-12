@@ -935,11 +935,14 @@ def export_sparta_data_for_dashboard(email_address=None):
         email.attach_file(file_name)
         email.send()
 
-def export_learner_pathway_progress(email_address=None):
+def export_learner_pathway_progress(email_address=None, date_from=None, date_to=None):
     """"""
     tnow = datetime.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
 
     profiles = SpartaProfile.objects.prefetch_related('applications')
+
+    datefrom_str = ""
+    dateto_str = ""
 
     pathway_dict = {}
     for pathway in Pathway.objects.all():
@@ -947,7 +950,14 @@ def export_learner_pathway_progress(email_address=None):
 
     user_list = []
     for p in profiles:
-        applications = p.applications.filter(status="AP")
+        if date_from:
+            applications = applications.filter(created_at__gte=date_from,status="AP")
+            datefrom_str = date_from.strftime('%Y-%m-%dT%H:%M:%S.000Z')
+
+        if date_to:
+            applications = applications.filter(created_at__lte=date_to,status="AP")
+            dateto_str = date_to.strftime('%Y-%m-%dT%H:%M:%S.000Z')
+
         if applications.exists():
             application = applications.order_by('-created_at').first()
 
@@ -994,10 +1004,15 @@ def export_learner_pathway_progress(email_address=None):
                 u['progress'],
             ])
 
+    if datefrom_str or dateto_str:
+        date_range = ' for date range: {} to {}'.format(datefrom_str, dateto_str)
+    else:
+        date_range = ""
+
     if email_address:
         email = EmailMessage(
             'Coursebank - SPARTA Learner Pathway Progress',
-            'Attached file of SPARTA Learner Pathway Progress (as of {})'.format(tnow),
+            'Attached file of SPARTA Learner Pathway Progress (as of {})'.format(date_range),
             'no-reply-sparta-user-logins@coursebank.ph',
             [email_address,],
         )
