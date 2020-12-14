@@ -180,10 +180,14 @@ def assign_coupons_to_single_student(student):
 def assign_coupons_to_students():
     """"""
     profiles = SpartaProfile.objects.filter(is_active=True)
+    count = 0
+    total = profiles.count()
     for student in profiles:
         logger.info('Starting to assign coupons for student {}...'.format(student.user.username))
         assign_coupons_to_single_student(student)
         logger.info('Finished assigning coupons for student {}!'.format(student.user.username))
+        count += 1
+        self.stdout.write("Progress: {} out of {} students".format(count, total))
 
 
 def email_sparta_student_coupon_records(email=None, pathway=None):
