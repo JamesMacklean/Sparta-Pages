@@ -1059,12 +1059,12 @@ def export_learner_account_information(course_id, email_address=None):
 
                 if cert is not None:
                     course_status = "Complete"
-                    final_grade = grade.summary.get('percent', 0.0)
+                    final_grade = str(grade.summary.get('percent', 0.0))
                     cert_status = "Generated"
 
                 elif cert is None and enrollments.exists():
                     course_status = "In Progress"
-                    final_grade = grade.summary.get('percent', 0.0)
+                    final_grade = str(grade.summary.get('percent', 0.0))
                     cert_status = ""
 
             except CourseEnrollment.DoesNotExist:
