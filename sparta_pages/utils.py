@@ -1060,7 +1060,7 @@ def export_learner_account_information(course_id, email_address=None):
                     raise Exception("Cert error: {}".format(str(e)))
 
                 try:
-                    grade = CourseGradeFactory().read(u.username, course_key=course_key)
+                    grade = CourseGradeFactory().read(u, course_key=course_key)
                 except Exception as e:
                     raise Exception("Grade error: {}".format(str(e)))
 
