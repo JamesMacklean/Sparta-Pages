@@ -1048,7 +1048,7 @@ def export_learner_account_information(course_id, email_address=None):
                     sparta_status = "No Pathway Application"
                     pathway = ""
 
-            except u.sparta_profile.DoesNotExist:
+            except SpartaProfile.DoesNotExist:
                 sparta_status = "No SPARTA Account"
                 pathway = ""
 
@@ -1067,10 +1067,10 @@ def export_learner_account_information(course_id, email_address=None):
                     final_grade = grade.summary.get('percent', 0.0)
                     cert_status = ""
 
-                else:
-                    course_status = ""
-                    final_grade = ""
-                    cert_status = ""
+            except CourseEnrollment.DoesNotExist:
+                course_status = "Not Enrolled"
+                final_grade = ""
+                cert_status = ""
         else:
             acc_status = "Not Activated"
             sparta_status = ""
