@@ -15,6 +15,7 @@ from lms.djangoapps.verify_student.services import IDVerificationService
 from opaque_keys.edx.keys import CourseKey
 from openedx.core.djangoapps.content.course_overviews.models import CourseOverview
 from student.models import CourseEnrollment
+from django.contrib.auth.models import User
 
 from .analytics import OverallAnalytics, PathwayAnalytics
 from .api.utils import get_sparta_course_id_list
@@ -1017,6 +1018,110 @@ def export_learner_pathway_progress(email_address=None, date_from=None, date_to=
         email = EmailMessage(
             'Coursebank - SPARTA Learner Pathway Progress',
             'Attached file of SPARTA Learner Pathway Progress (as of {})'.format(date_range),
+            'no-reply-sparta-user-logins@coursebank.ph',
+            [email_address,],
+        )
+        email.attach_file(file_name)
+        email.send()
+
+def export_learner_account_information(course_id, email_address=None):
+    """"""
+    tnow = datetime.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
+    course_key = CourseKey.from_string(course_id)
+    users = User.objects.select_related('sparta_profile').prefetch_related('courseenrollment_set')
+
+    user_list = []
+    for u in users:
+        if u.is_active == True:
+            acc_status = "Activated"
+
+            try:
+                profile = u.sparta_profile
+                applications = profile.applications.all()
+
+                if applications.exists():
+                    application = applications.order_by('-created_at').last()
+                    sparta_status = applications.status
+                    pathway = application.pathway.name
+
+                else:
+                    sparta_status = "No Pathway Application"
+                    pathway = ""
+
+            except u.sparta_profile.DoesNotExist:
+                sparta_status = "No SPARTA Account"
+                pathway = ""
+
+            try:
+                enrollments = u.courseenrollment_set.filter(course__id=course_key)
+                cert = get_certificate_for_user(u.username, course_key)
+                grade = CourseGradeFactory().read(u.username, course_key=course_key)
+
+                if cert is not None:
+                    course_status = "Complete"
+                    final_grade = grade.summary.get('percent', 0.0)
+                    cert_status = "Generated"
+
+                elif cert is None and enrollments.exists():
+                    course_status = "In Progress"
+                    final_grade = grade.summary.get('percent', 0.0)
+                    cert_status = ""
+
+                else:
+                    course_status = ""
+                    final_grade = ""
+                    cert_status = ""
+        else:
+            acc_status = "Not Activated"
+            sparta_status = ""
+            pathway = ""
+            course_status = ""
+            final_grade = ""
+            cert_status = ""
+
+        user_list.append({
+            "username": u.username,
+            "email": u.email,
+            "account status": acc_status,
+            "sparta status": sparta_status,
+            "pathway": pathway,
+            "course status": course_status,
+            "final grade": final_grade,
+            "cert status": cert_status
+        })
+
+
+
+    file_name = '/home/ubuntu/tempfiles/export_learner_account_information_{}.csv'.format(tnow)
+    with open(file_name, mode='w') as csv_file:
+        writer = unicodecsv.writer(csv_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL,  encoding='utf-8')
+        writer.writerow([
+            'Username',
+            'Email',
+            'Account Status',
+            'SPARTA Status',
+            'Pathway',
+            'Course Status',
+            'Grade',
+            'Certificate',
+            ])
+
+        for u in user_list:
+            writer.writerow([
+                u['username'],
+                u['email'],
+                u['account status'],
+                u['sparta status'],
+                u['pathway'],
+                u['course status'],
+                u['final grade'],
+                u['cert status'],
+            ])
+
+    if email_address:
+        email = EmailMessage(
+            'Coursebank - Learner Account Information',
+            'Attached file of Learner Account Information for {} (as of {})'.format(course_key,tnow),
             'no-reply-sparta-user-logins@coursebank.ph',
             [email_address,],
         )
