@@ -1028,7 +1028,7 @@ def export_learner_account_information(course_id, email_address=None):
     """"""
     tnow = datetime.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
     course_key = CourseKey.from_string(course_id)
-    users = User.objects.select_related('sparta_profile').prefetch_related('courseenrollment_set')
+    users = User.objects.filter(courseenrollment__course__id=course_key).select_related('sparta_profile').prefetch_related('courseenrollment_set')
 
     user_list = []
     for u in users:
