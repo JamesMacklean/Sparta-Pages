@@ -1054,8 +1054,15 @@ def export_learner_account_information(course_id, email_address=None):
 
             try:
                 enrollments = u.courseenrollment_set.filter(course__id=course_key)
-                cert = get_certificate_for_user(u.username, course_key)
-                grade = CourseGradeFactory().read(u.username, course_key=course_key)
+                try:
+                    cert = get_certificate_for_user(u.username, course_key)
+                except Exception as e:
+                    raise Exception("Cert error: {}".format(str(e)))
+
+                try:
+                    grade = CourseGradeFactory().read(u.username, course_key=course_key)
+                except Exception as e:
+                    raise Exception("Grade error: {}".format(str(e)))
 
                 if cert is not None:
                     course_status = "Complete"
