@@ -1041,7 +1041,7 @@ def export_learner_account_information(course_id, email_address=None):
 
                 if applications.exists():
                     application = applications.order_by('-created_at').last()
-                    sparta_status = applications.status
+                    sparta_status = application.status
                     pathway = application.pathway.name
 
                 else:
