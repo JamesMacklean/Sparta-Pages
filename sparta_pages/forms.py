@@ -217,7 +217,7 @@ class FilterForm(forms.Form):
     date_from = forms.DateField(
         initial=timezone.now().date(),
         widget=forms.SelectDateWidget(
-            years=range(2019, int(datetime.now().strftime("%Y"))+1),
+            years=range(2019, 2023),
             empty_label=("Choose Year", "Choose Month", "Choose Day"),
             ),
         required=False
