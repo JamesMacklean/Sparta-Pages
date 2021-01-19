@@ -385,22 +385,40 @@ def user_grade_detail(request, profile_id, course_id, format=None):
         msg = str(e)
         err_data = {"error": "course_key_error", "message": msg}
         return Response(err_data, status=status.HTTP_400_BAD_REQUEST)
-
-    grade = CourseGradeFactory().read(user, course_key=course_key)
-
-    sections_list = []
-    for section in grade.summary[u'section_breakdown']:
-        sections_list.append({
-            "label": section['label'].encode('utf-8') if six.PY2 else section['label'],
-            "percent": section.get('percent', "N/A")
-        })
-
-    data = {
-        "profile_id": profile_id,
-        "course_id": course_id,
-        "grade": grade.summary.get('percent', "N/A"),
-        "sections": sections_list
-    }
+    
+    try:
+        enrollment = CourseEnrollment.objects.get(
+            user=user,
+            course_id=course_key
+        )
+    except CourseEnrollment.DoesNotExist:
+        grade = CourseGradeFactory().read(user, course_key=course_key)
+        sections_list = []
+        for section in grade.summary[u'section_breakdown']:
+            sections_list.append({
+                "label": section['label'].encode('utf-8') if six.PY2 else section['label'],
+                "percent": "N/A"
+            })
+        data = {
+            "profile_id": profile_id,
+            "course_id": course_id,
+            "grade": "N/A",
+            "sections": sections_list
+        }
+    else:
+        grade = CourseGradeFactory().read(user, course_key=course_key)
+        sections_list = []
+        for section in grade.summary[u'section_breakdown']:
+            sections_list.append({
+                "label": section['label'].encode('utf-8') if six.PY2 else section['label'],
+                "percent": section.get('percent', "N/A")
+            })
+        data = {
+            "profile_id": profile_id,
+            "course_id": course_id,
+            "grade": grade.summary.get('percent', "N/A"),
+            "sections": sections_list
+        }
     return Response(data, status=status.HTTP_200_OK)
 
 
