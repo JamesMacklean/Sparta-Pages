@@ -392,13 +392,13 @@ def user_grade_detail(request, profile_id, course_id, format=None):
     for section in grade.summary[u'section_breakdown']:
         sections_list.append({
             "label": section['label'].encode('utf-8') if six.PY2 else section['label'],
-            "percent": section.get('percent', 0.0)
+            "percent": section.get('percent', "N/A")
         })
 
     data = {
         "profile_id": profile_id,
         "course_id": course_id,
-        "grade": grade.summary.get('percent', 0.0),
+        "grade": grade.summary.get('percent', "N/A"),
         "sections": sections_list
     }
     return Response(data, status=status.HTTP_200_OK)
