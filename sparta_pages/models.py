@@ -102,6 +102,29 @@ class CourseGroup(models.Model):
 class SpartaProfile(models.Model):
     """
     """
+    COLLEAGUE = "CL"
+    FRIEND = "FR"
+    EMAIL = "EM"
+    NEWS = "NE"
+    FACEBOOK = "FB"
+    SPARTAWEB = "SW"
+    LINKEDIN = "LI"
+    YOUTUBE = "YT"
+    GOVERNMENT = "GO"
+    COMPANY = "CM"
+    DISCOVERY_CHOICES = (
+        (COLLEAGUE, "A colleague referred it to me" ),
+        (FRIEND, "A friend referred it to me"),
+        (EMAIL, "Email"),
+        (NEWS, "News"),
+        (FACEBOOK, "Facebook Page/Group" ),
+        (SPARTAWEB, "SPARTA Website"),
+        (LINKEDIN, "LinkedIn"),
+        (YOUTUBE, "Youtube"),
+        (GOVERNMENT, "Local Government Unit"),
+        (COMPANY, "Company"),
+    )
+
     user = models.OneToOneField(
         USER_MODEL,
         on_delete=models.CASCADE,
@@ -113,6 +136,7 @@ class SpartaProfile(models.Model):
     modified_at = models.DateTimeField(auto_now=True)
     first_timer = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
+    discovery = models.CharField(max_length=2, choices=DISCOVERY_CHOICES, default=COLLEAGUE)
 
     class Meta:
         verbose_name_plural = "3. Sparta Profiles"
@@ -179,7 +203,7 @@ class ExtendedSpartaProfile(models.Model):
         related_name='extended_sparta_profile'
     )
     address = models.TextField(null=True, blank=True)
-    municipality = models.CharField(max_length=255, choices=MUNICIPALITY_CHOICES, default="---")
+    municipality = models.CharField(max_length=255, choices=MUNICIPALITY_CHOICES, default="Abra, Bangued")
     affiliation = models.CharField(max_length=2, choices=AFFILIATION_CHOICES, default=PRIVATE)
     attainment = models.CharField(max_length=2, choices=ATTAINMENT_CHOICES, default=ELEMENTARY)
     other_attain = models.CharField(max_length=255, null=True, blank=True)
@@ -429,3 +453,9 @@ class StudentCouponRecord(models.Model):
         if enrollment:
             return enrollment.is_active and enrollment.mode == "verified"
         return False
+
+class SpartaReEnrollment(models.Model):
+    """
+    """
+    enrollment = models.ForeignKey(CourseEnrollment, on_delete=models.CASCADE)
+    reenroll_date = models.DateTimeField(auto_now_add=True)

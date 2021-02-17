@@ -21,6 +21,7 @@ class SpartaProfileForm(forms.Form):
     proof_of_education_file = forms.ImageField(widget=forms.FileInput, required=True,label='Proof of Education',help_text='Select a clear image of your Proof of Education that is no more than 2MB.')
     tos_yes = forms.BooleanField(required=True)
     citizenship = forms.BooleanField(required=True)
+    discovery = forms.ChoiceField(required=True, choices=SpartaProfile.DISCOVERY_CHOICES)
 
 
 class ExtendedSpartaProfileForm(forms.ModelForm):
@@ -216,7 +217,7 @@ class FilterForm(forms.Form):
     date_from = forms.DateField(
         initial=timezone.now().date(),
         widget=forms.SelectDateWidget(
-            years=range(2019, int(datetime.now().strftime("%Y"))+1),
+            years=range(2019, 2024),
             empty_label=("Choose Year", "Choose Month", "Choose Day"),
             ),
         required=False
