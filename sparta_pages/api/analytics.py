@@ -85,7 +85,7 @@ def sparta_profiles_list(request, format=None):
         return Response(data, status=status.HTTP_401_UNAUTHORIZED)
 
     queryset = SpartaProfile.objects.select_related(
-        'user'
+        'user', 'user__profile'
     ).order_by(
         '-created_at'
     )
