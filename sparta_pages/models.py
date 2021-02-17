@@ -159,8 +159,11 @@ class SpartaProfile(models.Model):
 
     @property
     def full_name(self):
-        return "{} {}".format(self.user.first_name, 
-            self.user.last_name)
+        try:
+            name = self.user.profile.name
+        except:
+            name = ""
+        return name
 
 
 class ExtendedSpartaProfile(models.Model):
