@@ -149,6 +149,19 @@ class SpartaProfile(models.Model):
             self.is_active = False
             self.save()
 
+    @property    
+    def username(self):
+        return self.user.username
+
+    @property
+    def email(self):
+        return self.user.email
+
+    @property
+    def full_name(self):
+        return "{} {}".format(self.user.first_name, 
+            self.user.last_name)
+
 
 class ExtendedSpartaProfile(models.Model):
     """

@@ -41,10 +41,14 @@ class SpartaProfileSerializer(serializers.ModelSerializer):
         model = SpartaProfile
         fields = [
             'id',
+            'full_name',
+            'username',
+            'email',
             'age',
             'gender',
             'discovery',
-            'is_active'
+            'is_active',
+            'created_at'
             ]
         read_only_fields = fields
 
