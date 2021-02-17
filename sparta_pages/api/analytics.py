@@ -102,8 +102,8 @@ def sparta_profiles_list(request, format=None):
     result_data = []
     for p in queryset:
         sparta_profile_data = SpartaProfileSerializer(p).data
-        sparta_profile_data['username'] = p.user.username
-        sparta_profile_data['email'] = p.user.email
+        # sparta_profile_data['username'] = p.user.username
+        # sparta_profile_data['email'] = p.user.email
         try:
             esp = p.user.extended_sparta_profile
         except:
