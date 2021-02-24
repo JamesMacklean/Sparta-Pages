@@ -14,7 +14,7 @@ from lms.djangoapps.grades.course_grade_factory import CourseGradeFactory
 from lms.djangoapps.verify_student.services import IDVerificationService
 from opaque_keys.edx.keys import CourseKey
 from openedx.core.djangoapps.content.course_overviews.models import CourseOverview
-from student.models import CourseEnrollment
+from student.models import CourseEnrollment, UserProfile
 from django.contrib.auth.models import User
 
 from .analytics import OverallAnalytics, PathwayAnalytics
@@ -978,6 +978,7 @@ def export_learner_pathway_progress(email_address=None, date_from=None, date_to=
                     finished += 1
 
             user_list.append({
+                "name": p.full_name,
                 "username": p.user.username,
                 "email": p.user.email,
                 "pathway": application.pathway.name,
@@ -985,6 +986,7 @@ def export_learner_pathway_progress(email_address=None, date_from=None, date_to=
             })
         else:
             user_list.append({
+                "name": p.full_name,
                 "username": p.user.username,
                 "email": p.user.email,
                 "pathway": "No Approved Application",
@@ -995,6 +997,7 @@ def export_learner_pathway_progress(email_address=None, date_from=None, date_to=
     with open(file_name, mode='w') as csv_file:
         writer = unicodecsv.writer(csv_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL,  encoding='utf-8')
         writer.writerow([
+            'name',
             'username',
             'email',
             'pathway',
@@ -1003,6 +1006,7 @@ def export_learner_pathway_progress(email_address=None, date_from=None, date_to=
 
         for u in user_list:
             writer.writerow([
+                u['name'],
                 u['username'],
                 u['email'],
                 u['pathway'],
