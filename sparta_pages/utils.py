@@ -945,6 +945,7 @@ def export_learner_pathway_progress(email_address=None, date_from=None, date_to=
     tnow = datetime.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
 
     profiles = SpartaProfile.objects.prefetch_related('applications')
+    user_profile = User.objects.all()
 
     datefrom_str = ""
     dateto_str = ""
@@ -978,7 +979,7 @@ def export_learner_pathway_progress(email_address=None, date_from=None, date_to=
                     finished += 1
 
             user_list.append({
-                "name": p.profile.name,
+                "name": p.user_profile.profile.name,
                 "username": p.user.username,
                 "email": p.user.email,
                 "pathway": application.pathway.name,
