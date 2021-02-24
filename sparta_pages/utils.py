@@ -14,7 +14,7 @@ from lms.djangoapps.grades.course_grade_factory import CourseGradeFactory
 from lms.djangoapps.verify_student.services import IDVerificationService
 from opaque_keys.edx.keys import CourseKey
 from openedx.core.djangoapps.content.course_overviews.models import CourseOverview
-from student.models import CourseEnrollment
+from student.models import CourseEnrollment, UserProfile
 from django.contrib.auth.models import User
 
 from .analytics import OverallAnalytics, PathwayAnalytics
@@ -978,7 +978,7 @@ def export_learner_pathway_progress(email_address=None, date_from=None, date_to=
                     finished += 1
 
             user_list.append({
-                "name": p.user.name,
+                "name": p.profile.name,
                 "username": p.user.username,
                 "email": p.user.email,
                 "pathway": application.pathway.name,
@@ -986,7 +986,7 @@ def export_learner_pathway_progress(email_address=None, date_from=None, date_to=
             })
         else:
             user_list.append({
-                "name": p.user.name,
+                "name": p.profile.name,
                 "username": p.user.username,
                 "email": p.user.email,
                 "pathway": "No Approved Application",
