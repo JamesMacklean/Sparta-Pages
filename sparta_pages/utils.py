@@ -1152,36 +1152,44 @@ def export_six_month_access_users(course_id, email_address=None):
     user_list = []
     for u in users:
         cert = get_certificate_for_user(u.username, course_key)
+        if cert is not None:
+            continue
+
         enrollments = CourseEnrollment.objects.filter(
             course_id=course_key,
             is_active=True,
             created__lt=date_filter,
         )
-        profile = u.sparta_profile
+        try:
+            profile = u.sparta_profile
+
+        except SpartaProfile.DoesNotExist:
+            continue
+
         applications = profile.applications.filter(status="AP")
 
         if applications.exists():
             application = applications.order_by('-created_at').last()
             pathway = application.pathway.name
 
-    for e in enrollments:
-        reenrollments = SpartaReEnrollment.objects.filter(enrollment=e)
-        if reenrollments.exists():
-            lastest_reenrollment = reenrollments.order_by('-reenroll_date').first()
-            check_date = lastest_reenrollment.reenroll_date
-        else:
-            check_date = e.created
+        for e in enrollments:
+            reenrollments = SpartaReEnrollment.objects.filter(enrollment=e)
+            if reenrollments.exists():
+                lastest_reenrollment = reenrollments.order_by('-reenroll_date').first()
+                check_date = lastest_reenrollment.reenroll_date
+            else:
+                check_date = e.created
 
-        tdelta = tnow - check_date
+            tdelta = tnow - check_date
 
-        if tdelta.seconds >= sec and cert is None:
-            user_list.append({
-                "name": e.user.name,
-                "email": e.user.email,
-                "username": e.user.username,
-                "pathway": pathway,
-                "access date": check_date.strftime("%Y-%m-%d"),
-            })
+            if tdelta.seconds >= sec and cert is None:
+                user_list.append({
+                    "name": e.user.name,
+                    "email": e.user.email,
+                    "username": e.user.username,
+                    "pathway": pathway,
+                    "access date": check_date.strftime("%Y-%m-%d"),
+                })
 
     file_name = '/home/ubuntu/tempfiles/export_six_month_access_users_{}.csv'.format(tnow)
     with open(file_name, mode='w') as csv_file:
@@ -1226,13 +1234,21 @@ def export_three_month_inactive_users(course_id, email_address=None):
     user_list = []
     for u in users:
         cert = get_certificate_for_user(u.username, course_key)
+        if cert is not None:
+            continue
+
         enrollments = CourseEnrollment.objects.filter(
             course_id=course_key,
             is_active=True,
             created__lt=date_filter,
         )
-        profile = u.sparta_profile
-        applications = profile.applications.all(status="AP")
+        try:
+            profile = u.sparta_profile
+
+        except SpartaProfile.DoesNotExist:
+            continue
+
+        applications = profile.applications.filter(status="AP")
 
         if applications.exists():
             application = applications.order_by('-created_at').last()
