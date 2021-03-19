@@ -1148,7 +1148,6 @@ def export_six_month_access_users(course_id, email_address=None):
 
     tnow = timezone.now()
     date_filter = tnow - timedelta(seconds=sec)
-    self.stdout.write("date_filter: {}".format(date_filter))
 
     user_list = []
     for u in users:
@@ -1167,7 +1166,6 @@ def export_six_month_access_users(course_id, email_address=None):
 
     for e in enrollments:
         reenrollments = SpartaReEnrollment.objects.filter(enrollment=e)
-        self.stdout.write("e.user.username: {}".format(e.user.username))
         if reenrollments.exists():
             lastest_reenrollment = reenrollments.order_by('-reenroll_date').first()
             check_date = lastest_reenrollment.reenroll_date
@@ -1175,7 +1173,6 @@ def export_six_month_access_users(course_id, email_address=None):
             check_date = e.created
 
         tdelta = tnow - check_date
-        self.stdout.write("tdelta: {}".format(tdelta))
 
         if tdelta.seconds >= sec and cert is None:
             user_list.append({
@@ -1225,7 +1222,6 @@ def export_three_month_inactive_users(course_id, email_address=None):
 
     tnow = timezone.now()
     date_filter = tnow - timedelta(seconds=sec)
-    self.stdout.write("date_filter: {}".format(date_filter))
 
     user_list = []
     for u in users:
@@ -1245,7 +1241,6 @@ def export_three_month_inactive_users(course_id, email_address=None):
         check_date = u.last_login
 
         tdelta = tnow - check_date
-        self.stdout.write("tdelta: {}".format(tdelta))
 
         if tdelta.seconds >= sec and cert is None:
             user_list.append({
