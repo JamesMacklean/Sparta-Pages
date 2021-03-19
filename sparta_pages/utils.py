@@ -1158,6 +1158,13 @@ def export_six_month_users(course_id, email_address=None):
             is_active=True,
             created__lt=date_filter,
         )
+        profile = u.sparta_profile
+        applications = profile.applications.all()
+
+        if applications.exists():
+            application = applications.order_by('-created_at').last()
+            sparta_status = application.status
+            pathway = application.pathway.name
 
     for e in enrollments:
         reenrollments = SpartaReEnrollment.objects.filter(enrollment=e)
