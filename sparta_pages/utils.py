@@ -1139,11 +1139,11 @@ def export_learner_account_information(course_id, email_address=None):
         email.attach_file(file_name)
         email.send()
 
-def export_six_month_users(course_id, email_address=None):
+def export_six_month_access_users(course_id, email_address=None):
     """"""
     tnow = datetime.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
     course_key = CourseKey.from_string(course_id)
-    users = User.objects.filter(courseenrollment__course__id=course_key).select_related('sparta_profile')
+    users = User.objects.filter(courseenrollment__course__id=course_key).select_related('sparta_profile').prefetch_related('sparta_profile__applications')
     sec = 183*24*60*60
 
     tnow = timezone.now()
@@ -1159,11 +1159,10 @@ def export_six_month_users(course_id, email_address=None):
             created__lt=date_filter,
         )
         profile = u.sparta_profile
-        applications = profile.applications.all()
+        applications = profile.applications.all(status="AP")
 
         if applications.exists():
             application = applications.order_by('-created_at').last()
-            sparta_status = application.status
             pathway = application.pathway.name
 
     for e in enrollments:
@@ -1187,7 +1186,7 @@ def export_six_month_users(course_id, email_address=None):
                 "access date": check_date.strftime("%Y-%m-%d"),
             })
 
-    file_name = '/home/ubuntu/tempfiles/export_six_month_users_{}.csv'.format(tnow)
+    file_name = '/home/ubuntu/tempfiles/export_six_month_access_users_{}.csv'.format(tnow)
     with open(file_name, mode='w') as csv_file:
         writer = unicodecsv.writer(csv_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL,  encoding='utf-8')
         writer.writerow([
@@ -1210,7 +1209,77 @@ def export_six_month_users(course_id, email_address=None):
     if email_address:
         email = EmailMessage(
             'Coursebank - Six Month Access List',
-            'Attached file of Six Month Access List (as of {})'.format(date_range),
+            'Attached file of Six Month Access List for {} (as of {})'.format(course_key,tnow),
+            'no-reply-sparta-user-logins@coursebank.ph',
+            [email_address,],
+        )
+        email.attach_file(file_name)
+        email.send()
+
+def export_three_month_inactive_users(course_id, email_address=None):
+    """"""
+    tnow = datetime.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
+    course_key = CourseKey.from_string(course_id)
+    users = User.objects.filter(courseenrollment__course__id=course_key).select_related('sparta_profile').prefetch_related('sparta_profile__applications')
+    sec = 92*24*60*60
+
+    tnow = timezone.now()
+    date_filter = tnow - datetime.timedelta(seconds=sec)
+    self.stdout.write("date_filter: {}".format(date_filter))
+
+    user_list = []
+    for u in users:
+        cert = get_certificate_for_user(u.username, course_key)
+        enrollments = CourseEnrollment.objects.filter(
+            course_id=course_key,
+            is_active=True,
+            created__lt=date_filter,
+        )
+        profile = u.sparta_profile
+        applications = profile.applications.all(status="AP")
+
+        if applications.exists():
+            application = applications.order_by('-created_at').last()
+            pathway = application.pathway.name
+
+        check_date = u.last_login
+
+        tdelta = tnow - check_date
+        self.stdout.write("tdelta: {}".format(tdelta))
+
+        if tdelta.seconds >= sec and cert is None:
+            user_list.append({
+                "name": u.profile.name,
+                "email": u.email,
+                "username": u.username,
+                "pathway": pathway,
+                "last login": u.last_login.strftime("%Y-%m-%d"),
+            })
+
+    file_name = '/home/ubuntu/tempfiles/export_three_month_inactive_users_{}.csv'.format(tnow)
+    with open(file_name, mode='w') as csv_file:
+        writer = unicodecsv.writer(csv_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL,  encoding='utf-8')
+        writer.writerow([
+            'Name',
+            'Email',
+            'Username',
+            'Pathway',
+            'Last Login Date'
+            ])
+
+        for u in user_list:
+            writer.writerow([
+                u['name'],
+                u['email'],
+                u['username'],
+                u['pathway'],
+                u['last login'],
+            ])
+
+    if email_address:
+        email = EmailMessage(
+            'Coursebank - Three Month Inactive List',
+            'Attached file of Three Month Inactive List for {} (as of {})'.format(course_key,tnow),
             'no-reply-sparta-user-logins@coursebank.ph',
             [email_address,],
         )
