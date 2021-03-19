@@ -1159,7 +1159,7 @@ def export_six_month_access_users(course_id, email_address=None):
             created__lt=date_filter,
         )
         profile = u.sparta_profile
-        applications = profile.applications.all(status="AP")
+        applications = profile.applications.filter(status="AP")
 
         if applications.exists():
             application = applications.order_by('-created_at').last()
