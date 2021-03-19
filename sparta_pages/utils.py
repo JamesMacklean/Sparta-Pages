@@ -28,6 +28,7 @@ from .models import (
     PathwayApplication, Event,
     SpartaCoupon, StudentCouponRecord
 )
+from sparta_pages.models import SpartaReEnrollment
 
 logger = logging.getLogger(__name__)
 
