@@ -1,5 +1,4 @@
 import csv
-import datetime
 from datetime import datetime, timedelta
 from django.utils import timezone
 import logging
