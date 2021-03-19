@@ -1147,7 +1147,7 @@ def export_six_month_access_users(course_id, email_address=None):
     sec = 183*24*60*60
 
     tnow = timezone.now()
-    date_filter = tnow - datetime.timedelta(seconds=sec)
+    date_filter = tnow - timedelta(seconds=sec)
     self.stdout.write("date_filter: {}".format(date_filter))
 
     user_list = []
@@ -1224,7 +1224,7 @@ def export_three_month_inactive_users(course_id, email_address=None):
     sec = 92*24*60*60
 
     tnow = timezone.now()
-    date_filter = tnow - datetime.timedelta(seconds=sec)
+    date_filter = tnow - timedelta(seconds=sec)
     self.stdout.write("date_filter: {}".format(date_filter))
 
     user_list = []
