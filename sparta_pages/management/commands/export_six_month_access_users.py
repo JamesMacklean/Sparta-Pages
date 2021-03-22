@@ -52,6 +52,7 @@ class Command(BaseCommand):
 
             user_list = []
             for u in users:
+                self.stdout.write("user length: {}".format(len(user_list)))
                 cert = get_certificate_for_user(u.username, course_key)
                 if cert is not None:
                     continue
@@ -65,6 +66,7 @@ class Command(BaseCommand):
                     profile = u.sparta_profile
 
                 except SpartaProfile.DoesNotExist:
+                    self.stdout.write("current sparta user: {}".format(u.username))
                     continue
 
                 applications = profile.applications.filter(status="AP")
@@ -73,6 +75,8 @@ class Command(BaseCommand):
                     application = applications.order_by('-created_at').last()
                     pathway = application.pathway.name
                     self.stdout.write("pathway: {}".format(pathway))
+                else:
+                    pathway = ""
 
                 for e in enrollments:
                     reenrollments = SpartaReEnrollment.objects.filter(enrollment=e)
@@ -88,6 +92,7 @@ class Command(BaseCommand):
                     self.stdout.write("tdelta: {}".format(tdelta))
 
                     if tdelta.seconds >= sec and cert is None:
+                        self.stdout.write("user: {}".format(u.username))
                         user_list.append({
                             "name": e.user.name,
                             "email": e.user.email,
