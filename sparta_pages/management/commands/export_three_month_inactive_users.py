@@ -12,15 +12,12 @@ from student.models import CourseEnrollment, UserProfile
 from django.core.management.base import BaseCommand, CommandError
 from django.core.mail import send_mail, EmailMessage
 from lms.djangoapps.certificates.api import get_certificate_for_user
-from .models import (
+from sparta_pages.models import (
     Pathway, SpartaCourse, SpartaProfile, ExtendedSpartaProfile,
     EducationProfile, EmploymentProfile, TrainingProfile,
     PathwayApplication, Event,
-    SpartaCoupon, StudentCouponRecord
+    SpartaCoupon, StudentCouponRecord, SpartaReEnrollment
 )
-
-from sparta_pages.models import SpartaReEnrollment
-
 
 class Command(BaseCommand):
     help = 'Exports list of users exceeding three months of inactivity to a course.'
