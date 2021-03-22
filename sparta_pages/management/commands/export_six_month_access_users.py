@@ -50,7 +50,6 @@ class Command(BaseCommand):
             enrollments = CourseEnrollment.objects.filter(
                 course_id=course_key,
                 is_active=True,
-                created__lt=date_filter,
             ).select_related('user','user__sparta_profile').prefetch_related('spartareenrollment_set','user__sparta_profile__applications')
             sec = 183*24*60*60
 
