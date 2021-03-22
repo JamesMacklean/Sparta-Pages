@@ -11,6 +11,7 @@ from opaque_keys.edx.keys import CourseKey
 from student.models import CourseEnrollment, UserProfile
 from django.core.management.base import BaseCommand, CommandError
 from django.core.mail import send_mail, EmailMessage
+from lms.djangoapps.certificates.api import get_certificate_for_user
 
 from sparta_pages.models import SpartaReEnrollment
 
