@@ -47,7 +47,11 @@ class Command(BaseCommand):
         try:
             tnow = datetime.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
             course_key = CourseKey.from_string(course_id)
-            users = User.objects.filter(courseenrollment__course__id=course_key).select_related('sparta_profile').prefetch_related('sparta_profile__applications')
+            enrollments = CourseEnrollment.objects.filter(
+                course_id=course_key,
+                is_active=True,
+                created__lt=date_filter,
+            ).select_related('user','user__sparta_profile').prefetch_related('user__sparta_profile__applications')
             sec = 92*24*60*60
 
             tnow = timezone.now()
@@ -55,24 +59,19 @@ class Command(BaseCommand):
             self.stdout.write("date_filter: {}".format(date_filter))
 
             user_list = []
-            for u in users:
+            for e in enrollments:
                 self.stdout.write("user length: {}".format(len(user_list)))
-                self.stdout.write("current user being processed: {}".format(u.username))
-                cert = get_certificate_for_user(u.username, course_key)
+                self.stdout.write("current user being processed: {}".format(e.user.username))
+                cert = get_certificate_for_user(e.user.username, course_key)
                 if cert is not None:
                     continue
-                    self.stdout.write("user with cert: {}".format(u.username))
+                    self.stdout.write("user with cert: {}".format(e.user.username))
 
-                enrollments = CourseEnrollment.objects.filter(
-                    course_id=course_key,
-                    is_active=True,
-                    created__lt=date_filter,
-                )
                 try:
-                    profile = u.sparta_profile
+                    profile = e.sparta_profile
 
                 except SpartaProfile.DoesNotExist:
-                    self.stdout.write("user with no sparta profile: {}".format(u.username))
+                    self.stdout.write("user with no sparta profile: {}".format(e.user.username))
                     continue
 
                 applications = profile.applications.filter(status="AP")
@@ -83,20 +82,20 @@ class Command(BaseCommand):
                 else:
                     pathway = ""
 
-                check_date = u.last_login
+                check_date = e.user.last_login
 
                 tdelta = tnow - check_date
                 self.stdout.write("check date: {}".format(check_date))
                 self.stdout.write("tdelta: {}".format(tdelta))
 
                 if tdelta.seconds >= sec and cert is None:
-                    self.stdout.write("user with more than 3 months and no cert: {}".format(u.username))
+                    self.stdout.write("user with more than 3 months and no cert: {}".format(e.user.username))
                     user_list.append({
-                        "name": u.profile.name,
-                        "email": u.email,
-                        "username": u.username,
+                        "name": e.user.profile.name,
+                        "email": e.user.email,
+                        "username": e.user.username,
                         "pathway": pathway,
-                        "last login": u.last_login.strftime("%Y-%m-%d"),
+                        "last login": e.user.last_login.strftime("%Y-%m-%d"),
                     })
 
             file_name = '/home/ubuntu/tempfiles/export_three_month_inactive_users_{}.csv'.format(tnow)
