@@ -67,7 +67,7 @@ class Command(BaseCommand):
                     self.stdout.write("user with cert: {}".format(e.user.username))
 
                 try:
-                    profile = e.sparta_profile
+                    profile = e.user.sparta_profile
 
                 except SpartaProfile.DoesNotExist:
                     self.stdout.write("user with no sparta profile: {}".format(e.user.username))
