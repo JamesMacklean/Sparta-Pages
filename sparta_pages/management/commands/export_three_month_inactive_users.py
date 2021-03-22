@@ -51,7 +51,7 @@ class Command(BaseCommand):
                 course_id=course_key,
                 is_active=True,
                 created__lt=date_filter,
-            ).select_related('sparta_profile').prefetch_related('sparta_profile__applications')
+            ).select_related('user','user__sparta_profile').prefetch_related('user__sparta_profile__applications')
             sec = 92*24*60*60
 
             tnow = timezone.now()

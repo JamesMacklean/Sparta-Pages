@@ -51,7 +51,7 @@ class Command(BaseCommand):
                 course_id=course_key,
                 is_active=True,
                 created__lt=date_filter,
-            ).select_related('sparta_profile').prefetch_related('sparta_profile__applications')
+            ).select_related('user','user__sparta_profile').prefetch_related('spartareenrollment_set','user__sparta_profile__applications')
             sec = 183*24*60*60
 
             tnow = timezone.now()
@@ -82,7 +82,7 @@ class Command(BaseCommand):
                 else:
                     pathway = ""
 
-                reenrollments = SpartaReEnrollment.objects.filter(enrollment=e)
+                reenrollments = e.spartareenrollment_set.all()
                 if reenrollments.exists():
                     lastest_reenrollment = reenrollments.order_by('-reenroll_date').first()
                     check_date = lastest_reenrollment.reenroll_date
