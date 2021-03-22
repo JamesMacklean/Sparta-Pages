@@ -42,7 +42,6 @@ class Command(BaseCommand):
         try:
             tnow = datetime.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
             course_key = CourseKey.from_string(course_id)
-            self.stdout.write("course_key: {}".format(course_key))
             users = User.objects.filter(courseenrollment__course__id=course_key).select_related('sparta_profile').prefetch_related('sparta_profile__applications')
             sec = 183*24*60*60
 
@@ -53,9 +52,11 @@ class Command(BaseCommand):
             user_list = []
             for u in users:
                 self.stdout.write("user length: {}".format(len(user_list)))
+                self.stdout.write("current user being processed: {}".format(u.username))
                 cert = get_certificate_for_user(u.username, course_key)
                 if cert is not None:
                     continue
+                    self.stdout.write("user with cert: {}".format(u.username))
 
                 enrollments = CourseEnrollment.objects.filter(
                     course_id=course_key,
@@ -66,7 +67,7 @@ class Command(BaseCommand):
                     profile = u.sparta_profile
 
                 except SpartaProfile.DoesNotExist:
-                    self.stdout.write("current sparta user: {}".format(u.username))
+                    self.stdout.write("user with no sparta profile: {}".format(u.username))
                     continue
 
                 applications = profile.applications.filter(status="AP")
@@ -74,13 +75,11 @@ class Command(BaseCommand):
                 if applications.exists():
                     application = applications.order_by('-created_at').last()
                     pathway = application.pathway.name
-                    self.stdout.write("pathway: {}".format(pathway))
                 else:
                     pathway = ""
 
                 for e in enrollments:
                     reenrollments = SpartaReEnrollment.objects.filter(enrollment=e)
-                    self.stdout.write("e.user.username: {}".format(e.user.username))
                     if reenrollments.exists():
                         lastest_reenrollment = reenrollments.order_by('-reenroll_date').first()
                         check_date = lastest_reenrollment.reenroll_date
@@ -92,7 +91,7 @@ class Command(BaseCommand):
                     self.stdout.write("tdelta: {}".format(tdelta))
 
                     if tdelta.seconds >= sec and cert is None:
-                        self.stdout.write("user: {}".format(u.username))
+                        self.stdout.write("user with more than 6 months and no cert: {}".format(u.username))
                         user_list.append({
                             "name": e.user.name,
                             "email": e.user.email,
