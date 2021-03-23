@@ -3,6 +3,7 @@ import os
 from pprint import pformat
 from datetime import datetime, timedelta
 from django.utils import timezone
+import unicodecsv
 
 import logging
 log = logging.getLogger(__name__)
@@ -52,15 +53,20 @@ class Command(BaseCommand):
                 is_active=True,
             ).select_related('user','user__sparta_profile').prefetch_related('user__sparta_profile__applications')
             sec = 92*24*60*60
+            self.stdout.write("total enrollments: {}".format(enrollments.count()))
 
             tnow = timezone.now()
             date_filter = tnow - timedelta(seconds=sec)
             self.stdout.write("date_filter: {}".format(date_filter))
 
+            enrollments_counter = 0
+
             user_list = []
             for e in enrollments:
+                enrollments_counter += 1
                 self.stdout.write("user length: {}".format(len(user_list)))
                 self.stdout.write("current user being processed: {}".format(e.user.username))
+                self.stdout.write("current enrollment count: {}".format(enrollments_counter))
                 cert = get_certificate_for_user(e.user.username, course_key)
                 if cert is not None:
                     continue
