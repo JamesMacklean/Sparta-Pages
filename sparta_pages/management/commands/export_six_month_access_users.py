@@ -110,7 +110,7 @@ class Command(BaseCommand):
                 if tdelta.seconds >= sec and cert is None:
                     self.stdout.write("user with more than 6 months and no cert: {}".format(e.user.username))
                     user_list.append({
-                        "name": e.user.name,
+                        "name": e.user.profile.name,
                         "email": e.user.email,
                         "username": e.user.username,
                         "pathway": pathway,
