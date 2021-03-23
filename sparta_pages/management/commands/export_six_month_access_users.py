@@ -37,13 +37,23 @@ class Command(BaseCommand):
             type=str,
             help='set filter for course_id',
         )
+        parser.add_argument(
+            '-s', '--secs',
+            type=int,
+            required=False,
+            help='Course time limit'
+        )
 
     def handle(self, *args, **options):
         course_id = options.get('course', None)
         email_address = options.get('email', None)
+        sec = options.get('secs', None)
 
         if course_id is None:
             raise CommandError("--course -c arg required ")
+
+        if sec is None:
+            sec = 183*24*60*60
 
         try:
             tnow = datetime.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
@@ -52,7 +62,6 @@ class Command(BaseCommand):
                 course_id=course_key,
                 is_active=True,
             ).select_related('user','user__sparta_profile').prefetch_related('spartareenrollment_set','user__sparta_profile__applications')
-            sec = 183*24*60*60
             self.stdout.write("total enrollments: {}".format(enrollments.count()))
 
             tnow = timezone.now()
