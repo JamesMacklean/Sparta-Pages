@@ -107,7 +107,7 @@ class Command(BaseCommand):
                 self.stdout.write("check date: {}".format(check_date))
                 self.stdout.write("tdelta: {}".format(tdelta))
 
-                if tdelta.seconds >= sec and cert is None:
+                if tdelta.total_seconds() >= sec and cert is None:
                     self.stdout.write("user with more than 6 months and no cert: {}".format(e.user.username))
                     user_list.append({
                         "name": e.user.profile.name,
