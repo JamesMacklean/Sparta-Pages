@@ -1,5 +1,6 @@
 import datetime
 from django.utils import timezone
+from datetime import datetime, timedelta
 
 from django.contrib.auth.models import User
 from opaque_keys.edx.keys import CourseKey
@@ -52,7 +53,7 @@ class Command(BaseCommand):
             raise CommandError("Course does not exist: {}".format(str(e)))
 
         tnow = timezone.now()
-        date_filter = tnow - datetime.timedelta(seconds=sec)
+        date_filter = tnow - timedelta(seconds=sec)
         self.stdout.write("date_filter: {}".format(date_filter))
 
         if user is None:
@@ -72,6 +73,10 @@ class Command(BaseCommand):
         for e in enrollments:
             reenrollments = SpartaReEnrollment.objects.filter(enrollment=e)
             self.stdout.write("e.user.username: {}".format(e.user.username))
+            cert = get_certificate_for_user(e.user.username, course_key)
+            if cert is not None:
+                continue
+                self.stdout.write("user with cert: {}".format(e.user.username))
             if reenrollments.exists():
                 lastest_reenrollment = reenrollments.order_by('-reenroll_date').first()
                 check_date = lastest_reenrollment.reenroll_date
@@ -82,7 +87,7 @@ class Command(BaseCommand):
             self.stdout.write("tdelta: {}".format(tdelta))
 
             try:
-                if tdelta.seconds >= sec:
+                if tdelta.total_seconds() >= sec and cert is None:
                     CourseEnrollment.unenroll(e.user, course_key, skip_refund=True)
                     email = EmailMessage(
                         'Course Six Month Access Unenrollment',
