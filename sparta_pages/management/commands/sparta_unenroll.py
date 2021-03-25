@@ -133,7 +133,7 @@ class Command(BaseCommand):
     def _unenroll_user(self, username=None, email_address=None, course_key=None, course_name=None):
         """ unenroll a user """
         try:
-            uname = User.objects.get(user=username)
+            uname = User.objects.get(username=username)
             CourseEnrollment.unenroll(uname, course_key, skip_refund=True)
             email = EmailMessage(
                 '6-Month Course Access Unenrollment',
