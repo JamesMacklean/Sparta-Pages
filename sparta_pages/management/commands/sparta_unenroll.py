@@ -80,7 +80,7 @@ class Command(BaseCommand):
             if not os.path.exists(csv_file):
                 raise CommandError(u'Pass the correct absolute path to file as --csv-file argument.')
 
-            total_users, failed_users = self._unenroll_users_from_file(csv_file)
+            total_users, failed_users = self._unenroll_users_from_file(csv_file, course_key=course_key, course_name=course_name)
 
             if failed_users:
                 msg = u'Completed uenrolling the users. {} of {} failed.'.format(
