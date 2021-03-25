@@ -2,6 +2,9 @@ import csv
 import os
 from pprint import pformat
 
+import logging
+log = logging.getLogger(__name__)
+
 import datetime
 from django.utils import timezone
 from datetime import datetime, timedelta
