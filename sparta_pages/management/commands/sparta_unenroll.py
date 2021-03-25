@@ -56,13 +56,11 @@ class Command(BaseCommand):
 
         courseoverview = CourseOverview.get_from_id(course_key)
         course_name = courseoverview.display_name
-        user_list = []
 
         if user is not None:
             try:
                 uname = User.objects.get(username=user)
-                user_list.append((username=user_list['username'], email_address=user_list['email']))
-                unenrolled_user = self._unenroll_user(user_list)
+                unenrolled_user = self._unenroll_user(username=uname, email_address=uname.email)
 
                 msg = 'Successfully unenrolled user: {}.'.format(unenrolled_user)
                 log.info(msg)
@@ -115,8 +113,9 @@ class Command(BaseCommand):
             for row in csv_reader:
                 if line_count == 0:
                     line_count += 1
-                user_list.append((row['username'], row['email']))
-                result = self._unenroll_user((username=row.user_list['username'], email_address=row.user_list['email']))
+                username=row['username']
+                email_address=row['email']
+                result = self._unenroll_user(username=username, email_address=email_address)
                 if not result:
                     failed_users.append(row)
                     err_msg = u'Tried to process {}, but failed'
