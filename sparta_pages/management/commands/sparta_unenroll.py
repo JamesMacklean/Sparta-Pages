@@ -133,7 +133,8 @@ class Command(BaseCommand):
     def _unenroll_user(self, username=None, email_address=None, course_key=None, course_name=None):
         """ unenroll a user """
         try:
-            CourseEnrollment.unenroll(username, course_key, skip_refund=True)
+            uname = User.objects.get(user=username)
+            CourseEnrollment.unenroll(uname, course_key, skip_refund=True)
             email = EmailMessage(
                 '6-Month Course Access Unenrollment',
                 'Your 6-month course access has expired, and you are now unenrolled in {}.\n\nThis is an auto-generated email. Kindly email learn@coursebank.ph to re-enroll.'.format(course_name),
