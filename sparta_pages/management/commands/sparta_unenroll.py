@@ -67,7 +67,7 @@ class Command(BaseCommand):
         if user is not None:
             try:
                 uname = User.objects.get(username=user)
-                unenrolled_user = self._unenroll_user(username=uname, email_address=uname.email)
+                unenrolled_user = self._unenroll_user(username=uname, email_address=uname.email, course_key=course_key, course_name=course_name)
 
                 msg = 'Successfully unenrolled user: {}.'.format(unenrolled_user)
                 log.info(msg)
@@ -98,7 +98,7 @@ class Command(BaseCommand):
                 self.stdout.write(msg)
 
 
-    def _unenroll_users_from_file(self, unenroll_file):
+    def _unenroll_users_from_file(self, unenroll_file, course_key=None, course_name=None):
         """
         Unenroll all the users provided in the users file.
 
@@ -122,7 +122,7 @@ class Command(BaseCommand):
                     line_count += 1
                 username=row['username']
                 email_address=row['email']
-                result = self._unenroll_user(username=username, email_address=email_address)
+                result = self._unenroll_user(username=username, email_address=email_address, course_key=course_key, course_name=course_name)
                 if not result:
                     failed_users.append(row)
                     err_msg = u'Tried to process {}, but failed'
@@ -130,7 +130,7 @@ class Command(BaseCommand):
                 line_count += 1
         return line_count-1, failed_users
 
-    def _unenroll_user(self, username=None, email_address=None):
+    def _unenroll_user(self, username=None, email_address=None, course_key=None, course_name=None):
         """ unenroll a user """
         try:
             CourseEnrollment.unenroll(username, course_key, skip_refund=True)
