@@ -83,7 +83,7 @@ class Command(BaseCommand):
             total_users, failed_users = self._unenroll_users_from_file(csv_file, course_key=course_key, course_name=course_name)
 
             if failed_users:
-                msg = u'Completed uenrolling the users. {} of {} failed.'.format(
+                msg = u'Completed unenrolling the users. {} of {} failed.'.format(
                     len(failed_users),
                     total_users
                 )
@@ -97,14 +97,13 @@ class Command(BaseCommand):
                 log.info(msg)
                 self.stdout.write(msg)
 
-
     def _unenroll_users_from_file(self, unenroll_file, course_key=None, course_name=None):
         """
         Unenroll all the users provided in the users file.
 
         file format, example file:
-            uname
-            <string:uname>
+            username,email
+            <string:username>,<string:email>
 
         Arguments:
             coupons_file (str): path of the file containing the list of users to be unenrolled.
