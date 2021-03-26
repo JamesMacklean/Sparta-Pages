@@ -72,7 +72,7 @@ class Command(BaseCommand):
                 uname = User.objects.get(username=user)
                 reenrolled_user = self._reenroll_user(username=uname, course_key=course_key, mode=mode)
 
-                msg = 'Successfully reenrolled user: {}.'.format(unenrolled_user)
+                msg = 'Successfully reenrolled user: {}.'.format(reenrolled_user)
                 log.info(msg)
                 self.stdout.write(msg)
 
@@ -123,7 +123,7 @@ class Command(BaseCommand):
                 if line_count == 0:
                     line_count += 1
                 username=row['username']
-                result = self._unenroll_user(username=username, course_key=course_key, mode=mode)
+                result = self._reenroll_user(username=username, course_key=course_key, mode=mode)
                 if not result:
                     failed_users.append(row)
                     err_msg = u'Tried to process {}, but failed'
