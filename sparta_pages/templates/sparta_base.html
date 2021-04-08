@@ -16,16 +16,16 @@
   function changeDropdown(){
     var state = document.getElementById("{{ sparta_profile_form.org.id_for_label }}").value;
     if (state == "CP"){
-      document.getElementById("{{ sparta_profile_form.lgu_sub.id_for_label }}").style.display="none";
-      document.getElementById("{{ sparta_profile_form.ccap_sub.id_for_label }}").style.display="block";
+      document.getElementById("lgu_div").style.display="none";
+      document.getElementById("ccap_div").style.display="block";
     }
     else if (state == "LG"){
-      document.getElementById("{{ sparta_profile_form.ccap_sub.id_for_label }}").style.display="none";
-      document.getElementById("{{ sparta_profile_form.lgu_sub.id_for_label }}").style.display="block";
+      document.getElementById("ccap_div").style.display="none";
+      document.getElementById("lgu_div").style.display="block";
     }
     else {
-      document.getElementById("{{ sparta_profile_form.lgu_sub.id_for_label }}").style.display="none";
-      document.getElementById("{{ sparta_profile_form.ccap_sub.id_for_label }}").style.display="none";
+      document.getElementById("lgu_div").style.display="none";
+      document.getElementById("ccap_div").style.display="none";
     }
   }
 </script>
