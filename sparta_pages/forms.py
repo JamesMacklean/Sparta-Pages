@@ -22,9 +22,9 @@ class SpartaProfileForm(forms.Form):
     tos_yes = forms.BooleanField(required=True)
     citizenship = forms.BooleanField(required=True)
     discovery = forms.ChoiceField(required=True, choices=SpartaProfile.DISCOVERY_CHOICES)
-    org = forms.CharField(required=True, choices=SpartaProfile.ORG_CHOICES)
-    ccap_sub = forms.CharField(required=False, choices=SpartaProfile.CCAP_SUBCHOICES)
-    lgu_sub = forms.CharField(required=False, choices=SpartaProfile.LGU_SUBCHOICES)
+    org = forms.ChoiceField(required=True, choices=SpartaProfile.ORG_CHOICES)
+    ccap_sub = forms.ChoiceField(required=False, choices=SpartaProfile.CCAP_SUBCHOICES)
+    lgu_sub = forms.ChoiceField(required=False, choices=SpartaProfile.LGU_SUBCHOICES)
 
 
 class ExtendedSpartaProfileForm(forms.ModelForm):
