@@ -12,6 +12,24 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:300,400,600,b">
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
+<script>
+  function changeDropdown(){
+    var state = document.getElementById("{{ sparta_profile_form.org }}").value;
+    if (state == "CP"){
+      document.getElementById("{{ sparta_profile_form.lgu_sub.id_for_label }}").style.display="none";
+      document.getElementById("{{ sparta_profile_form.ccap_sub.id_for_label }}").style.display="block";
+    }
+    else if (state == "LG"){
+      document.getElementById("{{ sparta_profile_form.ccap_sub.id_for_label }}").style.display="none";
+      document.getElementById("{{ sparta_profile_form.lgu_sub.id_for_label }}").style.display="block";
+    }
+    else {
+      document.getElementById("{{ sparta_profile_form.lgu_sub.id_for_label }}").style.display="none";
+      document.getElementById("{{ sparta_profile_form.ccap_sub.id_for_label }}").style.display="none";
+    }
+  }
+</script>
+
 <style>
   * {box-sizing: border-box}
 
