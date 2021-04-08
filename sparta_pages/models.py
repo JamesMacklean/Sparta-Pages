@@ -154,23 +154,23 @@ class SpartaProfile(models.Model):
     TELEPERFORMANCE = "TP"
     NOT_CCAP = ""
     CCAP_SUBCHOICES = (
-        (ANZ = "ANZ"),
-        (HCL = "HCL"),
-        (HGS = "HGS"),
-        (DEXCOM = "Dexcom"),
-        (INFINIT_O = "Infinit-O"),
-        (REALPAGE = "Realpage"),
-        (VKPO = "VKPO"),
-        (CONDUENT = "Conduent"),
-        (QUALFON = "Qualfon"),
-        (QUANTRICS = "Quantrics"),
-        (PEARSON = "Pearson"),
-        (SYKES = "Sykes"),
-        (INTELLICARE = "Intellicare"),
-        (FISGLOBAL = "Fisglobal"),
-        (SITEL = "Sitel"),
-        (TELEPERFORMANCE = "Teleperformance"),
-        (NOT_CCAP = ""),
+        (ANZ, "ANZ"),
+        (HCL, "HCL"),
+        (HGS, "HGS"),
+        (DEXCOM, "Dexcom"),
+        (INFINIT_O, "Infinit-O"),
+        (REALPAGE, "Realpage"),
+        (VKPO, "VKPO"),
+        (CONDUENT, "Conduent"),
+        (QUALFON, "Qualfon"),
+        (QUANTRICS, "Quantrics"),
+        (PEARSON, "Pearson"),
+        (SYKES, "Sykes"),
+        (INTELLICARE, "Intellicare"),
+        (FISGLOBAL, "Fisglobal"),
+        (SITEL, "Sitel"),
+        (TELEPERFORMANCE, "Teleperformance"),
+        (NOT_CCAP, ""),
     )
 
     BUTUAN = "BC"
@@ -183,7 +183,7 @@ class SpartaProfile(models.Model):
         (ILOILO, "Iloilo City"),
         (CAUAYAN, "Cauayan City"),
         (VALENCIA, "Valencia City"),
-        (NOT_LGU = ""),
+        (NOT_LGU, ""),
     )
 
     user = models.OneToOneField(
