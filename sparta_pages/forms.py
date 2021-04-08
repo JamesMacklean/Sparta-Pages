@@ -23,7 +23,7 @@ class SpartaProfileForm(forms.Form):
     citizenship = forms.BooleanField(required=True)
     discovery = forms.ChoiceField(required=True, choices=SpartaProfile.DISCOVERY_CHOICES)
     org = forms.ChoiceField(required=True, choices=SpartaProfile.ORG_CHOICES)
-    ccap_sub = forms.ChoiceField(required=False, choices=SpartaProfile.CCAP_SUBCHOICES)
+    ccap_sub = forms.ChoiceField(required=False, choices=SpartaProfile.CCAP_SUBCHOICES, widget=forms.Select(attrs={"onChange":'changeDropdown()'}))
     lgu_sub = forms.ChoiceField(required=False, choices=SpartaProfile.LGU_SUBCHOICES)
 
 
