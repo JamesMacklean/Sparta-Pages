@@ -66,9 +66,26 @@
               <label for="{{ sparta_profile_form.citizenship.id_for_label }}" style="font-family: inherit;font-style: inherit;">I am confirming that I am a Filipino citizen currently residing in the Philippines.*</label>
           </div>
           <div class="form-group">
-            <label for="{{ sparta_profile_form.discovery.id_for_label }}" style="font-family: inherit;font-style: inherit;">How did you find out about this scholarship?:</label>
+            <label for="{{ sparta_profile_form.discovery.id_for_label }}" style="font-family: inherit;font-style: inherit;">How did you learn about the program?:</label>
             {{ sparta_profile_form.discovery }}
             {{ sparta_profile_form.discovery.errors }}
+          </div>
+          <div class="form-group">
+            <label for="{{ sparta_profile_form.org.id_for_label }}" style="font-family: inherit;font-style: inherit;">Select the SPARTA partner organization:</label>
+            {{ sparta_profile_form.org }}
+            {{ sparta_profile_form.org.errors }}
+            <br>
+            <i>*If you are not involved in any of these organizations, choose <b>N/A</b></i>
+          </div>
+          <div class="form-group" id="ccap_div" style="display:none;">
+            <label for="{{ sparta_profile_form.ccap_sub.id_for_label }}" style="font-family: inherit;font-style: inherit;">Specify CCAP Organization:</label>
+            {{ sparta_profile_form.ccap_sub }}
+            {{ sparta_profile_form.ccap_sub.errors }}
+          </div>
+          <div class="form-group" id="lgu_div" style="display:none;">
+            <label for="{{ sparta_profile_form.lgu_sub.id_for_label }}" style="font-family: inherit;font-style: inherit;">Specify Partner LGU Organization:</label>
+            {{ sparta_profile_form.lgu_sub }}
+            {{ sparta_profile_form.lgu_sub.errors }}
           </div>
 
           <div class="d-flex justify-content-center">
