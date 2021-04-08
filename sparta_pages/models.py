@@ -125,6 +125,7 @@ class SpartaProfile(models.Model):
     CMU = "CM"
     NOT_INVOLVED = "NA"
     ORG_CHOICES = (
+        (NOT_INVOLVED, "N/A"),
         (CCAP, "Contact Center Association of the Philippines (CCAP)"),
         (PCOO, "Presidential Communications Operations Office - Freedom of Information (PCOO-FOI)"),
         (LGU, "Partner LGU"),
@@ -133,7 +134,6 @@ class SpartaProfile(models.Model):
         (FSUU, "Father Saturnino Urios University (FSUU)"),
         (USTP, "University of Science and Technology of Southern Philippines (USTP)"),
         (CMU, "Central Mindanao University (CMU)"),
-        (NOT_INVOLVED, "N/A"),
     )
 
     ANZ = "AN"

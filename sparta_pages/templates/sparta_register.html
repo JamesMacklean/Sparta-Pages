@@ -3,6 +3,24 @@
 
 {% block title %}Coursebank | SPARTA | Registration{% endblock %}
 
+<script>
+  function changeDropdown(){
+    var state = document.getElementById("{{ sparta_profile_form.org }}").value;
+    if (state == "CP"){
+      document.getElementById("{{ sparta_profile_form.lgu_sub.id_for_label }}").style.display="none";
+      document.getElementById("{{ sparta_profile_form.ccap_sub.id_for_label }}").style.display="block";
+    }
+    else if (state == "LG"){
+      document.getElementById("{{ sparta_profile_form.ccap_sub.id_for_label }}").style.display="none";
+      document.getElementById("{{ sparta_profile_form.lgu_sub.id_for_label }}").style.display="block";
+    }
+    else {
+      document.getElementById("{{ sparta_profile_form.lgu_sub.id_for_label }}").style.display="none";
+      document.getElementById("{{ sparta_profile_form.ccap_sub.id_for_label }}").style.display="none";
+    }
+  }
+</script>
+
 {% block sparta_body %}
 <div class="progress">
   <div role="progressbar" aria-valuemin="0" aria-valuemax="100" class="progress-bar bg-info" style="width: 20%;font-size: 1.25em;" aria-valuenow="0">
@@ -71,26 +89,12 @@
             {{ sparta_profile_form.discovery.errors }}
           </div>
           <div class="form-group">
-            <label for="{{ sparta_profile_form.org.id_for_label }}" style="font-family: inherit;font-style: inherit;">Select the SPARTA partner organization:</label>
+            <label for="{{ sparta_profile_form.org.id_for_label }}" style="font-family: inherit;font-style: inherit;" onchange="changeDropdown(this.value);">Select the SPARTA partner organization:</label>
             {{ sparta_profile_form.org }}
             {{ sparta_profile_form.org.errors }}
             <br>
             <i>*If you are not involved in any of these organizations, choose <b>N/A</b></i>
           </div>
-          <script type="text/javascript">
-            if (sparta_profile_form.discovery == "CP"){
-              document.getElementById("{{ sparta_profile_form.lgu_sub.id_for_label }}").style.display="none";
-              document.getElementById("{{ sparta_profile_form.ccap_sub.id_for_label }}").style.display="block";
-            }
-            else if (sparta_profile_form.discovery == "LG"){
-              document.getElementById("{{ sparta_profile_form.ccap_sub.id_for_label }}").style.display="none";
-              document.getElementById("{{ sparta_profile_form.lgu_sub.id_for_label }}").style.display="block";
-            }
-            else {
-              document.getElementById("{{ sparta_profile_form.lgu_sub.id_for_label }}").style.display="none";
-              document.getElementById("{{ sparta_profile_form.ccap_sub.id_for_label }}").style.display="none";
-            }
-          </script>
           <div class="form-group" style="display:none;">
             <label for="{{ sparta_profile_form.ccap_sub.id_for_label }}" style="font-family: inherit;font-style: inherit;">Specify CCAP Organization:</label>
             {{ sparta_profile_form.ccap_sub }}
