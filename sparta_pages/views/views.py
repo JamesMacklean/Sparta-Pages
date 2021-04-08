@@ -120,6 +120,9 @@ class RegistrationPageView(View):
             # proof_of_agreement_file = sparta_profile_form.cleaned_data['proof_of_agreement_file']
             tos_yes = sparta_profile_form.cleaned_data['tos_yes']
             discovery = sparta_profile_form.cleaned_data['discovery']
+            org = sparta_profile_form.cleaned_data['org']
+            ccap_sub = sparta_profile_form.cleaned_data['ccap_sub']
+            lgu_sub = sparta_profile_form.cleaned_data['lgu_sub']
 
             if not tos_yes:
                 return render(request, self.template_name, {'sparta_profile_form': sparta_profile_form})
@@ -137,6 +140,9 @@ class RegistrationPageView(View):
             # sprofile.proof_of_agreement = proof_of_agreement_url
             sprofile.proof_of_education = proof_of_education_url
             sprofile.discovery = discovery
+            sprofile.org = org
+            sprofile.ccap_sub = ccap_sub
+            sprofile.lgu_sub = lgu_sub
             sprofile.save()
 
             return redirect(reverse('sparta-register-extended'))

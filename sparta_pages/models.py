@@ -102,27 +102,88 @@ class CourseGroup(models.Model):
 class SpartaProfile(models.Model):
     """
     """
-    COLLEAGUE = "CL"
+    SOCIAL_MEDIA = "SM"
+    ROADSHOW = "RS"
+    TOWNHALL = "TH"
     FRIEND = "FR"
-    EMAIL = "EM"
-    NEWS = "NE"
-    FACEBOOK = "FB"
-    SPARTAWEB = "SW"
-    LINKEDIN = "LI"
-    YOUTUBE = "YT"
-    GOVERNMENT = "GO"
-    COMPANY = "CM"
+    OTHER_DISC = "OD"
     DISCOVERY_CHOICES = (
-        (COLLEAGUE, "A colleague referred it to me" ),
-        (FRIEND, "A friend referred it to me"),
-        (EMAIL, "Email"),
-        (NEWS, "News"),
-        (FACEBOOK, "Facebook Page/Group" ),
-        (SPARTAWEB, "SPARTA Website"),
-        (LINKEDIN, "LinkedIn"),
-        (YOUTUBE, "Youtube"),
-        (GOVERNMENT, "Local Government Unit"),
-        (COMPANY, "Company"),
+        (SOCIAL_MEDIA, "Social Media" ),
+        (ROADSHOW, "Online Roadshow/Orientation"),
+        (TOWNHALL, "Online Townhall"),
+        (FRIEND, "Referred by a friend"),
+        (OTHER_DISC, "Others" ),
+    )
+
+    CCAP = "CP"
+    PCOO = "PC"
+    LGU = "LG"
+    ISTU = "IS"
+    ISABELA = "IU"
+    FSUU = "FS"
+    USTP = "US"
+    CMU = "CM"
+    NOT_INVOLVED = "NA"
+    ORG_CHOICES = (
+        (CCAP, "Contact Center Association of the Philippines (CCAP)"),
+        (PCOO, "Presidential Communications Operations Office - Freedom of Information (PCOO-FOI)"),
+        (LGU, "Partner LGU"),
+        (ISTU, "Iloilo Science and Technology University (ISTU)"),
+        (ISABELA, "Isabela State University - Cauayan Campus"),
+        (FSUU, "Father Saturnino Urios University (FSUU)"),
+        (USTP, "University of Science and Technology of Southern Philippines (USTP)"),
+        (CMU, "Central Mindanao University (CMU)"),
+        (NOT_INVOLVED, "N/A"),
+    )
+
+    ANZ = "AN"
+    HCL = "HC"
+    HGS = "HG"
+    DEXCOM = "DX"
+    INFINIT_O = "IO"
+    REALPAGE = "RP"
+    VKPO = "VK"
+    CONDUENT = "CN"
+    QUALFON = "QF"
+    QUANTRICS = "QT"
+    PEARSON = "PR"
+    SYKES = "SY"
+    INTELLICARE = "IC"
+    FISGLOBAL = "FG"
+    SITEL = "SL"
+    TELEPERFORMANCE = "TP"
+    NOT_CCAP = ""
+    CCAP_SUBCHOICES = (
+        (ANZ = "ANZ"),
+        (HCL = "HCL"),
+        (HGS = "HGS"),
+        (DEXCOM = "Dexcom"),
+        (INFINIT_O = "Infinit-O"),
+        (REALPAGE = "Realpage"),
+        (VKPO = "VKPO"),
+        (CONDUENT = "Conduent"),
+        (QUALFON = "Qualfon"),
+        (QUANTRICS = "Quantrics"),
+        (PEARSON = "Pearson"),
+        (SYKES = "Sykes"),
+        (INTELLICARE = "Intellicare"),
+        (FISGLOBAL = "Fisglobal"),
+        (SITEL = "Sitel"),
+        (TELEPERFORMANCE = "Teleperformance"),
+        (NOT_CCAP = ""),
+    )
+
+    BUTUAN = "BC"
+    ILOILO = "IC"
+    CAUAYAN = "CC"
+    VALENCIA = "VC"
+    NOT_LGU = ""
+    LGU_SUBCHOICES = (
+        (BUTUAN, "Butuan City"),
+        (ILOILO, "Iloilo City"),
+        (CAUAYAN, "Cauayan City"),
+        (VALENCIA, "Valencia City"),
+        (NOT_LGU = ""),
     )
 
     user = models.OneToOneField(
@@ -136,7 +197,10 @@ class SpartaProfile(models.Model):
     modified_at = models.DateTimeField(auto_now=True)
     first_timer = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
-    discovery = models.CharField(max_length=2, choices=DISCOVERY_CHOICES, default=COLLEAGUE)
+    discovery = models.CharField(max_length=2, choices=DISCOVERY_CHOICES, default=SOCIAL_MEDIA)
+    org = models.CharField(max_length=2, choices=ORG_CHOICES, default=NOT_INVOLVED)
+    ccap_sub = models.CharField(max_length=2, choices=CCAP_SUBCHOICES, default=NOT_CCAP, null=True, blank=True)
+    lgu_sub = models.CharField(max_length=2, choices=LGU_SUBCHOICES, default=NOT_LGU, null=True, blank=True)
 
     class Meta:
         verbose_name_plural = "3. Sparta Profiles"
