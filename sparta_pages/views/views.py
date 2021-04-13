@@ -876,3 +876,44 @@ class StudentCouponRecordsView(TemplateView):
 
         context = self.get_context_data()
         return render(request, self.template_name, context)
+
+class AdditionalEditPageView(View):
+    """
+    """
+    sparta_profile_form_class = SpartaProfileForm
+    template_name = "extendedspartaprofile_update_form.html"
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(AdditionalEditPageView, self).dispatch(*args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
+        if SpartaProfile.objects.filter(user=request.user):
+            return redirect('sparta-profile')
+        sparta_profile_form = self.sparta_profile_form_class()
+        return render(request, self.template_name, {'sparta_profile_form': sparta_profile_form})
+
+    def post(self, request, *args, **kwargs):
+        sparta_profile_form = self.sparta_profile_form_class(request.POST, request.FILES)
+        if sparta_profile_form.is_valid():
+            discovery = sparta_profile_form.cleaned_data['discovery']
+            org = sparta_profile_form.cleaned_data['org']
+            ccap_sub = sparta_profile_form.cleaned_data['ccap_sub']
+            lgu_sub = sparta_profile_form.cleaned_data['lgu_sub']
+
+            if not tos_yes:
+                return render(request, self.template_name, {'sparta_profile_form': sparta_profile_form})
+
+            try:
+                sprofile = SpartaProfile.objects.get(user=request.user)
+            except SpartaProfile.DoesNotExist:
+                sprofile = SpartaProfile(user=request.user)
+
+            sprofile.discovery = discovery
+            sprofile.org = org
+            sprofile.ccap_sub = ccap_sub
+            sprofile.lgu_sub = lgu_sub
+            sprofile.save()
+
+            return redirect(reverse('sparta-profile'))
+        return render(request, self.template_name, {'sparta_profile_form': sparta_profile_form})
