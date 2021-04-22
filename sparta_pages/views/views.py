@@ -392,6 +392,8 @@ class ProfilePageView(TemplateView):
         if applications.exists():
             display_applications.append(applications.order_by('created_at')[0])
         context['profile'] = profile
+        context['discovery'] = profile.get_discovery_display()
+        context['org'] = profile.get_org_display()
         context['extended_profile'] = extended_profile
         context['applications'] = display_applications
         context['education_profiles'] = EducationProfile.objects.all().filter(profile=profile)
@@ -882,7 +884,7 @@ class AdditionalEditPageView(View):
     """
     sparta_profile_form_class = SpartaProfileForm
     extended_sparta_profile_form_class = ExtendedSpartaProfileForm
-    template_name = "extendedspartaprofile_update_form.html"
+    template_name = "sparta_pages\extendedspartaprofile_update_form.html"
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
