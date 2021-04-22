@@ -16,8 +16,8 @@ View and update your Scholar Profile information, Education, Employment, and Tra
       {% endif %}
       <li class="list-group-item"><b>Are you currently employed?</b> {% if extended_profile.is_employed %}Yes{% else %}No{% endif %}</li>
       <li class="list-group-item"><b>Are you currently pursuing a post graduate degree?</b> {{ extended_profile.get_grad_degree_display }}</li>
-      <li class="list-group-item"><b>How did you learn about the program?:</b> {{ profile.discovery }}</li>
-      <li class="list-group-item"><b>SPARTA Partner Organization:</b> {{ profile.org }}</li>
+      <li class="list-group-item"><b>How did you learn about the program?:</b> {{ discovery }}</li>
+      <li class="list-group-item"><b>SPARTA Partner Organization:</b> {{ org }}</li>
       <div class="card-body">
         <a href="{% url 'sparta-extended-profile-update' pk=extended_profile.pk %}" class="card-link">Edit</a>
       </div>
