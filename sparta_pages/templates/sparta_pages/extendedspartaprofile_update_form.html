@@ -17,44 +17,45 @@
       <div class="education-form-row spacer">
         <div class="card">
           <div class="card-body">
-            {{ form.non_field_errors }}
+            {{ extended_sparta_profile_form.non_field_errors }}
+            {{ sparta_profile_form.non_field_errors }}
             <div class="form-group">
-                {{ form.address.errors }}
+                {{ extended_sparta_profile_form.address.errors }}
                 <label for="{{ form.address.id_for_label }}" style="font-family: inherit;font-style: inherit;">Address:</label>
-                {{ form.address }}
+                {{ extended_sparta_profile_form.address }}
             </div>
             <div class="form-group">
-                {{ form.municipality.errors }}
+                {{ extended_sparta_profile_form.municipality.errors }}
                 <label for="{{ form.municipality.id_for_label }}" style="font-family: inherit;font-style: inherit;">Place of Residency:</label>
-                {{ form.municipality }}
+                {{ extended_sparta_profile_form.municipality }}
                 <div class="font-italic">*For those in Metro Manila, look under NCR.</div>
             </div>
             <div class="form-group">
-                {{ form.affiliation.errors }}
+                {{ extended_sparta_profile_form.affiliation.errors }}
                 <label for="{{ form.affiliation.id_for_label }}" style="font-family: inherit;font-style: inherit;">Affiliation:</label>
-                {{ form.affiliation }}
+                {{ extended_sparta_profile_form.affiliation }}
             </div>
             <div class="form-group">
-                {{ form.attainment.errors }}
+                {{ extended_sparta_profile_form.attainment.errors }}
                 <label for="{{ form.attainment.id_for_label }}" style="font-family: inherit;font-style: inherit;">Highest Educational Attainment:</label>
-                {{ form.attainment }}
+                {{ extended_sparta_profile_form.attainment }}
             </div>
             <div id="ifOtherAttain" style="display: none;">
               <div class="form-group">
-                  {{ form.other_attain.errors }}
+                  {{ extended_sparta_profile_form.other_attain.errors }}
                   <label for="{{ form.other_attain.id_for_label }}" style="font-family: inherit;font-style: inherit;"><small>If you chose "Other Education" for Highest Educational Attainment, you can enter further details here:</small></label>
-                  {{ form.other_attain }}
+                  {{ extended_sparta_profile_form.other_attain }}
               </div>
             </div>
             <div class="form-group" style="display: inline-flex;">
-                {{ form.is_employed.errors }}
+                {{ extended_sparta_profile_form.is_employed.errors }}
                 <label for="{{ form.is_employed.id_for_label }}" style="font-family: inherit;font-style: inherit;">Are you currently employed?</label>
-                {{ form.is_employed }}
+                {{ extended_sparta_profile_form.is_employed }}
             </div>
             <div class="form-group">
-                {{ form.grad_degree.errors }}
+                {{ extended_sparta_profile_form.grad_degree.errors }}
                 <label for="{{ form.grad_degree.id_for_label }}" style="font-family: inherit;font-style: inherit;">Are you currently pursuing a post graduate degree?</label>
-                {{ form.grad_degree }}
+                {{ extended_sparta_profile_form.grad_degree }}
             </div>
             <div class="form-group">
               <label for="{{ sparta_profile_form.discovery.id_for_label }}" style="font-family: inherit;font-style: inherit;">How did you learn about the program?:</label>

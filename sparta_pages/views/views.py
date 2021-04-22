@@ -889,9 +889,9 @@ class AdditionalEditPageView(View):
         return super(AdditionalEditPageView, self).dispatch(*args, **kwargs)
 
     def get(self, request, *args, **kwargs):
-        if SpartaProfile.objects.filter(user=request.user):
+        if not SpartaProfile.objects.filter(user=request.user).exists():
             return redirect('sparta-profile')
-        if ExtendedSpartaProfile.objects.filter(user=request.user):
+        if ExtendedSpartaProfile.objects.filter(user=request.user).exists():
             return redirect('sparta-profile')
         sparta_profile_form = self.sparta_profile_form_class()
         extended_sparta_profile_form = self.extended_sparta_profile_form_class()
@@ -918,9 +918,9 @@ class AdditionalEditPageView(View):
                 sprofile = SpartaProfile.objects.get(user=request.user)
                 ext_profile = ExtendedSpartaProfile.objects.get(user=request.user)
             except SpartaProfile.DoesNotExist:
-                sprofile = SpartaProfile(user=request.user)
+                raise Http404
             except ExtendedSpartaProfile.DoesNotExist:
-                ext_profile = ExtendedSpartaProfile(user=request.user)
+                raise Http404
 
             sprofile.discovery = discovery
             sprofile.org = org
