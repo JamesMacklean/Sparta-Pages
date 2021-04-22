@@ -876,3 +876,67 @@ class StudentCouponRecordsView(TemplateView):
 
         context = self.get_context_data()
         return render(request, self.template_name, context)
+
+class AdditionalEditPageView(View):
+    """
+    """
+    sparta_profile_form_class = SpartaProfileForm
+    extended_sparta_profile_form_class = ExtendedSpartaProfileForm
+    template_name = "extendedspartaprofile_update_form.html"
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(AdditionalEditPageView, self).dispatch(*args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
+        if not SpartaProfile.objects.filter(user=request.user).exists():
+            return redirect('sparta-profile')
+        if not ExtendedSpartaProfile.objects.filter(user=request.user).exists():
+            return redirect('sparta-profile')
+        sparta_profile_form = self.sparta_profile_form_class()
+        extended_sparta_profile_form = self.extended_sparta_profile_form_class()
+        return render(request, self.template_name, {'sparta_profile_form': sparta_profile_form, 'extended_sparta_profile_form': extended_sparta_profile_form})
+
+    def post(self, request, *args, **kwargs):
+        sparta_profile_form = self.sparta_profile_form_class(request.POST)
+        extended_sparta_profile_form = self.extended_sparta_profile_form_class(request.POST)
+        if sparta_profile_form.is_valid() and extended_sparta_profile_form.is_valid():
+            discovery = sparta_profile_form.cleaned_data['discovery']
+            org = sparta_profile_form.cleaned_data['org']
+            ccap_sub = sparta_profile_form.cleaned_data['ccap_sub']
+            lgu_sub = sparta_profile_form.cleaned_data['lgu_sub']
+
+            address = extended_sparta_profile_form.cleaned_data['address']
+            municipality = extended_sparta_profile_form.cleaned_data['municipality']
+            affiliation = extended_sparta_profile_form.cleaned_data['affiliation']
+            attainment = extended_sparta_profile_form.cleaned_data['attainment']
+            other_attain = extended_sparta_profile_form.cleaned_data['other_attain']
+            is_employed = extended_sparta_profile_form.cleaned_data['is_employed']
+            grad_degree = extended_sparta_profile_form.cleaned_data['grad_degree']
+
+            try:
+                sprofile = SpartaProfile.objects.get(user=request.user)
+                ext_profile = ExtendedSpartaProfile.objects.get(user=request.user)
+            except SpartaProfile.DoesNotExist:
+                raise Http404
+            except ExtendedSpartaProfile.DoesNotExist:
+                raise Http404
+
+            sprofile.discovery = discovery
+            sprofile.org = org
+            sprofile.ccap_sub = ccap_sub
+            sprofile.lgu_sub = lgu_sub
+            sprofile.save()
+
+            ext_profile.address = address
+            ext_profile.municipality = municipality
+            ext_profile.affiliation = affiliation
+            ext_profile.attainment = attainment
+            ext_profile.is_employed = is_employed
+            ext_profile.grad_degree = grad_degree
+            if other_attain:
+                ext_profile.other_attain = other_attain
+            ext_profile.save()
+
+            return redirect(reverse('sparta-profile'))
+        return render(request, self.template_name, {'sparta_profile_form': sparta_profile_form, 'extended_sparta_profile_form': extended_sparta_profile_form})
