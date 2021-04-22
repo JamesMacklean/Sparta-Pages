@@ -884,7 +884,7 @@ class AdditionalEditPageView(View):
     """
     sparta_profile_form_class = SpartaProfileForm
     extended_sparta_profile_form_class = ExtendedSpartaProfileForm
-    template_name = "sparta_pages\extendedspartaprofile_update_form.html"
+    template_name = "sparta_pages/extendedspartaprofile_update_form.html"
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
