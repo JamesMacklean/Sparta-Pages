@@ -893,7 +893,7 @@ class AdditionalEditPageView(View):
     def get(self, request, *args, **kwargs):
         try:
             sprofile = SpartaProfile.objects.get(user=request.user)
-            ext_profile = ExtendedSpartaProfile.objects.get(user=request.user)
+            ext_profile = ExtendedSpartaProfile.objects.get(pk=kwargs['pk'])
         except SpartaProfile.DoesNotExist:
             raise Http404
         except ExtendedSpartaProfile.DoesNotExist:
