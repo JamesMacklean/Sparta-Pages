@@ -901,8 +901,8 @@ class AdditionalEditPageView(View):
         sprofile_initial = {
             'discovery': sprofile.discovery,
             'org': sprofile.org,
-            'ccap': sprofile.ccap,
-            'lgu': sprofile.lgu,
+            'ccap': sprofile.ccap_sub,
+            'lgu': sprofile.lgu_sub,
         }
         sparta_profile_form = self.sparta_profile_form_class(initial=sprofile_initial)
         extended_sparta_profile_form = self.extended_sparta_profile_form_class(instance=ext_profile)
