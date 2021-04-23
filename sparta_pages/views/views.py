@@ -898,8 +898,13 @@ class AdditionalEditPageView(View):
             raise Http404
         except ExtendedSpartaProfile.DoesNotExist:
             raise Http404
-
-        sparta_profile_form = self.sparta_profile_form_class(instance=sprofile)
+        sprofile_initial = {
+            'discovery': sprofile.discovery,
+            'org': sprofile.org,
+            'ccap': sprofile.ccap,
+            'lgu': sprofile.lgu,
+        }
+        sparta_profile_form = self.sparta_profile_form_class(initial=sprofile_initial)
         extended_sparta_profile_form = self.extended_sparta_profile_form_class(instance=ext_profile)
         return render(request, self.template_name, {'sparta_profile_form': sparta_profile_form, 'extended_sparta_profile_form': extended_sparta_profile_form})
 
