@@ -882,7 +882,7 @@ class StudentCouponRecordsView(TemplateView):
 class AdditionalEditPageView(View):
     """
     """
-    sparta_profile_form_class = SpartaProfileForm
+    sparta_profile_form_class = EditSpartaProfileForm
     extended_sparta_profile_form_class = ExtendedSpartaProfileForm
     template_name = "sparta_pages/extendedspartaprofile_update_form.html"
 
