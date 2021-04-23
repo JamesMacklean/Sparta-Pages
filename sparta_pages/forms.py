@@ -26,6 +26,13 @@ class SpartaProfileForm(forms.Form):
     ccap_sub = forms.ChoiceField(required=False, choices=SpartaProfile.CCAP_SUBCHOICES)
     lgu_sub = forms.ChoiceField(required=False, choices=SpartaProfile.LGU_SUBCHOICES)
 
+class EditSpartaProfileForm(forms.Form):
+    """
+    """
+    discovery = forms.ChoiceField(required=False, choices=SpartaProfile.DISCOVERY_CHOICES)
+    org = forms.ChoiceField(required=False, choices=SpartaProfile.ORG_CHOICES, widget=forms.Select(attrs={"onChange":'changeDropdown(this.value)'}))
+    ccap_sub = forms.ChoiceField(required=False, choices=SpartaProfile.CCAP_SUBCHOICES)
+    lgu_sub = forms.ChoiceField(required=False, choices=SpartaProfile.LGU_SUBCHOICES)
 
 class ExtendedSpartaProfileForm(forms.ModelForm):
     """
