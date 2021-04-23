@@ -21,40 +21,40 @@
             {{ sparta_profile_form.non_field_errors }}
             <div class="form-group">
                 {{ extended_sparta_profile_form.address.errors }}
-                <label for="{{ form.address.id_for_label }}" style="font-family: inherit;font-style: inherit;">Address:</label>
+                <label for="{{ extended_sparta_profile_form.address.id_for_label }}" style="font-family: inherit;font-style: inherit;">Address:</label>
                 {{ extended_sparta_profile_form.address }}
             </div>
             <div class="form-group">
                 {{ extended_sparta_profile_form.municipality.errors }}
-                <label for="{{ form.municipality.id_for_label }}" style="font-family: inherit;font-style: inherit;">Place of Residency:</label>
+                <label for="{{ extended_sparta_profile_form.municipality.id_for_label }}" style="font-family: inherit;font-style: inherit;">Place of Residency:</label>
                 {{ extended_sparta_profile_form.municipality }}
                 <div class="font-italic">*For those in Metro Manila, look under NCR.</div>
             </div>
             <div class="form-group">
                 {{ extended_sparta_profile_form.affiliation.errors }}
-                <label for="{{ form.affiliation.id_for_label }}" style="font-family: inherit;font-style: inherit;">Affiliation:</label>
+                <label for="{{ extended_sparta_profile_form.affiliation.id_for_label }}" style="font-family: inherit;font-style: inherit;">Affiliation:</label>
                 {{ extended_sparta_profile_form.affiliation }}
             </div>
             <div class="form-group">
                 {{ extended_sparta_profile_form.attainment.errors }}
-                <label for="{{ form.attainment.id_for_label }}" style="font-family: inherit;font-style: inherit;">Highest Educational Attainment:</label>
+                <label for="{{ extended_sparta_profile_form.attainment.id_for_label }}" style="font-family: inherit;font-style: inherit;">Highest Educational Attainment:</label>
                 {{ extended_sparta_profile_form.attainment }}
             </div>
             <div id="ifOtherAttain" style="display: none;">
               <div class="form-group">
                   {{ extended_sparta_profile_form.other_attain.errors }}
-                  <label for="{{ form.other_attain.id_for_label }}" style="font-family: inherit;font-style: inherit;"><small>If you chose "Other Education" for Highest Educational Attainment, you can enter further details here:</small></label>
+                  <label for="{{ extended_sparta_profile_form.other_attain.id_for_label }}" style="font-family: inherit;font-style: inherit;"><small>If you chose "Other Education" for Highest Educational Attainment, you can enter further details here:</small></label>
                   {{ extended_sparta_profile_form.other_attain }}
               </div>
             </div>
             <div class="form-group" style="display: inline-flex;">
                 {{ extended_sparta_profile_form.is_employed.errors }}
-                <label for="{{ form.is_employed.id_for_label }}" style="font-family: inherit;font-style: inherit;">Are you currently employed?</label>
+                <label for="{{ extended_sparta_profile_form.is_employed.id_for_label }}" style="font-family: inherit;font-style: inherit;">Are you currently employed?</label>
                 {{ extended_sparta_profile_form.is_employed }}
             </div>
             <div class="form-group">
                 {{ extended_sparta_profile_form.grad_degree.errors }}
-                <label for="{{ form.grad_degree.id_for_label }}" style="font-family: inherit;font-style: inherit;">Are you currently pursuing a post graduate degree?</label>
+                <label for="{{ extended_sparta_profile_form.grad_degree.id_for_label }}" style="font-family: inherit;font-style: inherit;">Are you currently pursuing a post graduate degree?</label>
                 {{ extended_sparta_profile_form.grad_degree }}
             </div>
             <div class="form-group">
