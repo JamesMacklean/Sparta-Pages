@@ -32,7 +32,8 @@ from ..forms import (
     TrainingProfileForm, PathwayApplicationForm,
     EducationProfileFormset, EmploymentProfileFormset, TrainingProfileFormset,
     ExportAppsForm, FilterForm, ExportProfilesForm,
-    ExtendedSpartaProfileForm, ExportAnalyticsForm, ExportPathwayAnalyticsForm
+    ExtendedSpartaProfileForm, ExportAnalyticsForm, ExportPathwayAnalyticsForm,
+    EditSpartaProfileForm
 )
 from ..models import (
     Pathway, SpartaCourse, SpartaProfile, ExtendedSpartaProfile,
