@@ -906,9 +906,17 @@ class AdditionalEditPageView(View):
         }
         sparta_profile_form = self.sparta_profile_form_class(initial=sprofile_initial)
         extended_sparta_profile_form = self.extended_sparta_profile_form_class(instance=ext_profile)
-        return render(request, self.template_name, {'sparta_profile_form': sparta_profile_form, 'extended_sparta_profile_form': extended_sparta_profile_form})
+        return render(request, self.template_name, {'sparta_profile_form': sparta_profile_form, 'extended_sparta_profile_form': extended_sparta_profile_form, 'ext_profile': ext_profile})
 
     def post(self, request, *args, **kwargs):
+        try:
+            sprofile = SpartaProfile.objects.get(user=request.user)
+            ext_profile = ExtendedSpartaProfile.objects.get(user=request.user)
+        except SpartaProfile.DoesNotExist:
+            raise Http404
+        except ExtendedSpartaProfile.DoesNotExist:
+            raise Http404
+
         sparta_profile_form = self.sparta_profile_form_class(request.POST)
         extended_sparta_profile_form = self.extended_sparta_profile_form_class(request.POST)
         if sparta_profile_form.is_valid() and extended_sparta_profile_form.is_valid():
@@ -924,14 +932,6 @@ class AdditionalEditPageView(View):
             other_attain = extended_sparta_profile_form.cleaned_data['other_attain']
             is_employed = extended_sparta_profile_form.cleaned_data['is_employed']
             grad_degree = extended_sparta_profile_form.cleaned_data['grad_degree']
-
-            try:
-                sprofile = SpartaProfile.objects.get(user=request.user)
-                ext_profile = ExtendedSpartaProfile.objects.get(user=request.user)
-            except SpartaProfile.DoesNotExist:
-                raise Http404
-            except ExtendedSpartaProfile.DoesNotExist:
-                raise Http404
 
             sprofile.discovery = discovery
             sprofile.org = org
@@ -950,4 +950,4 @@ class AdditionalEditPageView(View):
             ext_profile.save()
 
             return redirect(reverse('sparta-profile'))
-        return render(request, self.template_name, {'sparta_profile_form': sparta_profile_form, 'extended_sparta_profile_form': extended_sparta_profile_form})
+        return render(request, self.template_name, {'sparta_profile_form': sparta_profile_form, 'extended_sparta_profile_form': extended_sparta_profile_form, 'ext_profile': ext_profile})
