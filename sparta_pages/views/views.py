@@ -32,7 +32,8 @@ from ..forms import (
     TrainingProfileForm, PathwayApplicationForm,
     EducationProfileFormset, EmploymentProfileFormset, TrainingProfileFormset,
     ExportAppsForm, FilterForm, ExportProfilesForm,
-    ExtendedSpartaProfileForm, ExportAnalyticsForm, ExportPathwayAnalyticsForm
+    ExtendedSpartaProfileForm, ExportAnalyticsForm, ExportPathwayAnalyticsForm,
+    EditSpartaProfileForm
 )
 from ..models import (
     Pathway, SpartaCourse, SpartaProfile, ExtendedSpartaProfile,
@@ -882,7 +883,7 @@ class StudentCouponRecordsView(TemplateView):
 class AdditionalEditPageView(View):
     """
     """
-    sparta_profile_form_class = SpartaProfileForm
+    sparta_profile_form_class = EditSpartaProfileForm
     extended_sparta_profile_form_class = ExtendedSpartaProfileForm
     template_name = "sparta_pages/extendedspartaprofile_update_form.html"
 
