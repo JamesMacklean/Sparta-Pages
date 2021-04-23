@@ -12,7 +12,7 @@
       You can update your SPARTA Scholar Profile below.
     </p>
 
-    <form method="post" action="{% url 'sparta-extended-profile-update' pk=ext_profile.instance.pk %}">
+    <form method="post" action="{% url 'sparta-extended-profile-update' pk=ext_profile.pk %}">
       {% csrf_token %}
       <div class="education-form-row spacer">
         <div class="card">
