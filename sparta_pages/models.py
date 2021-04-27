@@ -152,6 +152,7 @@ class SpartaProfile(models.Model):
     FISGLOBAL = "FG"
     SITEL = "SL"
     TELEPERFORMANCE = "TP"
+    INSPIRO = "IS"
     NOT_CCAP = ""
     CCAP_SUBCHOICES = (
         (ANZ, "ANZ"),
@@ -170,6 +171,7 @@ class SpartaProfile(models.Model):
         (FISGLOBAL, "Fisglobal"),
         (SITEL, "Sitel"),
         (TELEPERFORMANCE, "Teleperformance"),
+        (INSPIRO, "Inspiro"),
         (NOT_CCAP, ""),
     )
 
