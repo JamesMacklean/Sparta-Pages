@@ -93,7 +93,7 @@ def pathway(request, slug):
             core_courses.append(data)
 
     if slug == "functional-analyst":
-        cap_course_key = CourseKey.from_string("course-v1:DAP+SPCapstone001+2021_Q2")
+        cap_course_key = CourseKey.from_string("course-v1:Coursebank+CB001+2020_Q1")
         cap_course_overview = CourseOverview.get_from_id(cap_course_key)
 
 
