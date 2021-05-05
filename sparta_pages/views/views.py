@@ -106,8 +106,6 @@ def pathway(request, slug):
         context['graduate_course'] = None
     elif slug == "analytics-manager":
         context['graduate_course'] = None
-    else:
-        context['graduate_course'] = None
 
     context['core_courses'] = core_courses
     context['elective_courses'] = elective_courses
