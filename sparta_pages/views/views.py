@@ -95,12 +95,21 @@ def pathway(request, slug):
     if slug == "functional-analyst":
         cap_course_key = CourseKey.from_string("course-v1:Coursebank+CB001+2020_Q1")
         cap_course_overview = CourseOverview.get_from_id(cap_course_key)
-
+        context['graduate_course'] = {'courseoverview': cap_course_overview}
+    elif slug == "data-associate":
+        context['graduate_course'] = None
+    elif slug == "data-steward":
+        context['graduate_course'] = None
+    elif slug == "data-engineer":
+        context['graduate_course'] = None
+    elif slug == "data-scientist":
+        context['graduate_course'] = None
+    elif slug == "analytics-manager":
+        context['graduate_course'] = None
 
     context['core_courses'] = core_courses
     context['elective_courses'] = elective_courses
     context['pathway'] = pathway
-    context['graduate_course'] = {'courseoverview': cap_course_overview}
     return render(request, template_name, context)
 
 
