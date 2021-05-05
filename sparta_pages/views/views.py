@@ -73,6 +73,7 @@ def pathway(request, slug):
 
     core_courses = []
     elective_courses = []
+    graduate_course = []
     for group in pathway.groups.all().filter(is_active=True):
         pathway_courses = sparta_courses.filter(group=group)
         courses = []
@@ -91,6 +92,23 @@ def pathway(request, slug):
         else:
             core_courses.append(data)
 
+    if slug == "functional-analyst":
+        try:
+            cap_course_key = CourseKey.from_string("course-v1:DAP+SPCapstone001+2021_Q2")
+            cap_course_overview = CourseOverview.get_from_id(cap_course_key)
+            context['graduate_course'] = {'courseoverview': cap_course_overview}
+        except CourseOverview.DoesNotExist:
+            context['graduate_course'] = None
+    elif slug == "data-associate":
+        context['graduate_course'] = None
+    elif slug == "data-steward":
+        context['graduate_course'] = None
+    elif slug == "data-engineer":
+        context['graduate_course'] = None
+    elif slug == "data-scientist":
+        context['graduate_course'] = None
+    elif slug == "analytics-manager":
+        context['graduate_course'] = None
 
     context['core_courses'] = core_courses
     context['elective_courses'] = elective_courses

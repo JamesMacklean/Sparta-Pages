@@ -71,8 +71,19 @@
 </div>
 {% endif %}
 
+{% if graduate_course %}
+<div class="container-grid container-21 container" style="border: 2px solid black;">
+  <h1 class="heading-3" style="text-align: center;"><span class="heading-text-1" style="font-size: 26px;font-weight: 700;">CAPSTONE COURSE</span>
+  </h1>
+  <br><br>
+  <div class="row mb-md-5 mb-3 mx-auto">
+  {% include "sparta_capstone_course.html" with course=graduate_course %}
+  </div>
+</div>
+
 <br />
 <br />
+{% endif %}
 
 <div class="container-grid cta-2_block">
     <div class="container-grid row">
