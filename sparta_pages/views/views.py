@@ -93,8 +93,8 @@ def pathway(request, slug):
             core_courses.append(data)
 
     if slug == "functional-analyst":
-        cap_course_key = CourseKey.from_string("course-v1:DAP+SPCapstone001+2021_Q2")
         try:
+            cap_course_key = CourseKey.from_string("course-v1:DAP+SPCapstone001+2021_Q2")
             cap_course_overview = CourseOverview.get_from_id(cap_course_key)
             context['graduate_course'] = {'courseoverview': cap_course_overview}
         except CourseOverview.DoesNotExist:
