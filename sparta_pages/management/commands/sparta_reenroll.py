@@ -21,7 +21,7 @@ from sparta_pages.models import SpartaReEnrollment
 
 
 class Command(BaseCommand):
-    help = 'Reenroll user from course.'
+    help = 'Reenroll user from course and send email notification.'
 
     def add_arguments(self, parser):
 
@@ -67,10 +67,13 @@ class Command(BaseCommand):
         except Exception as e:
             raise CommandError("Course does not exist: {}".format(str(e)))
 
+        courseoverview = CourseOverview.get_from_id(course_key)
+        course_name = courseoverview.display_name
+
         if user is not None:
             try:
                 uname = User.objects.get(username=user)
-                reenrolled_user = self._reenroll_user(username=uname, course_key=course_key, mode=mode)
+                reenrolled_user = self._reenroll_user(username=uname, email_address=uname.email, course_key=course_key, course_name=course_name, mode=mode)
 
                 msg = 'Successfully reenrolled user: {}.'.format(reenrolled_user)
                 log.info(msg)
@@ -83,7 +86,7 @@ class Command(BaseCommand):
             if not os.path.exists(csv_file):
                 raise CommandError(u'Pass the correct absolute path to file as --csv-file argument.')
 
-            total_users, failed_users = self._reenroll_users_from_file(csv_file, course_key=course_key, mode=mode)
+            total_users, failed_users = self._reenroll_users_from_file(csv_file, course_key=course_key, course_name=course_name, mode=mode)
 
             if failed_users:
                 msg = u'Completed reenrolling the users. {} of {} failed.'.format(
@@ -100,13 +103,13 @@ class Command(BaseCommand):
                 log.info(msg)
                 self.stdout.write(msg)
 
-    def _reenroll_users_from_file(self, reenroll_file, course_key=None, mode=None):
+    def _reenroll_users_from_file(self, reenroll_file, course_key=None, course_name=None, mode=None):
         """
         Reenroll all the users provided in the users file.
 
         file format, example file:
-            username
-            <string:username>
+            username,email
+            <string:username>,<string:email>
 
         Arguments:
             coupons_file (str): path of the file containing the list of users to be reenrolled.
@@ -123,7 +126,8 @@ class Command(BaseCommand):
                 if line_count == 0:
                     line_count += 1
                 username=row['username']
-                result = self._reenroll_user(username=username, course_key=course_key, mode=mode)
+                email_address=row['email']
+                result = self._reenroll_user(username=username, email_address=email_address, course_key=course_key, course_name=course_name, mode=mode)
                 if not result:
                     failed_users.append(row)
                     err_msg = u'Tried to process {}, but failed'
@@ -131,13 +135,20 @@ class Command(BaseCommand):
                 line_count += 1
         return line_count-1, failed_users
 
-    def _reenroll_user(self, username=None, course_key=None, mode=None):
+    def _reenroll_user(self, username=None, email_address=None, course_key=None, course_name=None, mode=None):
         """ reenroll a user """
         try:
             tnow = timezone.now()
             uname = User.objects.get(username=username)
             enrollment = CourseEnrollment.enroll(uname, course_key, mode=mode, check_access=False)
             reenrollment = SpartaReEnrollment.objects.create(enrollment=enrollment,reenroll_date=tnow)
+            email = EmailMessage(
+                'Course Access Reenrollment',
+                'This is a confirmation that you have been re-enrolled in {}.'.format(course_name),
+                'learn@coursebank.ph',
+                [email_address],
+            )
+            email.send()
         except Exception as e:
             log.info("Error in reenrolling learner: {}".format(str(e)))
             return False
