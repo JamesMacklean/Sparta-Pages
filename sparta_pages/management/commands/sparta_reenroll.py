@@ -103,7 +103,7 @@ class Command(BaseCommand):
                 log.info(msg)
                 self.stdout.write(msg)
 
-    def _reenroll_users_from_file(self, reenroll_file, course_key=None, mode=None):
+    def _reenroll_users_from_file(self, reenroll_file, course_key=None, course_name=None, mode=None):
         """
         Reenroll all the users provided in the users file.
 
