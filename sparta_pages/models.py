@@ -153,6 +153,9 @@ class SpartaProfile(models.Model):
     SITEL = "SL"
     TELEPERFORMANCE = "TP"
     INSPIRO = "IS"
+    PROBE_GROUP = "PG"
+    PEAK_OUTSOURCING = "PO"
+    MANULIFE = "ML"
     NOT_CCAP = ""
     CCAP_SUBCHOICES = (
         (ANZ, "ANZ"),
@@ -172,6 +175,9 @@ class SpartaProfile(models.Model):
         (SITEL, "Sitel"),
         (TELEPERFORMANCE, "Teleperformance"),
         (INSPIRO, "Inspiro"),
+        (PROBE_GROUP, "Probe Group"),
+        (PEAK_OUTSOURCING, "Peak Outsourcing"),
+        (MANULIFE, "Manulife"),
         (NOT_CCAP, ""),
     )
 
