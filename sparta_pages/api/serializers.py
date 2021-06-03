@@ -47,6 +47,9 @@ class SpartaProfileSerializer(serializers.ModelSerializer):
             'age',
             'gender',
             'discovery',
+            'org',
+            'ccap_sub',
+            'lgu_sub',
             'is_active',
             'created_at'
             ]
