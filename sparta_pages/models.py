@@ -156,6 +156,11 @@ class SpartaProfile(models.Model):
     PROBE_GROUP = "PG"
     PEAK_OUTSOURCING = "PO"
     MANULIFE = "ML"
+    COLLECTIONHOUSE = "CH"
+    SOURCEFIT = "SF"
+    VERTOCOMMUNICATIONS = "VC"
+    WNS = "WN"
+    ECLARO = "EC"
     NOT_CCAP = ""
     CCAP_SUBCHOICES = (
         (ANZ, "ANZ"),
@@ -178,6 +183,11 @@ class SpartaProfile(models.Model):
         (PROBE_GROUP, "Probe Group"),
         (PEAK_OUTSOURCING, "Peak Outsourcing"),
         (MANULIFE, "Manulife"),
+        (COLLECTIONHOUSE, "Collectionhouse"),
+        (SOURCEFIT, "Sourcefit"),
+        (VERTOCOMMUNICATIONS, "Vertocommunications"),
+        (WNS, "WNS"),
+        (ECLARO, "Eclaro"),
         (NOT_CCAP, ""),
     )
 
@@ -221,7 +231,7 @@ class SpartaProfile(models.Model):
             self.is_active = False
             self.save()
 
-    @property    
+    @property
     def username(self):
         return self.user.username
 
