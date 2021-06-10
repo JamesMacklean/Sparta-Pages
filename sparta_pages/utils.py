@@ -965,7 +965,7 @@ def export_learner_pathway_progress(email_address=None, date_from=None, date_to=
             dateto_str = date_to.strftime('%Y-%m-%dT%H:%M:%S.000Z')
 
         if applications.exists():
-            application = applications.order_by('-created_at').first()
+            application = applications.order_by('created_at').first()
 
             total_count = pathway_dict[application.pathway.name]
             finished = 0
