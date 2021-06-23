@@ -1374,13 +1374,13 @@ def export_graduation_candidates(path_way=None, email_address=None, date_from=No
                            elect_count += 1
 
 
-           if core_count == pathway_courses_core_total and elect_count >= pathway_courses_elective_total:
-            user_list.append({
-                "name": p.full_name,
-                "username": p.user.username,
-                "email": p.user.email,
-                "pathway": application.pathway.name,
-                "progress": str(finished) + " out of " + str(total_count)
+            if core_count == pathway_courses_core_total and elect_count >= pathway_courses_elective_total:
+               user_list.append({
+                   "name": p.full_name,
+                   "username": p.user.username,
+                   "email": p.user.email,
+                   "pathway": application.pathway.name,
+                   "progress": str(finished) + " out of " + str(total_count)
             })
         else:
             user_list.append({
