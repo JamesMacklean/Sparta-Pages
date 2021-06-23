@@ -1333,8 +1333,9 @@ def export_graduation_candidates(path_way=None, email_address=None, date_from=No
                 elective_courses.append(course_key)
             else:
                 core_courses.append(course_key)
-            elect_total = course.group.complete_at_least
+            elective_course_total = course.group.complete_at_least
         core_total = len(core_courses)
+        elect_total = elective_course_total
 
 
     else:
