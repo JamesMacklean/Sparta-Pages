@@ -4,6 +4,7 @@ from django.utils import timezone
 import logging
 import unicodecsv
 
+from django.db import connection
 from django.core.mail import send_mail, EmailMessage
 from django.shortcuts import render, redirect, get_object_or_404
 
@@ -1304,6 +1305,8 @@ def export_graduation_candidates(path_way=None, email_address=None, date_from=No
     tnow = datetime.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
 
     profiles = SpartaProfile.objects.prefetch_related('applications')
+    core_courses = []
+    elective_courses = []
 
     if path_way:
       if path_way == 1:
@@ -1320,22 +1323,24 @@ def export_graduation_candidates(path_way=None, email_address=None, date_from=No
           pathway_name = "Analytics Manager"
 
       if path_way >= 1 and path_way <= 6:
-        selected_pathway = Pathway.objects.filter(name = path_way)
-        pathway = selected_pathway
-        sparta_courses = SpartaCourse.objects.filter(is_active=True).filter(pathway=pathway)
+         with connection.cursor() as cursor:
+               cursor.execute("Select sparta_pages_spartacourse.course_id from sparta_pages_spartacourse INNER JOIN sparta_pages_coursegroup where sparta_pages_spartacourse.group_id=sparta_pages_coursegroup.id AND sparta_pages_coursegroup.type='CO' AND sparta_pages_spartacourse.pathway_id = %s", [path_way])
+               corecourse = cursor.fetchall()
+         with connection.cursor() as cursor:
+              cursor.execute("Select sparta_pages_spartacourse.course_id from sparta_pages_spartacourse INNER JOIN sparta_pages_coursegroup where sparta_pages_spartacourse.group_id=sparta_pages_coursegroup.id AND sparta_pages_coursegroup.type='EL' AND sparta_pages_spartacourse.pathway_id = %s", [path_way])
+              electcourse = cursor.fetchall()
+         with connection.cursor() as cursor:
+              cursor.execute("Select complete_at_least from sparta_pages_coursegroup where type='EL' AND pathway_id = %s", [path_way])
+              elect_total = cursor.fetchone()
 
-        core_courses = []
-        elective_courses = []
-        elect_total = 0
+         for data in corecourse:
+            core_courses.append(data)
+         for data in electcourse:
+            elective_courses.append(data)
 
-        for course in sparta_courses:
-            course_key = CourseKey.from_string(course.course_id)
-            if course.group.type == "EL":
-                elective_courses.append(course_key)
-            else:
-                core_courses.append(course_key)
-            elect_total = course.group.complete_at_least
-        core_total = len(core_courses)
+         core_total = len(core_courses)
+
+
 
     else:
        profiles = None
@@ -1375,13 +1380,11 @@ def export_graduation_candidates(path_way=None, email_address=None, date_from=No
 
                 if path_way:
                     for pathcourse in core_courses:
-                        pathcourse_id = pathcourse.course_id
-                        if course_key == pathcourse_id and cert is not None:
+                        if course_key == pathcourse and cert is not None:
                            core_count += 1
 
                     for pathcourse in elective_courses:
-                        pathcourse_id = pathcourse.course_id
-                        if course_key == pathcourse_id and cert is not None:
+                        if course_key == pathcourse and cert is not None:
                            elect_count += 1
 
 
@@ -1392,14 +1395,6 @@ def export_graduation_candidates(path_way=None, email_address=None, date_from=No
                    "email": p.user.email,
                    "pathway": application.pathway.name,
                    "progress": str(finished) + " out of " + str(total_count) + str(core_count) + "out of" + str(core_total) + str(elect_count) + "out of" + str(elect_total)
-            })
-        else:
-            user_list.append({
-                "name": p.full_name,
-                "username": p.user.username,
-                "email": p.user.email,
-                "pathway": "No Approved Application",
-                "progress": "N/A"
             })
 
     file_name = '/home/ubuntu/tempfiles/export_learner_pathway_progress_{}.csv'.format(tnow)
