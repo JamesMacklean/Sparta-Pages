@@ -1321,7 +1321,7 @@ def export_graduation_candidates(path_way=None, email_address=None, date_from=No
 
       if path_way >= 1 and path_way <= 6:
         pathways = Pathway.objects.filter(name = path_way)
-        selected_pathway = get_object_or_404(Pathway)
+        selected_pathway = pathways
         sparta_courses = SpartaCourse.objects.filter(is_active=True).filter(pathway=selected_pathway)
 
         core_courses = []
