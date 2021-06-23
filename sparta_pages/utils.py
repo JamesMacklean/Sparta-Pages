@@ -1297,3 +1297,131 @@ def export_three_month_inactive_users(course_id, email_address=None):
         )
         email.attach_file(file_name)
         email.send()
+
+def export_graduation_candidates(path_way=None, email_address=None, date_from=None, date_to=None):
+    """"""
+    tnow = datetime.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
+
+    profiles = SpartaProfile.objects.prefetch_related('applications')
+
+    if path_way:
+      if path_way == 1:
+          pathway_name = "Data Associate"
+      elif path_way == 2:
+          pathway_name = "Data Scientist"
+      elif path_way == 3:
+          pathway_name = "Data Engineer"
+      elif path_way == 4:
+          pathway_name = "Data Steward"
+      elif path_way == 5:
+          pathway_name = "Data Analyst"
+      elif path_way == 6:
+          pathway_name = "Analytics Manager"
+
+      if path_way >= 1 and path_way <= 6:
+        selected_profiles = profiles.filter(profiles.applications.pathway.name = pathway_name)
+        pathway_courses = SpartaCourse.objects.filter(pathway.name=pathway_name)
+        pathway_courses_core = pathway_courses.group.filter(type=CORE)
+        pathway_courses_core_total = pathway_courses.group.filter(type="CO").count()
+        pathway_courses_elective = pathway_courses.group.filter(type="EL")
+        pathway_courses_elective_total = pathway_courses.group.complete_at_least
+
+    else:
+       selected_profiles = None
+
+    datefrom_str = ""
+    dateto_str = ""
+
+    pathway_dict = {}
+    for pathway in Pathway.objects.all():
+        pathway_dict[pathway.name] = SpartaCourse.objects.filter(pathway=pathway).count()
+
+    user_list = []
+    for p in selected_profiles:
+        if date_from:
+            applications = p.applications.filter(created_at__gte=date_from,status="AP")
+            datefrom_str = date_from.strftime('%Y-%m-%dT%H:%M:%S.000Z')
+
+        if date_to:
+            applications = p.applications.filter(created_at__lte=date_to,status="AP")
+            dateto_str = date_to.strftime('%Y-%m-%dT%H:%M:%S.000Z')
+
+        if applications.exists():
+            application = applications.order_by('created_at').first()
+
+            total_count = pathway_dict[application.pathway.name]
+            finished = 0
+            core_count = 0
+            elect_count = 0
+
+            for course in application.pathway.courses.all():
+                course_key = CourseKey.from_string(course.course_id)
+
+                cert = get_certificate_for_user(p.user.username, course_key)
+
+                if cert is not None:
+                    finished += 1
+
+              if pathway:
+                for pathcourse in pathway_courses_core:
+                    pathcourse_id = pathway_courses_core.course_id
+                    if course_key == pathcourse_id and cert is not None
+                        core_count += 1
+
+                for pathcourse in pathway_courses_elective:
+                    pathcourse_id = pathway_courses_elective.course_id
+                    if course_key == pathcourse_id and cert is not None
+                        elect_count += 1
+
+
+           if core_count == pathway_courses_core_total and elect_count >= pathway_courses_elective_total:
+            user_list.append({
+                "name": p.full_name,
+                "username": p.user.username,
+                "email": p.user.email,
+                "pathway": application.pathway.name,
+                "progress": str(finished) + " out of " + str(total_count)
+            })
+        else:
+            user_list.append({
+                "name": p.full_name,
+                "username": p.user.username,
+                "email": p.user.email,
+                "pathway": "No Approved Application",
+                "progress": "N/A"
+            })
+
+    file_name = '/home/ubuntu/tempfiles/export_learner_pathway_progress_{}.csv'.format(tnow)
+    with open(file_name, mode='w') as csv_file:
+        writer = unicodecsv.writer(csv_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL,  encoding='utf-8')
+        writer.writerow([
+            'name',
+            'username',
+            'email',
+            'pathway',
+            'progress'
+            ])
+
+        for u in user_list:
+            writer.writerow([
+                u['name'],
+                u['username'],
+                u['email'],
+                u['pathway'],
+                u['progress'],
+            ])
+
+    if datefrom_str or dateto_str:
+        date_range = ' for date range: {} to {}'.format(datefrom_str, dateto_str)
+    else:
+        date_range = ""
+
+    if email_address:
+        email = EmailMessage(
+            'Coursebank - SPARTA Learner Pathway Progress',
+            'Attached file of SPARTA Learner Pathway Progress (as of {})'.format(date_range),
+            'no-reply-sparta-user-logins@coursebank.ph',
+            [email_address,],
+        )
+        email.attach_file(file_name)
+        email.send()
