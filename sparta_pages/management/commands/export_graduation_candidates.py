@@ -9,7 +9,7 @@ log = logging.getLogger(__name__)
 
 from django.core.management.base import BaseCommand, CommandError
 
-from sparta_pages.utils import export_learner_pathway_progress
+from sparta_pages.utils import export_graduation_candidates
 
 
 class Command(BaseCommand):
@@ -58,8 +58,8 @@ class Command(BaseCommand):
             date_to = datetime.now()
 
         try:
-            export_learner_pathway_progress(path_way=path_way, email_address=email_address, date_from=date_from, date_to=date_to)
+            export_graduation_candidates(path_way=path_way, email_address=email_address, date_from=date_from, date_to=date_to)
         except Exception as e:
             raise CommandError("export_learner_pathway_progress.ERROR: {}".format(str(e)))
         else:
-            self.stdout.write(self.style.SUCCESS("Successfully exported SPARTA learner pathway progress."))
+            self.stdout.write(self.style.SUCCESS("Successfully exported SPARTA graduation candidates."))
