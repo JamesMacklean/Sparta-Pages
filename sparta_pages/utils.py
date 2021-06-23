@@ -1326,6 +1326,7 @@ def export_graduation_candidates(path_way=None, email_address=None, date_from=No
 
         core_courses = []
         elective_courses = []
+        elect_total = 0
 
         for course in sparta_courses:
             course_key = CourseKey.from_string(course.course_id)
@@ -1333,10 +1334,8 @@ def export_graduation_candidates(path_way=None, email_address=None, date_from=No
                 elective_courses.append(course_key)
             else:
                 core_courses.append(course_key)
-            elective_course_total = course.group.complete_at_least
+            elect_total = course.group.complete_at_least
         core_total = len(core_courses)
-        elect_total = elective_course_total
-
 
     else:
        profiles = None
