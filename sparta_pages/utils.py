@@ -5,6 +5,7 @@ import logging
 import unicodecsv
 
 from django.core.mail import send_mail, EmailMessage
+from django.shortcuts import render, redirect, get_object_or_404
 
 from courseware.models import StudentModule
 from lms.djangoapps.certificates.models import certificate_status_for_student
