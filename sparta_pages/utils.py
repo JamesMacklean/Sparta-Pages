@@ -1327,21 +1327,14 @@ def export_graduation_candidates(path_way=None, email_address=None, date_from=No
         core_courses = []
         elective_courses = []
 
-        for group in pathway.groups.all().filter(is_active=True):
-            pathway_courses = sparta_courses.filter(group=group)
-            courses = []
-            for pathway_course in pathway_courses:
-                course_key = CourseKey.from_string(pathway_course.course_id)
-                courses.append(course_key)
-            data = {
-                'courses': courses
-            }
-            if group.type == "EL":
-                elective_courses.append(data)
+        for course in sparta_courses:
+            course_key = CourseKey.from_string(course.course_id)
+            if course.group.type == "EL":
+                elective_courses.append(course_key)
             else:
-                core_courses.append(data)
-            elect_total = group.complete_at_least
-            core_total = len(core_courses)
+                core_courses.append(course_key)
+            elect_total = course.group.complete_at_least
+        core_total = len(core_courses)
 
 
     else:
