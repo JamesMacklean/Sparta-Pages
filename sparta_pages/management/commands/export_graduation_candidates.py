@@ -60,6 +60,6 @@ class Command(BaseCommand):
         try:
             export_graduation_candidates(path_way=path_way, email_address=email_address, date_from=date_from, date_to=date_to)
         except Exception as e:
-            raise CommandError("export_learner_pathway_progress.ERROR: {}".format(str(e)))
+            raise CommandError("export_graduation_candidates.ERROR: {}".format(str(e)))
         else:
             self.stdout.write(self.style.SUCCESS("Successfully exported SPARTA graduation candidates."))
