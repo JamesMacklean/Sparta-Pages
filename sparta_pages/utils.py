@@ -1319,12 +1319,29 @@ def export_graduation_candidates(path_way=None, email_address=None, date_from=No
           pathway_name = "Analytics Manager"
 
       if path_way >= 1 and path_way <= 6:
-        for pathway in Pathway.objects.all():
-            pathway_courses = SpartaCourse.objects.filter(pathway.name == pathway_name)
-        pathway_courses_core = pathway_courses.group.filter(type=CORE)
-        pathway_courses_core_total = pathway_courses.group.filter(type="CO").count()
-        pathway_courses_elective = pathway_courses.group.filter(type="EL")
-        pathway_courses_elective_total = pathway_courses.group.complete_at_least
+        pathways = Pathway.objects.filter(name = path_way)
+        selected_pathway = get_object_or_404(Pathway)
+        sparta_courses = SpartaCourse.objects.filter(is_active=True).filter(pathway=selected_pathway)
+
+        core_courses = []
+        elective_courses = []
+
+        for group in pathway.groups.all().filter(is_active=True):
+            pathway_courses = sparta_courses.filter(group=group)
+            courses = []
+            for pathway_course in pathway_courses:
+                course_key = CourseKey.from_string(pathway_course.course_id)
+                courses.append(course_key)
+            data = {
+                'courses': courses
+            }
+            if group.type == "EL":
+                elective_courses.append(data)
+            else:
+                core_courses.append(data)
+            elect_total = group.complete_at_least
+            core_total = len(core_courses)
+
 
     else:
        profiles = None
@@ -1374,7 +1391,7 @@ def export_graduation_candidates(path_way=None, email_address=None, date_from=No
                            elect_count += 1
 
 
-            if core_count == pathway_courses_core_total and elect_count >= pathway_courses_elective_total and application.pathway.name == pathway_name:
+            if core_count == core_total and elect_count >= elect_total and application.pathway.name == pathway_name:
                user_list.append({
                    "name": p.full_name,
                    "username": p.user.username,
