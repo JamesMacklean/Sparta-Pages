@@ -1319,7 +1319,7 @@ def export_graduation_candidates(path_way=None, email_address=None, date_from=No
           pathway_name = "Analytics Manager"
 
       if path_way >= 1 and path_way <= 6:
-        pathway_courses = SpartaCourse.objects.filter(pathway.name == pathway_name)
+        pathway_courses = SpartaCourse.objects.filter(SpartaCourse.pathway.name == pathway_name)
         pathway_courses_core = pathway_courses.group.filter(type=CORE)
         pathway_courses_core_total = pathway_courses.group.filter(type="CO").count()
         pathway_courses_elective = pathway_courses.group.filter(type="EL")
