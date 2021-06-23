@@ -1365,12 +1365,12 @@ def export_graduation_candidates(path_way=None, email_address=None, date_from=No
                 if pathway:
                     for pathcourse in pathway_courses_core:
                         pathcourse_id = pathway_courses_core.course_id
-                        if course_key == pathcourse_id and cert is not None
+                        if course_key == pathcourse_id and cert is not None:
                            core_count += 1
 
                     for pathcourse in pathway_courses_elective:
                         pathcourse_id = pathway_courses_elective.course_id
-                        if course_key == pathcourse_id and cert is not None
+                        if course_key == pathcourse_id and cert is not None:
                            elect_count += 1
 
 
