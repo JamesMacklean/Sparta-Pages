@@ -1391,7 +1391,7 @@ def export_graduation_candidates(path_way=None, email_address=None, date_from=No
                    "username": p.user.username,
                    "email": p.user.email,
                    "pathway": application.pathway.name,
-                   "progress": str(finished) + " out of " + str(total_count) + str(core_count) + "out of" str(core_total) + str(elect_count) + "out of" + str(elect_total)
+                   "progress": str(finished) + " out of " + str(total_count) + str(core_count) + "out of" + str(core_total) + str(elect_count) + "out of" + str(elect_total)
             })
         else:
             user_list.append({
