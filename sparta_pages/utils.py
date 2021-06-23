@@ -1319,7 +1319,6 @@ def export_graduation_candidates(path_way=None, email_address=None, date_from=No
           pathway_name = "Analytics Manager"
 
       if path_way >= 1 and path_way <= 6:
-        selected_profiles = profiles.applications.filter(profiles.applications.pathway.name == pathway_name)
         pathway_courses = SpartaCourse.objects.filter(pathway.name == pathway_name)
         pathway_courses_core = pathway_courses.group.filter(type=CORE)
         pathway_courses_core_total = pathway_courses.group.filter(type="CO").count()
@@ -1327,7 +1326,7 @@ def export_graduation_candidates(path_way=None, email_address=None, date_from=No
         pathway_courses_elective_total = pathway_courses.group.complete_at_least
 
     else:
-       selected_profiles = None
+       profiles = None
 
     datefrom_str = ""
     dateto_str = ""
@@ -1337,7 +1336,7 @@ def export_graduation_candidates(path_way=None, email_address=None, date_from=No
         pathway_dict[pathway.name] = SpartaCourse.objects.filter(pathway=pathway).count()
 
     user_list = []
-    for p in selected_profiles:
+    for p in profiles:
         if date_from:
             applications = p.applications.filter(created_at__gte=date_from,status="AP")
             datefrom_str = date_from.strftime('%Y-%m-%dT%H:%M:%S.000Z')
@@ -1374,7 +1373,7 @@ def export_graduation_candidates(path_way=None, email_address=None, date_from=No
                            elect_count += 1
 
 
-            if core_count == pathway_courses_core_total and elect_count >= pathway_courses_elective_total:
+            if core_count == pathway_courses_core_total and elect_count >= pathway_courses_elective_total and application.pathway.name == pathway_name:
                user_list.append({
                    "name": p.full_name,
                    "username": p.user.username,
