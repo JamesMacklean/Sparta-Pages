@@ -1307,7 +1307,7 @@ def export_graduation_candidates(path_way=None, email_address=None, date_from=No
     profiles = SpartaProfile.objects.prefetch_related('applications')
     core_courses = []
     elective_courses = []
-    cert_list =[]
+    certdate_list =[]
 
     if path_way:
       if path_way == 1:
@@ -1378,7 +1378,8 @@ def export_graduation_candidates(path_way=None, email_address=None, date_from=No
                 course_key = CourseKey.from_string(course.course_id)
 
                 cert = get_certificate_for_user(p.user.username, course_key)
-                cert_list.append(cert)
+                date_completed = cert['created'].strftime('%Y-%m-%dT%H:%M:%S.000Z')
+                certdate_list.append(date_completed)
 
                 if cert is not None:
                     finished += 1
@@ -1392,10 +1393,7 @@ def export_graduation_candidates(path_way=None, email_address=None, date_from=No
                         if unicode(course_key) == unicode(pathcourse) and cert is not None:
                            elect_count += 1
 
-            def cert_get_date(e):
-                return e['created']
-            cert_list.sort(key=cert_get_date, reverse=True)
-
+            certdate_list.sort(reverse=True)
 
             if application.pathway.name == pathway_name:
                user_list.append({
@@ -1404,7 +1402,7 @@ def export_graduation_candidates(path_way=None, email_address=None, date_from=No
                    "email": p.user.email,
                    "pathway": application.pathway.name,
                    "progress": str(finished) + " out of " + str(total_count) + str(core_count) + "out of" + str(core_total) + str(elect_count) + "out of" + str(elect_total),
-                   "completion_date":cert_list[0].created
+                   "completion_date":certdate_list[0]
             })
 
     file_name = '/home/ubuntu/tempfiles/export_learner_pathway_progress_{}.csv'.format(tnow)
