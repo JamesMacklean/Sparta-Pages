@@ -1380,17 +1380,19 @@ def export_graduation_candidates(path_way=None, email_address=None, date_from=No
                 cert = get_certificate_for_user(p.user.username, course_key)
 
                 if cert is not None:
-                    date_completed = cert['created'].strftime('%Y-%m-%dT%H:%M:%S.000Z')
-                    certdate_list.append(date_completed)
                     finished += 1
 
                 if path_way:
                     for pathcourse in core_courses:
                         if unicode(course_key) == unicode(pathcourse) and cert is not None:
+                           date_completed = cert['created'].strftime('%Y-%m-%dT%H:%M:%S.000Z')
+                           certdate_list.append(date_completed)
                            core_count += 1
 
                     for pathcourse in elective_courses:
                         if unicode(course_key) == unicode(pathcourse) and cert is not None:
+                           date_completed = cert['created'].strftime('%Y-%m-%dT%H:%M:%S.000Z')
+                           certdate_list.append(date_completed)
                            elect_count += 1
 
             certdate_list.sort(reverse=True)
@@ -1404,6 +1406,7 @@ def export_graduation_candidates(path_way=None, email_address=None, date_from=No
                    "progress": str(finished) + " out of " + str(total_count) + str(core_count) + "out of" + str(core_total) + str(elect_count) + "out of" + str(elect_total),
                    "completion_date":certdate_list[0]
             })
+               certdate_list.clear()
 
     file_name = '/home/ubuntu/tempfiles/export_learner_pathway_progress_{}.csv'.format(tnow)
     with open(file_name, mode='w') as csv_file:
@@ -1413,7 +1416,7 @@ def export_graduation_candidates(path_way=None, email_address=None, date_from=No
             'username',
             'email',
             'pathway',
-            'progress'
+            'progress',
             'completion_date'
             ])
 
