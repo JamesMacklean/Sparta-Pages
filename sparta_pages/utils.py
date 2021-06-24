@@ -1378,10 +1378,10 @@ def export_graduation_candidates(path_way=None, email_address=None, date_from=No
                 course_key = CourseKey.from_string(course.course_id)
 
                 cert = get_certificate_for_user(p.user.username, course_key)
-                date_completed = cert['created'].strftime('%Y-%m-%dT%H:%M:%S.000Z')
-                certdate_list.append(date_completed)
 
                 if cert is not None:
+                    date_completed = cert['created'].strftime('%Y-%m-%dT%H:%M:%S.000Z')
+                    certdate_list.append(date_completed)
                     finished += 1
 
                 if path_way:
