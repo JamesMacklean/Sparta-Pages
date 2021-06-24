@@ -1307,7 +1307,6 @@ def export_graduation_candidates(path_way=None, email_address=None, date_from=No
     profiles = SpartaProfile.objects.prefetch_related('applications')
     core_courses = []
     elective_courses = []
-    certdate_list =[]
 
     if path_way:
       if path_way == 1:
@@ -1358,6 +1357,7 @@ def export_graduation_candidates(path_way=None, email_address=None, date_from=No
 
     user_list = []
     for p in profiles:
+        certdate_list =[]
         if date_from:
             applications = p.applications.filter(created_at__gte=date_from,status="AP")
             datefrom_str = date_from.strftime('%Y-%m-%dT%H:%M:%S.000Z')
@@ -1406,7 +1406,6 @@ def export_graduation_candidates(path_way=None, email_address=None, date_from=No
                    "progress": str(finished) + " out of " + str(total_count) + str(core_count) + "out of" + str(core_total) + str(elect_count) + "out of" + str(elect_total),
                    "completion_date":certdate_list[0]
             })
-               del certdate_list[:]
 
     file_name = '/home/ubuntu/tempfiles/export_learner_pathway_progress_{}.csv'.format(tnow)
     with open(file_name, mode='w') as csv_file:
