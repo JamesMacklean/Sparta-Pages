@@ -1388,7 +1388,7 @@ def export_graduation_candidates(path_way=None, email_address=None, date_from=No
                            elect_count += 1
 
 
-            if core_count == core_total and elect_count >= elect_total and application.pathway.name == pathway_name:
+            if application.pathway.name == pathway_name:
                user_list.append({
                    "name": p.full_name,
                    "username": p.user.username,
