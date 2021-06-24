@@ -1307,6 +1307,7 @@ def export_graduation_candidates(path_way=None, email_address=None, date_from=No
     profiles = SpartaProfile.objects.prefetch_related('applications')
     core_courses = []
     elective_courses = []
+    cert_list =[]
 
     if path_way:
       if path_way == 1:
@@ -1377,6 +1378,7 @@ def export_graduation_candidates(path_way=None, email_address=None, date_from=No
                 course_key = CourseKey.from_string(course.course_id)
 
                 cert = get_certificate_for_user(p.user.username, course_key)
+                cert_list.append(cert)
 
                 if cert is not None:
                     finished += 1
@@ -1390,6 +1392,8 @@ def export_graduation_candidates(path_way=None, email_address=None, date_from=No
                         if unicode(course_key) == unicode(pathcourse) and cert is not None:
                            elect_count += 1
 
+            cert_list.sort(key=lambda x: x.get('created_date'), reverse=True)
+
 
             if application.pathway.name == pathway_name:
                user_list.append({
@@ -1397,7 +1401,8 @@ def export_graduation_candidates(path_way=None, email_address=None, date_from=No
                    "username": p.user.username,
                    "email": p.user.email,
                    "pathway": application.pathway.name,
-                   "progress": str(finished) + " out of " + str(total_count) + str(core_count) + "out of" + str(core_total) + str(elect_count) + "out of" + str(elect_total) + core_courses[0]
+                   "progress": str(finished) + " out of " + str(total_count) + str(core_count) + "out of" + str(core_total) + str(elect_count) + "out of" + str(elect_total),
+                   "completion_date":cert_list[0].created_date
             })
 
     file_name = '/home/ubuntu/tempfiles/export_learner_pathway_progress_{}.csv'.format(tnow)
@@ -1409,6 +1414,7 @@ def export_graduation_candidates(path_way=None, email_address=None, date_from=No
             'email',
             'pathway',
             'progress'
+            'completion_date'
             ])
 
         for u in user_list:
@@ -1418,6 +1424,7 @@ def export_graduation_candidates(path_way=None, email_address=None, date_from=No
                 u['email'],
                 u['pathway'],
                 u['progress'],
+                u['completion_date'],
             ])
 
     if datefrom_str or dateto_str:
@@ -1428,7 +1435,7 @@ def export_graduation_candidates(path_way=None, email_address=None, date_from=No
     if email_address:
         email = EmailMessage(
             'Coursebank - SPARTA Learner Pathway Progress',
-            'Attached file of SPARTA Learner Pathway Progress (as of {})'.format(date_range),
+            'Attached file of SPARTA Graduation Candidates (as of {})'.format(date_range),
             'no-reply-sparta-user-logins@coursebank.ph',
             [email_address,],
         )
