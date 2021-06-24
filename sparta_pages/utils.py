@@ -1406,7 +1406,7 @@ def export_graduation_candidates(path_way=None, email_address=None, date_from=No
                    "progress": str(finished) + " out of " + str(total_count) + str(core_count) + "out of" + str(core_total) + str(elect_count) + "out of" + str(elect_total),
                    "completion_date":certdate_list[0]
             })
-               certdate_list.clear()
+               del certdate_list[:]
 
     file_name = '/home/ubuntu/tempfiles/export_learner_pathway_progress_{}.csv'.format(tnow)
     with open(file_name, mode='w') as csv_file:
