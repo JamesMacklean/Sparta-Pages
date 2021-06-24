@@ -1397,14 +1397,16 @@ def export_graduation_candidates(path_way=None, email_address=None, date_from=No
 
             certdate_list.sort(reverse=True)
 
-            if application.pathway.name == pathway_name and core_count > 0:
+            if application.pathway.name == pathway_name and core_count == core_total and elect_count >= elect_total:
                user_list.append({
                    "name": p.full_name,
                    "username": p.user.username,
                    "email": p.user.email,
                    "pathway": application.pathway.name,
-                   "progress": str(finished) + " out of " + str(total_count) + str(core_count) + "out of" + str(core_total) + str(elect_count) + "out of" + str(elect_total),
-                   "completion_date":certdate_list[0]
+                   "progress": str(finished) + " out of " + str(total_count),
+                   "core_progress": str(core_count) + "out of" + str(core_total),
+                   "elective_progress": str(elect_count) + "out of" + str(elect_total),
+                   "completion_date": certdate_list[0]
             })
                del certdate_list[:]
             else:
@@ -1419,6 +1421,8 @@ def export_graduation_candidates(path_way=None, email_address=None, date_from=No
             'email',
             'pathway',
             'progress',
+            'core_progress',
+            'elective_progress',
             'completion_date'
             ])
 
@@ -1429,6 +1433,8 @@ def export_graduation_candidates(path_way=None, email_address=None, date_from=No
                 u['email'],
                 u['pathway'],
                 u['progress'],
+                u['core_progress'],
+                u['elective_progress'],
                 u['completion_date'],
             ])
 
