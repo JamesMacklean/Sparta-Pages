@@ -1392,7 +1392,9 @@ def export_graduation_candidates(path_way=None, email_address=None, date_from=No
                         if unicode(course_key) == unicode(pathcourse) and cert is not None:
                            elect_count += 1
 
-            cert_list.sort(key=lambda x: x.get('created_date'), reverse=True)
+            def cert_get_date(e):
+                return e['created_date']
+            cert_list.sort(key=cert_get_date, reverse=True)
 
 
             if application.pathway.name == pathway_name:
