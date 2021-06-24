@@ -1397,7 +1397,7 @@ def export_graduation_candidates(path_way=None, email_address=None, date_from=No
 
             certdate_list.sort(reverse=True)
 
-            if application.pathway.name == pathway_name and core_count > 0 and elect_count > 0:
+            if application.pathway.name == pathway_name and core_count > 0:
                user_list.append({
                    "name": p.full_name,
                    "username": p.user.username,
