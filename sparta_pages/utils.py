@@ -1332,13 +1332,13 @@ def export_graduation_candidates(path_way=None, email_address=None, date_from=No
          with connection.cursor() as cursor:
               cursor.execute("Select complete_at_least from sparta_pages_coursegroup where type='EL' AND pathway_id = %s", [path_way])
               data = cursor.fetchone()
-              elect_total = print(data)
+              elect_total = data[0]
 
          for data in corecourse:
-             result = print(data)
+             result = data[0]
             core_courses.append(result)
          for data in electcourse:
-             result = print(data)
+             result = data[0]
             elective_courses.append(result)
 
          core_total = len(core_courses)
