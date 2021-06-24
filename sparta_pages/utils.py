@@ -1393,7 +1393,7 @@ def export_graduation_candidates(path_way=None, email_address=None, date_from=No
                            elect_count += 1
 
             def cert_get_date(e):
-                return e['created_date']
+                return e['created']
             cert_list.sort(key=cert_get_date, reverse=True)
 
 
@@ -1404,7 +1404,7 @@ def export_graduation_candidates(path_way=None, email_address=None, date_from=No
                    "email": p.user.email,
                    "pathway": application.pathway.name,
                    "progress": str(finished) + " out of " + str(total_count) + str(core_count) + "out of" + str(core_total) + str(elect_count) + "out of" + str(elect_total),
-                   "completion_date":cert_list[0].created_date
+                   "completion_date":cert_list[0].created
             })
 
     file_name = '/home/ubuntu/tempfiles/export_learner_pathway_progress_{}.csv'.format(tnow)
