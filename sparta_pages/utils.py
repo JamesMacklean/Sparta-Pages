@@ -1327,19 +1327,19 @@ def export_graduation_candidates(path_way=None, email_address=None, date_from=No
                cursor.execute("Select sparta_pages_spartacourse.course_id from sparta_pages_spartacourse INNER JOIN sparta_pages_coursegroup where sparta_pages_spartacourse.group_id=sparta_pages_coursegroup.id AND sparta_pages_coursegroup.type='CO' AND sparta_pages_spartacourse.pathway_id = %s", [path_way])
                corecourse = cursor.fetchall()
          with connection.cursor() as cursor:
-              cursor.execute("Select sparta_pages_spartacourse.course_id from sparta_pages_spartacourse INNER JOIN sparta_pages_coursegroup where sparta_pages_spartacourse.group_id=sparta_pages_coursegroup.id AND sparta_pages_coursegroup.type='EL' AND sparta_pages_spartacourse.pathway_id = %s", [path_way])
-              electcourse = cursor.fetchall()
+               cursor.execute("Select sparta_pages_spartacourse.course_id from sparta_pages_spartacourse INNER JOIN sparta_pages_coursegroup where sparta_pages_spartacourse.group_id=sparta_pages_coursegroup.id AND sparta_pages_coursegroup.type='EL' AND sparta_pages_spartacourse.pathway_id = %s", [path_way])
+               electcourse = cursor.fetchall()
          with connection.cursor() as cursor:
-              cursor.execute("Select complete_at_least from sparta_pages_coursegroup where type='EL' AND pathway_id = %s", [path_way])
-              data = cursor.fetchone()
-              elect_total = data[0]
+               cursor.execute("Select complete_at_least from sparta_pages_coursegroup where type='EL' AND pathway_id = %s", [path_way])
+               data = cursor.fetchone()
+               elect_total = data[0]
 
          for data in corecourse:
              result = data[0]
-            core_courses.append(result)
+             core_courses.append(result)
          for data in electcourse:
              result = data[0]
-            elective_courses.append(result)
+             elective_courses.append(result)
 
          core_total = len(core_courses)
 
