@@ -32,6 +32,12 @@ class Command(BaseCommand):
             help='course ID to unenroll the user from'
             )
         parser.add_argument(
+            '-a', '--aaction',
+            type=str,
+            required=False,
+            help='additional action'
+            )
+        parser.add_argument(
             '-u', '--user',
             type=str,
             required=False,
@@ -50,6 +56,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         course_id = options.get('course', None)
         user = options.get('user', None)
+        aaction = options.get('aaction', None)
         csv_file = options.get('csv_file')
 
         if course_id is None:
@@ -67,7 +74,7 @@ class Command(BaseCommand):
         if user is not None:
             try:
                 uname = User.objects.get(username=user)
-                unenrolled_user = self._unenroll_user(username=uname, email_address=uname.email, course_key=course_key, course_name=course_name)
+                unenrolled_user = self._unenroll_user(username=uname, email_address=uname.email, course_key=course_key, course_name=course_name, aaction=aaction)
 
                 msg = 'Successfully unenrolled user: {}.'.format(unenrolled_user)
                 log.info(msg)
@@ -129,16 +136,25 @@ class Command(BaseCommand):
                 line_count += 1
         return line_count-1, failed_users
 
-    def _unenroll_user(self, username=None, email_address=None, course_key=None, course_name=None):
+    def _unenroll_user(self, username=None, email_address=None, course_key=None, course_name=None, aaction=None):
         """ unenroll a user """
         try:
             uname = User.objects.get(username=username)
             CourseEnrollment.unenroll(uname, course_key, skip_refund=True)
-            email = EmailMessage(
-                'Course Access Unenrollment',
-                'Your course access has expired, and you are now unenrolled in {}.\n\nThis is an auto-generated email. Please disregard this message if you requested for a re-enrollment.'.format(course_name),
-                'learn@coursebank.ph',
-                [email_address],
+            if aaction == "freeze":
+                email = EmailMessage(
+                    'Course Access Unenrollment',
+                    'Your course access has been temporarily disabled due to certain concerns regarding the plagiarism concern raised by the SME: [WARNING] Adherence to Coursebank Honor Code, and you are now unenrolled in {}.\n\nPlease send your statement to the following email and address. Please disregard this message if you already sent a statement regarding this issue.'.format(course_name),
+                    'Email : learn@coursebank.ph. \nRecipient : ALAN S. CAJES, PhD (Senior Executive Fellow and SPARTA Project Lead, Development Academy of the Philippines)'
+                    'learn@coursebank.ph',
+                    [email_address],
+                )
+            else:
+                email = EmailMessage(
+                    'Course Access Unenrollment',
+                    'Your course access has expired, and you are now unenrolled in {}.\n\nThis is an auto-generated email. Please disregard this message if you requested for a re-enrollment.'.format(course_name),
+                    'learn@coursebank.ph',
+                    [email_address],
             )
             email.send()
         except Exception as e:

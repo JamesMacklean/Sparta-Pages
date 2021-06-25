@@ -123,6 +123,11 @@ class SpartaProfile(models.Model):
     FSUU = "FS"
     USTP = "US"
     CMU = "CM"
+    CCRPFI = "CC"
+    CSU = "CS"
+    RSU = "RS"
+    STI = "ST"
+    CRHS = "CR"
     NOT_INVOLVED = "NA"
     ORG_CHOICES = (
         (NOT_INVOLVED, "N/A"),
@@ -134,6 +139,11 @@ class SpartaProfile(models.Model):
         (FSUU, "Father Saturnino Urios University (FSUU)"),
         (USTP, "University of Science and Technology of Southern Philippines (USTP)"),
         (CMU, "Central Mindanao University (CMU)"),
+        (CCRPFI, "Cancer CARE Registry Philippines Foundation, Inc.(CCRPFI)(NGO)"),
+        (CSU, "Caraga State University (CSU)"),
+        (RSU, "Romblon State University (RSU)"),
+        (STI, "STI Education Services Group, Inc. (STI)"),
+        (CRHS, "Claro M. Recto High School (CRHS)"),
     )
 
     ANZ = "AN"
