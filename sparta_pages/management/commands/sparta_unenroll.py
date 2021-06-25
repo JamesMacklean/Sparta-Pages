@@ -144,8 +144,7 @@ class Command(BaseCommand):
             if aaction == "freeze":
                 email = EmailMessage(
                     'Course Access Unenrollment',
-                    'Your course access has been temporarily disabled due to certain concerns regarding the plagiarism concern raised by the SME: [WARNING] Adherence to Coursebank Honor Code, and you are now unenrolled in {}.\n\nPlease send your statement to the following email and address. Please disregard this message if you already sent a statement regarding this issue.'.format(course_name),
-                    'Email : learn@coursebank.ph. \nRecipient : ALAN S. CAJES, PhD (Senior Executive Fellow and SPARTA Project Lead, Development Academy of the Philippines)'
+                    'Your course access has been temporarily disabled due to certain concerns regarding the plagiarism concern raised by the SME: [WARNING] Adherence to Coursebank Honor Code, and you are now unenrolled in {}.\n\nPlease send your statement to the following email and address.\n\nEmail : learn@coursebank.ph.\nRecipient : ALAN S. CAJES, PhD (Senior Executive Fellow and SPARTA Project Lead, Development Academy of the Philippines).\n\nPlease disregard this message if you already sent a statement regarding this issue.'.format(course_name),
                     'learn@coursebank.ph',
                     [email_address],
                 )

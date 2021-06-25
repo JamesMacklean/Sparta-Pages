@@ -139,11 +139,11 @@ class SpartaProfile(models.Model):
         (FSUU, "Father Saturnino Urios University (FSUU)"),
         (USTP, "University of Science and Technology of Southern Philippines (USTP)"),
         (CMU, "Central Mindanao University (CMU)"),
-        (CCRPFI, "Cancer CARE Registry Philippines Foundation, Inc.(CCRPFI)(NGO)"),
-        (CSU, "Caraga State University (CSU)"),
-        (RSU, "Romblon State University (RSU)"),
-        (STI, "STI Education Services Group, Inc. (STI)"),
-        (CRHS, "Claro M. Recto High School (CRHS)"),
+        (CCRPFI, "Cancer CARE Registry Philippines Foundation, Inc. (NGO)"),
+        (CSU, "Caraga State University"),
+        (RSU, "Romblon State University"),
+        (STI, "STI Education Services Group, Inc."),
+        (CRHS, "Claro M. Recto High School"),
     )
 
     ANZ = "AN"
