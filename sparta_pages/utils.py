@@ -984,6 +984,7 @@ def export_learner_pathway_progress(email_address=None, date_from=None, date_to=
                 "name": p.full_name,
                 "username": p.user.username,
                 "email": p.user.email,
+                "created": p.created_at,
                 "pathway": application.pathway.name,
                 "progress": str(finished) + " out of " + str(total_count)
             })
@@ -992,6 +993,7 @@ def export_learner_pathway_progress(email_address=None, date_from=None, date_to=
                 "name": p.full_name,
                 "username": p.user.username,
                 "email": p.user.email,
+                "created": p.created_at,
                 "pathway": "No Approved Application",
                 "progress": "N/A"
             })
@@ -1003,6 +1005,7 @@ def export_learner_pathway_progress(email_address=None, date_from=None, date_to=
             'name',
             'username',
             'email',
+            'created',
             'pathway',
             'progress'
             ])
@@ -1012,6 +1015,7 @@ def export_learner_pathway_progress(email_address=None, date_from=None, date_to=
                 u['name'],
                 u['username'],
                 u['email'],
+                u['created'],
                 u['pathway'],
                 u['progress'],
             ])
