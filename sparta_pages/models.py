@@ -128,6 +128,9 @@ class SpartaProfile(models.Model):
     RSU = "RS"
     STI = "ST"
     CRHS = "CR"
+    SRGC = "SR"
+    TAU = "TU"
+    BSU = "BU"
     NOT_INVOLVED = "NA"
     ORG_CHOICES = (
         (NOT_INVOLVED, "N/A"),
@@ -144,6 +147,9 @@ class SpartaProfile(models.Model):
         (RSU, "Romblon State University"),
         (STI, "STI Education Services Group, Inc."),
         (CRHS, "Claro M. Recto High School"),
+        (SRGC, "Spring Rain Global Consultancy, Inc."),
+        (TAU, "Tarlac Agricultural University"),
+        (BSU, "Bulacan State University"),
     )
 
     ANZ = "AN"
