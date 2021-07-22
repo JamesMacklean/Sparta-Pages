@@ -144,7 +144,7 @@ class Command(BaseCommand):
             reenrollment = SpartaReEnrollment.objects.create(enrollment=enrollment,reenroll_date=tnow)
             email = EmailMessage(
                 'Course Access Reenrollment',
-                'This is a confirmation that you have been re-enrolled in {}.'.format(course_name),
+                'This is a confirmation that you have been re-enrolled in {}.\nEach re-enrollment after the 6-month access OR 3-month inactivity will grant you 30-day additional access to complete the course.'.format(course_name),
                 'learn@coursebank.ph',
                 [email_address],
             )
