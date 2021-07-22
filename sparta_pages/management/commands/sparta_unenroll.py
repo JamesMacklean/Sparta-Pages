@@ -155,17 +155,7 @@ class Command(BaseCommand):
                     [email_address],
                 )
             elif umode == "six_month" or umode == "three_month":
-                message_body = """\
-                    <html>
-                        <head></head>
-                        <body>
-                            <P>Your course access has expired due to failure to complete it in 6 months OR you’ve been inactive for 3 months. You are now unenrolled from %s</p>
-                            <p><b>How long can I complete a Project SPARTA course?</b><br>Upon enrollment, you have 6 months to finish a SPARTA course. Failure to complete the course in 6 months and/or inactivity for 3 months will result in course access revocation.</p>
-                            <p>Please reply to this email OR fill out the <a href="https://forms.gle/wDLR6qgNukbTi5nC9">Learner Request Form</a> within five (5) business days should you wish to re-enroll in this course.</p>
-                            <p>The CourseBank Team</p>
-                        </body>
-                    </html>
-                    """ % (course_name)
+                message_body = "<p>Your course access has expired due to failure to complete it in 6 months OR you’ve been inactive for 3 months. You are now unenrolled from %s</p><p><b>How long can I complete a Project SPARTA course?</b><br>Upon enrollment, you have 6 months to finish a SPARTA course. Failure to complete the course in 6 months and/or inactivity for 3 months will result in course access revocation.</p><p>Please reply to this email OR fill out the <a href="https:forms.glewDLR6qgNukbTi5nC9">Learner Request Form</a> within five (5) business days should you wish to re-enroll in this course.</p><p>The CourseBank Team</p>" % (course_name)
                 subject, from_email, to = 'Course Access Unenrollment', 'from@example.com', [email_address]
                 text_content = 'Your course access has been temporarily disabled due to certain concerns regarding the plagiarism concern raised by the SME: [WARNING] Adherence to Coursebank Honor Code, and you are now unenrolled in {}.\n\nPlease send your signed statement in PDF to the following email address:\n\nEmail : learn@coursebank.ph.\nRecipient : ALAN S. CAJES, PhD (Senior Executive Fellow and SPARTA Project Lead, Development Academy of the Philippines).\n\nPlease disregard this message if you already sent a statement regarding this issue.'.format(course_name)
                 email = EmailMultiAlternatives(subject, from email, text_content, [to])
