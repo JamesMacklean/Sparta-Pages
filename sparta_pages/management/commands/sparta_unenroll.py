@@ -1,5 +1,3 @@
-#!/usr/bin/python
-
 import csv
 import os
 from pprint import pformat
@@ -16,7 +14,7 @@ from opaque_keys.edx.keys import CourseKey
 from student.models import CourseEnrollment, UserProfile
 from django.contrib.auth.models import User
 from django.core.management.base import BaseCommand, CommandError
-from django.core.mail import send_mail, EmailMessage
+from django.core.mail import send_mail, EmailMessage, EmailMultiAlternatives
 from openedx.core.djangoapps.content.course_overviews.models import CourseOverview
 
 from sparta_pages.models import SpartaReEnrollment
@@ -168,12 +166,10 @@ class Command(BaseCommand):
                         </body>
                     </html>
                     """ % (course_name)
-                email = EmailMessage(
-                    'Course Access Unenrollment',
-                    message_body,
-                    'learn@coursebank.ph',
-                    [email_address],
-                )
+                subject, from_email, to = 'Course Access Unenrollment', 'from@example.com', [email_address]
+                text_content = 'Your course access has been temporarily disabled due to certain concerns regarding the plagiarism concern raised by the SME: [WARNING] Adherence to Coursebank Honor Code, and you are now unenrolled in {}.\n\nPlease send your signed statement in PDF to the following email address:\n\nEmail : learn@coursebank.ph.\nRecipient : ALAN S. CAJES, PhD (Senior Executive Fellow and SPARTA Project Lead, Development Academy of the Philippines).\n\nPlease disregard this message if you already sent a statement regarding this issue.'.format(course_name)
+                email = EmailMultiAlternatives(subject, from email, text_content, [to])
+                email.attach_alternative(message_body, "text/html")
             else:
                 email = EmailMessage(
                     'Course Access Unenrollment',
