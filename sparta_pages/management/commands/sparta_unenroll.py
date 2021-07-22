@@ -80,7 +80,7 @@ class Command(BaseCommand):
         if user is not None:
             try:
                 uname = User.objects.get(username=user)
-                unenrolled_user = self._unenroll_user(username=uname, email_address=uname.email, course_key=course_key, course_name=course_name, aaction=aaction)
+                unenrolled_user = self._unenroll_user(username=uname, email_address=uname.email, umode=umode, course_key=course_key, course_name=course_name, aaction=aaction)
 
                 msg = 'Successfully unenrolled user: {}.'.format(unenrolled_user)
                 log.info(msg)
