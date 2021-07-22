@@ -157,7 +157,7 @@ class Command(BaseCommand):
             elif umode == "six_month" or umode == "three_month":
                 email = EmailMessage(
                     'Course Access Unenrollment',
-                    'Your course access has expired due to failure to complete it in 6 months OR you’ve been inactive for 3 months. You are now unenrolled from {}.\n\nHow long can I complete a Project SPARTA course\nUpon enrollment, you have 6 months to finish a SPARTA course. Failure to complete the course in 6 months and or inactivity for 3 months will result in course access revocation.\n\nPlease reply to this email OR fill out the following form within five business days should you wish to reenroll in this course:\n\nLearner Request Form.'.format(course_name),
+                    'Your course access has expired due to failure to complete it in 6 months OR you’ve been inactive for 3 months. You are now unenrolled from {}.'.format(course_name),
                     'learn@coursebank.ph',
                     [email_address],
                 )
