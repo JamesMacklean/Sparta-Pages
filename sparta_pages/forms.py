@@ -88,10 +88,10 @@ class EducationProfileForm(forms.ModelForm):
         cleaned_data = super(EducationProfileForm, self).clean()
         started_at = cleaned_data.get('started_at')
         graduated_at = cleaned_data.get('graduated_at')
-        degree = cleaned_data.get(Meta(fields[0]))
-        course = cleaned_data.get(Meta(fields[1]))
-        school = cleaned_data.get(Meta(fields[2]))
-        address = cleaned_data.get(Meta(fields[3]))
+        degree = cleaned_data.get(fields[0])
+        course = cleaned_data.get(fields[1])
+        school = cleaned_data.get(fields[2])
+        address = cleaned_data.get(fields[3])
 
         if started_at and graduated_at and started_at >= graduated_at:
             msg = "Date for 'started_at' must be before date for 'graduated_at'."
@@ -104,7 +104,7 @@ class EducationProfileForm(forms.ModelForm):
         if school is None:
             msg = "This field is required"
         if address is None:
-            msg = "This field is required"               
+            msg = "This field is required"
 
 
 class EmploymentProfileForm(forms.ModelForm):
