@@ -37,7 +37,7 @@ class EditSpartaProfileForm(forms.Form):
 class ExtendedSpartaProfileForm(forms.ModelForm):
     """
     """
-    address = forms.CharField(
+    present_address = forms.CharField(
         required=True,
         widget=forms.Textarea
     )
