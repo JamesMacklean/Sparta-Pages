@@ -37,8 +37,9 @@ class EditSpartaProfileForm(forms.Form):
 class ExtendedSpartaProfileForm(forms.ModelForm):
     """
     """
-    present_address = forms.CharField(
+    address = forms.CharField(
         required=True,
+        label='Present Address'
         widget=forms.Textarea
     )
     is_employed = forms.TypedChoiceField(
