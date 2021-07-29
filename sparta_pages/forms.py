@@ -63,12 +63,19 @@ class EducationProfileForm(forms.ModelForm):
     """
     """
     degree = forms.ChoiceField(required=True, choices=EducationProfile.DEGREE_CHOICES)
+    course = forms.CharField(
+        required=True,
+        error_messages={'required': 'This field is required.Input N/A for None'},
+        widget=forms.Textarea
+    )
     school = forms.CharField(
         required=True,
+        error_messages={'required': 'This field is required.Input N/A for None'},
         widget=forms.Textarea
     )
     address = forms.CharField(
         required=True,
+        error_messages={'required': 'This field is required.Input N/A for None'},
         widget=forms.Textarea
     )
     started_at = forms.DateField(
@@ -107,6 +114,17 @@ class EducationProfileForm(forms.ModelForm):
 class EmploymentProfileForm(forms.ModelForm):
     """
     """
+    affiliation = forms.ChoiceField(required=True, choices=EmploymentProfile.AFF_CHOICES)
+    occupation = forms.CharField(
+        required=True,
+        error_messages={'required': 'This field is required.Input N/A for None'},
+        widget=forms.Textarea
+    )
+    designation = forms.CharField(
+        required=True,
+        error_messages={'required': 'This field is required.Input N/A for None'},
+        widget=forms.Textarea
+    )
     started_at = forms.DateField(
         initial=date.today(),
         widget=forms.SelectDateWidget(
@@ -122,6 +140,16 @@ class EmploymentProfileForm(forms.ModelForm):
             ),
         required=False
         )
+    employer = forms.CharField(
+        required=True,
+        error_messages={'required': 'This field is required.Input N/A for None'},
+        widget=forms.Textarea
+    )
+    address = forms.CharField(
+        required=True,
+        error_messages={'required': 'This field is required.Input N/A for None'},
+        widget=forms.Textarea
+    )
     class Meta:
         model = EmploymentProfile
         fields = [
@@ -143,6 +171,21 @@ class EmploymentProfileForm(forms.ModelForm):
 class TrainingProfileForm(forms.ModelForm):
     """
     """
+    title = forms.CharField(
+        required=True,
+        error_messages={'required': 'This field is required.Input N/A for None'},
+        widget=forms.Textarea
+    )
+    organizer = forms.CharField(
+        required=True,
+        error_messages={'required': 'This field is required.Input N/A for None'},
+        widget=forms.Textarea
+    )
+    address = forms.CharField(
+        required=True,
+        error_messages={'required': 'This field is required.Input N/A for None'},
+        widget=forms.Textarea
+    )
     started_at = forms.DateField(
         initial=date.today(),
         widget=forms.SelectDateWidget(
