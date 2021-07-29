@@ -57,9 +57,6 @@ class ExtendedSpartaProfileForm(forms.ModelForm):
             'other_attain','is_employed',
             'grad_degree'
             ]
-        labels = {
-            "address": "Present Address",
-        }
 
 
 class EducationProfileForm(forms.ModelForm):
