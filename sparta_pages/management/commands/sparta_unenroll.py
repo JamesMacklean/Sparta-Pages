@@ -161,6 +161,13 @@ class Command(BaseCommand):
                     'learn@coursebank.ph',
                     [email_address],
                 )
+            elif umode == "course_tba":
+                email = EmailMessage(
+                    'Course Access Unenrollment',
+                    'We have temporarily closed the enrollment in {}. We will notify you once this course is open for enrollment via our Facebook page.\n\n https://www.facebook.com/coursebank.ph/ \n\n Thank you.'.format(course_name),
+                    'learn@coursebank.ph',
+                    [email_address],
+                )
             else:
                 email = EmailMessage(
                     'Course Access Unenrollment',
