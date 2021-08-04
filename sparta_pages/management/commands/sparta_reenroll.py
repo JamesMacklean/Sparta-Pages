@@ -43,6 +43,12 @@ class Command(BaseCommand):
             help='course enrollment mode to enroll user in'
         )
         parser.add_argument(
+            '-a', '--aaction',
+            type=str,
+            required=False,
+            help='additional action'
+            )
+        parser.add_argument(
             '--csv-file',
             action='store',
             dest='csv_file',
@@ -56,6 +62,7 @@ class Command(BaseCommand):
         course_id = options.get('course', None)
         user = options.get('user', None)
         mode = options.get('mode', None)
+        aaction = options.get('aaction', None)
         csv_file = options.get('csv_file')
 
         if course_id is None:
@@ -73,7 +80,7 @@ class Command(BaseCommand):
         if user is not None:
             try:
                 uname = User.objects.get(username=user)
-                reenrolled_user = self._reenroll_user(username=uname, email_address=uname.email, course_key=course_key, course_name=course_name, mode=mode)
+                reenrolled_user = self._reenroll_user(username=uname, email_address=uname.email, course_key=course_key, course_name=course_name, mode=mode, aaction=aaction)
 
                 msg = 'Successfully reenrolled user: {}.'.format(reenrolled_user)
                 log.info(msg)
@@ -135,19 +142,27 @@ class Command(BaseCommand):
                 line_count += 1
         return line_count-1, failed_users
 
-    def _reenroll_user(self, username=None, email_address=None, course_key=None, course_name=None, mode=None):
+    def _reenroll_user(self, username=None, email_address=None, course_key=None, course_name=None, mode=None, aaction=None):
         """ reenroll a user """
         try:
             tnow = timezone.now()
             uname = User.objects.get(username=username)
             enrollment = CourseEnrollment.enroll(uname, course_key, mode=mode, check_access=False)
             reenrollment = SpartaReEnrollment.objects.create(enrollment=enrollment,reenroll_date=tnow)
-            email = EmailMessage(
-                'Course Access Reenrollment',
-                'This is a confirmation that you have been re-enrolled in {}.\nEach re-enrollment after the 6-month access OR 3-month inactivity will grant you 30-day additional access to complete the course.'.format(course_name),
-                'learn@coursebank.ph',
-                [email_address],
-            )
+            if aaction == "unfreeze":
+                email = EmailMessage(
+                    'Course Access Unenrollment',
+                    'This is to notify you that the SPARTA team has received your NTE to rework and resubmit your {} capstone.\nThe capstone open-response assessment has been reset and you may now resubmit your work via Coursebank platform.\n\nYou are required to reply to this email with your revised output.\nThis will be forwarded to SPARTA leads and is subject to approval of Dr. Alan Cajes.'.format(course_name),
+                    'learn@coursebank.ph',
+                    [email_address],
+                )
+            else:
+                email = EmailMessage(
+                    'Course Access Reenrollment',
+                    'This is a confirmation that you have been re-enrolled in {}.\nEach re-enrollment after the 6-month access OR 3-month inactivity will grant you 30-day additional access to complete the course.'.format(course_name),
+                    'learn@coursebank.ph',
+                    [email_address],
+                )
             email.send()
         except Exception as e:
             log.info("Error in reenrolling learner: {}".format(str(e)))
