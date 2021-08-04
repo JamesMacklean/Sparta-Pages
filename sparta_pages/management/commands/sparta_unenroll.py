@@ -154,13 +154,6 @@ class Command(BaseCommand):
                     'learn@coursebank.ph',
                     [email_address],
                 )
-            elif aaction == "unfreeze":
-                email = EmailMessage(
-                    'Course Access Unenrollment',
-                    'This is to notify you that the SPARTA team has received your NTE to rework and resubmit your {} capstone.\nThe capstone open-response assessment has been reset and you may now resubmit your work via Coursebank platform.\n\nYou are required to reply to this email with your revised output.\nThis will be forwarded to SPARTA leads and is subject to approval of Dr. Alan Cajes.'.format(course_name),
-                    'learn@coursebank.ph',
-                    [email_address],
-                )
             elif umode == "six_month" or umode == "three_month":
                 email = EmailMessage(
                     'Course Access Unenrollment',
