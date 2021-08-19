@@ -177,6 +177,9 @@ class SpartaProfile(models.Model):
     VERTOCOMMUNICATIONS = "VC"
     WNS = "WN"
     ECLARO = "EC"
+    REED_ELSEVIER = "RE"
+    HENKEL = "HK"
+    MICROSOURCING = "MS"
     NOT_CCAP = ""
     CCAP_SUBCHOICES = (
         (ANZ, "ANZ"),
@@ -204,6 +207,9 @@ class SpartaProfile(models.Model):
         (VERTOCOMMUNICATIONS, "Vertocommunications"),
         (WNS, "WNS"),
         (ECLARO, "Eclaro"),
+        (REED_ELSEVIER, "Reed Elsevier"),
+        (HENKEL, "Henkel"),
+        (MICROSOURCING, "Microsourcing"),
         (NOT_CCAP, ""),
     )
 
