@@ -108,7 +108,6 @@ def pathway(request, slug):
             context['graduate_course'] = {'courseoverview': cap_course_overview}
         except CourseOverview.DoesNotExist:
             context['graduate_course'] = None
-        context['graduate_course'] = None
     elif slug == "data-engineer":
         context['graduate_course'] = None
     elif slug == "data-scientist":
