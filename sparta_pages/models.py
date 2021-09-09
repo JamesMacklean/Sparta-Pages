@@ -131,6 +131,12 @@ class SpartaProfile(models.Model):
     SRGC = "SR"
     TAU = "TU"
     BSU = "BU"
+    BARMM = "BA"
+    CDAR = "CD"
+    HNU = "HN"
+    SLSU = "SL"
+    WMSU = "WM"
+    AER = "AE"
     NOT_INVOLVED = "NA"
     ORG_CHOICES = (
         (NOT_INVOLVED, "N/A"),
@@ -150,6 +156,12 @@ class SpartaProfile(models.Model):
         (SRGC, "Spring Rain Global Consultancy, Inc."),
         (TAU, "Tarlac Agricultural University"),
         (BSU, "Bulacan State University"),
+        (BARMM, "BARMM-Ministry of Human Settlements and Development"),
+        (CDAR, "Cooperative Development Authority Region IV-A"),
+        (HNU, "Holy Name University"),
+        (SLSU, "Southern Leyte State University"),
+        (WMSU, "Western Mindanao State University"),
+        (AER, "Action for Economic Reforms"),
     )
 
     ANZ = "AN"
