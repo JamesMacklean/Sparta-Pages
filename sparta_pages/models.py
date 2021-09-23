@@ -192,6 +192,9 @@ class SpartaProfile(models.Model):
     REED_ELSEVIER = "RE"
     HENKEL = "HK"
     MICROSOURCING = "MS"
+    NEARSOL = "NS"
+    VXI = "VX"
+    OPEN_ACCESS_BPO = "OA"
     NOT_CCAP = ""
     CCAP_SUBCHOICES = (
         (ANZ, "ANZ"),
@@ -222,6 +225,9 @@ class SpartaProfile(models.Model):
         (REED_ELSEVIER, "Reed Elsevier"),
         (HENKEL, "Henkel"),
         (MICROSOURCING, "Microsourcing"),
+        (NEARSOL, "Nearsol"),
+        (VXI, "VXI"),
+        (OPEN_ACCESS_BPO, "Open Access BPO"),
         (NOT_CCAP, ""),
     )
 
