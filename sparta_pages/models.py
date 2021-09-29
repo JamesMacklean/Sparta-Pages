@@ -137,6 +137,7 @@ class SpartaProfile(models.Model):
     SLSU = "SL"
     WMSU = "WM"
     AER = "AE"
+    BPDA = "BP"
     NOT_INVOLVED = "NA"
     ORG_CHOICES = (
         (NOT_INVOLVED, "N/A"),
@@ -162,6 +163,7 @@ class SpartaProfile(models.Model):
         (SLSU, "Southern Leyte State University"),
         (WMSU, "Western Mindanao State University"),
         (AER, "Action for Economic Reforms"),
+        (BPDA, "Bangsamoro Planning and Development Authority (BPDA)")
     )
 
     ANZ = "AN"
