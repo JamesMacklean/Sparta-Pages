@@ -19,7 +19,6 @@ from openedx.core.djangoapps.content.course_overviews.models import CourseOvervi
 
 from sparta_pages.models import SpartaReEnrollment
 
-
 class Command(BaseCommand):
     help = 'Unenroll user from course and send email notification.'
 
@@ -30,6 +29,18 @@ class Command(BaseCommand):
             type=str,
             required=True,
             help='course ID to unenroll the user from'
+            )
+        parser.add_argument(
+            '-a', '--aaction',
+            type=str,
+            required=False,
+            help='additional action'
+            )
+        parser.add_argument(
+            '-m', '--umode',
+            type=str,
+            required=False,
+            help='unenrollment mode'
             )
         parser.add_argument(
             '-u', '--user',
@@ -50,6 +61,8 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         course_id = options.get('course', None)
         user = options.get('user', None)
+        aaction = options.get('aaction', None)
+        umode = options.get('umode', None)
         csv_file = options.get('csv_file')
 
         if course_id is None:
@@ -67,7 +80,7 @@ class Command(BaseCommand):
         if user is not None:
             try:
                 uname = User.objects.get(username=user)
-                unenrolled_user = self._unenroll_user(username=uname, email_address=uname.email, course_key=course_key, course_name=course_name)
+                unenrolled_user = self._unenroll_user(username=uname, email_address=uname.email, umode=umode, course_key=course_key, course_name=course_name, aaction=aaction)
 
                 msg = 'Successfully unenrolled user: {}.'.format(unenrolled_user)
                 log.info(msg)
@@ -80,7 +93,7 @@ class Command(BaseCommand):
             if not os.path.exists(csv_file):
                 raise CommandError(u'Pass the correct absolute path to file as --csv-file argument.')
 
-            total_users, failed_users = self._unenroll_users_from_file(csv_file, course_key=course_key, course_name=course_name)
+            total_users, failed_users = self._unenroll_users_from_file(csv_file, umode=umode, course_key=course_key, course_name=course_name)
 
             if failed_users:
                 msg = u'Completed unenrolling the users. {} of {} failed.'.format(
@@ -97,7 +110,7 @@ class Command(BaseCommand):
                 log.info(msg)
                 self.stdout.write(msg)
 
-    def _unenroll_users_from_file(self, unenroll_file, course_key=None, course_name=None):
+    def _unenroll_users_from_file(self, unenroll_file, umode=None, course_key=None, course_name=None):
         """
         Unenroll all the users provided in the users file.
 
@@ -121,7 +134,7 @@ class Command(BaseCommand):
                     line_count += 1
                 username=row['username']
                 email_address=row['email']
-                result = self._unenroll_user(username=username, email_address=email_address, course_key=course_key, course_name=course_name)
+                result = self._unenroll_user(username=username, umode=umode, email_address=email_address, course_key=course_key, course_name=course_name)
                 if not result:
                     failed_users.append(row)
                     err_msg = u'Tried to process {}, but failed'
@@ -129,16 +142,38 @@ class Command(BaseCommand):
                 line_count += 1
         return line_count-1, failed_users
 
-    def _unenroll_user(self, username=None, email_address=None, course_key=None, course_name=None):
+    def _unenroll_user(self, username=None, umode=None, email_address=None, course_key=None, course_name=None, aaction=None):
         """ unenroll a user """
         try:
             uname = User.objects.get(username=username)
             CourseEnrollment.unenroll(uname, course_key, skip_refund=True)
-            email = EmailMessage(
-                'Course Access Unenrollment',
-                'Your course access has expired, and you are now unenrolled in {}.\n\nThis is an auto-generated email. Please disregard this message if you requested for a re-enrollment.'.format(course_name),
-                'learn@coursebank.ph',
-                [email_address],
+            if aaction == "freeze":
+                email = EmailMessage(
+                    'Course Access Unenrollment',
+                    'Your course access has been temporarily disabled due to certain concerns regarding the plagiarism concern raised by the SME: [WARNING] Adherence to Coursebank Honor Code, and you are now unenrolled in {}.\n\nPlease send your signed statement in PDF to the following email address:\n\nEmail : learn@coursebank.ph.\nRecipient : ALAN S. CAJES, PhD (Senior Executive Fellow and SPARTA Project Lead, Development Academy of the Philippines).\n\nPlease disregard this message if you already sent a statement regarding this issue.'.format(course_name),
+                    'learn@coursebank.ph',
+                    [email_address],
+                )
+            elif umode == "six_month" or umode == "three_month":
+                email = EmailMessage(
+                    'Course Access Unenrollment',
+                    'Your course access has expired due to failure to complete it in 6 months OR you have been inactive for 3 months. You are now unenrolled from {}.\n\nHow long can I complete a Project SPARTA course?\nUpon enrollment, you have 6 months to finish a SPARTA course. Failure to complete the course in 6 months and/or inactivity for 3 months will result in course access revocation.\n\nPlease reply to this email OR fill out the following form within five business days should you wish to reenroll in this course:\n\nLearner Request Form.\n https://forms.gle/wDLR6qgNukbTi5nC9'.format(course_name),
+                    'learn@coursebank.ph',
+                    [email_address],
+                )
+            elif umode == "course_tba":
+                email = EmailMessage(
+                    'Course Access Unenrollment',
+                    'We have temporarily closed the enrollment in {}. We will notify you once this course is open for enrollment via our Facebook page.\n\n https://www.facebook.com/coursebank.ph/ \n\n Thank you.'.format(course_name),
+                    'learn@coursebank.ph',
+                    [email_address],
+                )
+            else:
+                email = EmailMessage(
+                    'Course Access Unenrollment',
+                    'Your course access has expired due to failure to complete it in 6 months OR you have been inactive for 3 months. You are now unenrolled from {}.\n\nPlease send your signed statement in PDF to the following email address:\n\nEmail : learn@coursebank.ph.\nRecipient : ALAN S. CAJES, PhD (Senior Executive Fellow and SPARTA Project Lead, Development Academy of the Philippines).\n\nPlease disregard this message if you    already sent a statement regarding this issue.'.format(course_name),
+                    'learn@coursebank.ph',
+                    [email_address],
             )
             email.send()
         except Exception as e:

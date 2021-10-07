@@ -4,7 +4,9 @@ from django.utils import timezone
 import logging
 import unicodecsv
 
+from django.db import connection
 from django.core.mail import send_mail, EmailMessage
+from django.shortcuts import render, redirect, get_object_or_404
 
 from courseware.models import StudentModule
 from lms.djangoapps.certificates.models import certificate_status_for_student
@@ -982,6 +984,7 @@ def export_learner_pathway_progress(email_address=None, date_from=None, date_to=
                 "name": p.full_name,
                 "username": p.user.username,
                 "email": p.user.email,
+                "created": p.created_at,
                 "pathway": application.pathway.name,
                 "progress": str(finished) + " out of " + str(total_count)
             })
@@ -990,6 +993,7 @@ def export_learner_pathway_progress(email_address=None, date_from=None, date_to=
                 "name": p.full_name,
                 "username": p.user.username,
                 "email": p.user.email,
+                "created": p.created_at,
                 "pathway": "No Approved Application",
                 "progress": "N/A"
             })
@@ -1001,6 +1005,7 @@ def export_learner_pathway_progress(email_address=None, date_from=None, date_to=
             'name',
             'username',
             'email',
+            'created',
             'pathway',
             'progress'
             ])
@@ -1010,6 +1015,7 @@ def export_learner_pathway_progress(email_address=None, date_from=None, date_to=
                 u['name'],
                 u['username'],
                 u['email'],
+                u['created'],
                 u['pathway'],
                 u['progress'],
             ])
@@ -1292,6 +1298,162 @@ def export_three_month_inactive_users(course_id, email_address=None):
         email = EmailMessage(
             'Coursebank - Three Month Inactive List',
             'Attached file of Three Month Inactive List for {} (as of {})'.format(course_key,tnow),
+            'no-reply-sparta-user-logins@coursebank.ph',
+            [email_address,],
+        )
+        email.attach_file(file_name)
+        email.send()
+
+def export_graduation_candidates(path_way=None, email_address=None, date_from=None, date_to=None):
+    """"""
+    tnow = datetime.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
+
+    profiles = SpartaProfile.objects.prefetch_related('applications')
+    core_courses = []
+    elective_courses = []
+    certdate_list =[]
+
+    if path_way:
+      if path_way == 1:
+          pathway_name = "Data Associate"
+      elif path_way == 2:
+          pathway_name = "Data Scientist"
+      elif path_way == 3:
+          pathway_name = "Data Engineer"
+      elif path_way == 4:
+          pathway_name = "Data Steward"
+      elif path_way == 5:
+          pathway_name = "Data Analyst"
+      elif path_way == 6:
+          pathway_name = "Analytics Manager"
+
+      if path_way >= 1 and path_way <= 6:
+         with connection.cursor() as cursor:
+               cursor.execute("Select sparta_pages_spartacourse.course_id from sparta_pages_spartacourse INNER JOIN sparta_pages_coursegroup where sparta_pages_spartacourse.group_id=sparta_pages_coursegroup.id AND sparta_pages_coursegroup.type='CO' AND sparta_pages_spartacourse.pathway_id = %s", [path_way])
+               corecourse = cursor.fetchall()
+         with connection.cursor() as cursor:
+               cursor.execute("Select sparta_pages_spartacourse.course_id from sparta_pages_spartacourse INNER JOIN sparta_pages_coursegroup where sparta_pages_spartacourse.group_id=sparta_pages_coursegroup.id AND sparta_pages_coursegroup.type='EL' AND sparta_pages_spartacourse.pathway_id = %s", [path_way])
+               electcourse = cursor.fetchall()
+         with connection.cursor() as cursor:
+               cursor.execute("Select complete_at_least from sparta_pages_coursegroup where type='EL' AND pathway_id = %s", [path_way])
+               data = cursor.fetchone()
+               elect_total = data[0]
+
+         for data in corecourse:
+             result = data[0]
+             core_courses.append(result)
+         for data in electcourse:
+             result = data[0]
+             elective_courses.append(result)
+
+         core_total = len(core_courses)
+
+
+
+    else:
+       profiles = None
+
+    datefrom_str = ""
+    dateto_str = ""
+
+    pathway_dict = {}
+    for pathway in Pathway.objects.all():
+        pathway_dict[pathway.name] = SpartaCourse.objects.filter(pathway=pathway).count()
+
+    user_list = []
+    for p in profiles:
+        if date_from:
+            applications = p.applications.filter(created_at__gte=date_from,status="AP")
+            datefrom_str = date_from.strftime('%Y-%m-%dT%H:%M:%S.000Z')
+
+        if date_to:
+            applications = p.applications.filter(created_at__lte=date_to,status="AP")
+            dateto_str = date_to.strftime('%Y-%m-%dT%H:%M:%S.000Z')
+
+        if applications.exists():
+            application = applications.order_by('created_at').first()
+
+            total_count = pathway_dict[application.pathway.name]
+            finished = 0
+            core_count = 0
+            elect_count = 0
+
+            for course in application.pathway.courses.all():
+                course_key = CourseKey.from_string(course.course_id)
+
+                cert = get_certificate_for_user(p.user.username, course_key)
+
+                if cert is not None:
+                    finished += 1
+
+                if path_way:
+                    for pathcourse in core_courses:
+                        if unicode(course_key) == unicode(pathcourse) and cert is not None:
+                           date_completed = cert['created'].strftime('%Y-%m-%dT%H:%M:%S.000Z')
+                           certdate_list.append(date_completed)
+                           core_count += 1
+
+                    for pathcourse in elective_courses:
+                        if unicode(course_key) == unicode(pathcourse) and cert is not None:
+                           date_completed = cert['created'].strftime('%Y-%m-%dT%H:%M:%S.000Z')
+                           certdate_list.append(date_completed)
+                           elect_count += 1
+
+            certdate_list.sort(reverse=True)
+
+            if application.pathway.name == pathway_name and core_count == core_total and elect_count >= elect_total:
+               user_list.append({
+                   "name": p.full_name,
+                   "username": p.user.username,
+                   "email": p.user.email,
+                   "pathway": application.pathway.name,
+                   "created": p.created_at,
+                   "progress": str(finished) + " out of " + str(total_count),
+                   "core_progress": str(core_count) + "out of" + str(core_total),
+                   "elective_progress": str(elect_count) + "out of" + str(elect_total),
+                   "completion_date": certdate_list[0]
+            })
+               del certdate_list[:]
+            else:
+               del certdate_list[:]
+
+    file_name = '/home/ubuntu/tempfiles/export_learner_pathway_progress_{}.csv'.format(tnow)
+    with open(file_name, mode='w') as csv_file:
+        writer = unicodecsv.writer(csv_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL,  encoding='utf-8')
+        writer.writerow([
+            'name',
+            'username',
+            'email',
+            'pathway',
+            'created',
+            'progress',
+            'core_progress',
+            'elective_progress',
+            'completion_date'
+            ])
+
+        for u in user_list:
+            writer.writerow([
+                u['name'],
+                u['username'],
+                u['email'],
+                u['pathway'],
+                u['created'],
+                u['progress'],
+                u['core_progress'],
+                u['elective_progress'],
+                u['completion_date'],
+            ])
+
+    if datefrom_str or dateto_str:
+        date_range = ' for date range: {} to {}'.format(datefrom_str, dateto_str)
+    else:
+        date_range = ""
+
+    if email_address:
+        email = EmailMessage(
+            'Coursebank - SPARTA Learner Pathway Progress',
+            'Attached file of SPARTA Graduation Candidates (as of {})'.format(date_range),
             'no-reply-sparta-user-logins@coursebank.ph',
             [email_address,],
         )

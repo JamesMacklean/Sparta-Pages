@@ -123,6 +123,21 @@ class SpartaProfile(models.Model):
     FSUU = "FS"
     USTP = "US"
     CMU = "CM"
+    CCRPFI = "CC"
+    CSU = "CS"
+    RSU = "RS"
+    STI = "ST"
+    CRHS = "CR"
+    SRGC = "SR"
+    TAU = "TU"
+    BSU = "BU"
+    BARMM = "BA"
+    CDAR = "CD"
+    HNU = "HN"
+    SLSU = "SL"
+    WMSU = "WM"
+    AER = "AE"
+    BPDA = "BP"
     NOT_INVOLVED = "NA"
     ORG_CHOICES = (
         (NOT_INVOLVED, "N/A"),
@@ -134,6 +149,21 @@ class SpartaProfile(models.Model):
         (FSUU, "Father Saturnino Urios University (FSUU)"),
         (USTP, "University of Science and Technology of Southern Philippines (USTP)"),
         (CMU, "Central Mindanao University (CMU)"),
+        (CCRPFI, "Cancer CARE Registry Philippines Foundation, Inc. (NGO)"),
+        (CSU, "Caraga State University"),
+        (RSU, "Romblon State University"),
+        (STI, "STI Education Services Group, Inc."),
+        (CRHS, "Claro M. Recto High School"),
+        (SRGC, "Spring Rain Global Consultancy, Inc."),
+        (TAU, "Tarlac Agricultural University"),
+        (BSU, "Bulacan State University"),
+        (BARMM, "BARMM-Ministry of Human Settlements and Development"),
+        (CDAR, "Cooperative Development Authority Region IV-A"),
+        (HNU, "Holy Name University"),
+        (SLSU, "Southern Leyte State University"),
+        (WMSU, "Western Mindanao State University"),
+        (AER, "Action for Economic Reforms"),
+        (BPDA, "Bangsamoro Planning and Development Authority (BPDA)")
     )
 
     ANZ = "AN"
@@ -161,6 +191,12 @@ class SpartaProfile(models.Model):
     VERTOCOMMUNICATIONS = "VC"
     WNS = "WN"
     ECLARO = "EC"
+    REED_ELSEVIER = "RE"
+    HENKEL = "HK"
+    MICROSOURCING = "MS"
+    NEARSOL = "NS"
+    VXI = "VX"
+    OPEN_ACCESS_BPO = "OA"
     NOT_CCAP = ""
     CCAP_SUBCHOICES = (
         (ANZ, "ANZ"),
@@ -188,6 +224,12 @@ class SpartaProfile(models.Model):
         (VERTOCOMMUNICATIONS, "Vertocommunications"),
         (WNS, "WNS"),
         (ECLARO, "Eclaro"),
+        (REED_ELSEVIER, "Reed Elsevier"),
+        (HENKEL, "Henkel"),
+        (MICROSOURCING, "Microsourcing"),
+        (NEARSOL, "Nearsol"),
+        (VXI, "VXI"),
+        (OPEN_ACCESS_BPO, "Open Access BPO"),
         (NOT_CCAP, ""),
     )
 
