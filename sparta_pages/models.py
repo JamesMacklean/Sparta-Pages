@@ -164,7 +164,7 @@ class SpartaProfile(models.Model):
         (SLSU, "Southern Leyte State University"),
         (WMSU, "Western Mindanao State University"),
         (AER, "Action for Economic Reforms"),
-        (BPDA, "Bangsamoro Planning and Development Authority (BPDA)")
+        (BPDA, "Bangsamoro Planning and Development Authority (BPDA)"),
         (PCCI, "Chamber of Commerce and Industry (PCCI)")
     )
 
