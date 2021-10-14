@@ -139,6 +139,7 @@ class SpartaProfile(models.Model):
     AER = "AE"
     BPDA = "BP"
     PCCI = "PI"
+    VSU = "VS"
     NOT_INVOLVED = "NA"
     ORG_CHOICES = (
         (NOT_INVOLVED, "N/A"),
@@ -165,7 +166,8 @@ class SpartaProfile(models.Model):
         (WMSU, "Western Mindanao State University"),
         (AER, "Action for Economic Reforms"),
         (BPDA, "Bangsamoro Planning and Development Authority (BPDA)"),
-        (PCCI, "Chamber of Commerce and Industry (PCCI)")
+        (PCCI, "Chamber of Commerce and Industry (PCCI)"),
+        (VSU, "Visayas State University (VSU)")
     )
 
     ANZ = "AN"
