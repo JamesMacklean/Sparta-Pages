@@ -166,7 +166,7 @@ class SpartaProfile(models.Model):
         (WMSU, "Western Mindanao State University"),
         (AER, "Action for Economic Reforms"),
         (BPDA, "Bangsamoro Planning and Development Authority (BPDA)"),
-        (PCCI, "Chamber of Commerce and Industry (PCCI)"),
+        (PCCI, "Philippine Chamber of Commerce and Industry (PCCI)"),
         (VSU, "Visayas State University (VSU)")
     )
 
