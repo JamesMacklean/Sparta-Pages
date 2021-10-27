@@ -3,6 +3,7 @@ from datetime import datetime, timedelta
 from django.utils import timezone
 import logging
 import unicodecsv
+from django.utils import six
 
 from django.db import connection
 from django.core.mail import send_mail, EmailMessage
@@ -68,7 +69,7 @@ def manage_sparta_applications_list(email_address=None, date_from=None, date_to=
     tnow = datetime.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
 
     file_name = '/home/ubuntu/tempfiles/sparta_applications_file_{}.csv'.format(tnow)
-    with open(file_name, mode='w') as apps_file:
+    with open(file_name, mode='wb') as apps_file:
         writer = csv.writer(apps_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
 
         writer.writerow(['User_ID', 'Username', 'Email', 'Pathway_ID', 'Pathway_Name', 'Course_Keys', 'Time Created'])
@@ -207,7 +208,7 @@ def email_sparta_student_coupon_records(email=None, pathway=None):
     tnow = datetime.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
 
     file_name = '/home/ubuntu/tempfiles/sparta_coupon_records_file_{}.csv'.format(tnow)
-    with open(file_name, mode='w') as coupons_file:
+    with open(file_name, mode='wb') as coupons_file:
         writer = csv.writer(coupons_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
 
         HEAD_ARR = ['Email Address',]
@@ -253,7 +254,7 @@ def get_enrollment_status(email=None, pathway=None):
     tnow = datetime.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
 
     file_name = '/home/ubuntu/tempfiles/sparta_enrollments_file_{}.csv'.format(tnow)
-    with open(file_name, mode='w') as coupons_file:
+    with open(file_name, mode='wb') as coupons_file:
         writer = csv.writer(coupons_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
 
         HEAD_ARR = ['Email Address',]
@@ -306,7 +307,7 @@ def email_sparta_overall_reports():
     overall_graduation_rate = analytics.overall_graduation_rate()
 
     file_name = '/home/ubuntu/tempfiles/sparta_overall_analytics_file_{}.csv'.format(tnow)
-    with open(file_name, mode='w') as coupons_file:
+    with open(file_name, mode='wb') as coupons_file:
         writer = csv.writer(coupons_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
 
         writer.writerow([
@@ -360,7 +361,7 @@ def email_sparta_pathway_learners_reports(slug):
 
     _slug = pathway.slug.replace("-", "_")
     file_name = '/home/ubuntu/tempfiles/sparta_pathway_{}_learners_report_file_{}.csv'.format(_slug, tnow)
-    with open(file_name, mode='w') as coupons_file:
+    with open(file_name, mode='wb') as coupons_file:
         writer = csv.writer(coupons_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
 
         writer.writerow([
@@ -420,7 +421,7 @@ def email_sparta_pathway_reports(slug):
 
     _slug = pathway.slug.replace("-", "_")
     file_name = '/home/ubuntu/tempfiles/sparta_pathway_{}_report_file_{}.csv'.format(_slug, tnow)
-    with open(file_name, mode='w') as coupons_file:
+    with open(file_name, mode='wb') as coupons_file:
         writer = csv.writer(coupons_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
 
         writer.writerow([
@@ -473,7 +474,7 @@ def export_sparta_profiles(email_address=None, is_active=True, *args, **kwargs):
         profiles = profiles.filter(**kwargs)
 
     file_name = '/home/ubuntu/tempfiles/export_sparta_profiles_{}.csv'.format(tnow)
-    with open(file_name, mode='w') as csv_file:
+    with open(file_name, mode='wb') as csv_file:
         writer = unicodecsv.writer(csv_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL,  encoding='utf-8')
         writer.writerow([
             'Username', 'Email', 'Is Active', 'Name',
@@ -532,7 +533,7 @@ def export_sparta_education_credentials(email_address=None, is_active=True, *arg
     education_profiles = EducationProfile.objects.filter(profile__in=profiles)
 
     file_name = '/home/ubuntu/tempfiles/export_sparta_education_credentials_{}.csv'.format(tnow)
-    with open(file_name, mode='w') as csv_file:
+    with open(file_name, mode='wb') as csv_file:
         writer = unicodecsv.writer(csv_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL,  encoding='utf-8')
         writer.writerow([
             'Username', 'Email',
@@ -570,7 +571,7 @@ def export_sparta_employment_credentials(email_address=None, is_active=True, *ar
     employment_profiles = EmploymentProfile.objects.filter(profile__in=profiles)
 
     file_name = '/home/ubuntu/tempfiles/export_sparta_employment_credentials_{}.csv'.format(tnow)
-    with open(file_name, mode='w') as csv_file:
+    with open(file_name, mode='wb') as csv_file:
         writer = unicodecsv.writer(csv_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL,  encoding='utf-8')
         writer.writerow([
             'Username', 'Email',
@@ -610,7 +611,7 @@ def export_sparta_training_credentials(email_address=None, is_active=True, *args
     training_profiles = TrainingProfile.objects.filter(profile__in=profiles)
 
     file_name = '/home/ubuntu/tempfiles/export_sparta_training_credentials_{}.csv'.format(tnow)
-    with open(file_name, mode='w') as csv_file:
+    with open(file_name, mode='wb') as csv_file:
         writer = unicodecsv.writer(csv_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL,  encoding='utf-8')
         writer.writerow([
             'Username', 'Email',
@@ -670,7 +671,7 @@ def export_sparta_completed_courses(email_address=None, course_id=None, is_activ
         course_list.append(data)
 
     file_name = '/home/ubuntu/tempfiles/export_sparta_course_completion{}.csv'.format(tnow)
-    with open(file_name, mode='w') as csv_file:
+    with open(file_name, mode='wb') as csv_file:
         writer = unicodecsv.writer(csv_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL,  encoding='utf-8')
         writer.writerow(['Course ID', 'Course Name', 'No. of Learners Completed'])
 
@@ -704,7 +705,7 @@ def export_sparta_user_logins(email_address=None):
         })
 
     file_name = '/home/ubuntu/tempfiles/export_sparta_user_logins_{}.csv'.format(tnow)
-    with open(file_name, mode='w') as csv_file:
+    with open(file_name, mode='wb') as csv_file:
         writer = unicodecsv.writer(csv_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL,  encoding='utf-8')
         writer.writerow([
             'username',
@@ -778,7 +779,7 @@ def export_sparta_student_module_timestamps(course_id, email_address=None):
         })
 
     file_name = '/home/ubuntu/tempfiles/export_sparta_activity_timestamps{}.csv'.format(tnow)
-    with open(file_name, mode='w') as csv_file:
+    with open(file_name, mode='wb') as csv_file:
         writer = unicodecsv.writer(csv_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL,  encoding='utf-8')
         writer.writerow([
             'username',
@@ -902,7 +903,7 @@ def export_sparta_data_for_dashboard(email_address=None):
 
     tnow = datetime.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
     file_name = '/home/ubuntu/tempfiles/export_sparta_data_for_dashboard_{}.csv'.format(tnow)
-    with open(file_name, mode='w') as csv_file:
+    with open(file_name, mode='wb') as csv_file:
         writer = unicodecsv.writer(csv_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL,  encoding='utf-8')
         writer.writerow([
             'STUDENT_ID',
@@ -999,7 +1000,7 @@ def export_learner_pathway_progress(email_address=None, date_from=None, date_to=
             })
 
     file_name = '/home/ubuntu/tempfiles/export_learner_pathway_progress_{}.csv'.format(tnow)
-    with open(file_name, mode='w') as csv_file:
+    with open(file_name, mode='wb') as csv_file:
         writer = unicodecsv.writer(csv_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL,  encoding='utf-8')
         writer.writerow([
             'name',
@@ -1111,7 +1112,7 @@ def export_learner_account_information(course_id, email_address=None):
 
 
     file_name = '/home/ubuntu/tempfiles/export_learner_account_information_{}.csv'.format(tnow)
-    with open(file_name, mode='w') as csv_file:
+    with open(file_name, mode='wb') as csv_file:
         writer = unicodecsv.writer(csv_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL,  encoding='utf-8')
         writer.writerow([
             'Username',
@@ -1199,7 +1200,7 @@ def export_six_month_access_users(course_id, email_address=None):
                 })
 
     file_name = '/home/ubuntu/tempfiles/export_six_month_access_users_{}.csv'.format(tnow)
-    with open(file_name, mode='w') as csv_file:
+    with open(file_name, mode='wb') as csv_file:
         writer = unicodecsv.writer(csv_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL,  encoding='utf-8')
         writer.writerow([
             'Name',
@@ -1275,7 +1276,7 @@ def export_three_month_inactive_users(course_id, email_address=None):
             })
 
     file_name = '/home/ubuntu/tempfiles/export_three_month_inactive_users_{}.csv'.format(tnow)
-    with open(file_name, mode='w') as csv_file:
+    with open(file_name, mode='wb') as csv_file:
         writer = unicodecsv.writer(csv_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL,  encoding='utf-8')
         writer.writerow([
             'Name',
@@ -1418,7 +1419,7 @@ def export_graduation_candidates(path_way=None, email_address=None, date_from=No
                del certdate_list[:]
 
     file_name = '/home/ubuntu/tempfiles/export_learner_pathway_progress_{}.csv'.format(tnow)
-    with open(file_name, mode='w') as csv_file:
+    with open(file_name, mode='wb') as csv_file:
         writer = unicodecsv.writer(csv_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL,  encoding='utf-8')
         writer.writerow([
             'name',
