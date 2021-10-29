@@ -7,6 +7,7 @@ sparta_pages/local_settings.py
 sparta_pages/templates/old.*
 sparta_pages/static
 *.local
+migrations/
 
 ### Python ###
 # Byte-compiled / optimized / DLL files
