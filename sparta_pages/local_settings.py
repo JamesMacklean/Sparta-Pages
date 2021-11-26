@@ -1,0 +1,11 @@
+LOCAL_TEST = False
+
+LOCAL_STAFF_EMAIL = "learn@coursebank.ph"
+#LOCAL_STAFF_EMAIL = "junfel@buri.io"
+LOCAL_COUPON_WARNING_LIMIT = 100
+LOCAL_REDOC_SCHEMA_URL = 'https://coursebank.ph/'
+LOCAL_INTRO_COURSE_ID = 'course-v1:DAP+SP101+2020_Q1'
+
+LOCAL_MAX_APPLIED = 1
+
+LOCAL_SECRET_TOKEN = "secret"
