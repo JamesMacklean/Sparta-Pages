@@ -3,6 +3,7 @@ from datetime import datetime, timedelta
 from django.utils import timezone
 import logging
 import unicodecsv
+from django.utils import six
 
 from django.db import connection
 from django.core.mail import send_mail, EmailMessage

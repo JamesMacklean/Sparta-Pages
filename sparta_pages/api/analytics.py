@@ -53,7 +53,7 @@ class CustomAuth():
     def basic_auth(self, request):
         token = self.get_header_token(request)
         token_decoded = base64.b64decode(token)
-        token_key = token_decoded.strip(':')
+        token_key = token_decoded.decode('ascii').strip(':')
         if token_key != SECRET_TOKEN:
             return False
         return True
