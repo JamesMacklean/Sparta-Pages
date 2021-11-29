@@ -1460,3 +1460,115 @@ def export_graduation_candidates(path_way=None, email_address=None, date_from=No
         )
         email.attach_file(file_name)
         email.send()
+
+def export_organizational_progress(email_address=None, date_from=None, date_to=None):
+    """"""
+    tnow = datetime.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
+
+    profiles = SpartaProfile.objects.prefetch_related('applications')
+
+    datefrom_str = ""
+    dateto_str = ""
+
+    pathway_dict = {}
+    for pathway in Pathway.objects.all():
+        pathway_dict[pathway.name] = SpartaCourse.objects.filter(pathway=pathway).count()
+
+    user_list = []
+    for p in profiles:
+        if date_from:
+            applications = p.applications.filter(created_at__gte=date_from,status="AP")
+            datefrom_str = date_from.strftime('%Y-%m-%dT%H:%M:%S.000Z')
+
+        if date_to:
+            applications = p.applications.filter(created_at__lte=date_to,status="AP")
+            dateto_str = date_to.strftime('%Y-%m-%dT%H:%M:%S.000Z')
+
+        if applications.exists():
+            application = applications.order_by('created_at').first()
+
+            total_count = pathway_dict[application.pathway.name]
+            finished = 0
+
+            for course in application.pathway.courses.all():
+                course_key = CourseKey.from_string(course.course_id)
+
+                cert = get_certificate_for_user(p.user.username, course_key)
+
+                if cert is not None:
+                    finished += 1
+
+            user_list.append({
+                "profile_id": p.id,
+                "name": p.full_name,
+                "username": p.user.username,
+                "email": p.user.email,
+                "created": p.created_at,
+                "pathway": application.pathway.name,
+                "organization": p.org,
+                "ccap_sub": p.ccap_sub,
+                "lgu_sub": p.lgu_sub,
+                "completed_courses": str(finished),
+                "required_courses": str(total_count)
+            })
+        else:
+            user_list.append({
+                "profile_id": p.id,
+                "name": p.full_name,
+                "username": p.user.username,
+                "email": p.user.email,
+                "created": p.created_at,
+                "pathway": "No Approved Application",
+                "organization": p.org,
+                "ccap_sub": p.ccap_sub,
+                "lgu_sub": p.lgu_sub,
+                "completed_courses": "N/A",
+                "required_courses": "N/A"
+            })
+
+    file_name = '/home/ubuntu/tempfiles/export_organizational_progress_{}.csv'.format(tnow)
+    with open(file_name, mode='wb') as csv_file:
+        writer = unicodecsv.writer(csv_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL,  encoding='utf-8')
+        writer.writerow([
+            'profile_id',
+            'name',
+            'username',
+            'email',
+            'created',
+            'pathway',
+            'organization',
+            'ccap_sub',
+            'lgu_sub',
+            'completed_courses',
+            'required_courses'
+            ])
+
+        for u in user_list:
+            writer.writerow([
+                u['profile_id'],
+                u['name'],
+                u['username'],
+                u['email'],
+                u['created'],
+                u['pathway'],
+                u['organization'],
+                u['ccap_sub'],
+                u['lgu_sub'],
+                u['completed_courses'],
+                u['required_courses']
+            ])
+
+    if datefrom_str or dateto_str:
+        date_range = ' for date range: {} to {}'.format(datefrom_str, dateto_str)
+    else:
+        date_range = ""
+
+    if email_address:
+        email = EmailMessage(
+            'Coursebank - SPARTA Organizational Progress',
+            'Attached file of SPARTA Organizational Progress (as of {})'.format(date_range),
+            'no-reply-sparta-user-logins@coursebank.ph',
+            [email_address,],
+        )
+        email.attach_file(file_name)
+        email.send()
