@@ -106,7 +106,6 @@ def pathway(request, slug):
             context['graduate_course'] = {'courseoverview': cap_course_overview}
         except CourseOverview.DoesNotExist:
             context['graduate_course'] = None
-        context['graduate_course'] = None
     elif slug == "data-steward":
         try:
             cap_course_key = CourseKey.from_string("course-v1:DAP+SPCapstone005+2021_Q3")
