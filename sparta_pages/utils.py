@@ -41,7 +41,6 @@ def manage_pathway_applications():
     for app in PathwayApplication.objects.filter(status="PE"):
         app.approve()
 
-
 def manage_sparta_applications_list(email_address=None, date_from=None, date_to=None):
     applications = PathwayApplication.objects.all()
 
@@ -98,10 +97,8 @@ def manage_sparta_applications_list(email_address=None, date_from=None, date_to=
         email.attach_file(file_name)
         email.send()
 
-
 class SpentCouponsException(Exception):
     pass
-
 
 def get_first_clean_coupon(coupons=None, course_id=None, all_sc_records=None):
     try:
@@ -127,7 +124,6 @@ def check_if_enough_clean_coupons(course):
     records = StudentCouponRecord.objects.filter(coupon__course_id=course.course_id)
     return coupons.count() - records.count() > LOCAL_COUPON_WARNING_LIMIT
 
-
 def get_courses_that_need_new_coupons_list():
     courses_that_need_new_coupons_list = []
     coupons = SpartaCoupon.objects.filter(is_active=True)
@@ -136,7 +132,6 @@ def get_courses_that_need_new_coupons_list():
             if course.course_id not in courses_that_need_new_coupons_list:
                 courses_that_need_new_coupons_list.append(course.course_id)
     return courses_that_need_new_coupons_list
-
 
 def assign_coupons_to_single_student(student):
     try:
@@ -181,7 +176,6 @@ def assign_coupons_to_single_student(student):
         logger.info(error_str)
         raise Exception(error_str)
 
-
 def assign_coupons_to_students():
     """"""
     profiles = SpartaProfile.objects.filter(is_active=True)
@@ -193,7 +187,6 @@ def assign_coupons_to_students():
         print('Finished assigning coupons for student {}!'.format(student.user.username))
         count += 1
         print("Progress: {} out of {} students".format(count, total))
-
 
 def email_sparta_student_coupon_records(email=None, pathway=None):
     profiles = SpartaProfile.objects.filter(is_active=True)
@@ -240,7 +233,6 @@ def email_sparta_student_coupon_records(email=None, pathway=None):
     email.attach_file(file_name)
     email.send()
 
-
 def get_enrollment_status(email=None, pathway=None):
     profiles = SpartaProfile.objects.filter(is_active=True)
     if email:
@@ -286,7 +278,6 @@ def get_enrollment_status(email=None, pathway=None):
     )
     email.attach_file(file_name)
     email.send()
-
 
 def email_sparta_overall_reports():
     """"""
@@ -350,7 +341,6 @@ def email_sparta_overall_reports():
     email.attach_file(file_name)
     email.send()
 
-
 def email_sparta_pathway_learners_reports(slug):
     """"""
     tnow = datetime.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
@@ -398,7 +388,6 @@ def email_sparta_pathway_learners_reports(slug):
     )
     email.attach_file(file_name)
     email.send()
-
 
 def email_sparta_pathway_reports(slug):
     """"""
@@ -464,7 +453,6 @@ def email_sparta_pathway_reports(slug):
     email.attach_file(file_name)
     email.send()
 
-
 def export_sparta_profiles(email_address=None, is_active=True, *args, **kwargs):
     """"""
     tnow = datetime.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
@@ -520,7 +508,6 @@ def export_sparta_profiles(email_address=None, is_active=True, *args, **kwargs):
         )
         email.attach_file(file_name)
         email.send()
-
 
 def export_sparta_education_credentials(email_address=None, is_active=True, *args, **kwargs):
     """"""
@@ -636,7 +623,6 @@ def export_sparta_training_credentials(email_address=None, is_active=True, *args
         email.attach_file(file_name)
         email.send()
 
-
 def export_sparta_completed_courses(email_address=None, course_id=None, is_active=True):
     """"""
     tnow = datetime.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
@@ -690,7 +676,6 @@ def export_sparta_completed_courses(email_address=None, course_id=None, is_activ
         email.attach_file(file_name)
         email.send()
 
-
 def export_sparta_user_logins(email_address=None):
     """"""
     tnow = datetime.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
@@ -731,7 +716,6 @@ def export_sparta_user_logins(email_address=None):
         )
         email.attach_file(file_name)
         email.send()
-
 
 def export_sparta_student_module_timestamps(course_id, email_address=None):
     """"""
@@ -808,7 +792,6 @@ def export_sparta_student_module_timestamps(course_id, email_address=None):
         email.attach_file(file_name)
         email.send()
 
-
 def get_course_graded_problems_progress(user, course_id):
     try:
         course_block_tree = get_course_outline_block_tree(user, course_id)
@@ -831,7 +814,6 @@ def get_course_graded_problems_progress(user, course_id):
                         completed_problems += 1
 
     return completed_problems, total_problems
-
 
 def export_sparta_data_for_dashboard(email_address=None):
     """"""
