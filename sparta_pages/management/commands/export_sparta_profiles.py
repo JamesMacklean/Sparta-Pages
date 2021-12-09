@@ -18,7 +18,7 @@ class Command(BaseCommand):
             '-e',
             '--email',
             type=str,
-            help='set email of student to limit coupons to get',
+            help='set email_address to send to',
         )
         parser.add_argument(
             '-p',
