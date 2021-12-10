@@ -169,7 +169,7 @@ class SpartaProfile(models.Model):
         (BPDA, "Bangsamoro Planning and Development Authority (BPDA)"),
         (PCCI, "Philippine Chamber of Commerce and Industry (PCCI)"),
         (VSU, "Visayas State University (VSU)"),
-        (SMC, "St. Martin Cooperative")
+        (SMC, "St. Martin of Tours Credit and Development Cooperative (St. Martin Coop)")
     )
 
     ANZ = "AN"
