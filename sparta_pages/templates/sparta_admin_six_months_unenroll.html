@@ -1,0 +1,192 @@
+<!--SIR REPZ, SIR MARK, HETO PO ANG INACTIVE DASHBOARD-->
+
+% extends "sparta_base.html" %}
+{% load static %}
+
+{% block title %}Coursebank | SPARTA | Admin | Unenroll {% endblock %}
+
+{% block sparta_body %}
+
+<form action="" method="post">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Export to CSV" />
+</form>
+
+<form action="{% url 'sparta-admin-six-months-unenroll' %}" method="get">
+  {% csrf_token %}
+  {{ filter_form }}
+  <input type="submit" value="Filter" />
+</form>
+
+<div class="card">
+  <div class="card-body">
+    <h2>Pending Pathway Applications</h2>
+    <table class="table table-hover table-sm">
+      <thead>
+        <tr>
+          <th scope="col">Username</th>
+          <th scope="col">Email</th>
+          <th scope="col">Full Name</th>
+          <th scope="col">Pathway</th>
+          <th scope="col">Initial Access Date</th>
+          <th scope="col">Status</th>
+          <th scope="col">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for a in pending_applications %}
+        <tr>
+          <td>{{ a.profile.user.username }}</td>
+          <td>{{ a.profile.user.email }}</td>
+          <td>{{ a.profile.user.profile.name }}</td>
+          <td>{{ a.pathway.name }}</td>
+          <td>{{ a.profile.user.extended_sparta_profile.get_municipality_display }}</td>
+          <td>{{ a.get_status_display }}</td>
+          <td><div type="div" class="btn btn-outline-success btn-sm" style="cursor: pointer" data-toggle="modal" data-target="#approveModal">Approve</div></td>
+          <!-- Modal Block -->
+          <div class="modal fade" id="approveModal" tabindex="-1" role="dialog" aria-labelledby="approveModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="approveModalLabel">Approve Application</h5>
+                  <div type="div" class="close" style="cursor: pointer" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </div>
+                </div>
+                <div class="modal-body">
+                  Are you sure you want to approve this application by {{ a.profile.user.username }} for {{ a.pathway.name }})?
+                </div>
+                <div class="modal-footer">
+                  <form action="{% url 'sparta-admin-approve' id=a.id %}" method="POST">
+                    {% csrf_token %}
+                    <div type="div" class="btn btn-secondary" data-dismiss="modal">Cancel</div>
+                    <input class="btn btn-success" id="submit" type="submit" value="Approve" />
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </tr>
+        {% endfor %}
+        <tr>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-body">
+    <h2>Approved Pathway Applications</h2>
+    <table class="table table-hover table-sm">
+      <thead>
+        <tr>
+          <th scope="col">Username</th>
+          <th scope="col">Email</th>
+          <th scope="col">Full Name</th>
+          <th scope="col">Municipality</th>
+          <th scope="col">Pathway</th>
+          <th scope="col">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for a in approved_applications %}
+        <tr>
+          <td>{{ a.profile.user.username }}</td>
+          <td>{{ a.profile.user.email }}</td>
+          <td>{{ a.profile.user.profile.name }}</td>
+          <td>{{ a.profile.user.extended_sparta_profile.get_municipality_display }}</td>
+          <td>{{ a.pathway.name }}</td>
+          <td>{{ a.get_status_display }}</td>
+        </tr>
+        {% endfor %}
+        <tr>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-body">
+    <h2>Withdrawn Pathway Applications</h2>
+    <table class="table table-hover table-sm">
+      <thead>
+        <tr>
+          <th scope="col">Username</th>
+          <th scope="col">Email</th>
+          <th scope="col">Full Name</th>
+          <th scope="col">Municipality</th>
+          <th scope="col">Pathway</th>
+          <th scope="col">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for a in withdrawn_applications %}
+        <tr>
+          <td>{{ a.profile.user.username }}</td>
+          <td>{{ a.profile.user.email }}</td>
+          <td>{{ a.profile.user.profile.name }}</td>
+          <td>{{ a.profile.user.extended_sparta_profile.get_municipality_display }}</td>
+          <td>{{ a.pathway.name }}</td>
+          <td>{{ a.get_status_display }}</td>
+        </tr>
+        {% endfor %}
+        <tr>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-body">
+    <h2>Denied Pathway Applications</h2>
+    <table class="table table-hover table-sm">
+      <thead>
+        <tr>
+          <th scope="col">Username</th>
+          <th scope="col">Email</th>
+          <th scope="col">Full Name</th>
+          <th scope="col">Municipality</th>
+          <th scope="col">Pathway</th>
+          <th scope="col">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for a in denied_applications %}
+        <tr>
+          <td>{{ a.profile.user.username }}</td>
+          <td>{{ a.profile.user.email }}</td>
+          <td>{{ a.profile.user.profile.name }}</td>
+          <td>{{ a.profile.user.extended_sparta_profile.get_municipality_display }}</td>
+          <td>{{ a.pathway.name }}</td>
+          <td>{{ a.get_status_display }}</td>
+        </tr>
+        {% endfor %}
+        <tr>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{% endblock %}

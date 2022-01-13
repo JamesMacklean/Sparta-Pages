@@ -137,6 +137,67 @@ def admin_applications_view(request):
 
     return render(request, template_name, context)
 
+#SIR REPZ, SIR MARK, HETO PO ANG INACTIVE DASHBOARD
+@login_required
+def admin_six_months_unenroll(request):
+    if not request.user.is_staff:
+        raise Http404
+
+    template_name = "sparta_admin_six_months_unenroll.html"
+    context = {}
+
+    date_from = timezone.now().date()
+    date_to = timezone.now() + timedelta(days=1)
+
+    date_from_year = request.GET.get('date_from_year', None)
+    date_from_month = request.GET.get('date_from_month', None)
+    date_from_day = request.GET.get('date_from_day', None)
+
+    if None not in [date_from_year, date_from_month, date_from_day]:
+        date_from_str = "{}-{}-{}".format(date_from_year, date_from_month, date_from_day)
+        date_from = datetime.strptime(date_from_str, "%Y-%m-%d").date()
+
+    date_to_year = request.GET.get('date_to_year', None)
+    date_to_month = request.GET.get('date_to_month', None)
+    date_to_day = request.GET.get('date_to_day', None)
+    if None not in [date_to_year, date_to_month, date_to_day]:
+        date_to_str = "{}-{}-{}".format(date_to_year, date_to_month, date_to_day)
+        date_to = datetime.strptime(date_to_str, "%Y-%m-%d").date()
+
+    applications = PathwayApplication.objects.all().filter(created_at__gte=date_from).filter(created_at__lte=date_to)
+
+    pending_applications = applications.filter(status='PE')
+    withdrawn_applications = applications.filter(status='WE')
+    denied_applications = applications.filter(status='DE')
+    approved_applications = applications.filter(status='AP')
+
+    context['pending_applications'] = pending_applications
+    context['approved_applications'] = approved_applications
+    context['withdrawn_applications'] = withdrawn_applications
+    context['denied_applications'] = denied_applications
+
+    context['form'] = ExportAppsForm()
+    context['filter_form'] = FilterForm(request.GET or None)
+
+    if request.method == "POST":
+        form = ExportAppsForm(request.POST)
+        if form.is_valid():
+            selection = form.cleaned_data['selection']
+            if selection == "pending":
+                apps_to_export = pending_applications
+            elif selection == "approved":
+                apps_to_export = approved_applications
+            elif selection == "withdrawn":
+                apps_to_export = withdrawn_applications
+            elif selection == "denied":
+                apps_to_export = denied_applications
+            else:
+                apps_to_export = applications
+            return export_pathway_applications_to_csv(apps_to_export)
+
+    return render(request, template_name, context)
+
+
 def export_pathway_applications_to_csv(apps):
     tnow = timezone.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
     filename = "sparta-pathway-applications-{}.csv".format(tnow)
