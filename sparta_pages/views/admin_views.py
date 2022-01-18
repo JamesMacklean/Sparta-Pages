@@ -164,7 +164,7 @@ def admin_inactivity(request):
         date_to_str = "{}-{}-{}".format(date_to_year, date_to_month, date_to_day)
         date_to = datetime.strptime(date_to_str, "%Y-%m-%d").date()
 
-    applications = SpartaCourseIDs.objects.all().filter(created_at__gte=date_from).filter(created_at__lte=date_to)
+    applications = PathwayApplication.objects.all().filter(created_at__gte=date_from).filter(created_at__lte=date_to)
 
     pending_applications = applications.filter(status='PE')
     withdrawn_applications = applications.filter(status='WE')
