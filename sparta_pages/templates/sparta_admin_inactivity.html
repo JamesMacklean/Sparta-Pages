@@ -135,9 +135,7 @@
         </tr>
       </thead>
       <tbody>
-        {% for a in withdrawn_applications %}
-        <tr>
-          {% for a in pending_applications %}
+        {% for a in pending_applications %}
           <tr>
             <td>{{ a.profile.user.username }}</td>
             <td>{{ a.profile.user.email }}</td>
