@@ -32,7 +32,7 @@ from ..local_settings import LOCAL_TEST
 from ..models import (
     Pathway, SpartaCourse, SpartaProfile, ExtendedSpartaProfile,
     EducationProfile, EmploymentProfile, TrainingProfile,
-    PathwayApplication, APIToken
+    PathwayApplication, APIToken, SpartaCourseIDs
 )
 from ..api.utils import (
     get_sparta_course_id_list,
@@ -145,7 +145,7 @@ def admin_inactivity(request):
 
     template_name = "sparta_admin_inactivity.html"
     context = {}
-
+    
     date_from = timezone.now().date()
     date_to = timezone.now() + timedelta(days=1)
 
@@ -164,7 +164,7 @@ def admin_inactivity(request):
         date_to_str = "{}-{}-{}".format(date_to_year, date_to_month, date_to_day)
         date_to = datetime.strptime(date_to_str, "%Y-%m-%d").date()
 
-    applications = PathwayApplication.objects.all().filter(created_at__gte=date_from).filter(created_at__lte=date_to)
+    applications = SpartaCourseIDs.objects.all().filter(created_at__gte=date_from).filter(created_at__lte=date_to)
 
     pending_applications = applications.filter(status='PE')
     withdrawn_applications = applications.filter(status='WE')
@@ -178,6 +178,7 @@ def admin_inactivity(request):
 
     context['form'] = ExportAppsForm()
     context['filter_form'] = FilterForm(request.GET or None)
+    
 
     if request.method == "POST":
         form = ExportAppsForm(request.POST)
