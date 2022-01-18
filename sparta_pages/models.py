@@ -443,6 +443,7 @@ class EducationProfile(models.Model):
     started_at = models.DateField()
     graduated_at = models.DateField()
 
+
     class Meta:
         verbose_name_plural = "5. Education Profiles"
 
@@ -678,7 +679,7 @@ class SpartaCourseIDs(models.Model):
         verbose_name="sparta profile"
         )
     created_at = models.DateTimeField(auto_now_add=True)
-    status = models.CharField(max_length=2, choices=STATUS_CHOICES, default=PENDING)
+    status = models.CharField(max_length=2, choices=COURSE_CHOICES, default=PENDING)
 
     class Meta:
         verbose_name_plural = "4. Pathway Applications"
