@@ -164,8 +164,8 @@ def admin_inactivity(request):
         date_to_str = "{}-{}-{}".format(date_to_year, date_to_month, date_to_day)
         date_to = datetime.strptime(date_to_str, "%Y-%m-%d").date()
 
-    applications = SpartaCourseIDs.objects.all().filter(created_at__gte=date_from).filter(created_at__lte=date_to)
-'''
+    applications = PathwayApplication.objects.all().filter(created_at__gte=date_from).filter(created_at__lte=date_to)
+
     pending_applications = applications.filter(status='PE')
     withdrawn_applications = applications.filter(status='WE')
     denied_applications = applications.filter(status='DE')
@@ -178,8 +178,7 @@ def admin_inactivity(request):
 
     context['form'] = ExportAppsForm()
     context['filter_form'] = FilterForm(request.GET or None)
-'''
-'''
+
     if request.method == "POST":
         form = ExportAppsForm(request.POST)
         if form.is_valid():
@@ -197,7 +196,6 @@ def admin_inactivity(request):
             return export_pathway_applications_to_csv(apps_to_export)
 
     return render(request, template_name, context)
-'''
 
 def export_pathway_applications_to_csv(apps):
     tnow = timezone.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
