@@ -10,13 +10,13 @@
 <form action="" method="post">
     {% csrf_token %}
     {{ form }}
-    <input type="submit" value="Export to CSV" />
+    <input type="submit" value="Filter by Course" />
 </form>
 
 <form action="{% url 'sparta-admin-inactivity' %}" method="get">
   {% csrf_token %}
   {{ filter_form }}
-  <input type="submit" value="Filter" />
+  <input type="submit" value="Generate" />
 </form>
 
 <div class="card">
@@ -81,6 +81,7 @@
   </div>
 </div>
 
+<!--
 <div class="card">
   <div class="card-body">
     <h2>Three Months Inactive Learners</h2>
@@ -118,6 +119,7 @@
     </table>
   </div>
 </div>
+-->
 
 <div class="card">
   <div class="card-body">
