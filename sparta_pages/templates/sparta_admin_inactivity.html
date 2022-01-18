@@ -3,7 +3,7 @@
 {% extends "sparta_base.html" %}
 {% load static %}
 
-{% block title %} Coursebank | SPARTA | Admin | Unenroll {% endblock %}
+{% block title %} Coursebank | SPARTA | Admin | Inactivity {% endblock %}
 
 {% block sparta_body %}
 
@@ -13,7 +13,7 @@
     <input type="submit" value="Export to CSV" />
 </form>
 
-<form action="{% url 'sparta-admin-six-months-unenroll' %}" method="get">
+<form action="{% url 'sparta-admin-inactivity' %}" method="get">
   {% csrf_token %}
   {{ filter_form }}
   <input type="submit" value="Filter" />
@@ -21,7 +21,7 @@
 
 <div class="card">
   <div class="card-body">
-    <h2>Six Months Unaccessed Learners</h2>
+    <h2>Six Months Unfinished Courses</h2>
     <table class="table table-hover table-sm">
       <thead>
         <tr>
@@ -83,27 +83,29 @@
 
 <div class="card">
   <div class="card-body">
-    <h2>Approved Pathway Applications</h2>
+    <h2>Three Months Inactive Learners</h2>
     <table class="table table-hover table-sm">
       <thead>
         <tr>
           <th scope="col">Username</th>
           <th scope="col">Email</th>
           <th scope="col">Full Name</th>
-          <th scope="col">Municipality</th>
           <th scope="col">Pathway</th>
+          <th scope="col">Initial Access Date</th>
           <th scope="col">Status</th>
+          <th scope="col">Action</th>
         </tr>
       </thead>
       <tbody>
-        {% for a in approved_applications %}
+        {% for a in pending_applications %}
         <tr>
           <td>{{ a.profile.user.username }}</td>
           <td>{{ a.profile.user.email }}</td>
           <td>{{ a.profile.user.profile.name }}</td>
-          <td>{{ a.profile.user.extended_sparta_profile.get_municipality_display }}</td>
           <td>{{ a.pathway.name }}</td>
+          <td>{{ a.profile.user.extended_sparta_profile.get_municipality_display }}</td>
           <td>{{ a.get_status_display }}</td>
+          <td><div type="div" class="btn btn-outline-success btn-sm" style="cursor: pointer" data-toggle="modal" data-target="#approveModal">Approve</div></td>
         </tr>
         {% endfor %}
         <tr>
@@ -119,27 +121,31 @@
 
 <div class="card">
   <div class="card-body">
-    <h2>Withdrawn Pathway Applications</h2>
+    <h2>Unenrolled Learners</h2>
     <table class="table table-hover table-sm">
       <thead>
         <tr>
           <th scope="col">Username</th>
           <th scope="col">Email</th>
           <th scope="col">Full Name</th>
-          <th scope="col">Municipality</th>
           <th scope="col">Pathway</th>
+          <th scope="col">Initial Access Date</th>
           <th scope="col">Status</th>
+          <th scope="col">Action</th>
         </tr>
       </thead>
       <tbody>
         {% for a in withdrawn_applications %}
         <tr>
-          <td>{{ a.profile.user.username }}</td>
-          <td>{{ a.profile.user.email }}</td>
-          <td>{{ a.profile.user.profile.name }}</td>
-          <td>{{ a.profile.user.extended_sparta_profile.get_municipality_display }}</td>
-          <td>{{ a.pathway.name }}</td>
-          <td>{{ a.get_status_display }}</td>
+          {% for a in pending_applications %}
+          <tr>
+            <td>{{ a.profile.user.username }}</td>
+            <td>{{ a.profile.user.email }}</td>
+            <td>{{ a.profile.user.profile.name }}</td>
+            <td>{{ a.pathway.name }}</td>
+            <td>{{ a.profile.user.extended_sparta_profile.get_municipality_display }}</td>
+            <td>{{ a.get_status_display }}</td>
+            <td><div type="div" class="btn btn-outline-success btn-sm" style="cursor: pointer" data-toggle="modal" data-target="#approveModal">Approve</div></td>
         </tr>
         {% endfor %}
         <tr>

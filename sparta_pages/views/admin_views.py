@@ -139,11 +139,11 @@ def admin_applications_view(request):
 
 #SIR REPZ, SIR MARK, HETO PO ANG INACTIVE DASHBOARD
 @login_required
-def admin_six_months_unenroll(request):
+def admin_inactivity(request):
     if not request.user.is_staff:
         raise Http404
 
-    template_name = "sparta_admin_six_months_unenroll.html"
+    template_name = "sparta_admin_inactivity.html"
     context = {}
 
     date_from = timezone.now().date()
