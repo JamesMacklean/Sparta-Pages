@@ -679,7 +679,7 @@ class SpartaCourseIDs(models.Model):
         verbose_name="sparta profile"
         )
     created_at = models.DateTimeField(auto_now_add=True)
-    status = models.CharField(max_length=2, choices=COURSE_CHOICES, default=PENDING)
+    status = models.CharField(max_length=2, choices=COURSE_CHOICES, default=SP101)
 
     class Meta:
         verbose_name_plural = "4. Pathway Applications"
