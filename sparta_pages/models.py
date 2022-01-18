@@ -666,7 +666,7 @@ class SpartaCourseIDs(models.Model):
         (SP1010, "SP1010"),
         (FOI, "FOI")
     )
-    
+    '''
     pathway = models.ForeignKey(
         'Pathway',
         on_delete=models.CASCADE,
@@ -706,3 +706,4 @@ class SpartaCourseIDs(models.Model):
         if self.status != self.DENIED:
             self.status = self.DENIED
             self.save()
+    '''

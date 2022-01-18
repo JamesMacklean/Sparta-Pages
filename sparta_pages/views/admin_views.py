@@ -178,7 +178,6 @@ def admin_inactivity(request):
 
     context['form'] = ExportAppsForm()
     context['filter_form'] = FilterForm(request.GET or None)
-    
 
     if request.method == "POST":
         form = ExportAppsForm(request.POST)
@@ -197,7 +196,6 @@ def admin_inactivity(request):
             return export_pathway_applications_to_csv(apps_to_export)
 
     return render(request, template_name, context)
-
 
 def export_pathway_applications_to_csv(apps):
     tnow = timezone.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
