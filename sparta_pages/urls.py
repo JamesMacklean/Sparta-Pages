@@ -44,7 +44,6 @@ urlpatterns = [
     url(r'^sparta/admin-view/analytics/overall$', admin_views.admin_overall_analytics_view, name='sparta-admin-overall-analytics'),
     url(r'^sparta/admin-view/analytics/pathways/(?P<slug>[-\w]+)$', admin_views.admin_pathway_analytics_view, name='sparta-admin-pathway-analytics'),
     url(r'^sparta/admin-view/analytics/courses/(?P<course_id>[-:+\w]+)$', admin_views.admin_course_analytics_view, name='sparta-admin-course-analytics'),
-    #SIR REPZ, SIR MARK, HETO PO ANG INACTIVE DASHBOARD
     url(r'^sparta/admin-view/inactivity$', admin_views.admin_inactivity, name='sparta-admin-inactivity'),
 
     url(r'^sparta/admin/dashboard/main$', admin_views.data_dashboard_main_view, name='sparta-data-dashboard-main'),

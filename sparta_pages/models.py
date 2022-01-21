@@ -201,6 +201,7 @@ class SpartaProfile(models.Model):
     NEARSOL = "NS"
     VXI = "VX"
     OPEN_ACCESS_BPO = "OA"
+    MEDTRONIC_PHIL_INC = "MP"
     NOT_CCAP = ""
     CCAP_SUBCHOICES = (
         (ANZ, "ANZ"),
@@ -234,6 +235,7 @@ class SpartaProfile(models.Model):
         (NEARSOL, "Nearsol"),
         (VXI, "VXI"),
         (OPEN_ACCESS_BPO, "Open Access BPO"),
+        (MEDTRONIC_PHIL_INC, "Medtronic Philippines Inc."),
         (NOT_CCAP, ""),
     )
 
@@ -604,106 +606,3 @@ class SpartaReEnrollment(models.Model):
     """
     enrollment = models.ForeignKey(CourseEnrollment, on_delete=models.CASCADE)
     reenroll_date = models.DateTimeField(auto_now_add=True)
-
-class SpartaCourseIDs(models.Model):
-    """
-    """
-    SP101 = "course-v1:DAP+SP101+2020_Q1"
-    SP102 = "course-v1:DAP+SP102+2020_Q3"
-    SP201 = "course-v1:DAP+SP201+2020_Q1"
-    SP301 = "course-v1:DAP+SP301+2020_Q1"
-    SP302 = "course-v1:DAP+SP302+2020_Q2"
-    SP401 = "course-v1:CirroLytix+CX101+2019_T4"
-    SP501 = "course-v1:DAP+SP501+2020_Q1"
-    SP502 = "course-v1:DAP+SP502+2020_Q2"
-    SP503 = "course-v1:DAP+SP503+2020_Q2"
-    SP601 = "course-v1:DAP+SP601+2020_Q1"
-    SP602 = "course-v1:DAP+SP602+2020_Q2"
-    SP701 = "course-v1:DAP+SP701+2020_Q1"
-    SP702 = "course-v1:DAP+SP702+2020_Q2"
-    SP703 = "course-v1:DAP+SP703+2020_Q2"
-    SP802 = "course-v1:DAP+SP802+2020_Q2"
-    SP901 = "course-v1:DAP+SP901+2020_Q2"
-    SP902 = "course-v1:DAP+SP902+2020_Q3"
-
-    SP1001 = "course-v1:DAP+SP1001+2020_Q3"
-    SP1002 = "course-v1:DAP+SP1002+2020_Q3"
-    SP1003 = "course-v1:DAP+SP1003+2020_Q3"
-    SP1005 = "course-v1:DAP+SP1005+2020_Q3"
-    SP1006 = "course-v1:DAP+SP1006+2020_Q3"
-    SP1007 = "course-v1:DAP+SP1007+2020_Q4"
-    SP1008 = "course-v1:DAP+SP1008+2020_Q4"
-    SP1009 = "course-v1:DAP+SP1009+2020_Q4"
-    SP1010 = "course-v1:DAP+SP1010+2020_Q4"
-    FOI = "course-v1:PCOO-FOIPMO+FOI101+2020_Q3"
-
-    COURSE_CHOICES = (
-        (SP101, "SP101"),
-        (SP102, "SP102"),
-        (SP201, "SP201"),
-        (SP301, "SP301"),
-        (SP302, "SP302"),
-        (SP401, "SP401"),
-        (SP501, "SP501"),
-        (SP502, "SP502"),
-        (SP503, "SP503"),
-        (SP601, "SP601"),
-        (SP602, "SP602"),
-        (SP701, "SP701"),
-        (SP702, "SP702"),
-        (SP703, "SP703"),
-        (SP802, "SP802"),
-        (SP901, "SP901"),
-        (SP902, "SP902"),
-        (SP1001, "SP1001"),
-        (SP1002, "SP1002"),
-        (SP1003, "SP1003"),
-        (SP1005, "SP1005"),
-        (SP1006, "SP1006"),
-        (SP1007, "SP1007"),
-        (SP1008, "SP1008"),
-        (SP1009, "SP1009"),
-        (SP1010, "SP1010"),
-        (FOI, "FOI")
-    )
-    '''
-    pathway = models.ForeignKey(
-        'Pathway',
-        on_delete=models.CASCADE,
-        related_name="applications"
-        )
-    profile = models.ForeignKey(
-        'SpartaProfile',
-        on_delete=models.CASCADE,
-        related_name="applications",
-        verbose_name="sparta profile"
-        )
-    created_at = models.DateTimeField(auto_now_add=True)
-    status = models.CharField(max_length=2, choices=COURSE_CHOICES, default=SP101)
-
-    class Meta:
-        verbose_name_plural = "4. Pathway Applications"
-
-    def __str__(self):
-        return "{}: {}".format(self.profile.user.username, self.pathway.name)
-
-    def withdraw(self):
-        if self.status != self.WITHDRAWN:
-            self.status = self.WITHDRAWN
-            self.save()
-
-    def pend(self):
-        if self.status != self.PENDING:
-            self.status = self.PENDING
-            self.save()
-
-    def approve(self):
-        if self.status != self.APPROVED:
-            self.status = self.APPROVED
-            self.save()
-
-    def deny(self):
-        if self.status != self.DENIED:
-            self.status = self.DENIED
-            self.save()
-    '''

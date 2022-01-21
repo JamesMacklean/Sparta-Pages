@@ -32,7 +32,7 @@ from ..local_settings import LOCAL_TEST
 from ..models import (
     Pathway, SpartaCourse, SpartaProfile, ExtendedSpartaProfile,
     EducationProfile, EmploymentProfile, TrainingProfile,
-    PathwayApplication, APIToken, SpartaCourseIDs
+    PathwayApplication, APIToken
 )
 from ..api.utils import (
     get_sparta_course_id_list,
@@ -137,7 +137,6 @@ def admin_applications_view(request):
 
     return render(request, template_name, context)
 
-#SIR REPZ, SIR MARK, HETO PO ANG INACTIVE DASHBOARD
 @login_required
 def admin_inactivity(request):
     if not request.user.is_staff:
