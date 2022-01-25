@@ -141,6 +141,9 @@ class SpartaProfile(models.Model):
     PCCI = "PI"
     VSU = "VS"
     SMC = "SM"
+    DTICIG = "DT"
+    SPH = "SP"
+    ISCF = "IC"
     NOT_INVOLVED = "NA"
     ORG_CHOICES = (
         (NOT_INVOLVED, "N/A"),
