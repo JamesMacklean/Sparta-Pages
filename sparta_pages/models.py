@@ -169,7 +169,10 @@ class SpartaProfile(models.Model):
         (BPDA, "Bangsamoro Planning and Development Authority (BPDA)"),
         (PCCI, "Philippine Chamber of Commerce and Industry (PCCI)"),
         (VSU, "Visayas State University (VSU)"),
-        (SMC, "St. Martin of Tours Credit and Development Cooperative (St. Martin Coop)")
+        (SMC, "St. Martin of Tours Credit and Development Cooperative (St. Martin Coop)"),
+	(DTICIG,"Department of Trade and Industry-Competitiveness and Innovation Group"),
+	(SPH,"Shopee Philippines"),
+	(ISCF,"Iloilo State College of Fisheries")
     )
 
     ANZ = "AN"
@@ -203,6 +206,7 @@ class SpartaProfile(models.Model):
     NEARSOL = "NS"
     VXI = "VX"
     OPEN_ACCESS_BPO = "OA"
+    MEDTRONIC_PHIL_INC = "MP"
     NOT_CCAP = ""
     CCAP_SUBCHOICES = (
         (ANZ, "ANZ"),
@@ -236,6 +240,7 @@ class SpartaProfile(models.Model):
         (NEARSOL, "Nearsol"),
         (VXI, "VXI"),
         (OPEN_ACCESS_BPO, "Open Access BPO"),
+        (MEDTRONIC_PHIL_INC, "Medtronic Philippines Inc."),
         (NOT_CCAP, ""),
     )
 
