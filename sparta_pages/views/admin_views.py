@@ -30,7 +30,7 @@ from ..forms import (
 )
 from ..local_settings import LOCAL_TEST
 from ..models import (
-    Pathway, SpartaCourse, SpartaCourseCodes, SpartaProfile, ExtendedSpartaProfile,
+    Pathway, SpartaCourse, SpartaProfile, ExtendedSpartaProfile,
     EducationProfile, EmploymentProfile, TrainingProfile,
     PathwayApplication, APIToken
 )
