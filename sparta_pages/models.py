@@ -607,7 +607,7 @@ class SpartaReEnrollment(models.Model):
     enrollment = models.ForeignKey(CourseEnrollment, on_delete=models.CASCADE)
     reenroll_date = models.DateTimeField(auto_now_add=True)
 
-class SpartaCourseCodes(models.Model):
+'''class SpartaCourseCodes(models.Model):
     """
     """
     SP101 = "course-v1:DAP+SP101+2020_Q1"
@@ -683,3 +683,5 @@ class SpartaCourseCodes(models.Model):
         if self.courseCode != self.SP501:
             self.courseCode = self.SP501
             self.save()
+
+'''
