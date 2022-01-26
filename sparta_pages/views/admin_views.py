@@ -162,7 +162,7 @@ def admin_inactivity(request):
     if None not in [date_to_year, date_to_month, date_to_day]:
         date_to_str = "{}-{}-{}".format(date_to_year, date_to_month, date_to_day)
         date_to = datetime.strptime(date_to_str, "%Y-%m-%d").date()
-
+'''
     inactiveLearners = SpartaCourseCodes.objects.all().filter(created_at__gte=date_from).filter(created_at__lte=date_to)
 
     inactive_sp101 = inactiveLearners.filter(courseCode='course-v1:DAP+SP101+2020_Q1')
@@ -194,10 +194,11 @@ def admin_inactivity(request):
                 learners_to_generate = inactive_sp401
             elif course == "course-v1:DAP+SP501+2020_Q1":
                 learners_to_generate = inactive_sp501
-                
+
             return export_pathway_applications_to_csv(learners_to_generate)
 
     return render(request, template_name, context)
+'''
 
 def export_pathway_applications_to_csv(apps):
     tnow = timezone.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
