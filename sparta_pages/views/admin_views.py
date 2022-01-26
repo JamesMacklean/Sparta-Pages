@@ -162,6 +162,40 @@ def admin_inactivity(request):
     if None not in [date_to_year, date_to_month, date_to_day]:
         date_to_str = "{}-{}-{}".format(date_to_year, date_to_month, date_to_day)
         date_to = datetime.strptime(date_to_str, "%Y-%m-%d").date()
+
+    applications = PathwayApplication.objects.all().filter(created_at__gte=date_from).filter(created_at__lte=date_to)
+
+    pending_applications = applications.filter(status='PE')
+    withdrawn_applications = applications.filter(status='WE')
+    denied_applications = applications.filter(status='DE')
+    approved_applications = applications.filter(status='AP')
+
+    context['pending_applications'] = pending_applications
+    context['approved_applications'] = approved_applications
+    context['withdrawn_applications'] = withdrawn_applications
+    context['denied_applications'] = denied_applications
+
+    context['form'] = ExportAppsForm()
+    context['filter_form'] = FilterForm(request.GET or None)
+
+    if request.method == "POST":
+        form = ExportAppsForm(request.POST)
+        if form.is_valid():
+            selection = form.cleaned_data['selection']
+            if selection == "pending":
+                apps_to_export = pending_applications
+            elif selection == "approved":
+                apps_to_export = approved_applications
+            elif selection == "withdrawn":
+                apps_to_export = withdrawn_applications
+            elif selection == "denied":
+                apps_to_export = denied_applications
+            else:
+                apps_to_export = applications
+            return export_pathway_applications_to_csv(apps_to_export)
+
+    return render(request, template_name, context)
+    
 '''
     inactiveLearners = SpartaCourseCodes.objects.all().filter(created_at__gte=date_from).filter(created_at__lte=date_to)
 
