@@ -30,7 +30,7 @@ from ..forms import (
 )
 from ..local_settings import LOCAL_TEST
 from ..models import (
-    Pathway, SpartaCourse, SpartaCourseCodes, SpartaProfile, ExtendedSpartaProfile,
+    Pathway, SpartaCourse, SpartaProfile, ExtendedSpartaProfile,
     EducationProfile, EmploymentProfile, TrainingProfile,
     PathwayApplication, APIToken
 )
@@ -163,39 +163,36 @@ def admin_inactivity(request):
         date_to_str = "{}-{}-{}".format(date_to_year, date_to_month, date_to_day)
         date_to = datetime.strptime(date_to_str, "%Y-%m-%d").date()
 
-        inactiveLearners = SpartaCourseCodes.objects.all().filter(created_at__gte=date_from).filter(created_at__lte=date_to)
+    applications = PathwayApplication.objects.all().filter(created_at__gte=date_from).filter(created_at__lte=date_to)
 
-    inactive_sp101 = inactiveLearners.filter(courseCode='course-v1:DAP+SP101+2020_Q1')
-    inactive_sp201 = inactiveLearners.filter(courseCode='course-v1:DAP+SP201+2020_Q1')
-    inactive_sp301 = inactiveLearners.filter(courseCode='course-v1:DAP+SP301+2020_Q1')
-    inactive_sp401 = inactiveLearners.filter(courseCode='course-v1:CirroLytix+CX101+2019_T4')
-    inactive_sp501 = inactiveLearners.filter(courseCode='course-v1:DAP+SP501+2020_Q1')
+    pending_applications = applications.filter(status='PE')
+    withdrawn_applications = applications.filter(status='WE')
+    denied_applications = applications.filter(status='DE')
+    approved_applications = applications.filter(status='AP')
 
-    context['inactive_sp101'] = inactive_sp101
-    context['inactive_sp201'] = inactive_sp201
-    context['inactive_sp301'] = inactive_sp301
-    context['inactive_sp401'] = inactive_sp401
-    context['inactive_sp501'] = inactive_sp501
+    context['pending_applications'] = pending_applications
+    context['approved_applications'] = approved_applications
+    context['withdrawn_applications'] = withdrawn_applications
+    context['denied_applications'] = denied_applications
 
-    context['form'] = GenerateCourseForm()
+    context['form'] = ExportAppsForm()
     context['filter_form'] = FilterForm(request.GET or None)
 
     if request.method == "POST":
-        form = GenerateCourseForm(request.POST)
+        form = ExportAppsForm(request.POST)
         if form.is_valid():
-            course = form.cleaned_data['course']
-            if course == "course-v1:DAP+SP101+2020_Q1":
-                learners_to_generate = inactive_sp101
-            elif course == "course-v1:DAP+SP201+2020_Q1":
-                learners_to_generate = inactive_sp201
-            elif course == "course-v1:DAP+SP301+2020_Q1":
-                learners_to_generate = inactive_sp301
-            elif course == "course-v1:CirroLytix+CX101+2019_T4":
-                learners_to_generate = inactive_sp401
-            elif course == "course-v1:DAP+SP501+2020_Q1":
-                learners_to_generate = inactive_sp501
-
-            return export_pathway_applications_to_csv(learners_to_generate)
+            selection = form.cleaned_data['selection']
+            if selection == "pending":
+                apps_to_export = pending_applications
+            elif selection == "approved":
+                apps_to_export = approved_applications
+            elif selection == "withdrawn":
+                apps_to_export = withdrawn_applications
+            elif selection == "denied":
+                apps_to_export = denied_applications
+            else:
+                apps_to_export = applications
+            return export_pathway_applications_to_csv(apps_to_export)
 
     return render(request, template_name, context)
 
@@ -744,7 +741,8 @@ def admin_course_analytics_view(request, course_id):
 
 @login_required
 def data_dashboard_main_view(request):
-    """"""
+    """
+    """
     if not request.user.is_staff:
         raise Http404
 
@@ -755,7 +753,8 @@ def data_dashboard_main_view(request):
 
 @login_required
 def data_dashboard_profiles_view(request):
-    """"""
+    """
+    """
     if not request.user.is_staff:
         raise Http404
 
@@ -815,7 +814,8 @@ def data_dashboard_profiles_view(request):
 
 @login_required
 def data_dashboard_education_credentials_view(request):
-    """"""
+    """
+    """
     if not request.user.is_staff:
         raise Http404
 
@@ -858,7 +858,8 @@ def data_dashboard_education_credentials_view(request):
 
 @login_required
 def data_dashboard_employment_credentials_view(request):
-    """"""
+    """
+    """
     if not request.user.is_staff:
         raise Http404
 
@@ -905,7 +906,8 @@ def data_dashboard_employment_credentials_view(request):
 
 @login_required
 def data_dashboard_training_credentials_view(request):
-    """"""
+    """
+    """
     if not request.user.is_staff:
         raise Http404
 
@@ -948,7 +950,8 @@ def data_dashboard_training_credentials_view(request):
 
 @login_required
 def data_dashboard_courses_view(request):
-    """"""
+    """
+    """
     if not request.user.is_staff:
         raise Http404
     template_name = "sparta_data_dashboard_courses.html"
@@ -960,7 +963,8 @@ def data_dashboard_courses_view(request):
 
 @login_required
 def data_dashboard_graphs_view(request):
-    """"""
+    """
+    """
     if not request.user.is_staff:
         raise Http404
 
@@ -972,7 +976,8 @@ def data_dashboard_graphs_view(request):
 
 @login_required
 def data_dashboard_graphs_by_class_view(request):
-    """"""
+    """
+    """
     if not request.user.is_staff:
         raise Http404
 
@@ -989,7 +994,8 @@ def data_dashboard_graphs_by_class_view(request):
 
 @login_required
 def data_dashboard_graphs_by_age_view(request):
-    """"""
+    """
+    """
     if not request.user.is_staff:
         raise Http404
 
@@ -1005,7 +1011,8 @@ def data_dashboard_graphs_by_age_view(request):
 
 @login_required
 def data_dashboard_graphs_by_gender_view(request):
-    """"""
+    """
+    """
     if not request.user.is_staff:
         raise Http404
 
@@ -1021,7 +1028,8 @@ def data_dashboard_graphs_by_gender_view(request):
 
 @login_required
 def data_dashboard_graphs_by_location_view(request):
-    """"""
+    """
+    """
     if not request.user.is_staff:
         raise Http404
 
@@ -1038,7 +1046,8 @@ def data_dashboard_graphs_by_location_view(request):
 
 @login_required
 def data_dashboard_graphs_courses_view(request):
-    """"""
+    """
+    """
     if not request.user.is_staff:
         raise Http404
 
@@ -1055,7 +1064,8 @@ def data_dashboard_graphs_courses_view(request):
 
 @login_required
 def data_dashboard_graphs_by_date_view(request):
-    """"""
+    """
+    """
     if not request.user.is_staff:
         raise Http404
 
