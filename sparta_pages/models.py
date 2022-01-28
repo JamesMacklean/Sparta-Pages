@@ -642,12 +642,12 @@ class SpartaCourseCodes(models.Model):
     pathway = models.ForeignKey(
         'Pathway',
         on_delete=models.CASCADE,
-        related_name="course Codes"
+        related_name="course_codes"
         )
     profile = models.ForeignKey(
         'SpartaProfile',
         on_delete=models.CASCADE,
-        related_name="course Codes",
+        related_name="course_codes",
         verbose_name="sparta profile"
         )
     created_at = models.DateTimeField(auto_now_add=True)
