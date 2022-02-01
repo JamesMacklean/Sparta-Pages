@@ -163,7 +163,7 @@ def admin_inactivity(request):
         date_to_str = "{}-{}-{}".format(date_to_year, date_to_month, date_to_day)
         date_to = datetime.strptime(date_to_str, "%Y-%m-%d").date()
 
-        inactiveLearners = SpartaCourseCodes.objects.all().filter(created_at__gte=date_from).filter(created_at__lte=date_to)
+    inactiveLearners = SpartaCourseCodes.objects.all().filter(created_at__gte=date_from).filter(created_at__lte=date_to)
 
     inactive_sp101 = inactiveLearners.filter(courseCode='course-v1:DAP+SP101+2020_Q1')
     inactive_sp201 = inactiveLearners.filter(courseCode='course-v1:DAP+SP201+2020_Q1')
