@@ -1,4 +1,5 @@
 import csv
+from socket import SO_BROADCAST
 import unicodecsv
 
 from datetime import datetime, timedelta, date
@@ -145,25 +146,7 @@ def admin_inactivity(request):
     template_name = "sparta_admin_inactivity.html"
     context = {}
 
-    date_from = timezone.now().date()
-    date_to = timezone.now() + timedelta(days=1)
-
-    date_from_year = request.GET.get('date_from_year', None)
-    date_from_month = request.GET.get('date_from_month', None)
-    date_from_day = request.GET.get('date_from_day', None)
-
-    if None not in [date_from_year, date_from_month, date_from_day]:
-        date_from_str = "{}-{}-{}".format(date_from_year, date_from_month, date_from_day)
-        date_from = datetime.strptime(date_from_str, "%Y-%m-%d").date()
-
-    date_to_year = request.GET.get('date_to_year', None)
-    date_to_month = request.GET.get('date_to_month', None)
-    date_to_day = request.GET.get('date_to_day', None)
-    if None not in [date_to_year, date_to_month, date_to_day]:
-        date_to_str = "{}-{}-{}".format(date_to_year, date_to_month, date_to_day)
-        date_to = datetime.strptime(date_to_str, "%Y-%m-%d").date()
-
-    inactiveLearners = SpartaCourseCodes.objects.all().filter(created_at__gte=date_from).filter(created_at__lte=date_to)
+    inactiveLearners = SpartaCourseCodes.objects.all()
 
     inactive_sp101 = inactiveLearners.filter(courseCode='course-v1:DAP+SP101+2020_Q1')
     inactive_sp201 = inactiveLearners.filter(courseCode='course-v1:DAP+SP201+2020_Q1')
@@ -178,7 +161,6 @@ def admin_inactivity(request):
     context['inactive_sp501'] = inactive_sp501
 
     context['form'] = GenerateCourseForm()
-    context['filter_form'] = FilterForm(request.GET or None)
 
     if request.method == "POST":
         form = GenerateCourseForm(request.POST)
