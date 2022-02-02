@@ -22,7 +22,7 @@ from sparta_pages.models import (
 )
 
 class Command(BaseCommand):
-    help = 'Exports list of users exceeding six months of access to a course.'
+    help = 'Exports list of users exceeding six months of not accessing a course.'
 
     def add_arguments(self, parser):
         parser.add_argument(

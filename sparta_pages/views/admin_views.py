@@ -31,7 +31,7 @@ from ..forms import (
 )
 from ..local_settings import LOCAL_TEST
 from ..models import (
-    Pathway, SpartaCourse, SpartaProfile, ExtendedSpartaProfile,
+    Pathway, SpartaCourse, SpartaCourseCodes, SpartaProfile, ExtendedSpartaProfile,
     EducationProfile, EmploymentProfile, TrainingProfile,
     PathwayApplication, APIToken
 )
@@ -145,7 +145,7 @@ def admin_inactivity(request):
 
     template_name = "sparta_admin_inactivity.html"
     context = {}
-'''
+
     inactiveLearners = SpartaCourseCodes.objects.all()
 
     inactive_sp101 = inactiveLearners.filter(courseCode='course-v1:DAP+SP101+2020_Q1')
@@ -177,10 +177,44 @@ def admin_inactivity(request):
             elif course == "course-v1:DAP+SP501+2020_Q1":
                 learners_to_generate = inactive_sp501
 
-            return export_pathway_applications_to_csv(learners_to_generate)
+            return export_six_months_to_csv(learners_to_generate)
 
     return render(request, template_name, context)
-'''
+
+def export_six_months_to_csv(apps):
+    tnow = timezone.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
+    filename = "sparta-six-months-access-{}.csv".format(tnow)
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename={}'.format(filename)
+
+    writer = unicodecsv.writer(response, encoding='utf-8')
+    writer.writerow(['Name', 'Email', 'Username', 'Pathway', 'Initial Access Date'])
+    for a in apps:
+        username = a.profile.user.username
+        email = a.profile.user.email
+
+        try:
+            full_name = a.profile.user.profile.name
+        except:
+            full_name = username
+
+        try:
+            extended_profile = a.profile.user.extended_sparta_profile
+            municipality = extended_profile.get_municipality_display()
+            affiliation = extended_profile.get_affiliation_display()
+            attainment = extended_profile.get_attainment_display()
+        except:
+            municipality = None
+            affiliation = None
+            attainment = None
+
+        pathway = a.pathway.name
+        status = a.status
+        created_at = str(a.created_at)
+        writer.writerow([username, email, full_name, municipality, affiliation, attainment, pathway, status, created_at])
+
+    return response
+
 def export_pathway_applications_to_csv(apps):
     tnow = timezone.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
     filename = "sparta-pathway-applications-{}.csv".format(tnow)
