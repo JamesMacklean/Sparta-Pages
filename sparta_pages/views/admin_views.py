@@ -31,7 +31,7 @@ from ..forms import (
 )
 from ..local_settings import LOCAL_TEST
 from ..models import (
-    Pathway, SpartaCourse, SpartaCourseCodes, SpartaProfile, ExtendedSpartaProfile,
+    Pathway, SpartaCourse, SpartaProfile, ExtendedSpartaProfile,
     EducationProfile, EmploymentProfile, TrainingProfile,
     PathwayApplication, APIToken
 )
@@ -145,7 +145,7 @@ def admin_inactivity(request):
 
     template_name = "sparta_admin_inactivity.html"
     context = {}
-
+'''
     inactiveLearners = SpartaCourseCodes.objects.all()
 
     inactive_sp101 = inactiveLearners.filter(courseCode='course-v1:DAP+SP101+2020_Q1')
@@ -180,7 +180,7 @@ def admin_inactivity(request):
             return export_pathway_applications_to_csv(learners_to_generate)
 
     return render(request, template_name, context)
-
+'''
 def export_pathway_applications_to_csv(apps):
     tnow = timezone.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
     filename = "sparta-pathway-applications-{}.csv".format(tnow)
