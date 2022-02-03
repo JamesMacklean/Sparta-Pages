@@ -226,8 +226,7 @@ def export_six_months_to_csv(course_key):
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename={}'.format(filename)
 
-    #writer = unicodecsv.writer(response, encoding='utf-8')
-    writer = unicodecsv.writer(response, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL,  encoding='utf-8')
+    writer = unicodecsv.writer(response, encoding='utf-8')
     writer.writerow([
         'Full Name',
         'Email',
