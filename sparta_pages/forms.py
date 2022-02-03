@@ -256,12 +256,15 @@ class GenerateCourseForm(forms.Form):
     """
     SP101 = "course-v1:DAP+SP101+2020_Q1"
     SP201 = "course-v1:DAP+SP201+2020_Q1"
+    SP203 = "course-v1:DAP+SP203+2020_Q1"
     SP301 = "course-v1:DAP+SP301+2020_Q1"
     SP401 = "course-v1:CirroLytix+CX101+2019_T4"
     SP501 = "course-v1:DAP+SP501+2020_Q1"
+    
     CHOICES = (
         (SP101, "SP101"),
         (SP201, "SP201"),
+        (SP203, "SP203"),
         (SP301, "SP301"),
         (SP401, "SP401"),
         (SP501, "SP501")

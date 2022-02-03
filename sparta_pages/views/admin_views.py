@@ -140,6 +140,7 @@ def admin_applications_view(request):
                 apps_to_export = denied_applications
             else:
                 apps_to_export = applications
+                
             return export_pathway_applications_to_csv(apps_to_export)
 
     return render(request, template_name, context)
@@ -208,6 +209,7 @@ def admin_inactivity(request):
                             "access date": check_date.strftime("%Y-%m-%d"),
                         })
 
+
             filename = "sparta-six-months-access-{}.csv".format(tnow)
             response = HttpResponse(content_type='text/csv')
             response['Content-Disposition'] = 'attachment; filename={}'.format(filename)
@@ -230,9 +232,9 @@ def admin_inactivity(request):
                         u['pathway'],
                         u['access date'],
                     ]) 
-            
-            return response
 
+
+            return response
 
         #return export_six_months_to_csv(course_key)
 
@@ -247,7 +249,8 @@ def export_six_months_to_csv(apps):
     response['Content-Disposition'] = 'attachment; filename={}'.format(filename)
 
     writer = unicodecsv.writer(response, encoding='utf-8')
-    writer.writerow(['Name', 'Email', 'Username', 'Pathway', 'Initial Access Date'])
+    writer.writerow(['Username', 'Email', 'Full Name', 'Pathway', 'Initial Access Date'])
+
     for a in apps:
         username = a.profile.user.username
         email = a.profile.user.email
