@@ -31,7 +31,7 @@ from ..forms import (
 )
 from ..local_settings import LOCAL_TEST
 from ..models import (
-    Pathway, SpartaCourse, SpartaCourseCodes, SpartaProfile, ExtendedSpartaProfile,
+    Pathway, SpartaCourse, SpartaProfile, ExtendedSpartaProfile,
     EducationProfile, EmploymentProfile, TrainingProfile,
     PathwayApplication, APIToken
 )
@@ -146,38 +146,7 @@ def admin_inactivity(request):
     template_name = "sparta_admin_inactivity.html"
     context = {}
 
-    inactiveLearners = SpartaCourseCodes.objects.all()
-
-    inactive_sp101 = inactiveLearners.filter(courseCode='course-v1:DAP+SP101+2020_Q1')
-    inactive_sp201 = inactiveLearners.filter(courseCode='course-v1:DAP+SP201+2020_Q1')
-    inactive_sp301 = inactiveLearners.filter(courseCode='course-v1:DAP+SP301+2020_Q1')
-    inactive_sp401 = inactiveLearners.filter(courseCode='course-v1:CirroLytix+CX101+2019_T4')
-    inactive_sp501 = inactiveLearners.filter(courseCode='course-v1:DAP+SP501+2020_Q1')
-
-    context['inactive_sp101'] = inactive_sp101
-    context['inactive_sp201'] = inactive_sp201
-    context['inactive_sp301'] = inactive_sp301
-    context['inactive_sp401'] = inactive_sp401
-    context['inactive_sp501'] = inactive_sp501
-
     context['form'] = GenerateCourseForm()
-
-    if request.method == "POST":
-        form = GenerateCourseForm(request.POST)
-        if form.is_valid():
-            course = form.cleaned_data['course']
-            if course == "course-v1:DAP+SP101+2020_Q1":
-                learners_to_generate = inactive_sp101
-            elif course == "course-v1:DAP+SP201+2020_Q1":
-                learners_to_generate = inactive_sp201
-            elif course == "course-v1:DAP+SP301+2020_Q1":
-                learners_to_generate = inactive_sp301
-            elif course == "course-v1:CirroLytix+CX101+2019_T4":
-                learners_to_generate = inactive_sp401
-            elif course == "course-v1:DAP+SP501+2020_Q1":
-                learners_to_generate = inactive_sp501
-
-            return export_six_months_to_csv(learners_to_generate)
 
     return render(request, template_name, context)
 
