@@ -169,29 +169,27 @@ def admin_inactivity(request):
 ###########
     
 def export_six_months_to_csv(course_key):
-
+    
     tnow = datetime.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
+    users = User.objects.filter(courseenrollment__course__id=course_key).select_related('sparta_profile').prefetch_related('sparta_profile__applications')
     sec = 183*24*60*60
 
     tnow = timezone.now()
     date_filter = tnow - timedelta(seconds=sec)
-
-    enrollments = CourseEnrollment.objects.filter(
-                course_id=course_key,
-                is_active=True,
-            ).select_related('user','user__sparta_profile').prefetch_related('spartareenrollment_set','user__sparta_profile__applications')
-    enrollments_counter = 0
-    ###########################
-
+    
     user_list = []
-    for e in enrollments:
-        enrollments_counter += 1
-        cert = get_certificate_for_user(e.user.username, course_key)
+    for u in users:
+        cert = get_certificate_for_user(u.username, course_key)
         if cert is not None:
             continue
 
+        enrollments = CourseEnrollment.objects.filter(
+            course_id=course_key,
+            is_active=True,
+            created__lt=date_filter,
+        )
         try:
-            profile = e.user.sparta_profile
+            profile = u.sparta_profile
 
         except SpartaProfile.DoesNotExist:
             continue
@@ -201,26 +199,25 @@ def export_six_months_to_csv(course_key):
         if applications.exists():
             application = applications.order_by('-created_at').last()
             pathway = application.pathway.name
-        else:
-            pathway = ""
 
-        reenrollments = e.spartareenrollment_set.all()
-        if reenrollments.exists():
-            lastest_reenrollment = reenrollments.order_by('-reenroll_date').first()
-            check_date = lastest_reenrollment.reenroll_date
-        else:
-            check_date = e.created
+        for e in enrollments:
+            reenrollments = SpartaReEnrollment.objects.filter(enrollment=e)
+            if reenrollments.exists():
+                lastest_reenrollment = reenrollments.order_by('-reenroll_date').first()
+                check_date = lastest_reenrollment.reenroll_date
+            else:
+                check_date = e.created
 
-        tdelta = tnow - check_date
+            tdelta = tnow - check_date
 
-        if tdelta.seconds >= sec and cert is None:
-            user_list.append({
-                "name": e.user.name,
-                "email": e.user.email,
-                "username": e.user.username,
-                "pathway": pathway,
-                "access date": check_date.strftime("%Y-%m-%d"),
-            })
+            if tdelta.seconds >= sec and cert is None:
+                user_list.append({
+                    "name": e.user.name,
+                    "email": e.user.email,
+                    "username": e.user.username,
+                    "pathway": pathway,
+                    "access date": check_date.strftime("%Y-%m-%d"),
+                    })
 
     filename = "sparta-six-months-access-{}.csv".format(tnow)
     response = HttpResponse(content_type='text/csv')
