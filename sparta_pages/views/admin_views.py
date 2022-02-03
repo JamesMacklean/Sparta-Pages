@@ -178,6 +178,7 @@ def admin_inactivity(request):
                     is_active=True,
                     created__lt=date_filter,
                 )
+                
                 try:
                     profile = u.sparta_profile
 
