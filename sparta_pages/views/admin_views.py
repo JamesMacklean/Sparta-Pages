@@ -225,27 +225,27 @@ def export_six_months_to_csv(course_key):
             })
 
     filename = "sparta-six-months-access-{}.csv".format(tnow)
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename={}'.format(filename)
     
-    #response = HttpResponse(content_type='text/csv')
-    #response['Content-Disposition'] = 'attachment; filename={}'.format(filename)
-    with open(filename, mode='wb') as csv_file:
-        writer = unicodecsv.writer(csv_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL,  encoding='utf-8')
-        writer.writerow([
-            'Name',
-            'Email',
-            'Username',
-            'Pathway',
-            'Initial Access Date'
-            ])
+    writer = unicodecsv.writer(response, encoding='utf-8')
+    writer.writerow([
+        'Full Name',
+        'Email',
+        'Username',
+        'Pathway',
+        'Initial Access Date'
+        ])
 
-        for u in user_list:
-            writer.writerow([
-                u['name'],
-                u['email'],
-                u['username'],
-                u['pathway'],
-                u['access date'],
-            ]) 
+    for u in user_list:
+        writer.writerow([
+            u['name'],
+            u['email'],
+            u['username'],
+            u['pathway'],
+            u['access date'],
+        ]) 
+
 
     email = EmailMessage(
         'Coursebank - Six Month Access List',
@@ -256,7 +256,7 @@ def export_six_months_to_csv(course_key):
     email.attach_file(filename)
     email.send
 
-    return csv_file
+    return response
 
 def export_pathway_applications_to_csv(apps):
     tnow = timezone.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
