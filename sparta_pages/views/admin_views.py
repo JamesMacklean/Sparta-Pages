@@ -209,29 +209,27 @@ def admin_inactivity(request):
                             "access date": check_date.strftime("%Y-%m-%d"),
                         })
 
-
             filename = "sparta-six-months-access-{}.csv".format(tnow)
             response = HttpResponse(content_type='text/csv')
             response['Content-Disposition'] = 'attachment; filename={}'.format(filename)
 
-            with open(filename, mode='wb') as csv_file:
-                writer = unicodecsv.writer(csv_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL,  encoding='utf-8')
-                writer.writerow([
-                    'Username',
-                    'Email',
-                    'Full Name',
-                    'Pathway',
-                    'Initial Access Date'
-                    ])
+            writer = unicodecsv.writer(response, encoding='utf-8')
+            writer.writerow([
+                'Username',
+                'Email',
+                'Full Name',
+                'Pathway',
+                'Initial Access Date'
+                ])
 
-                for u in user_list:
-                    writer.writerow([
-                        u['username'],
-                        u['email'],
-                        u['name'],
-                        u['pathway'],
-                        u['access date'],
-                    ]) 
+            for u in user_list:
+                writer.writerow([
+                    u['username'],
+                    u['email'],
+                    u['name'],
+                    u['pathway'],
+                    u['access date'],
+                ]) 
 
 
             return response
