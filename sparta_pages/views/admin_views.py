@@ -28,6 +28,7 @@ from student.models import CourseEnrollment
 from django.contrib.auth.models import User
 from lms.djangoapps.certificates.api import get_certificate_for_user
 from sparta_pages.models import SpartaReEnrollment
+from django.core.management.base import BaseCommand, CommandError
 ############################
 
 from ..analytics import OverallAnalytics, PathwayAnalytics, CourseAnalytics
@@ -159,40 +160,41 @@ def admin_inactivity(request):
         form = GenerateCourseForm(request.POST)
         if form.is_valid():
 
-            course_key = form.cleaned_data['course']
-            tnow = datetime.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
-            users = User.objects.filter(courseenrollment__course__id=course_key).select_related('sparta_profile').prefetch_related('sparta_profile__applications')
             sec = 183*24*60*60
 
-            tnow = timezone.now()
-            date_filter = tnow - timedelta(seconds=sec)
-            
-            user_list = []
-            for u in users:
-                cert = get_certificate_for_user(u.username, course_key)
-                if cert is not None:
-                    continue
-
+            try:
+                tnow = datetime.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
+                course_key = form.cleaned_data['course']
                 enrollments = CourseEnrollment.objects.filter(
                     course_id=course_key,
                     is_active=True,
-                    created__lt=date_filter,
-                )
-                
-                try:
-                    profile = u.sparta_profile
+                ).select_related('user','user__sparta_profile').prefetch_related('spartareenrollment_set','user__sparta_profile__applications')
 
-                except SpartaProfile.DoesNotExist:
-                    continue
+                tnow = timezone.now()
+                date_filter = tnow - timedelta(seconds=sec)
+                enrollments_counter = 0
 
-                applications = profile.applications.filter(status="AP")
-
-                if applications.exists():
-                    application = applications.order_by('-created_at').last()
-                    pathway = application.pathway.name
-
+                user_list = []
                 for e in enrollments:
-                    reenrollments = SpartaReEnrollment.objects.filter(enrollment=e)
+                    enrollments_counter += 1
+                    cert = get_certificate_for_user(e.user.username, course_key)
+                    if cert is not None:
+                        continue
+                    
+                    try:
+                        profile = e.sparta_profile
+                    except SpartaProfile.DoesNotExist:
+                        continue
+
+                    applications = profile.applications.filter(status="AP")
+
+                    if applications.exists():
+                        application = applications.order_by('-created_at').last()
+                        pathway = application.pathway.name
+                    else:
+                        pathway = ""
+
+                    reenrollments = e.spartareenrollment_set.all()
                     if reenrollments.exists():
                         lastest_reenrollment = reenrollments.order_by('-reenroll_date').first()
                         check_date = lastest_reenrollment.reenroll_date
@@ -210,33 +212,32 @@ def admin_inactivity(request):
                             "access date": check_date.strftime("%Y-%m-%d"),
                         })
 
-            filename = "sparta-six-months-access-{}.csv".format(tnow)
-            response = HttpResponse(content_type='text/csv')
-            response['Content-Disposition'] = 'attachment; filename={}'.format(filename)
+                filename = "sparta-six-months-access-{}.csv".format(tnow)
+                response = HttpResponse(content_type='text/csv')
+                response['Content-Disposition'] = 'attachment; filename={}'.format(filename)
 
-            writer = unicodecsv.writer(response, encoding='utf-8')
-            writer.writerow([
-                'Full Name',
-                'Email',
-                'Username',
-                'Pathway',
-                'Initial Access Date'
-                ])
-
-            for u in user_list:
+                writer = unicodecsv.writer(response, encoding='utf-8')
                 writer.writerow([
-                    u['name'],
-                    u['email'],
-                    u['username'],
-                    u['pathway'],
-                    u['access date'],
-                ]) 
+                    'Full Name',
+                    'Email',
+                    'Username',
+                    'Pathway',
+                    'Initial Access Date'
+                    ])
 
+                for u in user_list:
+                    writer.writerow([
+                        u['name'],
+                        u['email'],
+                        u['username'],
+                        u['pathway'],
+                        u['access date'],
+                    ])
 
-            return response
+            except Exception as e:
+                raise CommandError("Error in exporting six month access users: {}".format(str(e)))
 
-        #return export_six_months_to_csv(course_key)
-
+            
     return render(request, template_name, context)
 
 ###########
