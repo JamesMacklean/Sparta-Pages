@@ -24,6 +24,12 @@ from openedx.core.djangoapps.content.course_overviews.models import CourseOvervi
 from opaque_keys.edx.keys import CourseKey
 from student.models import CourseEnrollment
 
+##### For Unenrollment #####
+from django.contrib.auth.models import User
+from lms.djangoapps.certificates.api import get_certificate_for_user
+from sparta_pages.models import SpartaReEnrollment
+############################
+
 from ..analytics import OverallAnalytics, PathwayAnalytics, CourseAnalytics
 from ..forms import (
     ExportAppsForm, FilterForm, ExportProfilesForm,
@@ -145,11 +151,95 @@ def admin_inactivity(request):
 
     template_name = "sparta_admin_inactivity.html"
     context = {}
-
+    
     context['form'] = GenerateCourseForm()
+
+    if request.method == "POST":
+        form = GenerateCourseForm(request.POST)
+        if form.is_valid():
+
+            course_key = form.cleaned_data['course']
+            tnow = datetime.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
+            users = User.objects.filter(courseenrollment__course__id=course_key).select_related('sparta_profile').prefetch_related('sparta_profile__applications')
+            sec = 183*24*60*60
+
+            tnow = timezone.now()
+            date_filter = tnow - timedelta(seconds=sec)
+            
+            user_list = []
+            for u in users:
+                cert = get_certificate_for_user(u.username, course_key)
+                if cert is not None:
+                    continue
+
+                enrollments = CourseEnrollment.objects.filter(
+                    course_id=course_key,
+                    is_active=True,
+                    created__lt=date_filter,
+                )
+                try:
+                    profile = u.sparta_profile
+
+                except SpartaProfile.DoesNotExist:
+                    continue
+
+                applications = profile.applications.filter(status="AP")
+
+                if applications.exists():
+                    application = applications.order_by('-created_at').last()
+                    pathway = application.pathway.name
+
+                for e in enrollments:
+                    reenrollments = SpartaReEnrollment.objects.filter(enrollment=e)
+                    if reenrollments.exists():
+                        lastest_reenrollment = reenrollments.order_by('-reenroll_date').first()
+                        check_date = lastest_reenrollment.reenroll_date
+                    else:
+                        check_date = e.created
+
+                    tdelta = tnow - check_date
+
+                    if tdelta.seconds >= sec and cert is None:
+                        user_list.append({
+                            "username": e.user.username,
+                            "email": e.user.email,
+                            "name": e.user.name,
+                            "pathway": pathway,
+                            "access date": check_date.strftime("%Y-%m-%d"),
+                        })
+
+            filename = "sparta-six-months-access-{}.csv".format(tnow)
+            response = HttpResponse(content_type='text/csv')
+            response['Content-Disposition'] = 'attachment; filename={}'.format(filename)
+
+            with open(filename, mode='wb') as csv_file:
+                writer = unicodecsv.writer(csv_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL,  encoding='utf-8')
+                writer.writerow([
+                    'Username',
+                    'Email',
+                    'Full Name',
+                    'Pathway',
+                    'Initial Access Date'
+                    ])
+
+                for u in user_list:
+                    writer.writerow([
+                        u['username'],
+                        u['email'],
+                        u['name'],
+                        u['pathway'],
+                        u['access date'],
+                    ]) 
+            
+            return response
+
+
+        #return export_six_months_to_csv(course_key)
 
     return render(request, template_name, context)
 
+###########
+    
 def export_six_months_to_csv(apps):
     tnow = timezone.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
     filename = "sparta-six-months-access-{}.csv".format(tnow)
