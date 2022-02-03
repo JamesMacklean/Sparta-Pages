@@ -29,7 +29,6 @@ from student.models import CourseEnrollment
 from django.contrib.auth.models import User
 from lms.djangoapps.certificates.api import get_certificate_for_user
 from sparta_pages.models import SpartaReEnrollment
-from django.core.mail import send_mail, EmailMessage
 ############################
 
 from ..analytics import OverallAnalytics, PathwayAnalytics, CourseAnalytics
@@ -76,7 +75,6 @@ class DeveloperProfileView(TemplateView):
 
         return render(request, self.template_name, context)
 
-
 @login_required
 def admin_main_view(request):
     if not request.user.is_staff:
@@ -86,7 +84,6 @@ def admin_main_view(request):
     context = {}
 
     return render(request, template_name, context)
-
 
 @login_required
 def admin_applications_view(request):
@@ -167,33 +164,29 @@ def admin_inactivity(request):
             return export_six_months_to_csv(course_key)
 
     return render(request, template_name, context)
-
-###########
-    
+ 
 def export_six_months_to_csv(course_key):
-
+    
     tnow = datetime.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
+    users = User.objects.filter(courseenrollment__course__id=course_key).select_related('sparta_profile').prefetch_related('sparta_profile__applications')
     sec = 183*24*60*60
 
     tnow = timezone.now()
-
-    enrollments = CourseEnrollment.objects.filter(
-                course_id=course_key,
-                is_active=True,
-            ).select_related('user','user__sparta_profile').prefetch_related('spartareenrollment_set','user__sparta_profile__applications')
-    enrollments_counter = 0
-
-    ###########################
-
+    date_filter = tnow - timedelta(seconds=sec)
+    
     user_list = []
-    for e in enrollments:
-        enrollments_counter += 1
-        cert = get_certificate_for_user(e.user.username, course_key)
+    for u in users:
+        cert = get_certificate_for_user(u.username, course_key)
         if cert is not None:
             continue
 
+        enrollments = CourseEnrollment.objects.filter(
+            course_id=course_key,
+            is_active=True,
+            created__lt=date_filter,
+        )
         try:
-            profile = e.user.sparta_profile
+            profile = u.sparta_profile
 
         except SpartaProfile.DoesNotExist:
             continue
@@ -203,31 +196,30 @@ def export_six_months_to_csv(course_key):
         if applications.exists():
             application = applications.order_by('-created_at').last()
             pathway = application.pathway.name
-        else:
-            pathway = ""
 
-        reenrollments = e.spartareenrollment_set.all()
-        if reenrollments.exists():
-            lastest_reenrollment = reenrollments.order_by('-reenroll_date').first()
-            check_date = lastest_reenrollment.reenroll_date
-        else:
-            check_date = e.created
+        for e in enrollments:
+            reenrollments = SpartaReEnrollment.objects.filter(enrollment=e)
+            if reenrollments.exists():
+                lastest_reenrollment = reenrollments.order_by('-reenroll_date').first()
+                check_date = lastest_reenrollment.reenroll_date
+            else:
+                check_date = e.created
 
-        tdelta = tnow - check_date
+            tdelta = tnow - check_date
 
-        if tdelta.seconds >= sec and cert is None:
-            user_list.append({
-                "name": e.user.name,
-                "email": e.user.email,
-                "username": e.user.username,
-                "pathway": pathway,
-                "access date": check_date.strftime("%Y-%m-%d"),
-            })
+            if tdelta.seconds >= sec and cert is None:
+                user_list.append({
+                    "name": e.user.name,
+                    "email": e.user.email,
+                    "username": e.user.username,
+                    "pathway": pathway,
+                    "access date": check_date.strftime("%Y-%m-%d"),
+                    })
 
     filename = "sparta-six-months-access-{}.csv".format(tnow)
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename={}'.format(filename)
-    
+
     writer = unicodecsv.writer(response, encoding='utf-8')
     writer.writerow([
         'Full Name',
@@ -246,17 +238,8 @@ def export_six_months_to_csv(course_key):
             u['access date'],
         ]) 
 
-
-    email = EmailMessage(
-        'Coursebank - Six Month Access List',
-        'Attached file of Six Month Access List for {} (as of {})'.format(course_key,tnow),
-        'no-reply-sparta-user-logins@coursebank.ph',
-        ["jamesmacklean27@gmail.com",],
-    )
-    email.attach_file(filename)
-    email.send
-
     return response
+
 
 def export_pathway_applications_to_csv(apps):
     tnow = timezone.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
@@ -292,7 +275,6 @@ def export_pathway_applications_to_csv(apps):
 
     return response
 
-
 @require_POST
 def admin_approve_application_view(request, id):
     if not request.user.is_staff:
@@ -306,7 +288,6 @@ def admin_approve_application_view(request, id):
         app.approve()
 
     return redirect('sparta-admin-applications')
-
 
 def export_profiles_to_csv(profiles):
     tnow = timezone.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
@@ -329,7 +310,6 @@ def export_profiles_to_csv(profiles):
         writer.writerow([username, email, full_name, address, approved_pathways_str[:-3], is_active_str])
 
     return response
-
 
 @login_required
 def admin_profiles_view(request):
@@ -386,7 +366,6 @@ def admin_profiles_view(request):
 
     return render(request, template_name, context)
 
-
 @login_required
 def admin_credentials_view(request, id):
     if not request.user.is_staff:
@@ -408,7 +387,6 @@ def admin_credentials_view(request, id):
     context['employment_profiles'] = profile.employment_profiles.all()
     context['training_profiles'] = profile.training_profiles.all()
     return render(request, template_name, context)
-
 
 @login_required
 def admin_overall_analytics_view(request):
@@ -527,7 +505,6 @@ def admin_overall_analytics_view(request):
 
     return render(request, template_name, context)
 
-
 @login_required
 def admin_pathway_analytics_view(request, slug):
     if not request.user.is_staff:
@@ -615,7 +592,6 @@ def admin_pathway_analytics_view(request, slug):
 
     return render(request, template_name, context)
 
-
 def export_pathway_analytics_to_csv(pathway, data):
     tnow = timezone.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
     filename = "sparta-pathway-{}-analytics-{}.csv".format(str(pathway.slug), tnow)
@@ -688,7 +664,6 @@ def export_pathway_learners_data_to_csv(pathway, learners):
             learner.user.profile.city
             ])
     return response
-
 
 @login_required
 def admin_course_analytics_view(request, course_id):
