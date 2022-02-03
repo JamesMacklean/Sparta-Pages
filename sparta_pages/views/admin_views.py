@@ -202,9 +202,9 @@ def admin_inactivity(request):
 
                     if tdelta.seconds >= sec and cert is None:
                         user_list.append({
-                            "username": e.user.username,
-                            "email": e.user.email,
                             "name": e.user.name,
+                            "email": e.user.email,
+                            "username": e.user.username,
                             "pathway": pathway,
                             "access date": check_date.strftime("%Y-%m-%d"),
                         })
@@ -215,18 +215,18 @@ def admin_inactivity(request):
 
             writer = unicodecsv.writer(response, encoding='utf-8')
             writer.writerow([
-                'Username',
-                'Email',
                 'Full Name',
+                'Email',
+                'Username',
                 'Pathway',
                 'Initial Access Date'
                 ])
 
             for u in user_list:
                 writer.writerow([
-                    u['username'],
-                    u['email'],
                     u['name'],
+                    u['email'],
+                    u['username'],
                     u['pathway'],
                     u['access date'],
                 ]) 
