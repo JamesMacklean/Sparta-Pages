@@ -28,7 +28,6 @@ from student.models import CourseEnrollment
 from django.contrib.auth.models import User
 from lms.djangoapps.certificates.api import get_certificate_for_user
 from sparta_pages.models import SpartaReEnrollment
-from django.core.management.base import BaseCommand, CommandError
 ############################
 
 from ..analytics import OverallAnalytics, PathwayAnalytics, CourseAnalytics
@@ -233,12 +232,10 @@ def admin_inactivity(request):
                     u['username'],
                     u['pathway'],
                     u['access date'],
-                ]) 
+                    ]) 
 
 
-            return response
-
-
+        return response
     return render(request, template_name, context)
 
 ###########
@@ -250,7 +247,13 @@ def export_six_months_to_csv(apps):
     response['Content-Disposition'] = 'attachment; filename={}'.format(filename)
 
     writer = unicodecsv.writer(response, encoding='utf-8')
-    writer.writerow(['Username', 'Email', 'Full Name', 'Pathway', 'Initial Access Date'])
+    writer.writerow([
+        'Full Name',
+        'Email',
+        'Username', 
+        'Pathway', 
+        'Initial Access Date'
+        ])
 
     for a in apps:
         username = a.profile.user.username
