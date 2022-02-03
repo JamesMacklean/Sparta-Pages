@@ -158,90 +158,68 @@ def admin_inactivity(request):
     if request.method == "POST":
         form = GenerateCourseForm(request.POST)
         if form.is_valid():
-
+            
             course_key = form.cleaned_data['course']
-            tnow = datetime.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
-            users = User.objects.filter(courseenrollment__course__id=course_key).select_related('sparta_profile').prefetch_related('sparta_profile__applications')
-            sec = 183*24*60*60
+            
+            return export_six_months_to_csv(course_key)
 
-            tnow = timezone.now()
-            date_filter = tnow - timedelta(seconds=sec)
-            enrollments_counter = 0
-
-            user_list = []
-            for u in users:
-                cert = get_certificate_for_user(u.username, course_key)
-                if cert is not None:
-                    continue
-
-                enrollments = CourseEnrollment.objects.filter(
-                    course_id=course_key,
-                    is_active=True,
-                    created__lt=date_filter,
-                )
-
-                try:
-                    profile = u.sparta_profile
-
-                except SpartaProfile.DoesNotExist:
-                    continue
-
-                applications = profile.applications.filter(status="AP")
-
-                if applications.exists():
-                    application = applications.order_by('-created_at').last()
-                    pathway = application.pathway.name
-
-                for e in enrollments:
-                    enrollments_counter += 1
-                    reenrollments = SpartaReEnrollment.objects.filter(enrollment=e)
-                    if reenrollments.exists():
-                        lastest_reenrollment = reenrollments.order_by('-reenroll_date').first()
-                        check_date = lastest_reenrollment.reenroll_date
-                    else:
-                        check_date = e.created
-
-                    tdelta = tnow - check_date
-
-                    if tdelta.seconds >= sec and cert is None:
-                        user_list.append({
-                            "name": e.user.name,
-                            "email": e.user.email,
-                            "username": e.user.username,
-                            "pathway": pathway,
-                            "access date": check_date.strftime("%Y-%m-%d"),
-                        })
-
-            filename = "sparta-six-months-access-{}.csv".format(tnow)
-            response = HttpResponse(content_type='text/csv')
-            response['Content-Disposition'] = 'attachment; filename={}'.format(filename)
-
-            writer = unicodecsv.writer(response, encoding='utf-8')
-            writer.writerow([
-                'Full Name',
-                'Email',
-                'Username',
-                'Pathway',
-                'Initial Access Date'
-                ])
-
-            for u in user_list:
-                writer.writerow([
-                    u['name'],
-                    u['email'],
-                    u['username'],
-                    u['pathway'],
-                    u['access date'],
-                    ]) 
-
-
-        return response
     return render(request, template_name, context)
 
 ###########
     
-def export_six_months_to_csv(apps):
-    tnow = timezone.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
+def export_six_months_to_csv(course_key):
+
+    tnow = datetime.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
+    users = User.objects.filter(courseenrollment__course__id=course_key).select_related('sparta_profile').prefetch_related('sparta_profile__applications')
+    sec = 183*24*60*60
+
+    tnow = timezone.now()
+    date_filter = tnow - timedelta(seconds=sec)
+    enrollments_counter = 0
+    
+    user_list = []
+    for u in users:
+        cert = get_certificate_for_user(u.username, course_key)
+        if cert is not None:
+            continue
+
+        enrollments = CourseEnrollment.objects.filter(
+            course_id=course_key,
+            is_active=True,
+            created__lt=date_filter,
+        )
+        try:
+            profile = u.sparta_profile
+
+        except SpartaProfile.DoesNotExist:
+            continue
+
+        applications = profile.applications.filter(status="AP")
+
+        if applications.exists():
+            application = applications.order_by('-created_at').last()
+            pathway = application.pathway.name
+
+        for e in enrollments:
+            enrollments_counter += 1
+            reenrollments = SpartaReEnrollment.objects.filter(enrollment=e)
+            if reenrollments.exists():
+                lastest_reenrollment = reenrollments.order_by('-reenroll_date').first()
+                check_date = lastest_reenrollment.reenroll_date
+            else:
+                check_date = e.created
+
+            tdelta = tnow - check_date
+
+            if tdelta.seconds >= sec and cert is None:
+                user_list.append({
+                    "name": e.user.name,
+                    "email": e.user.email,
+                    "username": e.user.username,
+                    "pathway": pathway,
+                    "access date": check_date.strftime("%Y-%m-%d"),
+                    })
+
     filename = "sparta-six-months-access-{}.csv".format(tnow)
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename={}'.format(filename)
@@ -250,34 +228,19 @@ def export_six_months_to_csv(apps):
     writer.writerow([
         'Full Name',
         'Email',
-        'Username', 
-        'Pathway', 
+        'Username',
+        'Pathway',
         'Initial Access Date'
         ])
 
-    for a in apps:
-        username = a.profile.user.username
-        email = a.profile.user.email
-
-        try:
-            full_name = a.profile.user.profile.name
-        except:
-            full_name = username
-
-        try:
-            extended_profile = a.profile.user.extended_sparta_profile
-            municipality = extended_profile.get_municipality_display()
-            affiliation = extended_profile.get_affiliation_display()
-            attainment = extended_profile.get_attainment_display()
-        except:
-            municipality = None
-            affiliation = None
-            attainment = None
-
-        pathway = a.pathway.name
-        status = a.status
-        created_at = str(a.created_at)
-        writer.writerow([username, email, full_name, municipality, affiliation, attainment, pathway, status, created_at])
+    for u in user_list:
+        writer.writerow([
+            u['name'],
+            u['email'],
+            u['username'],
+            u['pathway'],
+            u['access date'],
+        ]) 
 
     return response
 
