@@ -114,7 +114,12 @@ def pathway(request, slug):
         except CourseOverview.DoesNotExist:
             context['graduate_course'] = None
     elif slug == "data-engineer":
-        context['graduate_course'] = None
+        try:
+            cap_course_key = CourseKey.from_string("course-v1:DAP+SPCapstone004+2022_Q1")
+            cap_course_overview = CourseOverview.get_from_id(cap_course_key)
+            context['graduate_course'] = {'courseoverview': cap_course_overview}
+        except CourseOverview.DoesNotExist:
+            context['graduate_course'] = None
     elif slug == "data-scientist":
         context['graduate_course'] = None
     elif slug == "analytics-manager":
