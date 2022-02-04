@@ -210,8 +210,8 @@ def admin_inactivity(request):
         form = GenerateCourseForm(request.POST)
         if form.is_valid():
             
-            #course_id = form.cleaned_data['course']
-            #course_key = CourseKey.from_string(course_id)
+            course_ida = form.cleaned_data['course']
+            course_key = CourseKey.from_string(course_ida)
             
             return export_six_months_to_csv(course_key)
 
