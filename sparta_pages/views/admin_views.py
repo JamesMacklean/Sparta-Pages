@@ -187,7 +187,7 @@ def export_six_months_to_csv(course_key):
             continue
 
         try:
-            profile = e.sparta_profile
+            profile = e.user.sparta_profile
 
         except SpartaProfile.DoesNotExist:
             continue
