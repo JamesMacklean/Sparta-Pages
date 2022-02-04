@@ -203,7 +203,7 @@ def admin_inactivity(request):
                 })
 
     context['user_list'] = user_list
-    context['course)key'] = course_key
+    context['course_key'] = course_key
     context['form'] = GenerateCourseForm()
 
     if request.method == "POST":
