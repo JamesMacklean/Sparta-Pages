@@ -35,8 +35,8 @@
           <td>{{ a.pathway }}</td>
           <td>{{ a.check_date}}</td>
           <td>Test</td>
-           <!-- <td>{{ a.get_status_display }}</td> -->
-          <td><div type="div" class="btn btn-outline-success btn-sm" style="cursor: pointer" data-toggle="modal" data-target="#approveModal">Approve</div></td>
+          <!-- <td>{{ a.get_status_display }}</td> -->
+          <!-- <td><div type="div" class="btn btn-outline-success btn-sm" style="cursor: pointer" data-toggle="modal" data-target="#approveModal">Approve</div></td> -->
           <!-- Modal Block -->
           <!--
           <div class="modal fade" id="approveModal" tabindex="-1" role="dialog" aria-labelledby="approveModalLabel" aria-hidden="true">
@@ -51,7 +51,7 @@
                 <div class="modal-body">
                   Are you sure you want to approve this application by {{ a.user.username }} for {{ a.pathway }})?
                 </div>
-                
+        
                 <div class="modal-footer">
                   <form action="{% url 'sparta-admin-approve' id=a.id %}" method="POST">
                     {% csrf_token %}
@@ -59,10 +59,11 @@
                     <input class="btn btn-success" id="submit" type="submit" value="Approve" />
                   </form>
                 </div>
-                -->
+                
               </div>
             </div>
           </div>
+          -->
         </tr>
         {% endfor %}
         <tr>
@@ -133,6 +134,7 @@
         </tr>
       </thead>
       <tbody>
+        <!--
         {% for a in pending_applications %}
           <tr>
             <td>{{ a.profile.user.username }}</td>
@@ -150,6 +152,7 @@
           <td>-</td>
           <td>-</td>
         </tr>
+        -->
       </tbody>
     </table>
   </div>
