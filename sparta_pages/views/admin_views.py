@@ -156,7 +156,7 @@ def admin_inactivity(request):
     sec = 183*24*60*60
     tnow = timezone.now()
     user_list = []
-     
+
     course_key = "course-v1:DAP+SP202+2020_Q1"
 
     enrollments = CourseEnrollment.objects.filter(
@@ -203,6 +203,7 @@ def admin_inactivity(request):
                 })
 
     context['user_list'] = user_list
+    context['course)key'] = course_key
     context['form'] = GenerateCourseForm()
 
     if request.method == "POST":
