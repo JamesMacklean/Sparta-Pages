@@ -168,18 +168,21 @@ def admin_inactivity(request):
 def export_six_months_to_csv(course_key):
     
     tnow = datetime.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
-    #users = User.objects.filter(courseenrollment__course__id=course_key).select_related('sparta_profile').prefetch_related('sparta_profile__applications')
+    filename = "sparta-six-months-access-{}.csv".format(tnow)
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename={}'.format(filename)
+    
+    sec = 183*24*60*60
+    tnow = timezone.now()
+
     enrollments = CourseEnrollment.objects.filter(
                 course_id=course_key,
                 is_active=True,
-            ).select_related('user','user__sparta_profile').prefetch_related('spartareenrollment_set','user__sparta_profile__applications')
-    sec = 183*24*60*60
-
-    tnow = timezone.now()
+            ).select_related('user','user__sparta_profile').prefetch_related('spartareenrollment_set','user__sparta_profile__applications')    
     
     user_list = []
     for e in enrollments:
-        cert = get_certificate_for_user(e.username, course_key)
+        cert = get_certificate_for_user(e.user.username, course_key)
         if cert is not None:
             continue
 
@@ -194,9 +197,11 @@ def export_six_months_to_csv(course_key):
         if applications.exists():
             application = applications.order_by('-created_at').last()
             pathway = application.pathway.name
+        else:
+            pathway = ""
 
-        reenrollments = SpartaReEnrollment.objects.filter(enrollment=e)
-        #reenrollments = e.spartareenrollment_set.all()
+        #reenrollments = SpartaReEnrollment.objects.filter(enrollment=e)
+        reenrollments = e.spartareenrollment_set.all()
         if reenrollments.exists():
             lastest_reenrollment = reenrollments.order_by('-reenroll_date').first()
             check_date = lastest_reenrollment.reenroll_date
@@ -214,11 +219,7 @@ def export_six_months_to_csv(course_key):
                     "access date": check_date.strftime("%Y-%m-%d"),
                 })
 
-    filename = "sparta-six-months-access-{}.csv".format(tnow)
-    response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename={}'.format(filename)
-
-    writer = unicodecsv.writer(response, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL, encoding='utf-8')
+    writer = unicodecsv.writer(response, encoding='utf-8')
     writer.writerow([
         'Full Name',
         'Email',
@@ -237,7 +238,6 @@ def export_six_months_to_csv(course_key):
         ]) 
 
     return response
-
 
 def export_pathway_applications_to_csv(apps):
     tnow = timezone.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
@@ -269,7 +269,17 @@ def export_pathway_applications_to_csv(apps):
         pathway = a.pathway.name
         status = a.status
         created_at = str(a.created_at)
-        writer.writerow([username, email, full_name, municipality, affiliation, attainment, pathway, status, created_at])
+        writer.writerow([
+            username,
+            email, 
+            full_name, 
+            municipality, 
+            affiliation, 
+            attainment, 
+            pathway, 
+            status, 
+            created_at
+            ])
 
     return response
 
