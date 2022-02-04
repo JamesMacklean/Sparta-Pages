@@ -157,7 +157,7 @@ def admin_inactivity(request):
     tnow = timezone.now()
     user_list = []
 
-    course_key = "course-v1:DAP+SP201+2020_Q1"
+    course_key = "SP202"
 
     enrollments = CourseEnrollment.objects.filter(
                 course_id=course_key,
@@ -183,8 +183,8 @@ def admin_inactivity(request):
         else:
             pathway = ""
 
-        #reenrollments = SpartaReEnrollment.objects.filter(enrollment=e)
-        reenrollments = e.spartareenrollment_set.all()
+        reenrollments = SpartaReEnrollment.objects.filter(enrollment=e)
+        #reenrollments = e.spartareenrollment_set.all()
         if reenrollments.exists():
             lastest_reenrollment = reenrollments.order_by('-reenroll_date').first()
             check_date = lastest_reenrollment.reenroll_date
