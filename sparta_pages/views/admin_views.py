@@ -151,19 +151,19 @@ def admin_inactivity(request):
 
     template_name = "sparta_admin_inactivity.html"
     context = {}
-    
-    tnow = datetime.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
-    sec = 183*24*60*60
-    tnow = timezone.now()
-    user_list = []
 
     course_key = "course-v1:DAP+SP202+2020_Q1"
+    tnow = datetime.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
+
+    sec = 183*24*60*60
+    tnow = timezone.now()
 
     enrollments = CourseEnrollment.objects.filter(
                 course_id=course_key,
                 is_active=True,
-            ).select_related('user','user__sparta_profile').prefetch_related('spartareenrollment_set','user__sparta_profile__applications')
+            ).select_related('user','user__sparta_profile').prefetch_related('spartareenrollment_set','user__sparta_profile__applications')    
     
+    user_list = []
     for e in enrollments:
         cert = get_certificate_for_user(e.user.username, course_key)
         if cert is not None:
@@ -185,7 +185,6 @@ def admin_inactivity(request):
 
         #reenrollments = SpartaReEnrollment.objects.filter(enrollment=e)
         reenrollments = e.spartareenrollment_set.all()
-
         if reenrollments.exists():
             lastest_reenrollment = reenrollments.order_by('-reenroll_date').first()
             check_date = lastest_reenrollment.reenroll_date
@@ -203,10 +202,9 @@ def admin_inactivity(request):
                     "access date": check_date.strftime("%Y-%m-%d"),
                 })
 
-    context['user_list'] = user_list
-    context['course_key'] = course_key
     context['form'] = GenerateCourseForm()
-
+    context['user_list'] = user_list
+    
     if request.method == "POST":
         form = GenerateCourseForm(request.POST)
         if form.is_valid():
@@ -220,9 +218,75 @@ def admin_inactivity(request):
  
 def export_six_months_to_csv(course_key):
     
-    #filename = "sparta-six-months-access-{}.csv".format(tnow)
+    tnow = datetime.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
+    filename = "sparta-six-months-access-{}.csv".format(tnow)
     response = HttpResponse(content_type='text/csv')
-    #response['Content-Disposition'] = 'attachment; filename={}'.format(filename)     
+    response['Content-Disposition'] = 'attachment; filename={}'.format(filename)
+    
+    sec = 183*24*60*60
+    tnow = timezone.now()
+
+    enrollments = CourseEnrollment.objects.filter(
+                course_id=course_key,
+                is_active=True,
+            ).select_related('user','user__sparta_profile').prefetch_related('spartareenrollment_set','user__sparta_profile__applications')    
+    
+    user_list = []
+    for e in enrollments:
+        cert = get_certificate_for_user(e.user.username, course_key)
+        if cert is not None:
+            continue
+
+        try:
+            profile = e.user.sparta_profile
+
+        except SpartaProfile.DoesNotExist:
+            continue
+
+        applications = profile.applications.filter(status="AP")
+
+        if applications.exists():
+            application = applications.order_by('-created_at').last()
+            pathway = application.pathway.name
+        else:
+            pathway = ""
+
+        #reenrollments = SpartaReEnrollment.objects.filter(enrollment=e)
+        reenrollments = e.spartareenrollment_set.all()
+        if reenrollments.exists():
+            lastest_reenrollment = reenrollments.order_by('-reenroll_date').first()
+            check_date = lastest_reenrollment.reenroll_date
+        else:
+            check_date = e.created
+
+        tdelta = tnow - check_date
+
+        if tdelta.total_seconds() >= sec and cert is None:
+                user_list.append({
+                    "name": e.user.profile.name,
+                    "email": e.user.email,
+                    "username": e.user.username,
+                    "pathway": pathway,
+                    "access date": check_date.strftime("%Y-%m-%d"),
+                })
+
+    writer = unicodecsv.writer(response, encoding='utf-8')
+    writer.writerow([
+        'Full Name',
+        'Email',
+        'Username',
+        'Pathway',
+        'Initial Access Date'
+        ])
+
+    for u in user_list:
+        writer.writerow([
+            u['name'],
+            u['email'],
+            u['username'],
+            u['pathway'],
+            u['access date'],
+        ]) 
 
     return response
 
