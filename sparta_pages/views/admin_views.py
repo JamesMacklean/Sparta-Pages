@@ -157,7 +157,7 @@ def admin_inactivity(request):
     tnow = timezone.now()
     user_list = []
 
-    course_key = "course-v1:DAP+SP202+2020_Q1"
+    course_key = "course-v1:DAP+SP201+2020_Q1"
 
     enrollments = CourseEnrollment.objects.filter(
                 course_id=course_key,
@@ -210,8 +210,8 @@ def admin_inactivity(request):
         form = GenerateCourseForm(request.POST)
         if form.is_valid():
             
-            course_ida = form.cleaned_data['course']
-            course_key = CourseKey.from_string(course_ida)
+            #course_id = form.cleaned_data['course']
+            #course_key = CourseKey.from_string(course_id)
             
             return export_six_months_to_csv(course_key)
 
