@@ -152,35 +152,18 @@ def admin_inactivity(request):
     template_name = "sparta_admin_inactivity.html"
     context = {}
     
-    context['form'] = GenerateCourseForm()
-
-    if request.method == "POST":
-        form = GenerateCourseForm(request.POST)
-        if form.is_valid():
-            
-            course_id = form.cleaned_data['course']
-            course_key = CourseKey.from_string(course_id)
-            
-            return export_six_months_to_csv(course_key)
-
-    return render(request, template_name, context)
- 
-def export_six_months_to_csv(course_key):
-    
     tnow = datetime.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
-    filename = "sparta-six-months-access-{}.csv".format(tnow)
-    response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename={}'.format(filename)
-    
     sec = 183*24*60*60
     tnow = timezone.now()
+    user_list = []
+     
+    course_key = "course-v1:DAP+SP202+2020_Q1"
 
     enrollments = CourseEnrollment.objects.filter(
                 course_id=course_key,
                 is_active=True,
-            ).select_related('user','user__sparta_profile').prefetch_related('spartareenrollment_set','user__sparta_profile__applications')    
+            ).select_related('user','user__sparta_profile').prefetch_related('spartareenrollment_set','user__sparta_profile__applications')
     
-    user_list = []
     for e in enrollments:
         cert = get_certificate_for_user(e.user.username, course_key)
         if cert is not None:
@@ -219,23 +202,25 @@ def export_six_months_to_csv(course_key):
                     "access date": check_date.strftime("%Y-%m-%d"),
                 })
 
-    writer = unicodecsv.writer(response, encoding='utf-8')
-    writer.writerow([
-        'Full Name',
-        'Email',
-        'Username',
-        'Pathway',
-        'Initial Access Date'
-        ])
+    context['user_list'] = user_list
+    context['form'] = GenerateCourseForm()
 
-    for u in user_list:
-        writer.writerow([
-            u['name'],
-            u['email'],
-            u['username'],
-            u['pathway'],
-            u['access date'],
-        ]) 
+    if request.method == "POST":
+        form = GenerateCourseForm(request.POST)
+        if form.is_valid():
+            
+            #course_id = form.cleaned_data['course']
+            #course_key = CourseKey.from_string(course_id)
+            
+            return export_six_months_to_csv(course_key)
+
+    return render(request, template_name, context)
+ 
+def export_six_months_to_csv(course_key):
+    
+    #filename = "sparta-six-months-access-{}.csv".format(tnow)
+    response = HttpResponse(content_type='text/csv')
+    #response['Content-Disposition'] = 'attachment; filename={}'.format(filename)     
 
     return response
 

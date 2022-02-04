@@ -27,14 +27,15 @@
         </tr>
       </thead>
       <tbody>
-        {% for a in pending_applications %}
+        {% for a in user_list %}
         <tr>
-          <td>{{ a.profile.user.username }}</td>
-          <td>{{ a.profile.user.email }}</td>
-          <td>{{ a.profile.user.profile.name }}</td>
-          <td>{{ a.pathway.name }}</td>
-          <td>{{ a.profile.user.extended_sparta_profile.get_municipality_display }}</td>
-          <td>{{ a.get_status_display }}</td>
+          <td>{{ a.user.name }}</td>
+          <td>{{ a.user.email }}</td>
+          <td>{{ a.user.username }}</td>
+          <td>{{ a.pathway }}</td>
+          <td>{{ a.check_date.strftime("%Y-%m-%d") }}</td>
+          <td>Test</td>
+           <!-- <td>{{ a.get_status_display }}</td> -->
           <td><div type="div" class="btn btn-outline-success btn-sm" style="cursor: pointer" data-toggle="modal" data-target="#approveModal">Approve</div></td>
           <!-- Modal Block -->
           <div class="modal fade" id="approveModal" tabindex="-1" role="dialog" aria-labelledby="approveModalLabel" aria-hidden="true">
