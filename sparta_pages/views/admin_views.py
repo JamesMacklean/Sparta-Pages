@@ -196,7 +196,7 @@ def admin_inactivity(request):
 
         if tdelta.total_seconds() >= sec and cert is None:
                 user_list.append({
-                    "name": e.user.name,
+                    "name": e.user.profile.name,
                     "email": e.user.email,
                     "username": e.user.username,
                     "pathway": pathway,
