@@ -157,7 +157,7 @@ def admin_inactivity(request):
     tnow = timezone.now()
     user_list = []
 
-    course_key = "SP202"
+    course_key = "course-v1:DAP+SP202+2020_Q1"
 
     enrollments = CourseEnrollment.objects.filter(
                 course_id=course_key,
