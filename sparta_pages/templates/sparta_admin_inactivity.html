@@ -38,6 +38,7 @@
            <!-- <td>{{ a.get_status_display }}</td> -->
           <td><div type="div" class="btn btn-outline-success btn-sm" style="cursor: pointer" data-toggle="modal" data-target="#approveModal">Approve</div></td>
           <!-- Modal Block -->
+          <!--
           <div class="modal fade" id="approveModal" tabindex="-1" role="dialog" aria-labelledby="approveModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
               <div class="modal-content">
@@ -50,7 +51,7 @@
                 <div class="modal-body">
                   Are you sure you want to approve this application by {{ a.user.username }} for {{ a.pathway }})?
                 </div>
-                <!--
+                
                 <div class="modal-footer">
                   <form action="{% url 'sparta-admin-approve' id=a.id %}" method="POST">
                     {% csrf_token %}
