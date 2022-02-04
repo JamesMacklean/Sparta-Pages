@@ -183,8 +183,9 @@ def admin_inactivity(request):
         else:
             pathway = ""
 
-        reenrollments = SpartaReEnrollment.objects.filter(enrollment=e)
-        #reenrollments = e.spartareenrollment_set.all()
+        #reenrollments = SpartaReEnrollment.objects.filter(enrollment=e)
+        reenrollments = e.spartareenrollment_set.all()
+
         if reenrollments.exists():
             lastest_reenrollment = reenrollments.order_by('-reenroll_date').first()
             check_date = lastest_reenrollment.reenroll_date
@@ -193,7 +194,7 @@ def admin_inactivity(request):
 
         tdelta = tnow - check_date
 
-        if tdelta.seconds >= sec and cert is None:
+        if tdelta.total_seconds() >= sec and cert is None:
                 user_list.append({
                     "name": e.user.name,
                     "email": e.user.email,
