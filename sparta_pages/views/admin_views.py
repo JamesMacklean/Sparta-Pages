@@ -164,6 +164,7 @@ def admin_inactivity(request):
             ).select_related('user','user__sparta_profile').prefetch_related('spartareenrollment_set','user__sparta_profile__applications')    
     
     user_list = []
+    
     for e in enrollments:
         cert = get_certificate_for_user(e.user.username, course_key)
         if cert is not None:
@@ -204,7 +205,7 @@ def admin_inactivity(request):
 
     context['form'] = GenerateCourseForm()
     context['user_list'] = user_list
-    
+
     if request.method == "POST":
         form = GenerateCourseForm(request.POST)
         if form.is_valid():
@@ -261,7 +262,7 @@ def export_six_months_to_csv(course_key):
 
         tdelta = tnow - check_date
 
-        if tdelta.total_seconds() >= sec and cert is None:
+        if tdelta.seconds >= sec and cert is None:
                 user_list.append({
                     "name": e.user.profile.name,
                     "email": e.user.email,
