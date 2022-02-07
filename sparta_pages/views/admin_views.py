@@ -152,15 +152,67 @@ def admin_inactivity(request):
     template_name = "sparta_admin_inactivity.html"
     context = {}
 
+    course_key = "course-v1:DAP+SP202+2020_Q1"
+    tnow = datetime.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
+
+    sec = 183*24*60*60
+    tnow = timezone.now()
+
+    enrollments = CourseEnrollment.objects.filter(
+        course_id=course_key,
+        is_active=True,
+    ).select_related('user','user__sparta_profile').prefetch_related('spartareenrollment_set','user__sparta_profile__applications')
+
+    user_list = []
+    
+    for e in enrollments:
+        cert = get_certificate_for_user(e.user.username, course_key)
+        if cert is not None:
+            continue
+
+        try:
+            profile = e.user.sparta_profile
+
+        except SpartaProfile.DoesNotExist:
+            continue
+
+        applications = PathwayApplication.objects.all().filter(status='AP')
+        #applications = profile.applications.filter(status="AP")
+
+        if applications.exists():
+            application = applications.order_by('-created_at').last()
+            pathway = application.pathway.name
+        else:
+            pathway = ""
+
+        reenrollments = SpartaReEnrollment.objects.filter(enrollment=e)
+        #reenrollments = e.spartareenrollment_set.all()
+        if reenrollments.exists():
+            lastest_reenrollment = reenrollments.order_by('-reenroll_date').first()
+            check_date = lastest_reenrollment.reenroll_date
+        else:
+            check_date = e.created
+
+        tdelta = tnow - check_date
+
+        if tdelta.total_seconds() >= sec and cert is None:
+                user_list.append({
+                    "name": e.user.profile.name,
+                    "email": e.user.email,
+                    "username": e.user.username,
+                    "pathway": pathway,
+                    "access date": check_date.strftime("%Y-%m-%d"),
+                })
 
     context['form'] = GenerateCourseForm()
+    context['user_list'] = user_list
 
     if request.method == "POST":
         form = GenerateCourseForm(request.POST)
         if form.is_valid():
             
-            course_id = form.cleaned_data['course']
-            course_key = CourseKey.from_string(course_id)
+            #course_id = form.cleaned_data['course']
+            #course_key = CourseKey.from_string(course_id)
             
             return export_six_months_to_csv(course_key)
 
