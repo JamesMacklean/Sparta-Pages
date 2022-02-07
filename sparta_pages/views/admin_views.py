@@ -205,7 +205,7 @@ def admin_inactivity(request):
                 })
 
     context['form'] = GenerateCourseForm()
-    context['user_list'] = user_list
+    #context['user_list'] = user_list
 
     if request.method == "POST":
         form = GenerateCourseForm(request.POST)
@@ -245,7 +245,8 @@ def export_six_months_to_csv(course_key):
         except SpartaProfile.DoesNotExist:
             continue
 
-        applications = profile.applications.filter(status="AP")
+        applications = PathwayApplication.objects.all().filter(status='AP')
+        #applications = profile.applications.filter(status="AP")
 
         if applications.exists():
             application = applications.order_by('-created_at').last()
@@ -253,8 +254,8 @@ def export_six_months_to_csv(course_key):
         else:
             pathway = ""
 
-        #reenrollments = SpartaReEnrollment.objects.filter(enrollment=e)
-        reenrollments = e.spartareenrollment_set.all()
+        reenrollments = SpartaReEnrollment.objects.filter(enrollment=e)
+        #reenrollments = e.spartareenrollment_set.all()
         if reenrollments.exists():
             lastest_reenrollment = reenrollments.order_by('-reenroll_date').first()
             check_date = lastest_reenrollment.reenroll_date
