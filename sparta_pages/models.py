@@ -203,6 +203,7 @@ class SpartaProfile(models.Model):
     NEARSOL = "NS"
     VXI = "VX"
     OPEN_ACCESS_BPO = "OA"
+    MEDTRONIC_PHIL_INC = "MP"
     NOT_CCAP = ""
     CCAP_SUBCHOICES = (
         (ANZ, "ANZ"),
@@ -236,6 +237,7 @@ class SpartaProfile(models.Model):
         (NEARSOL, "Nearsol"),
         (VXI, "VXI"),
         (OPEN_ACCESS_BPO, "Open Access BPO"),
+        (MEDTRONIC_PHIL_INC, "Medtronic Philippines Inc."),
         (NOT_CCAP, ""),
     )
 
@@ -444,6 +446,7 @@ class EducationProfile(models.Model):
     address = models.TextField()
     started_at = models.DateField()
     graduated_at = models.DateField()
+
 
     class Meta:
         verbose_name_plural = "5. Education Profiles"

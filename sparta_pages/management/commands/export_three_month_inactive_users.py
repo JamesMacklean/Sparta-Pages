@@ -113,7 +113,7 @@ class Command(BaseCommand):
                     })
 
             file_name = '/home/ubuntu/tempfiles/export_three_month_inactive_users_{}.csv'.format(tnow)
-            with open(file_name, mode='w') as csv_file:
+            with open(file_name, mode='wb') as csv_file:
                 writer = unicodecsv.writer(csv_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL,  encoding='utf-8')
                 writer.writerow([
                     'Name',

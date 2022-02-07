@@ -22,7 +22,7 @@ from sparta_pages.models import (
 )
 
 class Command(BaseCommand):
-    help = 'Exports list of users exceeding six months of access to a course.'
+    help = 'Exports list of users exceeding six months of not accessing a course.'
 
     def add_arguments(self, parser):
         parser.add_argument(
@@ -118,7 +118,7 @@ class Command(BaseCommand):
                     })
 
             file_name = '/home/ubuntu/tempfiles/export_six_month_access_users_{}.csv'.format(tnow)
-            with open(file_name, mode='w') as csv_file:
+            with open(file_name, mode='wb') as csv_file:
                 writer = unicodecsv.writer(csv_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL,  encoding='utf-8')
                 writer.writerow([
                     'Name',

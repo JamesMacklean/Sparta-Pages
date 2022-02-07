@@ -1,4 +1,6 @@
 import csv
+from email.message import EmailMessage
+from socket import SO_BROADCAST
 import unicodecsv
 
 from datetime import datetime, timedelta, date
@@ -23,10 +25,16 @@ from openedx.core.djangoapps.content.course_overviews.models import CourseOvervi
 from opaque_keys.edx.keys import CourseKey
 from student.models import CourseEnrollment
 
+##### For Unenrollment #####
+from django.contrib.auth.models import User
+from lms.djangoapps.certificates.api import get_certificate_for_user
+from sparta_pages.models import SpartaReEnrollment
+############################
+
 from ..analytics import OverallAnalytics, PathwayAnalytics, CourseAnalytics
 from ..forms import (
     ExportAppsForm, FilterForm, ExportProfilesForm,
-    ExportAnalyticsForm, ExportPathwayAnalyticsForm
+    ExportAnalyticsForm, ExportPathwayAnalyticsForm, GenerateCourseForm
 )
 from ..local_settings import LOCAL_TEST
 from ..models import (
@@ -67,7 +75,6 @@ class DeveloperProfileView(TemplateView):
 
         return render(request, self.template_name, context)
 
-
 @login_required
 def admin_main_view(request):
     if not request.user.is_staff:
@@ -77,7 +84,6 @@ def admin_main_view(request):
     context = {}
 
     return render(request, template_name, context)
-
 
 @login_required
 def admin_applications_view(request):
@@ -133,9 +139,159 @@ def admin_applications_view(request):
                 apps_to_export = denied_applications
             else:
                 apps_to_export = applications
+                
             return export_pathway_applications_to_csv(apps_to_export)
 
     return render(request, template_name, context)
+
+@login_required
+def admin_inactivity(request):
+    if not request.user.is_staff:
+        raise Http404
+
+    template_name = "sparta_admin_inactivity.html"
+    context = {}
+
+    course_key = "course-v1:DAP+SP202+2020_Q1"
+    tnow = datetime.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
+
+    sec = 183*24*60*60
+    tnow = timezone.now()
+
+    enrollments = CourseEnrollment.objects.filter(
+        course_id=course_key,
+        is_active=True,
+    ).select_related('user','user__sparta_profile').prefetch_related('spartareenrollment_set','user__sparta_profile__applications')
+
+    user_list = []
+    
+    for e in enrollments:
+        cert = get_certificate_for_user(e.user.username, course_key)
+        if cert is not None:
+            continue
+
+        try:
+            profile = e.user.sparta_profile
+
+        except SpartaProfile.DoesNotExist:
+            continue
+
+        applications = PathwayApplication.objects.all().filter(status='AP')
+        #applications = profile.applications.filter(status="AP")
+
+        if applications.exists():
+            application = applications.order_by('-created_at').last()
+            pathway = application.pathway.name
+        else:
+            pathway = ""
+
+        reenrollments = SpartaReEnrollment.objects.filter(enrollment=e)
+        #reenrollments = e.spartareenrollment_set.all()
+        if reenrollments.exists():
+            lastest_reenrollment = reenrollments.order_by('-reenroll_date').first()
+            check_date = lastest_reenrollment.reenroll_date
+        else:
+            check_date = e.created
+
+        tdelta = tnow - check_date
+
+        if tdelta.total_seconds() >= sec and cert is None:
+                user_list.append({
+                    "name": e.user.profile.name,
+                    "email": e.user.email,
+                    "username": e.user.username,
+                    "pathway": pathway,
+                    "access date": check_date.strftime("%Y-%m-%d"),
+                })
+
+    context['form'] = GenerateCourseForm()
+    #context['user_list'] = user_list
+
+    if request.method == "POST":
+        form = GenerateCourseForm(request.POST)
+        if form.is_valid():
+            
+            #course_id = form.cleaned_data['course']
+            #course_key = CourseKey.from_string(course_id)
+            
+            return export_six_months_to_csv(course_key)
+
+    return render(request, template_name, context)
+ 
+def export_six_months_to_csv(course_key):
+    
+    tnow = datetime.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
+    filename = "sparta-six-months-access-{}.csv".format(tnow)
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename={}'.format(filename)
+    
+    sec = 183*24*60*60
+    tnow = timezone.now()
+
+    enrollments = CourseEnrollment.objects.filter(
+                course_id=course_key,
+                is_active=True,
+            ).select_related('user','user__sparta_profile').prefetch_related('spartareenrollment_set','user__sparta_profile__applications')    
+    
+    user_list = []
+    for e in enrollments:
+        cert = get_certificate_for_user(e.user.username, course_key)
+        if cert is not None:
+            continue
+
+        try:
+            profile = e.user.sparta_profile
+
+        except SpartaProfile.DoesNotExist:
+            continue
+
+        applications = PathwayApplication.objects.all().filter(status='AP')
+        #applications = profile.applications.filter(status="AP")
+
+        if applications.exists():
+            application = applications.order_by('-created_at').last()
+            pathway = application.pathway.name
+        else:
+            pathway = ""
+
+        reenrollments = SpartaReEnrollment.objects.filter(enrollment=e)
+        #reenrollments = e.spartareenrollment_set.all()
+        if reenrollments.exists():
+            lastest_reenrollment = reenrollments.order_by('-reenroll_date').first()
+            check_date = lastest_reenrollment.reenroll_date
+        else:
+            check_date = e.created
+
+        tdelta = tnow - check_date
+
+        if tdelta.total_seconds() >= sec and cert is None:
+                user_list.append({
+                    "name": e.user.profile.name,
+                    "email": e.user.email,
+                    "username": e.user.username,
+                    "pathway": pathway,
+                    "access date": check_date.strftime("%Y-%m-%d"),
+                })
+
+    writer = unicodecsv.writer(response, encoding='utf-8')
+    writer.writerow([
+        'Full Name',
+        'Email',
+        'Username',
+        'Pathway',
+        'Initial Access Date'
+        ])
+
+    for u in user_list:
+        writer.writerow([
+            u['name'],
+            u['email'],
+            u['username'],
+            u['pathway'],
+            u['access date'],
+        ]) 
+
+    return response
 
 def export_pathway_applications_to_csv(apps):
     tnow = timezone.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
@@ -167,10 +323,19 @@ def export_pathway_applications_to_csv(apps):
         pathway = a.pathway.name
         status = a.status
         created_at = str(a.created_at)
-        writer.writerow([username, email, full_name, municipality, affiliation, attainment, pathway, status, created_at])
+        writer.writerow([
+            username,
+            email, 
+            full_name, 
+            municipality, 
+            affiliation, 
+            attainment, 
+            pathway, 
+            status, 
+            created_at
+            ])
 
     return response
-
 
 @require_POST
 def admin_approve_application_view(request, id):
@@ -185,7 +350,6 @@ def admin_approve_application_view(request, id):
         app.approve()
 
     return redirect('sparta-admin-applications')
-
 
 def export_profiles_to_csv(profiles):
     tnow = timezone.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
@@ -208,7 +372,6 @@ def export_profiles_to_csv(profiles):
         writer.writerow([username, email, full_name, address, approved_pathways_str[:-3], is_active_str])
 
     return response
-
 
 @login_required
 def admin_profiles_view(request):
@@ -265,7 +428,6 @@ def admin_profiles_view(request):
 
     return render(request, template_name, context)
 
-
 @login_required
 def admin_credentials_view(request, id):
     if not request.user.is_staff:
@@ -287,7 +449,6 @@ def admin_credentials_view(request, id):
     context['employment_profiles'] = profile.employment_profiles.all()
     context['training_profiles'] = profile.training_profiles.all()
     return render(request, template_name, context)
-
 
 @login_required
 def admin_overall_analytics_view(request):
@@ -406,7 +567,6 @@ def admin_overall_analytics_view(request):
 
     return render(request, template_name, context)
 
-
 @login_required
 def admin_pathway_analytics_view(request, slug):
     if not request.user.is_staff:
@@ -494,7 +654,6 @@ def admin_pathway_analytics_view(request, slug):
 
     return render(request, template_name, context)
 
-
 def export_pathway_analytics_to_csv(pathway, data):
     tnow = timezone.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
     filename = "sparta-pathway-{}-analytics-{}.csv".format(str(pathway.slug), tnow)
@@ -567,7 +726,6 @@ def export_pathway_learners_data_to_csv(pathway, learners):
             learner.user.profile.city
             ])
     return response
-
 
 @login_required
 def admin_course_analytics_view(request, course_id):
@@ -682,7 +840,8 @@ def admin_course_analytics_view(request, course_id):
 
 @login_required
 def data_dashboard_main_view(request):
-    """"""
+    """
+    """
     if not request.user.is_staff:
         raise Http404
 
@@ -693,7 +852,8 @@ def data_dashboard_main_view(request):
 
 @login_required
 def data_dashboard_profiles_view(request):
-    """"""
+    """
+    """
     if not request.user.is_staff:
         raise Http404
 
@@ -753,7 +913,8 @@ def data_dashboard_profiles_view(request):
 
 @login_required
 def data_dashboard_education_credentials_view(request):
-    """"""
+    """
+    """
     if not request.user.is_staff:
         raise Http404
 
@@ -796,7 +957,8 @@ def data_dashboard_education_credentials_view(request):
 
 @login_required
 def data_dashboard_employment_credentials_view(request):
-    """"""
+    """
+    """
     if not request.user.is_staff:
         raise Http404
 
@@ -843,7 +1005,8 @@ def data_dashboard_employment_credentials_view(request):
 
 @login_required
 def data_dashboard_training_credentials_view(request):
-    """"""
+    """
+    """
     if not request.user.is_staff:
         raise Http404
 
@@ -886,7 +1049,8 @@ def data_dashboard_training_credentials_view(request):
 
 @login_required
 def data_dashboard_courses_view(request):
-    """"""
+    """
+    """
     if not request.user.is_staff:
         raise Http404
     template_name = "sparta_data_dashboard_courses.html"
@@ -898,7 +1062,8 @@ def data_dashboard_courses_view(request):
 
 @login_required
 def data_dashboard_graphs_view(request):
-    """"""
+    """
+    """
     if not request.user.is_staff:
         raise Http404
 
@@ -910,7 +1075,8 @@ def data_dashboard_graphs_view(request):
 
 @login_required
 def data_dashboard_graphs_by_class_view(request):
-    """"""
+    """
+    """
     if not request.user.is_staff:
         raise Http404
 
@@ -927,7 +1093,8 @@ def data_dashboard_graphs_by_class_view(request):
 
 @login_required
 def data_dashboard_graphs_by_age_view(request):
-    """"""
+    """
+    """
     if not request.user.is_staff:
         raise Http404
 
@@ -943,7 +1110,8 @@ def data_dashboard_graphs_by_age_view(request):
 
 @login_required
 def data_dashboard_graphs_by_gender_view(request):
-    """"""
+    """
+    """
     if not request.user.is_staff:
         raise Http404
 
@@ -959,7 +1127,8 @@ def data_dashboard_graphs_by_gender_view(request):
 
 @login_required
 def data_dashboard_graphs_by_location_view(request):
-    """"""
+    """
+    """
     if not request.user.is_staff:
         raise Http404
 
@@ -976,7 +1145,8 @@ def data_dashboard_graphs_by_location_view(request):
 
 @login_required
 def data_dashboard_graphs_courses_view(request):
-    """"""
+    """
+    """
     if not request.user.is_staff:
         raise Http404
 
@@ -993,7 +1163,8 @@ def data_dashboard_graphs_courses_view(request):
 
 @login_required
 def data_dashboard_graphs_by_date_view(request):
-    """"""
+    """
+    """
     if not request.user.is_staff:
         raise Http404
 
