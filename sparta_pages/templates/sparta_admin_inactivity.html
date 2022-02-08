@@ -29,10 +29,10 @@
       <tbody>
         {% for a in user_list %}
         <tr>
-          <td>{{ a.user.name }}</td>
-          <td>{{ a.user.email }}</td>
-          <td>{{ a.user.username }}</td>
-          <td>{{ a.pathway }}</td>
+          <td>{{ a.profile.user.name }}</td>
+          <td>{{ a.profile.user.email }}</td>
+          <td>{{ a.profile.user.username }}</td>
+          <td>{{ a.pathway.name }}</td>
           <td>{{ a.check_date}}</td>
           <td>Test</td>
         </tr>
