@@ -203,18 +203,18 @@ def admin_inactivity(request):
                     "access_date": check_date.strftime("%Y-%m-%d"),
                 })
 
-    #context['generate_form'] = GenerateCourseForm()
+    form_post = GenerateCourseForm(request.POST)
+    form_get = GenerateCourseForm(request.GET)
+    
     context['user_list'] = user_list
-    context['generate_form'] = GenerateCourseForm(request.GET)
+    context['generate_form'] = form_get
 
     if request.method == "POST":
-        form = GenerateCourseForm(request.POST)
-        if form.is_valid():
+        if form_post.is_valid(): 
+            course_id = form_post.cleaned_data['course']
+            #course_key = CourseKey.from_string(course_id)
             
-            course_id = form.cleaned_data['course']
-            course_key = CourseKey.from_string(course_id)
-            
-            return export_six_months_to_csv(course_key)
+            return export_six_months_to_csv(course_id)
 
     return render(request, template_name, context)
  
