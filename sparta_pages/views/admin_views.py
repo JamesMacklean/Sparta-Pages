@@ -175,8 +175,8 @@ def admin_inactivity(request):
         except SpartaProfile.DoesNotExist:
             continue
 
-        applications = PathwayApplication.objects.all().filter(status='AP')
-        #applications = profile.applications.filter(status="AP")
+        #applications = PathwayApplication.objects.all().filter(status='AP')
+        applications = profile.applications.filter(status="AP")
 
         if applications.exists():
             application = applications.order_by('-created_at').last()
@@ -184,8 +184,8 @@ def admin_inactivity(request):
         else:
             pathway = ""
 
-        reenrollments = SpartaReEnrollment.objects.filter(enrollment=e)
-        #reenrollments = e.spartareenrollment_set.all()
+        #reenrollments = SpartaReEnrollment.objects.filter(enrollment=e)
+        reenrollments = e.spartareenrollment_set.all()
         if reenrollments.exists():
             lastest_reenrollment = reenrollments.order_by('-reenroll_date').first()
             check_date = lastest_reenrollment.reenroll_date
@@ -253,8 +253,8 @@ def export_six_months_to_csv(course_key):
         else:
             pathway = ""
 
-        reenrollments = SpartaReEnrollment.objects.filter(enrollment=e)
-        #reenrollments = e.spartareenrollment_set.all()
+        #reenrollments = SpartaReEnrollment.objects.filter(enrollment=e)
+        reenrollments = e.spartareenrollment_set.all()
         if reenrollments.exists():
             lastest_reenrollment = reenrollments.order_by('-reenroll_date').first()
             check_date = lastest_reenrollment.reenroll_date
