@@ -164,7 +164,6 @@ def admin_inactivity(request):
     ).select_related('user','user__sparta_profile').prefetch_related('spartareenrollment_set','user__sparta_profile__applications')
 
     user_list = []
-    
     for e in enrollments:
         cert = get_certificate_for_user(e.user.username, course_key)
         if cert is not None:
@@ -176,8 +175,8 @@ def admin_inactivity(request):
         except SpartaProfile.DoesNotExist:
             continue
 
-        applications = PathwayApplication.objects.all().filter(status='AP')
-        #applications = profile.applications.filter(status="AP")
+        #applications = PathwayApplication.objects.all().filter(status='AP')
+        applications = profile.applications.filter(status="AP")
 
         if applications.exists():
             application = applications.order_by('-created_at').last()
@@ -205,7 +204,7 @@ def admin_inactivity(request):
                 })
 
     context['form'] = GenerateCourseForm()
-    #context['user_list'] = user_list
+    context['user_list'] = user_list
 
     if request.method == "POST":
         form = GenerateCourseForm(request.POST)
