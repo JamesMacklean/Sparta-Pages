@@ -175,8 +175,8 @@ def admin_inactivity(request):
         except SpartaProfile.DoesNotExist:
             continue
 
-        #applications = PathwayApplication.objects.all().filter(status='AP')
-        applications = profile.applications.filter(status="AP")
+        applications = PathwayApplication.objects.all().filter(status='AP')
+        #applications = profile.applications.filter(status="AP")
 
         if applications.exists():
             application = applications.order_by('-created_at').last()
@@ -244,8 +244,8 @@ def export_six_months_to_csv(course_key):
         except SpartaProfile.DoesNotExist:
             continue
 
-        applications = PathwayApplication.objects.all().filter(status='AP')
-        #applications = profile.applications.filter(status="AP")
+        #applications = PathwayApplication.objects.all().filter(status='AP')
+        applications = profile.applications.filter(status="AP")
 
         if applications.exists():
             application = applications.order_by('-created_at').last()
