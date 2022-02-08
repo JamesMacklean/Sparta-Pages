@@ -208,7 +208,7 @@ def admin_inactivity(request):
     #context['form'] = GenerateCourseForm()
 
     context['user_list'] = user_list
-    context['generate_form'] = GenerateCourseForm(request.GET)
+    context['generate_form'] = GenerateCourseForm(request.GET or None)
 
     if request.method == "POST":
         form = GenerateCourseForm(request.POST)
