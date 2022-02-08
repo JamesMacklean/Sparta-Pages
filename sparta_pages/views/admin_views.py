@@ -205,16 +205,16 @@ def admin_inactivity(request):
 
     #context['generate_form'] = GenerateCourseForm()
     context['user_list'] = user_list
-    context['generate_form'] = GenerateCourseForm(request.GET or request.POST)
+    context['generate_form'] = GenerateCourseForm(request.GET)
 
     if request.method == "POST":
         form = GenerateCourseForm(request.POST)
         if form.is_valid():
             
             course_id = form.cleaned_data['course']
-            course_to_post = CourseKey.from_string(course_id)
+            course_key = CourseKey.from_string(course_id)
             
-            return export_six_months_to_csv(course_to_post)
+            return export_six_months_to_csv(course_key)
 
     return render(request, template_name, context)
  
