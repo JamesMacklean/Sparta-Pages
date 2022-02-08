@@ -262,9 +262,9 @@ class GenerateCourseForm(forms.Form):
     SP501 = "course-v1:DAP+SP501+2020_Q1"
     
     CHOICES = (
+        (SP202, "SP202"),
         (SP101, "SP101"),
         (SP201, "SP201"),
-        (SP202, "SP202"),
         (SP301, "SP301"),
         (SP401, "SP401"),
         (SP501, "SP501")

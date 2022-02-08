@@ -8,9 +8,14 @@
 <form action="" method="post">
     {% csrf_token %}
     {{ form }}
-    <input type="submit" value="Generate" />
+    <input type="submit" value="Export to CSV" />
 </form>
 
+<form action="{% url 'sparta-admin-inactivity' %}" method="get">
+  {% csrf_token %}
+  {{ generate_form }}
+  <input type="submit" value="Generate" />
+</form>
 <div class="card">
   <div class="card-body">
     <h2>Six Months Unfinished Courses</h2>

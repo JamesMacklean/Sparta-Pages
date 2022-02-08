@@ -152,7 +152,11 @@ def admin_inactivity(request):
     template_name = "sparta_admin_inactivity.html"
     context = {}
 
-    course_key = "course-v1:DAP+SP202+2020_Q1"
+    ###########################
+    course_key = request.GET.get('course_key', None)
+    ###########################
+
+    #course_key = "course-v1:DAP+SP202+2020_Q1"
     tnow = datetime.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
 
     sec = 183*24*60*60
@@ -162,6 +166,8 @@ def admin_inactivity(request):
         course_id=course_key,
         is_active=True,
     ).select_related('user','user__sparta_profile').prefetch_related('spartareenrollment_set','user__sparta_profile__applications')
+
+    
 
     user_list = []
     for e in enrollments:
@@ -175,7 +181,6 @@ def admin_inactivity(request):
         except SpartaProfile.DoesNotExist:
             continue
 
-        #applications = PathwayApplication.objects.all().filter(status='AP')
         applications = profile.applications.filter(status="AP")
 
         if applications.exists():
@@ -184,7 +189,6 @@ def admin_inactivity(request):
         else:
             pathway = ""
 
-        #reenrollments = SpartaReEnrollment.objects.filter(enrollment=e)
         reenrollments = e.spartareenrollment_set.all()
         if reenrollments.exists():
             lastest_reenrollment = reenrollments.order_by('-reenroll_date').first()
@@ -205,6 +209,7 @@ def admin_inactivity(request):
 
     context['form'] = GenerateCourseForm()
     context['user_list'] = user_list
+    context['generate_form'] = GenerateCourseForm(request.GET or None)
 
     if request.method == "POST":
         form = GenerateCourseForm(request.POST)
@@ -269,7 +274,7 @@ def export_six_months_to_csv(course_key):
                     "email": e.user.email,
                     "username": e.user.username,
                     "pathway": pathway,
-                    "access date": check_date.strftime("%Y-%m-%d"),
+                    "access_date": check_date.strftime("%Y-%m-%d"),
                 })
 
     writer = unicodecsv.writer(response, encoding='utf-8')
@@ -287,7 +292,7 @@ def export_six_months_to_csv(course_key):
             u['email'],
             u['username'],
             u['pathway'],
-            u['access date'],
+            u['access_date'],
         ]) 
 
     return response
