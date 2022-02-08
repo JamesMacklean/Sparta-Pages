@@ -9,7 +9,11 @@
   {% csrf_token %}
   {{ generate_form }}
   <input type="submit" value="Generate" />
-  <input type="submit" value="Export to CSV" method="post"/>
+</form>
+
+<form action="" method="post">
+  {% csrf_token %}
+  <input type="submit" value="Export to CSV" />
 </form>
 
 <div class="card">
