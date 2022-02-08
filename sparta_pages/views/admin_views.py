@@ -153,7 +153,7 @@ def admin_inactivity(request):
     context = {}
 
     ###########################
-    course_key = request.GET.get('course_key', None)
+    course_key = request.GET.get('course', None)
     ###########################
 
     #course_key = "course-v1:DAP+SP202+2020_Q1"
