@@ -254,6 +254,7 @@ class ExportAppsForm(forms.Form):
 class GenerateCourseForm(forms.Form):
     """
     """
+    Blank = ""
     SP101 = "course-v1:DAP+SP101+2020_Q1"
     SP201 = "course-v1:DAP+SP201+2020_Q1"
     SP202 = "course-v1:DAP+SP202+2020_Q1"
@@ -262,6 +263,7 @@ class GenerateCourseForm(forms.Form):
     SP501 = "course-v1:DAP+SP501+2020_Q1"
     
     CHOICES = (
+        (Blank, " -- "),
         (SP202, "SP202"),
         (SP101, "SP101"),
         (SP201, "SP201"),
