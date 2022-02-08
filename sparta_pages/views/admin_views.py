@@ -221,6 +221,14 @@ def admin_inactivity(request):
 
     return render(request, template_name, context)
  
+@require_POST
+def admin_six_months_unenroll(request, id):
+    if not request.user.is_staff:
+        raise HttpResponse(status=500)
+
+
+    return redirect('sparta-admin-inactivity')
+
 def export_six_months_to_csv(course_key):
     
     tnow = datetime.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
