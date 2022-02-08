@@ -200,7 +200,7 @@ def admin_inactivity(request):
                     "email": e.user.email,
                     "username": e.user.username,
                     "pathway": pathway,
-                    "access date": check_date.strftime("%Y-%m-%d"),
+                    "access_date": check_date.strftime("%Y-%m-%d"),
                 })
 
     context['form'] = GenerateCourseForm()
