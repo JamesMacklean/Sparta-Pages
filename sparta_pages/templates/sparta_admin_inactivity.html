@@ -5,11 +5,13 @@
 
 {% block sparta_body %}
 
+<!--
 <form action="" method="post">
     {% csrf_token %}
     {{ form }}
     <input type="submit" value="Export to CSV" />
 </form>
+-->
 
 <form action="{% url 'sparta-admin-inactivity' %}" method="get">
   {% csrf_token %}

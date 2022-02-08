@@ -203,7 +203,9 @@ def admin_inactivity(request):
                     "access_date": check_date.strftime("%Y-%m-%d"),
                 })
 
-    context['form'] = GenerateCourseForm()
+    #For exporting to CSV file
+    #context['form'] = GenerateCourseForm()
+    
     context['user_list'] = user_list
     context['generate_form'] = GenerateCourseForm(request.GET)
 
