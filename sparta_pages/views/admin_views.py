@@ -152,9 +152,7 @@ def admin_inactivity(request):
     template_name = "sparta_admin_inactivity.html"
     context = {}
 
-    ###########################
     course_key = request.GET.get('course', None)
-    ###########################
 
     #course_key = "course-v1:DAP+SP202+2020_Q1"
     tnow = datetime.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
@@ -166,8 +164,6 @@ def admin_inactivity(request):
         course_id=course_key,
         is_active=True,
     ).select_related('user','user__sparta_profile').prefetch_related('spartareenrollment_set','user__sparta_profile__applications')
-
-    
 
     user_list = []
     for e in enrollments:
@@ -207,7 +203,6 @@ def admin_inactivity(request):
                     "access_date": check_date.strftime("%Y-%m-%d"),
                 })
 
-    context['form'] = GenerateCourseForm()
     context['user_list'] = user_list
     context['generate_form'] = GenerateCourseForm(request.GET or None)
 
