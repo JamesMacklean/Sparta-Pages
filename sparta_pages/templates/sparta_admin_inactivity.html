@@ -12,6 +12,8 @@
 </form>
 
 <form action="" method="post">
+  {% csrf_token %}
+  {{ generate_form }}
   <input type="submit" value="Export to CSV" />
 </form>
 
