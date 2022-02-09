@@ -210,7 +210,7 @@ def admin_inactivity(request):
     context['generate_form'] = GenerateCourseForm(request.GET or None)
 
     if request.method == "POST":
-        form = GenerateCourseForm(request.POST)
+        form = GenerateCourseForm(request.POST or None)
         if form.is_valid():
             
             course_id = form.cleaned_data['course']
