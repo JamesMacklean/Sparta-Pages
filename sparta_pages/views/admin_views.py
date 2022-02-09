@@ -154,7 +154,6 @@ def admin_inactivity(request):
 
     course_key = request.GET.get('course', None)
 
-    #course_key = "course-v1:DAP+SP202+2020_Q1"
     tnow = datetime.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
 
     sec = 183*24*60*60
@@ -215,7 +214,6 @@ def admin_inactivity(request):
         if form.is_valid():
             
             course_id = form.cleaned_data['course']
-            #course_key = CourseKey.from_string(course_id)
             
             return export_six_months_to_csv(course_id)
 
@@ -256,7 +254,6 @@ def export_six_months_to_csv(course_key):
         except SpartaProfile.DoesNotExist:
             continue
 
-        #applications = PathwayApplication.objects.all().filter(status='AP')
         applications = profile.applications.filter(status="AP")
 
         if applications.exists():
@@ -265,7 +262,6 @@ def export_six_months_to_csv(course_key):
         else:
             pathway = ""
 
-        #reenrollments = SpartaReEnrollment.objects.filter(enrollment=e)
         reenrollments = e.spartareenrollment_set.all()
         if reenrollments.exists():
             lastest_reenrollment = reenrollments.order_by('-reenroll_date').first()
