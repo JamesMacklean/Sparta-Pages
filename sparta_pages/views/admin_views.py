@@ -211,11 +211,10 @@ def admin_inactivity(request):
 
     if request.method == "POST":
         form = GenerateCourseForm(request.POST)
-        if form.is_valid():
+        #if form.is_valid():
             
-            course_id = form.cleaned_data['course']
-            
-            return export_six_months_to_csv(course_id)
+        course_id = form.cleaned_data['course']    
+        return export_six_months_to_csv(course_id)
 
     return render(request, template_name, context)
  
