@@ -200,14 +200,14 @@ def admin_inactivity(request):
                     "username": e.user.username,
                     "pathway": pathway,
                     "access_date": check_date.strftime("%Y-%m-%d"),
-                    "status": "inactive",
                 })
 
     #For exporting to CSV file
     #context['form'] = GenerateCourseForm()
 
+    context['course_key'] = course_key
     context['user_list'] = user_list
-    context['generate_form'] = GenerateCourseForm(request.GET or None)
+    context['generate_form'] = GenerateCourseForm(request.GET or request.POST or None)
 
     if request.method == "POST":
         form = GenerateCourseForm(request.POST)

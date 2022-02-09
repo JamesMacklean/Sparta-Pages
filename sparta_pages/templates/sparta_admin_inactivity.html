@@ -3,6 +3,7 @@
 
 {% block title %} Coursebank | SPARTA | Admin | Inactivity {% endblock %}
 
+
 {% block sparta_body %}
 <form action="{% url 'sparta-admin-inactivity' %}" method="get">
   {% csrf_token %}
@@ -12,7 +13,6 @@
 
 <form action="" method="post">
   {% csrf_token %}
-  {{ generate_form }}
   <input type="submit" value="Export to CSV" />
 </form>
 
@@ -27,7 +27,6 @@
           <th scope="col">Full Name</th>
           <th scope="col">Pathway</th>
           <th scope="col">Initial Access Date</th>
-          <th scope="col">Status</th>
           <th scope="col">Action</th>
         </tr>
       </thead>
@@ -39,7 +38,6 @@
           <td>{{ a.username }}</td>
           <td>{{ a.pathway }}</td>
           <td>{{ a.access_date }}</td>
-          <td>{{ a.status }}</td>
           <td><div type="div" class="btn btn-outline-success btn-sm" style="cursor: pointer" data-toggle="modal" data-target="#approveModal">Unenroll</div></td>
         </tr>
 
