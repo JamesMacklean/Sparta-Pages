@@ -374,7 +374,7 @@ class RegisterTrainingProfileView(View):
 
 def upload_to_s3(user, proof_of_education_file, proof_of_agreement_file=None):
     """"""
-    BUCKET_NAME = "openedx-coursebank-sparta-eligibility-documents"
+    BUCKET_NAME = "openedx-coursebank-sparta-eligibility-documents-tmtg"
     c = s3.connection.S3Connection(
         settings.AWS_ACCESS_KEY_ID,
         settings.AWS_SECRET_ACCESS_KEY
