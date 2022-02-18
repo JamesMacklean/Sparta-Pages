@@ -144,7 +144,7 @@ class SpartaProfile(models.Model):
     DTICIG = "DT"
     SPH = "SP"
     ISCF = "IC"
-    DAPCOSM = "Development Academy of the Philippines-COSM"
+    DAPCOSM = "DC"
     NOT_INVOLVED = "NA"
     ORG_CHOICES = (
         (NOT_INVOLVED, "N/A"),
@@ -174,9 +174,9 @@ class SpartaProfile(models.Model):
         (PCCI, "Philippine Chamber of Commerce and Industry (PCCI)"),
         (VSU, "Visayas State University (VSU)"),
         (SMC, "St. Martin of Tours Credit and Development Cooperative (St. Martin Coop)"),
-	    (DTICIG,"Department of Trade and Industry-Competitiveness and Innovation Group"),
-	    (SPH,"Shopee Philippines"),
-	    (ISCF,"Iloilo State College of Fisheries")
+	(DTICIG,"Department of Trade and Industry-Competitiveness and Innovation Group"),
+	(SPH,"Shopee Philippines"),
+	(ISCF,"Iloilo State College of Fisheries"),
         (DAPCOSM,"Development Academy of the Philippines-COSM")
     )
 
