@@ -21,7 +21,7 @@
 <div class="tab col col-2">
   <div class="tablinks btn btn-outline-info" onclick="openTab(event, 'ScholarProfile')">Scholarship Profile</div>
   <div class="tablinks btn btn-outline-info" onclick="openTab(event, 'LearningPathways')">Pathway Applications</div>
-  <div class="tablinks btn btn-outline-info" onclick="openTab(event, 'NGO')">NGO</div>
+  <div class="tablinks btn btn-outline-info" onclick="openTab(event, 'Courses')">Courses</div>
 </div>
 
 <div class="card col col-10">
@@ -29,9 +29,9 @@
 
     <div id="ScholarProfile" class="tabcontent">
       {% include "sparta_scholar_profile.html" %}
-    </div>
+     </div>
 
-    <div id="LearningPathways" class="tabcontent">
+     <div id="LearningPathways" class="tabcontent">
       <h2 class="card-title">Applications</h2>
 
 
@@ -52,14 +52,14 @@
           {% if applications %}
           {% for app in applications %}
           <tr>
-            <td><div type="div" class="btn btn-outline-secondary" style="cursor: pointer" target="blank" href="/sparta/">Learn More</div></td>
-            <td><div type="div" class="btn btn-outline-secondary" style="cursor: pointer" target="blank" href="https://dict.coursebank.ph">Learn More</div></td>
-            <td><div type="div" class="btn btn-outline-secondary" style="cursor: pointer" target="blank" href="#">Learn More</div></td>
+            <a style="cursor: pointer" target="blank" href="/sparta/">Learn More</a>
+            <a style="cursor: pointer" target="blank" href="https://dict.coursebank.ph">Learn More</a>
+            <a style="cursor: pointer" target="blank" href="#">Learn More</a>
           </tr>
           <tr>
-            <td><div type="div" class="btn btn-primary" style="cursor: pointer" target="blank" href="/sparta/application-page">Apply</div></td>
-            <td><div type="div" class="btn btn-primary" style="cursor: pointer" target="blank" href="/dict/application-page">Apply</div></td>
-            <td><div type="div" class="btn btn-primary" style="cursor: pointer" target="blank" href="#">Apply</div></td>
+            <div type="div" class="btn btn-primary" style="cursor: pointer" target="blank" href="/sparta/application-page">Apply</div>
+            <div type="div" class="btn btn-primary" style="cursor: pointer" target="blank" href="/dict/application-page">Apply</div><
+            <div type="div" class="btn btn-primary" style="cursor: pointer" target="blank" href="#">Apply</div>
           </tr>
           {% if app.status == 'PE' %}
           <tr>
@@ -92,15 +92,12 @@
             {% endif %}
           </tr>
           {% endfor %}
-          {% else %}
-          <tr>
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
-          </tr>
           {% endif %}
         </tbody>
       </table>
+    </div>
+    <div id="Courses" class="tabcontent">
+      {% include "sparta_pathway_coupons.html" %}
     </div>
   </div>
 </div>
