@@ -208,6 +208,7 @@ def admin_inactivity(request):
     context['course_key'] = course_key
     context['user_list'] = user_list
     context['generate_form'] = GenerateCourseForm(request.GET or None)
+    context['csv_form'] = GenerateCourseForm
 
     if request.method == "POST":
         form = GenerateCourseForm(request.POST)
@@ -343,6 +344,13 @@ def export_pathway_applications_to_csv(apps):
             ])
 
     return response
+
+@require_POST
+def admin_approve_unenrollment_view(request, id):
+    if not request.user.is_staff:
+        raise HttpResponse(status=500)
+
+    return redirect('sparta-admin-inactivity')
 
 @require_POST
 def admin_approve_application_view(request, id):
