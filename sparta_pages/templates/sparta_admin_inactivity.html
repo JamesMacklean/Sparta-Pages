@@ -55,7 +55,7 @@
                   Are you sure you want to unenroll learner {{ a.username }} in {{ course_key }}? 
                 </div>
                 <div class="modal-footer">
-                  <form>
+                  <form action="{% url 'sparta-unenrollment-approve' username=a.username %}" method="POST">
                     {% csrf_token %}
                     <div type="div" class="btn btn-secondary" data-dismiss="modal">Cancel</div>
                     <input class="btn btn-success" id="submit" type="submit" value="Approve" />

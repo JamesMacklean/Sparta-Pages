@@ -56,7 +56,7 @@
                   Are you sure you want to approve this application by {{ a.profile.user.username }} for {{ a.pathway.name }})?
                 </div>
                 <div class="modal-footer">
-                  <form action="{% url 'sparta-unenrollment-approve' id=a.id %}" method="POST">
+                  <form action="{% url 'sparta-admin-approve' id=a.id %}" method="POST">
                     {% csrf_token %}
                     <div type="div" class="btn btn-secondary" data-dismiss="modal">Cancel</div>
                     <input class="btn btn-success" id="submit" type="submit" value="Approve" />
