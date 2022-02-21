@@ -51,14 +51,21 @@
         <tbody>
           {% if applications %}
           {% for app in applications %}
+          {% if not max_applied %}
           <tr>
-            <a style="cursor: pointer" target="blank" href="/sparta/">Learn More</a>
-            <a style="cursor: pointer" target="blank" href="https://dict.coursebank.ph">Learn More</a>
-            <a style="cursor: pointer" target="blank" href="#">Learn More</a>
+            <td>
+              <a style="cursor: pointer" target="blank" href="/sparta/">Learn More</a>
+            </td>
+            <td>
+              <a style="cursor: pointer" target="blank" href="https://dict.coursebank.ph">Learn More</a>
+            </td>
+            <td>
+              <a style="cursor: pointer" target="blank" href="#">Learn More</a>
+            </td>
           </tr>
           <tr>
             <div type="div" class="btn btn-primary" style="cursor: pointer" target="blank" href="/sparta/application-page">Apply</div>
-            <div type="div" class="btn btn-primary" style="cursor: pointer" target="blank" href="/dict/application-page">Apply</div><
+            <div type="div" class="btn btn-primary" style="cursor: pointer" target="blank" href="/dict/application-page">Apply</div>
             <div type="div" class="btn btn-primary" style="cursor: pointer" target="blank" href="#">Apply</div>
           </tr>
           {% if app.status == 'PE' %}
@@ -91,6 +98,7 @@
             <td>{{ app.get_status_display }}</td>
             {% endif %}
           </tr>
+          {% endif %}
           {% endfor %}
           {% endif %}
         </tbody>
