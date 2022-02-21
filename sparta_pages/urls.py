@@ -46,7 +46,7 @@ urlpatterns = [
     url(r'^sparta/admin-view/analytics/courses/(?P<course_id>[-:+\w]+)$', admin_views.admin_course_analytics_view, name='sparta-admin-course-analytics'),
     url(r'^sparta/admin-view/inactivity$', admin_views.admin_inactivity, name='sparta-admin-inactivity'),
     url(r'^sparta/admin-view/inactivity/approve/(?P<username>\d+)$', admin_views.admin_approve_unenrollment_view, name='sparta-unenrollment-approve'),
-
+ 
     url(r'^sparta/admin/dashboard/main$', admin_views.data_dashboard_main_view, name='sparta-data-dashboard-main'),
     url(r'^sparta/admin/dashboard/profiles$', admin_views.data_dashboard_profiles_view, name='sparta-data-dashboard-profiles'),
     url(r'^sparta/admin/dashboard/education/credentials$', admin_views.data_dashboard_education_credentials_view, name='sparta-data-dashboard-education-credentials'),
