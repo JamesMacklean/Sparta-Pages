@@ -350,6 +350,13 @@ def admin_approve_unenrollment_view(request, username):
     if not request.user.is_staff:
         raise HttpResponse(status=500)
 
+    try:
+        app = PathwayApplication.objects.get(username=username)
+    except PathwayApplication.DoesNotExist:
+        raise HttpResponse(status=500)
+    else:
+        app.approve()
+        
     return redirect('sparta-admin-inactivity')
 
 @require_POST
