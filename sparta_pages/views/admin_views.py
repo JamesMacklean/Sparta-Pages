@@ -200,8 +200,7 @@ def admin_inactivity(request):
                     "username": e.user.username,
                     "pathway": pathway,
                     "access_date": check_date.strftime("%Y-%m-%d"),
-                    "course_id": course_key,
-                })
+                    })
 
     #For exporting to CSV file
     #context['form'] = GenerateCourseForm()
