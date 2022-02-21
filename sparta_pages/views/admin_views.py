@@ -346,7 +346,7 @@ def export_pathway_applications_to_csv(apps):
     return response
 
 @require_POST
-def admin_approve_unenrollment_view(request, id):
+def admin_approve_unenrollment_view(request, username):
     if not request.user.is_staff:
         raise HttpResponse(status=500)
 
