@@ -251,6 +251,25 @@ class ExportAppsForm(forms.Form):
     )
     selection = forms.ChoiceField(choices=CHOICES)
 
+class GenerateCourseForm(forms.Form):
+    """
+    """
+    SP101 = "course-v1:DAP+SP101+2020_Q1"
+    SP201 = "course-v1:DAP+SP201+2020_Q1"
+    SP202 = "course-v1:DAP+SP202+2020_Q1"
+    SP301 = "course-v1:DAP+SP301+2020_Q1"
+    SP401 = "course-v1:CirroLytix+CX101+2019_T4"
+    SP501 = "course-v1:DAP+SP501+2020_Q1"
+    
+    CHOICES = (
+        (SP202, "SP202"),
+        (SP101, "SP101"),
+        (SP201, "SP201"),
+        (SP301, "SP301"),
+        (SP401, "SP401"),
+        (SP501, "SP501")
+    )
+    course = forms.ChoiceField(choices=CHOICES)
 
 class ExportProfilesForm(forms.Form):
     """

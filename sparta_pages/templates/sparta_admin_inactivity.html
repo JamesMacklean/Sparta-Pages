@@ -1,0 +1,81 @@
+{% extends "sparta_base.html" %}
+{% load static %}
+
+{% block title %} Coursebank | SPARTA | Admin | Inactivity {% endblock %}
+
+
+{% block sparta_body %}
+<form action="{% url 'sparta-admin-inactivity' %}" method="get">
+  {% csrf_token %}
+  {{ generate_form }}
+  <input type="submit" value="Generate" />
+</form>
+
+<form action="" method="post">
+  {% csrf_token %}
+  {{ generate_form }}
+  <input type="submit" value="Export to CSV" />
+</form>
+
+<div class="card">
+  <div class="card-body">
+    <h2>Six Months Unfinished Courses</h2>
+    <table class="table table-hover table-sm">
+      <thead>
+        <tr>
+          <th scope="col">Username</th>
+          <th scope="col">Email</th>
+          <th scope="col">Full Name</th>
+          <th scope="col">Pathway</th>
+          <th scope="col">Initial Access Date</th>
+          <th scope="col">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for a in user_list %}
+        <tr>
+          <td>{{ a.name }}</td>
+          <td>{{ a.email }}</td>
+          <td>{{ a.username }}</td>
+          <td>{{ a.pathway }}</td>
+          <td>{{ a.access_date }}</td>
+          <td><input type="checkbox" checked/></td>
+        </tr>
+
+
+        {% endfor %}
+        <tr>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td><div type="div" class="btn btn-outline-success btn-sm" style="cursor: pointer" data-toggle="modal" data-target="#approveModal">Unenroll</div></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-body">
+    <h2>Unenrolled Learners</h2>
+    <table class="table table-hover table-sm">
+      <thead>
+        <tr>
+          <th scope="col">Username</th>
+          <th scope="col">Email</th>
+          <th scope="col">Full Name</th>
+          <th scope="col">Pathway</th>
+          <th scope="col">Initial Access Date</th>
+          <th scope="col">Status</th>
+          <th scope="col">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{% endblock %}

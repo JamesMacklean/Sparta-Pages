@@ -1481,7 +1481,6 @@ def export_organizational_progress(email_address=None, date_from=None, date_to=N
                     finished += 1
 
             user_list.append({
-                "profile_id": p.id,
                 "name": p.full_name,
                 "username": p.user.username,
                 "email": p.user.email,
@@ -1495,7 +1494,6 @@ def export_organizational_progress(email_address=None, date_from=None, date_to=N
             })
         else:
             user_list.append({
-                "profile_id": p.id,
                 "name": p.full_name,
                 "username": p.user.username,
                 "email": p.user.email,
@@ -1512,7 +1510,6 @@ def export_organizational_progress(email_address=None, date_from=None, date_to=N
     with open(file_name, mode='wb') as csv_file:
         writer = unicodecsv.writer(csv_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL,  encoding='utf-8')
         writer.writerow([
-            'profile_id',
             'name',
             'username',
             'email',
@@ -1527,7 +1524,6 @@ def export_organizational_progress(email_address=None, date_from=None, date_to=N
 
         for u in user_list:
             writer.writerow([
-                u['profile_id'],
                 u['name'],
                 u['username'],
                 u['email'],

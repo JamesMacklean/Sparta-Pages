@@ -455,6 +455,7 @@ class EducationProfile(models.Model):
     started_at = models.DateField()
     graduated_at = models.DateField()
 
+
     class Meta:
         verbose_name_plural = "5. Education Profiles"
 
