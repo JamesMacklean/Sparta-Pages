@@ -1371,13 +1371,13 @@ def export_graduation_candidates(path_way=None, email_address=None, date_from=No
 
                 if path_way:
                     for pathcourse in core_courses:
-                        if unicode(course_key) == unicode(pathcourse) and cert is not None:
+                        if six.text_type(course_key) == six.text_type(pathcourse) and cert is not None:
                            date_completed = cert['created'].strftime('%Y-%m-%dT%H:%M:%S.000Z')
                            certdate_list.append(date_completed)
                            core_count += 1
 
                     for pathcourse in elective_courses:
-                        if unicode(course_key) == unicode(pathcourse) and cert is not None:
+                        if six.text_type(course_key) == six.text_type(pathcourse) and cert is not None:
                            date_completed = cert['created'].strftime('%Y-%m-%dT%H:%M:%S.000Z')
                            certdate_list.append(date_completed)
                            elect_count += 1

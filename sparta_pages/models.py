@@ -49,7 +49,7 @@ class SpartaCourse(models.Model):
     )
     short_description = models.CharField(max_length=255, blank=True, default="")
     long_description = models.TextField(blank=True, default="")
-    image_url = models.CharField(max_length=255, default="https://coursebank-static-assets.s3-ap-northeast-1.amazonaws.com/sparta+black.png")
+    image_url = models.CharField(max_length=255, default="https://coursebank-static-assets-tmtg.s3-ap-northeast-1.amazonaws.com/sparta+black.png")
     order = models.PositiveSmallIntegerField(default=0)
     display_order = models.CharField(max_length=255, blank=True, default="")
     group = models.ForeignKey(
@@ -141,6 +141,10 @@ class SpartaProfile(models.Model):
     PCCI = "PI"
     VSU = "VS"
     SMC = "SM"
+    DTICIG = "DT"
+    SPH = "SP"
+    ISCF = "IC"
+    DAPCOSM = "Development Academy of the Philippines-COSM"
     NOT_INVOLVED = "NA"
     ORG_CHOICES = (
         (NOT_INVOLVED, "N/A"),
@@ -169,7 +173,11 @@ class SpartaProfile(models.Model):
         (BPDA, "Bangsamoro Planning and Development Authority (BPDA)"),
         (PCCI, "Philippine Chamber of Commerce and Industry (PCCI)"),
         (VSU, "Visayas State University (VSU)"),
-        (SMC, "St. Martin of Tours Credit and Development Cooperative (St. Martin Coop)")
+        (SMC, "St. Martin of Tours Credit and Development Cooperative (St. Martin Coop)"),
+	(DTICIG,"Department of Trade and Industry-Competitiveness and Innovation Group"),
+	(SPH,"Shopee Philippines"),
+	(ISCF,"Iloilo State College of Fisheries"),
+        (DAPCOSM,"Development Academy of the Philippines-COSM")
     )
 
     ANZ = "AN"

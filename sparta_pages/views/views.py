@@ -106,7 +106,6 @@ def pathway(request, slug):
             context['graduate_course'] = {'courseoverview': cap_course_overview}
         except CourseOverview.DoesNotExist:
             context['graduate_course'] = None
-        context['graduate_course'] = None
     elif slug == "data-steward":
         try:
             cap_course_key = CourseKey.from_string("course-v1:DAP+SPCapstone005+2021_Q3")
@@ -115,7 +114,12 @@ def pathway(request, slug):
         except CourseOverview.DoesNotExist:
             context['graduate_course'] = None
     elif slug == "data-engineer":
-        context['graduate_course'] = None
+        try:
+            cap_course_key = CourseKey.from_string("course-v1:DAP+SPCapstone004+2022_Q1")
+            cap_course_overview = CourseOverview.get_from_id(cap_course_key)
+            context['graduate_course'] = {'courseoverview': cap_course_overview}
+        except CourseOverview.DoesNotExist:
+            context['graduate_course'] = None
     elif slug == "data-scientist":
         context['graduate_course'] = None
     elif slug == "analytics-manager":
@@ -370,7 +374,7 @@ class RegisterTrainingProfileView(View):
 
 def upload_to_s3(user, proof_of_education_file, proof_of_agreement_file=None):
     """"""
-    BUCKET_NAME = "openedx-coursebank-sparta-eligibility-documents"
+    BUCKET_NAME = "openedx-coursebank-sparta-eligibility-documents-tmtg"
     c = s3.connection.S3Connection(
         settings.AWS_ACCESS_KEY_ID,
         settings.AWS_SECRET_ACCESS_KEY

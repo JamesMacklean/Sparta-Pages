@@ -152,7 +152,8 @@ def admin_inactivity(request):
     template_name = "sparta_admin_inactivity.html"
     context = {}
 
-    course_key = "course-v1:DAP+SP202+2020_Q1"
+    course_key = request.GET.get('course', None)
+
     tnow = datetime.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
 
     sec = 183*24*60*60
@@ -164,7 +165,6 @@ def admin_inactivity(request):
     ).select_related('user','user__sparta_profile').prefetch_related('spartareenrollment_set','user__sparta_profile__applications')
 
     user_list = []
-    
     for e in enrollments:
         cert = get_certificate_for_user(e.user.username, course_key)
         if cert is not None:
@@ -176,8 +176,7 @@ def admin_inactivity(request):
         except SpartaProfile.DoesNotExist:
             continue
 
-        applications = PathwayApplication.objects.all().filter(status='AP')
-        #applications = profile.applications.filter(status="AP")
+        applications = profile.applications.filter(status="AP")
 
         if applications.exists():
             application = applications.order_by('-created_at').last()
@@ -185,8 +184,7 @@ def admin_inactivity(request):
         else:
             pathway = ""
 
-        reenrollments = SpartaReEnrollment.objects.filter(enrollment=e)
-        #reenrollments = e.spartareenrollment_set.all()
+        reenrollments = e.spartareenrollment_set.all()
         if reenrollments.exists():
             lastest_reenrollment = reenrollments.order_by('-reenroll_date').first()
             check_date = lastest_reenrollment.reenroll_date
@@ -201,23 +199,32 @@ def admin_inactivity(request):
                     "email": e.user.email,
                     "username": e.user.username,
                     "pathway": pathway,
-                    "access date": check_date.strftime("%Y-%m-%d"),
-                })
+                    "access_date": check_date.strftime("%Y-%m-%d"),
+                    })
 
-    context['form'] = GenerateCourseForm()
-    #context['user_list'] = user_list
-
+    context['course_key'] = GenerateCourseForm.course
+    context['user_list'] = user_list
+    context['generate_form'] = GenerateCourseForm(request.GET or None)
+    context['csv_form'] = GenerateCourseForm
+    
     if request.method == "POST":
         form = GenerateCourseForm(request.POST)
         if form.is_valid():
             
-            #course_id = form.cleaned_data['course']
-            #course_key = CourseKey.from_string(course_id)
+            course_id = form.cleaned_data['course']
             
-            return export_six_months_to_csv(course_key)
+            return export_six_months_to_csv(course_id)
 
     return render(request, template_name, context)
  
+@require_POST
+def admin_six_months_unenroll(request, id):
+    if not request.user.is_staff:
+        raise HttpResponse(status=500)
+
+
+    return redirect('sparta-admin-inactivity')
+
 def export_six_months_to_csv(course_key):
     
     tnow = datetime.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
@@ -245,8 +252,7 @@ def export_six_months_to_csv(course_key):
         except SpartaProfile.DoesNotExist:
             continue
 
-        applications = PathwayApplication.objects.all().filter(status='AP')
-        #applications = profile.applications.filter(status="AP")
+        applications = profile.applications.filter(status="AP")
 
         if applications.exists():
             application = applications.order_by('-created_at').last()
@@ -254,8 +260,7 @@ def export_six_months_to_csv(course_key):
         else:
             pathway = ""
 
-        reenrollments = SpartaReEnrollment.objects.filter(enrollment=e)
-        #reenrollments = e.spartareenrollment_set.all()
+        reenrollments = e.spartareenrollment_set.all()
         if reenrollments.exists():
             lastest_reenrollment = reenrollments.order_by('-reenroll_date').first()
             check_date = lastest_reenrollment.reenroll_date
@@ -270,7 +275,7 @@ def export_six_months_to_csv(course_key):
                     "email": e.user.email,
                     "username": e.user.username,
                     "pathway": pathway,
-                    "access date": check_date.strftime("%Y-%m-%d"),
+                    "access_date": check_date.strftime("%Y-%m-%d"),
                 })
 
     writer = unicodecsv.writer(response, encoding='utf-8')
@@ -288,7 +293,7 @@ def export_six_months_to_csv(course_key):
             u['email'],
             u['username'],
             u['pathway'],
-            u['access date'],
+            u['access_date'],
         ]) 
 
     return response
@@ -336,6 +341,13 @@ def export_pathway_applications_to_csv(apps):
             ])
 
     return response
+
+@require_POST
+def admin_approve_unenrollment_view(request, username):
+    if not request.user.is_staff:
+        raise HttpResponse(status=500)
+
+    return redirect('sparta-admin-inactivity')
 
 @require_POST
 def admin_approve_application_view(request, id):
