@@ -216,14 +216,6 @@ def admin_inactivity(request):
             return export_six_months_to_csv(course_id)
 
     return render(request, template_name, context)
- 
-@require_POST
-def admin_six_months_unenroll(request, id):
-    if not request.user.is_staff:
-        raise HttpResponse(status=500)
-
-
-    return redirect('sparta-admin-inactivity')
 
 def export_six_months_to_csv(course_key):
     
@@ -343,7 +335,7 @@ def export_pathway_applications_to_csv(apps):
     return response
 
 @require_POST
-def admin_approve_unenrollment_view(request, username):
+def admin_approve_unenrollment_view(request, username, course_key):
     if not request.user.is_staff:
         raise HttpResponse(status=500)
 
