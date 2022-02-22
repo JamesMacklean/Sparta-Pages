@@ -34,9 +34,9 @@
       <tbody>
         {% for a in user_list %}
         <tr>
-          <td>{{ a.name }}</td>
-          <td>{{ a.email }}</td>
           <td>{{ a.username }}</td>
+          <td>{{ a.email }}</td>
+          <td>{{ a.name }}</td>
           <td>{{ a.pathway }}</td>
           <td>{{ a.access_date }}</td>
           <td><div type="div" class="btn btn-outline-success btn-sm" style="cursor: pointer" data-toggle="modal" data-target="#approveModal">Unenroll</div></td>
