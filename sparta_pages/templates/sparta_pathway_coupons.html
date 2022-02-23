@@ -1,3 +1,4 @@
+{% extends "sparta_base.html" %}
 {% load static %}
 
 {% block title %}Coursebank | SPARTA | Your Enrollment Codes{% endblock %}
@@ -32,14 +33,14 @@
       </thead>
 
       <tbody>
-        {% if coupons %}
-        {% for coupon in coupons %}
+        {% if courses %}
+        {% for course in courses%}
         <tr>
-          <td>{{ coupon.courseoverview.display_name }}</td>
+          <td>{{ course.name }}</td>
           <td></td>
           <td>
-            <a class="btn btn-primary" target="_blank" href="{% url 'about_course' course_id=coupon.courseoverview.id %}">
-              View Course
+            <a class="btn btn-primary" target="_blank" href="{% url 'about_course' course_id=course.id %}">
+              Enroll
             </a>
           </td>
         </tr>
@@ -47,7 +48,7 @@
         {% else %}
         <tr>
           <td>-</td>
-          <td>-</td>
+          <td></td>
           <td>-</td>
         </tr>
         {% endif %}

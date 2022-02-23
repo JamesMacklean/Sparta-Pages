@@ -39,6 +39,7 @@
       <p>To enroll and take Sparta courses for free, you must apply for Pathways and get enrollment access to their corresponding courses. Once you apply and get accepted for a Pathway, you will receive an email with instructions on how to access the courses of the Pathway you applied for.</p>
       <p><a target="blank" href="{% url 'sparta-main' %}">(Click here for details about Sparta Pathways)</a></p>
 
+      {% if not max_applied %}
       <table style="width: 70%; text-align: center;">
         <thead>
           <tr>
@@ -47,11 +48,9 @@
             <th>TBA</th>
           </tr>
         </thead>
-
         <tbody>
           {% if applications %}
           {% for app in applications %}
-          {% if not max_applied %}
           <tr>
             <td>
               <a style="cursor: pointer" target="blank" href="/sparta/">Learn More</a>
@@ -96,13 +95,15 @@
             </div>
             {% else %}
             <td>{{ app.get_status_display }}</td>
+            <td>{{ app.get_status_display }}</td>
+            <td>{{ app.get_status_display }}</td>
             {% endif %}
           </tr>
           {% endif %}
           {% endfor %}
-          {% endif %}
         </tbody>
       </table>
+      {% endif %}
     </div>
     <div id="Courses" class="tabcontent">
       {% include "sparta_pathway_coupons.html" %}
