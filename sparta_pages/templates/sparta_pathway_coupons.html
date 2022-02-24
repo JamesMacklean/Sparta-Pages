@@ -39,7 +39,7 @@
           <td>{{ course.name }}</td>
           <td></td>
           <td>
-            <a class="btn btn-primary" target="_blank" href="{% url 'about_course' course_id=course.id %}">
+            <a class="btn btn-primary" target="_blank" href="{% url 'about_course' course_id=course.courseoverview.id %}">
               Enroll
             </a>
           </td>
