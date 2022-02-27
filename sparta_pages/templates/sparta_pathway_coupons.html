@@ -27,20 +27,20 @@
       <thead class="thead-light">
         <tr>
           <th>Course</th>
-          <th> </th>
+          <th>Coupon Code</th>
           <th>Actions</th>
         </tr>
       </thead>
 
       <tbody>
-        {% if courses %}
-        {% for course in courses%}
+        {% if coupons %}
+        {% for coupon in coupons %}
         <tr>
-          <td>{{ course.name }}</td>
-          <td></td>
+          <td>{{ coupon.courseoverview.display_name }}</td>
+          <td>{{ coupon.coupon_code }}</td>
           <td>
-            <a class="btn btn-primary" target="_blank" href="{% url 'about_course' course_id=course.courseoverview.id %}">
-              Enroll
+            <a class="btn btn-primary" target="_blank" href="{% url 'about_course' course_id=coupon.courseoverview.id %}">
+              View Course
             </a>
           </td>
         </tr>
@@ -48,7 +48,7 @@
         {% else %}
         <tr>
           <td>-</td>
-          <td></td>
+          <td>-</td>
           <td>-</td>
         </tr>
         {% endif %}
