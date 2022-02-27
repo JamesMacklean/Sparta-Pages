@@ -19,56 +19,47 @@
 
 {% else %}
 <div class="tab col col-2">
-  <div class="tablinks btn btn-outline-info" onclick="openTab(event, 'ScholarProfile')">Scholarship Profile</div>
-  <div class="tablinks btn btn-outline-info" onclick="openTab(event, 'LearningPathways')">Pathway Applications</div>
-  <div class="tablinks btn btn-outline-info" onclick="openTab(event, 'Courses')">Courses</div>
+  <div class="tablinks btn btn-outline-info" onclick="openTab(event, 'LearningPathways')">Learning Pathways</div>
+  <div class="tablinks btn btn-outline-info" onclick="openTab(event, 'ScholarProfile')">Scholar Profile</div>
 </div>
 
 <div class="card col col-10">
   <div class="card-body">
 
-    <div id="ScholarProfile" class="tabcontent">
-      {% include "sparta_scholar_profile.html" %}
-     </div>
-
-     <div id="LearningPathways" class="tabcontent">
-      <h2 class="card-title">Applications</h2>
-
-
+    <div id="LearningPathways" class="tabcontent">
+      <h2 class="card-title">Your Learning Pathways</h2>
 
       <p>To enroll and take Sparta courses for free, you must apply for Pathways and get enrollment access to their corresponding courses. Once you apply and get accepted for a Pathway, you will receive an email with instructions on how to access the courses of the Pathway you applied for.</p>
       <p><a target="blank" href="{% url 'sparta-main' %}">(Click here for details about Sparta Pathways)</a></p>
 
-      {% if not max_applied %}
-      <table style="width: 70%; text-align: center;">
-        <thead>
+      <table class="table">
+        <thead class="thead-light">
           <tr>
-            <th>SPARTA</th>
-            <th>DICT</th>
-            <th>TBA</th>
+            <th>Pathway</th>
+            <th>Status</th>
+            <th>Actions</th>
           </tr>
         </thead>
+
         <tbody>
           {% if applications %}
           {% for app in applications %}
           <tr>
+            <td>{{ app.pathway }}</td>
+            <td>{{ app.get_status_display }}</td>
+            {% if app.status == 'AP' %}
             <td>
-              <a style="cursor: pointer" target="blank" href="/sparta/">Learn More</a>
+              <div class="dropdown show">
+                <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink{{app.pathway.id}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> </a>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink{{app.pathway.id}}">
+                  <a class="dropdown-item" href="{% url 'sparta-pathway-progress' pathway_id=app.pathway.id %}">View Progress</a>
+                  <a class="dropdown-item" href="{% url 'sparta-pathway-coupons' pathway_id=app.pathway.id %}">Enrollment Codes</a>
+                </div>
+              </div>
             </td>
-            <td>
-              <a style="cursor: pointer" target="blank" href="https://dict.coursebank.ph">Learn More</a>
-            </td>
-            <td>
-              <a style="cursor: pointer" target="blank" href="#">Learn More</a>
-            </td>
-          </tr>
-          <tr>
-            <div type="div" class="btn btn-primary" style="cursor: pointer" target="blank" href="/sparta/application-page">Apply</div>
-            <div type="div" class="btn btn-primary" style="cursor: pointer" target="blank" href="/dict/application-page">Apply</div>
-            <div type="div" class="btn btn-primary" style="cursor: pointer" target="blank" href="#">Apply</div>
-          </tr>
-          {% if app.status == 'PE' %}
-          <tr>
+            {% elif app.status == 'DE' %}
+            <td>-</td>
+            {% else %}
             <td><div type="div" class="btn btn-outline-secondary" style="cursor: pointer" data-toggle="modal" data-target="#withdrawModal">Withdraw</div></td>
             <!-- Modal Block -->
             <div class="modal fade" id="withdrawModal" tabindex="-1" role="dialog" aria-labelledby="withdrawModalLabel" aria-hidden="true">
@@ -93,19 +84,28 @@
                 </div>
               </div>
             </div>
-            {% else %}
-            <td>{{ app.get_status_display }}</td>
             {% endif %}
           </tr>
-          {% endif %}
           {% endfor %}
+          {% else %}
+          <tr>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+          </tr>
+          {% endif %}
         </tbody>
       </table>
+
+      {% if not max_applied %}
+        <a class="btn btn-primary" href="{% url 'sparta-application-page' %}">Apply for a pathway</a>
       {% endif %}
     </div>
-    <div id="Courses" class="tabcontent">
-      {% include "sparta_pathway_coupons.html" %}
+
+    <div id="ScholarProfile" class="tabcontent">
+      {% include "sparta_scholar_profile.html" %}
     </div>
+
   </div>
 </div>
 
