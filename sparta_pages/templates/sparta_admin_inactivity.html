@@ -28,7 +28,7 @@
           <th scope="col">Full Name</th>
           <th scope="col">Pathway</th>
           <th scope="col">Initial Access Date</th>
-          <th scope="col">Action</th>
+          <th scope="col">Select All <input type="checkbox" checked/></th>
         </tr>
       </thead>
       <tbody>
@@ -51,14 +51,9 @@
                     <span aria-hidden="true">&times;</span>
                   </div>
                 </div>
-                <div class="modal-body" id="prompt">
+                <div class="modal-body">
                   Are you sure you want to unenroll {{ a.username }} in {{ course_key }}? 
                 </div>
-                <script>
-                  let length =  a.username.length;          
-                  document.getElementById("prompt").innerHTML = length;
-                </script>
-                
                 <div class="modal-footer">
                   <form action="{% url 'sparta-unenrollment-approve' username=a.username course_key=course_key %}" method="POST">
                     {% csrf_token %}
