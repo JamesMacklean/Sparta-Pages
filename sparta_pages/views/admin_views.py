@@ -203,9 +203,11 @@ def admin_inactivity(request):
                     "access_date": check_date.strftime("%Y-%m-%d"),
                     })
                 
-                for counted_user in user_list:
-                    e.user.username 
-                    context['user_count'] = collections.Counter(counted_user)   
+                for i in user_list:
+                    e.user.username
+                    i+1
+                
+                context['user_count'] = i
 
     
         
