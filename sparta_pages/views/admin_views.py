@@ -203,12 +203,12 @@ def admin_inactivity(request):
                     "access_date": check_date.strftime("%Y-%m-%d"),
                     })
                 
-                i=0
+                total_learners=0
                 for counted_user in user_list:
                     e.user.username
-                    i + 1
+                    total_learners = total_learners + 1
                 
-                context['user_count'] = i
+                context['user_count'] = total_learners
 
     
         
