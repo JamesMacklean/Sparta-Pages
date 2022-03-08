@@ -4,13 +4,14 @@
 {% block title %} Coursebank | SPARTA | Admin | Inactivity {% endblock %}
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script>
+<script type="text/javascript">
   $ (document).ready(function(){
     $("#select_all").click(function(){
-      $('#unenrollees_array input[type="checkbox"]').prop('checked',this.checked);
+      $(".choices").prop('checked', $ (this).prod('checked'));
     });
   });
 </script>
+
 {% block sparta_body %}
 <form action="{% url 'sparta-admin-inactivity' %}" method="get">
   {% csrf_token %}
@@ -46,7 +47,7 @@
           <td>{{ a.name }}</td>
           <td>{{ a.pathway }}</td>
           <td>{{ a.access_date }}</td>
-          <td><input type="checkbox"/></td>
+          <td><input type="checkbox" class="choices"/></td>
 
           <!-- Modal Block -->
           <div class="modal fade" id="approveModal" tabindex="-1" role="dialog" aria-labelledby="approveModalLabel" aria-hidden="true">
@@ -59,7 +60,7 @@
                   </div>
                 </div>
                 <div class="modal-body">
-                  Are you sure you want to unenroll a total of {{ user_count }} learners in {{ course_key }}? 
+                  Are you sure you want to unenroll a total of {{ user_count }} learner/s in {{ course_key }}? 
                 </div>
                 <div class="modal-footer">
                   <form action="{% url 'sparta-unenrollment-approve' username=a.username course_key=course_key %}" method="POST">
@@ -82,7 +83,6 @@
           <td>-</td>
           <td><div type="div" class="btn btn-outline-success btn-sm" style="cursor: pointer" data-toggle="modal" data-target="#approveModal">Unenroll</div></td>
         </tr>
-        <span id="selector_result"></span>
       </tbody>
     </table>
   </div>
