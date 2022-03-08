@@ -6,8 +6,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script>
   var checkboxes = document.querySelectorAll("input[type = 'checkbox']");
-  
-  $ (document).ready(function checkAll(checkbox){
+  function checkAll(checkbox){
       if(checkbox.checked == true){
         checkboxes.forEach(function(box){
           box.checked = true;
@@ -17,7 +16,7 @@
           box.checked = false;
         });
       }
-  });
+  };
 </script>
 
 {% block sparta_body %}
