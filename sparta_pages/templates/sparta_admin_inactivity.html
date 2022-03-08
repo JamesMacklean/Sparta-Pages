@@ -4,10 +4,10 @@
 {% block title %} Coursebank | SPARTA | Admin | Inactivity {% endblock %}
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script type="text/javascript">
+<script>
   $ (document).ready(function(){
     $("#select_all").click(function(){
-      $(".choices").prop('checked', $ (this).prod('checked'));
+      $(".card .choices").prop('checked', $ (this).prod('checked'));
     });
   });
 </script>
@@ -41,7 +41,7 @@
       </thead>
       <tbody>
         {% for a in user_list %}
-        <tr id="unenrollees_array">
+        <tr>
           <td>{{ a.username }}</td>
           <td>{{ a.email }}</td>
           <td>{{ a.name }}</td>
