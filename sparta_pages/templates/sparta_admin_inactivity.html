@@ -34,7 +34,7 @@
       <tbody>
         {% for a in user_list %}
         <tr>
-          <td>{{ a.username.length }}</td>
+          <td>{{ a.username }}</td>
           <td>{{ a.email }}</td>
           <td>{{ a.name }}</td>
           <td>{{ a.pathway }}</td>
@@ -51,9 +51,14 @@
                     <span aria-hidden="true">&times;</span>
                   </div>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body" id="prompt">
                   Are you sure you want to unenroll {{ a.username }} in {{ course_key }}? 
                 </div>
+                <script>
+                  let length =  a.username.length;          
+                  document.getElementById("prompt").innerHTML = length;
+                </script>
+                
                 <div class="modal-footer">
                   <form action="{% url 'sparta-unenrollment-approve' username=a.username course_key=course_key %}" method="POST">
                     {% csrf_token %}
