@@ -19,13 +19,13 @@
 </form>
 
 <script>
-$(document).ready("DOMContentLoaded", function sellect_all(master,cn){
+"DOMContentLoaded", function sellect_all(master,cn){
   var cbarray = document.getElementsByClassName(cn);
   for (var i = 0; i < cbarray.length; i++){
     var cb = document.getElementById(cbarray[i].id);
     cb.checked = master.checked;
   }
-});
+}
 
 </script>
 
@@ -40,7 +40,7 @@ $(document).ready("DOMContentLoaded", function sellect_all(master,cn){
           <th scope="col">Full Name</th>
           <th scope="col">Pathway</th>
           <th scope="col">Initial Access Date</th>
-          <th scope="col"><input type="checkbox" id="unenroll_checkbox_master" onchange="sellect_all(this,'unenroll_checkbox')"/></th>
+          <th scope="col"><input type="checkbox" id="unenroll_checkbox_master" onchange="sellect_all(this,'unenroll_checkbox')"/> Select All</th>
         </tr>
       </thead>
       <tbody>
