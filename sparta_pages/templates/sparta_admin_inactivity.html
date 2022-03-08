@@ -3,7 +3,14 @@
 
 {% block title %} Coursebank | SPARTA | Admin | Inactivity {% endblock %}
 
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+  $ (document).ready(function(){
+    $("#select_all").click(function(){
+      $('#unenrollees_array input[type="checkbox"]').prop('checked',this.checked);
+    });
+  });
+</script>
 {% block sparta_body %}
 <form action="{% url 'sparta-admin-inactivity' %}" method="get">
   {% csrf_token %}
@@ -17,7 +24,6 @@
   <input type="submit" value="Export to CSV" />
 </form>
 
-
 <div class="card">
   <div class="card-body">
     <h2>Six Months Unfinished Courses</h2>
@@ -29,18 +35,18 @@
           <th scope="col">Full Name</th>
           <th scope="col">Pathway</th>
           <th scope="col">Initial Access Date</th>
-          <th scope="col">Select All <input type="checkbox"/></th>
+          <th scope="col">Select All <input type="checkbox" id="select_all"/></th>
         </tr>
       </thead>
       <tbody>
         {% for a in user_list %}
-        <tr>
+        <tr id="unenrollees_array">
           <td>{{ a.username }}</td>
           <td>{{ a.email }}</td>
           <td>{{ a.name }}</td>
           <td>{{ a.pathway }}</td>
           <td>{{ a.access_date }}</td>
-          <td><input type="checkbox" id="selection"/></td>
+          <td><input type="checkbox"/></td>
 
           <!-- Modal Block -->
           <div class="modal fade" id="approveModal" tabindex="-1" role="dialog" aria-labelledby="approveModalLabel" aria-hidden="true">
