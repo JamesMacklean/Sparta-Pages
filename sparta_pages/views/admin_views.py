@@ -203,11 +203,11 @@ def admin_inactivity(request):
                     "access_date": check_date.strftime("%Y-%m-%d"),
                     })
 
-        for u in user_list:
+        for counted_user in user_list:
             e.user.username
-        collections.Counter(u)
+        
 
-    context['user_count'] = u
+    context['user_count'] = collections.Counter(counted_user)
     context['course_key'] = course_key
     context['user_list'] = user_list
     context['generate_form'] = GenerateCourseForm(request.GET or None)
