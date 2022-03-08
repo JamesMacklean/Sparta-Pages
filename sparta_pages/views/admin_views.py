@@ -204,12 +204,13 @@ def admin_inactivity(request):
                     })
                 
                 for counted_user in user_list:
-                    e.user.username    
+                    e.user.username 
+                    context['user_count'] = collections.Counter(counted_user)   
 
     
         
 
-    context['user_count'] = collections.Counter(counted_user)
+    
     context['course_key'] = course_key
     context['user_list'] = user_list
     context['generate_form'] = GenerateCourseForm(request.GET or None)
