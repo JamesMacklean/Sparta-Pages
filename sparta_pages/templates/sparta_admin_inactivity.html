@@ -5,10 +5,18 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script>
-  $ (document).ready(function(){
-    $("#select_all").click(function(){
-      $(".choices").prop('checked', $ (this).prod('checked'));
-    });
+  var checkboxes = document.querySelectorAll("input[type = 'checkbox']");
+  
+  $ (document).ready(function checkAll(checkbox){
+      if(checkbox.checked == true){
+        checkboxes.forEach(function(box){
+          box.checked = true;
+        });
+      } else {
+        checkboxes.forEach(function(box){
+          box.checked = false;
+        });
+      }
   });
 </script>
 
@@ -36,7 +44,7 @@
           <th scope="col">Full Name</th>
           <th scope="col">Pathway</th>
           <th scope="col">Initial Access Date</th>
-          <th scope="col">Select All <input type="checkbox" id="select_all"/></th>
+          <th scope="col">Select All <input type="checkbox" id="select-all" onchange="checkAll(this)"/></th>
         </tr>
       </thead>
       <tbody>
