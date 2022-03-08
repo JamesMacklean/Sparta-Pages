@@ -19,13 +19,15 @@
 </form>
 
 <script>
-"DOMContentLoaded", function sellect_all(master,cn){
+$(document).ready("DOMContentLoaded",function sellect_all(master,cn){
   var cbarray = document.getElementsByClassName(cn);
   for (var i = 0; i < cbarray.length; i++){
     var cb = document.getElementById(cbarray[i].id);
     cb.checked = master.checked;
   }
-}
+
+  $("#unenroll_checkbox_master").click(sellect_all);
+});
 
 </script>
 
