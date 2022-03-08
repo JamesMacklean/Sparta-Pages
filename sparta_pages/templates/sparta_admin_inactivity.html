@@ -19,14 +19,10 @@
 </form>
 
 <script>
-$(document).ready("DOMContentLoaded",function sellect_all(master,cn){
-  var cbarray = document.getElementsByClassName(cn);
-  for (var i = 0; i < cbarray.length; i++){
-    var cb = document.getElementById(cbarray[i].id);
-    master.checked = cb.checked;
-  }
-
-  $("#unenroll_checkbox_master").click(sellect_all);
+$(document).ready(function(){
+  $('#checkbox_all').click(function(){
+    $(".unenroll_checkbox").prop('checked', $ (this).prod('checked'));
+  });
 });
 
 </script>
@@ -42,7 +38,7 @@ $(document).ready("DOMContentLoaded",function sellect_all(master,cn){
           <th scope="col">Full Name</th>
           <th scope="col">Pathway</th>
           <th scope="col">Initial Access Date</th>
-          <th scope="col"><input type="checkbox" id="unenroll_checkbox_master" onchange="sellect_all(this,'unenroll_checkbox')"/> Select All</th>
+          <th scope="col"><input type="checkbox" id="checkbox_all"/> Select All</th>
         </tr>
       </thead>
       <tbody>
