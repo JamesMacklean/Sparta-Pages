@@ -52,9 +52,11 @@
                   </div>
                 </div>
                 <div class="modal-body">
-                  <script>let username_count =  a.username.length;</script>
                   Are you sure you want to unenroll {{ username_count }} in {{ course_key }}? 
                 </div>
+                <script>let username_count =  a.username.length;
+                  document.getElementsByClassName("modal-body").innerHTML = username_count;
+                </script>
                 <div class="modal-footer">
                   <form action="{% url 'sparta-unenrollment-approve' username=a.username course_key=course_key %}" method="POST">
                     {% csrf_token %}
