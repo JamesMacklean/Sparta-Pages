@@ -17,6 +17,7 @@
   <input type="submit" value="Export to CSV" />
 </form>
 
+
 <div class="card">
   <div class="card-body">
     <h2>Six Months Unfinished Courses</h2>
@@ -28,7 +29,7 @@
           <th scope="col">Full Name</th>
           <th scope="col">Pathway</th>
           <th scope="col">Initial Access Date</th>
-          <th scope="col">Select All <input type="checkbox" checked/></th>
+          <th scope="col">Select All <input type="checkbox"/></th>
         </tr>
       </thead>
       <tbody>
@@ -38,8 +39,8 @@
           <td>{{ a.email }}</td>
           <td>{{ a.name }}</td>
           <td>{{ a.pathway }}</td>
-          <td>{{ a.access_date }}</td>
-          <td><input type="checkbox" checked/></td>
+          <td>{{ user_count }}</td>
+          <td><input type="checkbox" id="selection"/></td>
 
           <!-- Modal Block -->
           <div class="modal fade" id="approveModal" tabindex="-1" role="dialog" aria-labelledby="approveModalLabel" aria-hidden="true">
@@ -75,6 +76,7 @@
           <td>-</td>
           <td><div type="div" class="btn btn-outline-success btn-sm" style="cursor: pointer" data-toggle="modal" data-target="#approveModal">Unenroll</div></td>
         </tr>
+        <span id="selector_result"></span>
       </tbody>
     </table>
   </div>
