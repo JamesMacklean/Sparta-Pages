@@ -39,7 +39,7 @@
           <td>{{ a.email }}</td>
           <td>{{ a.name }}</td>
           <td>{{ a.pathway }}</td>
-          <td>{{ user_count }}</td>
+          <td>{{ a.access_date }}</td>
           <td><input type="checkbox" id="selection"/></td>
 
           <!-- Modal Block -->
@@ -53,7 +53,7 @@
                   </div>
                 </div>
                 <div class="modal-body">
-                  Are you sure you want to unenroll {{ a.username }} in {{ course_key }}? 
+                  Are you sure you want to unenroll a total of {{ user_count }} learners in {{ course_key }}? 
                 </div>
                 <div class="modal-footer">
                   <form action="{% url 'sparta-unenrollment-approve' username=a.username course_key=course_key %}" method="POST">

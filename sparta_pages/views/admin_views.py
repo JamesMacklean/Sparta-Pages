@@ -204,10 +204,10 @@ def admin_inactivity(request):
                     })
                 
                 total_learners=0
-                for counted_user in user_list:
+                for to_be_unenrolled in user_list:
                     e.user.username
+                    e.user.email
                     total_learners = total_learners + 1
-                
                 context['user_count'] = total_learners
 
     
