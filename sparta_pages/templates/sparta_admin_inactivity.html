@@ -3,6 +3,7 @@
 
 {% block title %} Coursebank | SPARTA | Admin | Inactivity {% endblock %}
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
 {% block sparta_body %}
 <form action="{% url 'sparta-admin-inactivity' %}" method="get">
@@ -17,6 +18,15 @@
   <input type="submit" value="Export to CSV" />
 </form>
 
+<script>
+$(document).ready(function(){
+  $('#checkbox_all').click(function(){
+    $(".unenroll_checkbox").prop('checked', $ (this).prop('checked'));
+  });
+});
+
+</script>
+
 <div class="card">
   <div class="card-body">
     <h2>Six Months Unfinished Courses</h2>
@@ -28,7 +38,7 @@
           <th scope="col">Full Name</th>
           <th scope="col">Pathway</th>
           <th scope="col">Initial Access Date</th>
-          <th scope="col">Action</th>
+          <th scope="col"><input type="checkbox" id="checkbox_all"/> Select All</th>
         </tr>
       </thead>
       <tbody>
@@ -39,8 +49,8 @@
           <td>{{ a.name }}</td>
           <td>{{ a.pathway }}</td>
           <td>{{ a.access_date }}</td>
-          <td><div type="div" class="btn btn-outline-success btn-sm" style="cursor: pointer" data-toggle="modal" data-target="#approveModal">Unenroll</div></td>
-          <!--<td><input type="checkbox" checked/></td>-->
+          <td><input type="checkbox" class="unenroll_checkbox"/></td>
+
           <!-- Modal Block -->
           <div class="modal fade" id="approveModal" tabindex="-1" role="dialog" aria-labelledby="approveModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
@@ -52,7 +62,7 @@
                   </div>
                 </div>
                 <div class="modal-body">
-                  Are you sure you want to unenroll {{ a.username }} in {{ course_key }}? 
+                  Are you sure you want to unenroll a total of {{ user_count }} learner/s in {{ course_key }}? 
                 </div>
                 <div class="modal-footer">
                   <form action="{% url 'sparta-unenrollment-approve' username=a.username course_key=course_key %}" method="POST">
@@ -66,7 +76,6 @@
           </div>
         </tr>
 
-
         {% endfor %}
         <tr>
           <td>-</td>
@@ -74,6 +83,7 @@
           <td>-</td>
           <td>-</td>
           <td>-</td>
+          <td><div type="div" class="btn btn-outline-success btn-sm" style="cursor: pointer" data-toggle="modal" data-target="#approveModal">Unenroll</div></td>
         </tr>
       </tbody>
     </table>

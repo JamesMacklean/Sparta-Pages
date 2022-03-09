@@ -1,3 +1,4 @@
+import collections
 import csv
 from email.message import EmailMessage
 from socket import SO_BROADCAST
@@ -201,7 +202,18 @@ def admin_inactivity(request):
                     "pathway": pathway,
                     "access_date": check_date.strftime("%Y-%m-%d"),
                     })
+                
+                total_learners=0
+                for to_be_unenrolled in user_list:
+                    e.user.username
+                    e.user.email
+                    total_learners = total_learners + 1
+                context['user_count'] = total_learners
 
+    
+        
+
+    
     context['course_key'] = course_key
     context['user_list'] = user_list
     context['generate_form'] = GenerateCourseForm(request.GET or None)
