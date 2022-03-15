@@ -225,7 +225,7 @@ def admin_inactivity(request):
                 course_id = form.cleaned_data['course']
 
                 for every_user in user_list:
-                    if request.POST.getlist('status') == "true":
+                    #if request.POST.getlist('status') == "true":
                         users_to_unenroll.append({
                             'username': every_user['username'],
                             'email': every_user['email'],
