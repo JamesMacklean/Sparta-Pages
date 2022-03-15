@@ -201,7 +201,6 @@ def admin_inactivity(request):
                     "username": e.user.username,
                     "pathway": pathway,
                     "access_date": check_date.strftime("%Y-%m-%d"),
-                    "unenroll": "false",
                     })
                 
                 total_learners=0

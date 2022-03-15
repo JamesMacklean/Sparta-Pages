@@ -24,6 +24,16 @@ $(document).ready(function(){
     $(".unenroll_checkbox").prop('checked', $ (this).prop('checked'));
   });
 });
+
+function myFunction() {
+  var checkBox = document.getElementsByClassName("unenroll_checkbox");
+  var text = document.getElementsByClassName("selected");
+  if (checkBox.checked == true){
+    text.text = "true";
+  } else {
+     text.text = "false";
+  }
+}
 </script>
 
 <div class="card">
@@ -49,8 +59,8 @@ $(document).ready(function(){
           <td>{{ a.name }}</td>
           <td>{{ a.pathway }}</td>
           <td>{{ a.access_date }}</td>
-          <td>{{ a.unenroll }}</td>
-          <td><input type="checkbox" class="unenroll_checkbox"/></td>
+          <td class="selected">false</td>
+          <td><input type="checkbox" class="unenroll_checkbox" onclick="myFunction"/></td>
 
           <!-- Modal Block -->
           <div class="modal fade" id="approveModal" tabindex="-1" role="dialog" aria-labelledby="approveModalLabel" aria-hidden="true">
