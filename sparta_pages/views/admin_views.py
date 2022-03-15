@@ -299,6 +299,49 @@ def export_six_months_to_csv(course_key):
 
     return response
 
+@require_POST
+def admin_approve_unenrollment_view(request, username, course_key):
+    if not request.user.is_staff:
+        raise HttpResponse(status=500)
+
+    courseoverview = CourseOverview.get_from_id(course_key)
+    course_name = courseoverview.display_name
+
+    def _unenroll_user(username=None, email_address=None, course_key=None, course_name=None):
+        """ unenroll a user """
+        try:
+            usname = User.objects.get(username=username)
+            CourseEnrollment.unenroll(usname, course_key, skip_refund=True)
+            email = EmailMessage(
+                'Course Access Unenrollment',
+                'Your course access has expired due to failure to complete it in 6 months OR you have been inactive for 3 months. You are now unenrolled from {}.\n\nHow long can I complete a Project SPARTA course?\nUpon enrollment, you have 6 months to finish a SPARTA course. Failure to complete the course in 6 months and/or inactivity for 3 months will result in course access revocation.\n\nFill out the Learner Request form within five business days should you wish to reenroll in this course.\n\nLearner Request Form:\n https://forms.gle/nc9e9JwK287BSDxv5'.format(course_name),
+                'learn@coursebank.ph',
+                [email_address],
+            )
+            email.send()
+
+        except Exception as e:
+            return False
+
+    if username is not None:
+        uname = User.objects.get(username=username)
+        _unenroll_user(username=uname, email_address=uname.email, course_key=course_key,  course_name=course_name)
+    
+    # ARRAY HERE
+    # failed_users= []
+    # line_count = 0
+    # for row in csv_reader:
+    #     if line_count == 0:
+    #         line_count += 1
+    #     username=row['username']
+    #     email_address=row['email']
+    #     result = _unenroll_user(username=username, email_address=email_address, course_key=course_key, course_name=course_name)
+    #     if not result:
+    #         failed_users.append(row)
+    #     line_count += 1
+
+    return redirect('sparta-admin-inactivity')
+
 def export_pathway_applications_to_csv(apps):
     tnow = timezone.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
     filename = "sparta-pathway-applications-{}.csv".format(tnow)
@@ -342,49 +385,6 @@ def export_pathway_applications_to_csv(apps):
             ])
 
     return response
-
-@require_POST
-def admin_approve_unenrollment_view(request, username, course_key):
-    if not request.user.is_staff:
-        raise HttpResponse(status=500)
-
-    courseoverview = CourseOverview.get_from_id(course_key)
-    course_name = courseoverview.display_name
-
-    def _unenroll_user(username=None, email_address=None, course_key=None, course_name=None):
-        """ unenroll a user """
-        try:
-            usname = User.objects.get(username=username)
-            CourseEnrollment.unenroll(usname, course_key, skip_refund=True)
-            email = EmailMessage(
-                'Course Access Unenrollment',
-                'Your course access has expired due to failure to complete it in 6 months OR you have been inactive for 3 months. You are now unenrolled from {}.\n\nHow long can I complete a Project SPARTA course?\nUpon enrollment, you have 6 months to finish a SPARTA course. Failure to complete the course in 6 months and/or inactivity for 3 months will result in course access revocation.\n\nFill out the Learner Request form within five business days should you wish to reenroll in this course.\n\nLearner Request Form:\n https://forms.gle/nc9e9JwK287BSDxv5'.format(course_name),
-                'learn@coursebank.ph',
-                [email_address],
-            )
-            email.send()
-
-        except Exception as e:
-            return False
-
-    if username is not None:
-        uname = User.objects.get(username=username)
-        _unenroll_user(username=uname, email_address=uname.email, course_key=course_key,  course_name=course_name)
-    
-    # ARRAY HERE
-    # failed_users= []
-    # line_count = 0
-    # for row in csv_reader:
-    #     if line_count == 0:
-    #         line_count += 1
-    #     username=row['username']
-    #     email_address=row['email']
-    #     result = _unenroll_user(username=username, email_address=email_address, course_key=course_key, course_name=course_name)
-    #     if not result:
-    #         failed_users.append(row)
-    #     line_count += 1
-
-    return redirect('sparta-admin-inactivity')
 
 @require_POST
 def admin_approve_application_view(request, id):
@@ -898,7 +898,6 @@ def data_dashboard_main_view(request):
     context = {}
     return render(request, template_name, context)
 
-
 @login_required
 def data_dashboard_profiles_view(request):
     """
@@ -959,7 +958,6 @@ def data_dashboard_profiles_view(request):
     }
     return render(request, template_name, context)
 
-
 @login_required
 def data_dashboard_education_credentials_view(request):
     """
@@ -1002,7 +1000,6 @@ def data_dashboard_education_credentials_view(request):
         "education_credentials": education_credentials,
     }
     return render(request, template_name, context)
-
 
 @login_required
 def data_dashboard_employment_credentials_view(request):
@@ -1051,7 +1048,6 @@ def data_dashboard_employment_credentials_view(request):
     }
     return render(request, template_name, context)
 
-
 @login_required
 def data_dashboard_training_credentials_view(request):
     """
@@ -1095,7 +1091,6 @@ def data_dashboard_training_credentials_view(request):
     context = {}
     return render(request, template_name, context)
 
-
 @login_required
 def data_dashboard_courses_view(request):
     """
@@ -1108,7 +1103,6 @@ def data_dashboard_courses_view(request):
     }
     return render(request, template_name, context)
 
-
 @login_required
 def data_dashboard_graphs_view(request):
     """
@@ -1120,7 +1114,6 @@ def data_dashboard_graphs_view(request):
 
     context = {}
     return render(request, template_name, context)
-
 
 @login_required
 def data_dashboard_graphs_by_class_view(request):
@@ -1139,7 +1132,6 @@ def data_dashboard_graphs_by_class_view(request):
     }
     return render(request, template_name, context)
 
-
 @login_required
 def data_dashboard_graphs_by_age_view(request):
     """
@@ -1156,7 +1148,6 @@ def data_dashboard_graphs_by_age_view(request):
     }
     return render(request, template_name, context)
 
-
 @login_required
 def data_dashboard_graphs_by_gender_view(request):
     """
@@ -1172,7 +1163,6 @@ def data_dashboard_graphs_by_gender_view(request):
         "no_of_enrollees_by_gender": get_sparta_enrollees_by_gender(profiles=profiles),
     }
     return render(request, template_name, context)
-
 
 @login_required
 def data_dashboard_graphs_by_location_view(request):
@@ -1191,7 +1181,6 @@ def data_dashboard_graphs_by_location_view(request):
     }
     return render(request, template_name, context)
 
-
 @login_required
 def data_dashboard_graphs_courses_view(request):
     """
@@ -1208,7 +1197,6 @@ def data_dashboard_graphs_courses_view(request):
         "courses": get_sparta_courses(course_id_list=course_id_list, course_enrollments=course_enrollments),
     }
     return render(request, template_name, context)
-
 
 @login_required
 def data_dashboard_graphs_by_date_view(request):
