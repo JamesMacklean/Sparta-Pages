@@ -60,7 +60,7 @@ $(document).ready(function(){
         {% for a in user_list %}
         <tr>
           <td name='username'>{{ a.username }}</td>
-          <td>{{ a.email }}</td>
+          <td name='email'>{{ a.email }}</td>
           <td>{{ a.name }}</td>
           <td>{{ a.pathway }}</td>
           <td>{{ a.access_date }}</td>

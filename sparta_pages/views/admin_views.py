@@ -231,10 +231,11 @@ def admin_inactivity(request):
                 for every_user in request.POST.getlist('username'):
                     if request.POST.getlist('status') == "true":
                         usernames.append({
-                            "username": every_user
+                            "username": every_user,
+                            "email": request.POST.getlist('email'),
                         })
                 
-                return admin_approve_unenrollment_view(usernames, course_id)
+                return admin_approve_unenrollment_view(usernames,email, course_id)
 
     return render(request, template_name, context)
 
@@ -312,7 +313,7 @@ def export_six_months_to_csv(course_key):
     return response
 
 @require_POST
-def admin_approve_unenrollment_view(usernames, course_key):
+def admin_approve_unenrollment_view(usernames,email, course_key):
     
     # if not request.user.is_staff:
     #     raise HttpResponse(status=500)
@@ -343,7 +344,8 @@ def admin_approve_unenrollment_view(usernames, course_key):
     
         if usernames is not None:
             uname=every_user
-            _unenroll_user(username=uname, email_address=uname.email, course_key=course_key,  course_name=course_name)
+            email=email
+            _unenroll_user(username=uname, email_address=email, course_key=course_key,  course_name=course_name)
         line_count += 1
     
         
