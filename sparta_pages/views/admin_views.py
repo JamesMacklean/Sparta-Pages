@@ -221,8 +221,9 @@ def admin_inactivity(request):
                 return export_six_months_to_csv(course_id)
         else:
 
+            if form.is_valid():
                 users_to_unenroll = []
-                course_id = course_key
+                course_id = form.cleaned_data['course']
 
                 for every_user in user_list:
                     #if request.POST.getlist('status') == "true":
