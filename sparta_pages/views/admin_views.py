@@ -211,7 +211,7 @@ def admin_inactivity(request):
 
     #######################TESTING
     users_to_unenroll = []
-    
+    line_count = 0
     for every_user in user_list:
         users_to_unenroll.append({
             'username': every_user['username'],
@@ -222,7 +222,6 @@ def admin_inactivity(request):
         if line_count == 0:
             line_count += 1
         uname=every_user['username']
-        
         email=every_user['email']
 
     context['course_key'] = uname + " " + email
