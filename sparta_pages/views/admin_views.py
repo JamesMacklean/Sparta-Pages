@@ -209,8 +209,8 @@ def admin_inactivity(request):
     context['csv_form'] = GenerateCourseForm
     
     if request.method == "POST":
+        form = GenerateCourseForm(request.POST)
         if 'generate' in request.POST:
-            form = GenerateCourseForm(request.POST)
             
             if form.is_valid():
             
