@@ -224,8 +224,8 @@ def admin_inactivity(request):
         uname=every_user['username']
         email=every_user['email']
 
-        context['users_to_unenroll'] = uname
-        
+        context['users_to_unenroll'] = email
+
     if request.method == "POST":
         form = GenerateCourseForm(request.POST)
         if 'generate' in request.POST:
