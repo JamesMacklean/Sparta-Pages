@@ -25,7 +25,8 @@ $(document).ready(function(){
   });
 });
 
-
+const cb = document.querySelector('.unenroll_checkbox');
+        console.log(cb.checked);
 </script>
 
 <div class="card">
@@ -39,7 +40,6 @@ $(document).ready(function(){
           <th scope="col">Full Name</th>
           <th scope="col">Pathway</th>
           <th scope="col">Initial Access Date</th>
-          <th scope="col">Unenroll?</th>
           <th scope="col"><input type="checkbox" id="checkbox_all"/> Select All</th>
         </tr>
       </thead>
@@ -51,8 +51,7 @@ $(document).ready(function(){
           <td>{{ a.name }}</td>
           <td>{{ a.pathway }}</td>
           <td>{{ a.access_date }}</td>
-          <td> not checked</td>
-          <td><input type="checkbox" class="unenroll_checkbox"/><label for="accept"> sadasd </label></td>
+          <td><input type="checkbox" class="unenroll_checkbox"/><label for="unenroll_checkbox"></label></td>
 
           <!-- Modal Block -->
           <div class="modal fade" id="approveModal" tabindex="-1" role="dialog" aria-labelledby="approveModalLabel" aria-hidden="true">
