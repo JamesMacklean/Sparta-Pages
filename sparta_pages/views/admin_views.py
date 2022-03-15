@@ -233,12 +233,6 @@ def admin_inactivity(request):
                         })
                         
                 return admin_approve_unenrollment_view(users_to_unenroll, course_id)
-        else:
-            if form.is_valid():
-                
-                course_id = form.cleaned_data['course']
-                return export_six_months_to_csv(course_id)
-
 
     return render(request, template_name, context)
 
@@ -317,7 +311,8 @@ def export_six_months_to_csv(course_key):
 
 @require_POST
 def admin_approve_unenrollment_view(users_to_unenroll, course_key):
-       
+    
+    response = HttpResponse()
     courseoverview = CourseOverview.get_from_id(course_key)
     course_name = courseoverview.display_name
 
@@ -337,24 +332,23 @@ def admin_approve_unenrollment_view(users_to_unenroll, course_key):
         except Exception as e:
             return False
             
-    # failed_users = []
-    # line_count = 0
+    failed_users = []
+    line_count = 0
 
     for every_user in users_to_unenroll:
-    #     if line_count == 0:
-    #         line_count += 1
-
+        if line_count == 0:
+            line_count += 1
         uname=every_user['username']
         email=every_user['email']
         result = _unenroll_user(username=uname, email_address=email, course_key=course_key,  course_name=course_name)
-        
-        # if not result:
-        #     failed_users.append(every_user)
-        # line_count += 1
+        if not result:
+            failed_users.append(every_user)
+        line_count += 1
     
-    return redirect('sparta-admin-inactivity')
-    # return line_count-1, failed_users
-
+    #return redirect('sparta-admin-inactivity')
+    #return line_count-1, failed_users
+    return response
+    
 def export_pathway_applications_to_csv(apps):
     tnow = timezone.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
     filename = "sparta-pathway-applications-{}.csv".format(tnow)
