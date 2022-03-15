@@ -201,6 +201,7 @@ def admin_inactivity(request):
                     "username": e.user.username,
                     "pathway": pathway,
                     "access_date": check_date.strftime("%Y-%m-%d"),
+                    "unenroll": "false",
                     })
                 
                 total_learners=0
@@ -300,7 +301,7 @@ def export_six_months_to_csv(course_key):
     return response
 
 @require_POST
-def admin_approve_unenrollment_view(request, username, course_key):
+def admin_approve_unenrollment_view(request, course_key):
     if not request.user.is_staff:
         raise HttpResponse(status=500)
 
@@ -323,9 +324,9 @@ def admin_approve_unenrollment_view(request, username, course_key):
         except Exception as e:
             return False
 
-    if username is not None:
-        uname = User.objects.get(username=username)
-        _unenroll_user(username=uname, email_address=uname.email, course_key=course_key,  course_name=course_name)
+    # if username is not None:
+    #     uname = User.objects.get(username=username)
+    #     _unenroll_user(username=uname, email_address=uname.email, course_key=course_key,  course_name=course_name)
     
     # ARRAY HERE
     # failed_users= []

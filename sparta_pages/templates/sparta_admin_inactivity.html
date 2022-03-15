@@ -37,6 +37,7 @@ $(document).ready(function(){
           <th scope="col">Full Name</th>
           <th scope="col">Pathway</th>
           <th scope="col">Initial Access Date</th>
+          <th scope="col">Unenroll?</th>
           <th scope="col"><input type="checkbox" id="checkbox_all"/> Select All</th>
         </tr>
       </thead>
@@ -48,6 +49,7 @@ $(document).ready(function(){
           <td>{{ a.name }}</td>
           <td>{{ a.pathway }}</td>
           <td>{{ a.access_date }}</td>
+          <td>{{ a.unenroll }}</td>
           <td><input type="checkbox" class="unenroll_checkbox"/></td>
 
           <!-- Modal Block -->
@@ -66,7 +68,7 @@ $(document).ready(function(){
                 </div>
                 
                 <div class="modal-footer">
-                  <form action="" method="POST">
+                  <form action="{% url 'sparta-unenrollment-approve' course_key=course_key %}" method="POST">
                     {% csrf_token %}
                     <div type="div" class="btn btn-secondary" data-dismiss="modal">Cancel</div>
                     <input class="btn btn-success" id="submit" type="submit" value="Approve" />
