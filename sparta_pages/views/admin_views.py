@@ -208,23 +208,8 @@ def admin_inactivity(request):
     context['user_list'] = user_list
     context['generate_form'] = GenerateCourseForm(request.GET or None)
     context['csv_form'] = GenerateCourseForm
-    
-    users_to_unenroll = []
-    for every_user in user_list:
-        users_to_unenroll.append({
-            'username': every_user['username'],
-            'email': every_user['email'],
-        })
 
-    line_count = 0
-    for every_user in users_to_unenroll:
-        if line_count == 0:
-            line_count += 1
-
-        uname=every_user['username']
-        email=every_user['email']
-
-        context['users_to_unenroll'] = email
+        #context['users_to_unenroll'] = email
 
     if request.method == "POST":
         form = GenerateCourseForm(request.POST)
@@ -348,15 +333,19 @@ def admin_approve_unenrollment_view(users_to_unenroll, course_key):
 
         except Exception as e:
             return False
-    
+    failed_users = []
     line_count = 0
+
     for every_user in users_to_unenroll:
         if line_count == 0:
             line_count += 1
 
         uname=every_user['username']
         email=every_user['email']
-        _unenroll_user(username=uname, email_address=email, course_key=course_key,  course_name=course_name)
+        result = _unenroll_user(username=uname, email_address=email, course_key=course_key,  course_name=course_name)
+        
+        if not result:
+            failed_users.append(every_user)
         line_count += 1
     
         
@@ -373,7 +362,8 @@ def admin_approve_unenrollment_view(users_to_unenroll, course_key):
     #         failed_users.append(row)
     #     line_count += 1
 
-    return redirect('sparta-admin-inactivity')
+    #return redirect('sparta-admin-inactivity')
+    return line_count-1, failed_users
 
 def export_pathway_applications_to_csv(apps):
     tnow = timezone.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
