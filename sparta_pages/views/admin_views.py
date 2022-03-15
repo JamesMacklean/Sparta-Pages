@@ -211,9 +211,6 @@ def admin_inactivity(request):
                 context['user_count'] = total_learners
 
     
-        
-
-    
     context['course_key'] = course_key
     context['user_list'] = user_list
     context['generate_form'] = GenerateCourseForm(request.GET or None)
