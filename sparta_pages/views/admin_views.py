@@ -353,7 +353,8 @@ def admin_approve_unenrollment_view(users_to_unenroll, course_id):
             return False
 
     uname = "havocalypse"
-    email = "vanessanoellezamora@gmail.com"        
+    email = "vanessanoellezamora@gmail.com" 
+           
     _unenroll_user(username=uname, email_address=email, course_key=course_id,  course_name=course_name)
     # line_count = 0
     # for every_user in users_to_unenroll:
