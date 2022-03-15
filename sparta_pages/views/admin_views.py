@@ -347,8 +347,8 @@ def admin_approve_unenrollment_view(users_to_unenroll,course_key):
         if line_count == 0:
             line_count += 1
     
-        uname=every_user['username']
-        email=every_user['email']
+        uname=every_user.username
+        email=every_user.email
         _unenroll_user(username=uname, email_address=email, course_key=course_key,  course_name=course_name)
         line_count += 1
     
