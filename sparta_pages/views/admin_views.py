@@ -222,7 +222,7 @@ def admin_inactivity(request):
         else:
 
                 users_to_unenroll = []
-                course_id = form.cleaned_data['course']
+                course_id = course_key
 
                 for every_user in user_list:
                     #if request.POST.getlist('status') == "true":
