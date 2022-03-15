@@ -214,8 +214,8 @@ def admin_inactivity(request):
     for every_user in user_list:
         #if request.POST.getlist('status') == "true":
             users_to_unenroll.append({
-                'username': every_user.username,
-                'email': every_user.email,
+                'username': every_user['username'],
+                'email': every_user['email'],
             })
     context['users_to_unenroll'] = users_to_unenroll
     if request.method == "POST":
