@@ -25,15 +25,6 @@ $(document).ready(function(){
   });
 });
 
-$(document).ready(function(){
-  $('.unenroll_checkbox').click(function() {
-  if ($(this).is(':checked')) {
-    $(".selected").siblings('label').html('checked');
-  } else {
-    $(".selected").siblings('label').html(' not checked');
-  }
-})
-});
 
 </script>
 
@@ -60,8 +51,8 @@ $(document).ready(function(){
           <td>{{ a.name }}</td>
           <td>{{ a.pathway }}</td>
           <td>{{ a.access_date }}</td>
-          <td class="selected"> not checked</td>
-          <td><input type="checkbox" class="unenroll_checkbox" onclick="myFunction"/></td>
+          <td> not checked</td>
+          <td><input type="checkbox" class="unenroll_checkbox"/><label for="accept"> sadasd </label></td>
 
           <!-- Modal Block -->
           <div class="modal fade" id="approveModal" tabindex="-1" role="dialog" aria-labelledby="approveModalLabel" aria-hidden="true">
