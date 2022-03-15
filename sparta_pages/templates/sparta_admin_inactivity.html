@@ -61,7 +61,9 @@ $(document).ready(function(){
                   </div>
                 </div>
                 <div class="modal-body">
-                  Are you sure you want to unenroll a total of {{ user_list }} learner/s in {{ course_key }}? 
+                  {% for b in user_list %}
+                  Are you sure you want to unenroll a total of {{ b.username }} learner/s in {{ course_key }}? 
+                  {% endfor %}          
                 </div>
                 
                 <div class="modal-footer">
