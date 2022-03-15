@@ -166,6 +166,7 @@ def admin_inactivity(request):
     ).select_related('user','user__sparta_profile').prefetch_related('spartareenrollment_set','user__sparta_profile__applications')
 
     user_list = []
+
     for e in enrollments:
         cert = get_certificate_for_user(e.user.username, course_key)
         if cert is not None:
@@ -219,15 +220,14 @@ def admin_inactivity(request):
         elif 'unenroll' in request.POST:
 
             if form.is_valid():
-                usernames = []
-                emails = []
+                users_to_unenroll = []
                 course_id = form.cleaned_data['course']
 
-                for every_user in request.POST.getlist('username'):
+                for every_user in user_list:
                     if request.POST.getlist('status') == "true":
-                        usernames.append({
-                            'username': request.POST.getlist('username'),
-                            'email': request.POST.getlist('email'),
+                        users_to_unenroll.append({
+                            'username': every_user.username,
+                            'email': every_user.email,
                         })
                         
                 return admin_approve_unenrollment_view(users_to_unenroll, course_id)
