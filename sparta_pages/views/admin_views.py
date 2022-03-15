@@ -208,21 +208,6 @@ def admin_inactivity(request):
     context['generate_form'] = GenerateCourseForm(request.GET or None)
     context['csv_form'] = GenerateCourseForm
     
-
-    total_learners=0
-    for every_user in request.POST.getlist('username'):
-        total_learners = total_learners + 1
-        if request.POST.getlist('status') == "true":
-            usernames.append({
-                request.POST.get('username'),
-
-            })
-            emails.append({
-                request.POST.get('email'),
-            })
-
-    context['user_count'] = total_learners
-    
     if request.method == "POST":
         if 'generate' in request.POST:
             form = GenerateCourseForm(request.POST)

@@ -37,6 +37,13 @@ $(document).ready(function(){
   } else {
     $(this).siblings('label').html('false');
   }})
+
+  $(document).ready(function() {
+    $('#unenroll_button').click(function() {
+        var checkboxes = $('input:checkbox:checked').length;
+        alert(checkboxes);
+    })
+});
 });
 
 
@@ -102,7 +109,7 @@ $(document).ready(function(){
           <td>-</td>
           <td>-</td>
           <td>-</td>
-          <td><div type="div" class="btn btn-outline-success btn-sm" style="cursor: pointer" data-toggle="modal" data-target="#approveModal">Unenroll</div></td>
+          <td><div type="div" class="btn btn-outline-success btn-sm" id="unenroll_button" style="cursor: pointer" data-toggle="modal" data-target="#approveModal">Unenroll</div></td>
         </tr>
       </tbody>
     </table>
