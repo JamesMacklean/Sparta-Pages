@@ -233,7 +233,7 @@ def admin_inactivity(request):
                             request.POST.getlist('email'),
                         })
                 context['usernames'] = usernames
-                #return admin_approve_unenrollment_view(usernames, emails, course_id)
+                return admin_approve_unenrollment_view(usernames, emails, course_id)
 
     return render(request, template_name, context)
 
@@ -311,7 +311,7 @@ def export_six_months_to_csv(course_key):
     return response
 
 @require_POST
-def admin_approve_unenrollment_view(usernames,emails,course_key):
+def admin_approve_unenrollment_view(usernames, emails, course_key):
     
     # if not request.user.is_staff:
     #     raise HttpResponse(status=500)
