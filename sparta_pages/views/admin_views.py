@@ -224,8 +224,10 @@ def admin_inactivity(request):
         uname=every_user['username']
         email=every_user['email']
 
-    context['course_key'] = uname
-    context['asd'] = email
+        context['course_key'] = uname
+        context['asd'] = email
+        line_count += 1
+        
     ############################
 
     if request.method == "POST":
