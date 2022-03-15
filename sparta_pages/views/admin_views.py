@@ -209,7 +209,7 @@ def admin_inactivity(request):
     context['generate_form'] = GenerateCourseForm(request.GET or None)
     context['csv_form'] = GenerateCourseForm
 
-
+    #######################TESTING
     users_to_unenroll = []
     
     for every_user in user_list:
@@ -218,7 +218,15 @@ def admin_inactivity(request):
             'email': every_user['email'],
         })
         
-    context['course_key'] = users_to_unenroll
+    for every_user in users_to_unenroll:
+        if line_count == 0:
+            line_count += 1
+        uname=every_user['username']
+        
+        email=every_user['email']
+
+    context['course_key'] = uname + " " + email
+    ############################
 
     if request.method == "POST":
         form = GenerateCourseForm(request.POST)
