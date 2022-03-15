@@ -41,7 +41,7 @@ $(document).ready(function(){
   $(document).ready(function() {
     $('#unenroll_button').click(function() {
         var checkboxes = $('.unenroll_checkbox:checked').length;
-        document.getElementById('count').innerHTML = checkboxes;
+        document.getElementById('count').innerHTML = "Are you sure you want to unenroll a total of " + checkboxes;
     })
 });
 });
@@ -88,7 +88,7 @@ $(document).ready(function(){
                 </div>
               </div>
               <div class="modal-body">
-                Are you sure you want to unenroll a total of <p id="count"></p> learner/s in {{ course_key }}? 
+                <p id="count"></p> learner/s in {{ course_key }}? 
                         
               </div>
               
