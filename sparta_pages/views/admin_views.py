@@ -205,8 +205,6 @@ def admin_inactivity(request):
                 
                 total_learners=0
                 for to_be_unenrolled in user_list:
-                    e.user.username
-                    e.user.email
                     total_learners = total_learners + 1
                 context['user_count'] = total_learners
 
@@ -227,10 +225,14 @@ def admin_inactivity(request):
         elif 'unenroll' in request.POST:
 
             if form.is_valid():
-                usernames = request.POST.getlist('username[]')
+                usernames = []
                 course_id = form.cleaned_data['course']
+
+                for every_user in request.POST.getlist('username'):
+                    if request.POST.getlist('status') == "true":
+                        usernames.append(every_user)
                 
-                return admin_approve_unenrollment_view({usernames}, course_id)
+                return admin_approve_unenrollment_view(usernames, course_id)
 
     return render(request, template_name, context)
 
@@ -308,10 +310,11 @@ def export_six_months_to_csv(course_key):
     return response
 
 @require_POST
-def admin_approve_unenrollment_view(username, course_key):
+def admin_approve_unenrollment_view(usernames, course_key):
+    
     # if not request.user.is_staff:
     #     raise HttpResponse(status=500)
-
+    
     courseoverview = CourseOverview.get_from_id(course_key)
     course_name = courseoverview.display_name
 
@@ -330,11 +333,18 @@ def admin_approve_unenrollment_view(username, course_key):
 
         except Exception as e:
             return False
-
-    if username is not None:
-        uname = User.objects.get(username=username[1])
-        _unenroll_user(username=uname, email_address=uname.email, course_key=course_key,  course_name=course_name)
     
+    line_count = 0
+    for every_user in usernames:
+        if line_count == 0:
+            line_count += 1
+    
+        if usernames is not None:
+            uname=every_user.username
+            _unenroll_user(username=uname, email_address=uname.email, course_key=course_key,  course_name=course_name)
+        line_count += 1
+    
+        
     # ARRAY HERE
     # failed_users= []
     # line_count = 0
