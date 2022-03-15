@@ -61,17 +61,10 @@ $(document).ready(function(){
                   </div>
                 </div>
                 <div class="modal-body">
-                  <script>
-                    var usernames = [];
-                    
-                    for (i=0; i<=user_count; i++){
-                      usernames.splice(a.username);
-                      console.log(usernames);
-                    }
-
-                  </script>
-                  
-                  Are you sure you want to unenroll a total of {{ usernames }} learner/s in {{ course_key }}? 
+                  {% for b in user_list %}
+                    {{b.username}}
+                  {% endfor %}  
+                  Are you sure you want to unenroll a total of {{ b.username }} learner/s in {{ course_key }}? 
                           
                 </div>
                 
