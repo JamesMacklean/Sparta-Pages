@@ -230,7 +230,9 @@ def admin_inactivity(request):
 
                 for every_user in request.POST.getlist('username'):
                     if request.POST.getlist('status') == "true":
-                        usernames.append(every_user)
+                        usernames.append({
+                            "username": every_user
+                        })
                 
                 return admin_approve_unenrollment_view(usernames, course_id)
 
