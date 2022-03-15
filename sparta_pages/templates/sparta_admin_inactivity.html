@@ -22,6 +22,11 @@
 $(document).ready(function(){
   $('#checkbox_all').click(function(){
     $(".unenroll_checkbox").prop('checked', $ (this).prop('checked'));
+    if ($(".unenroll_checkbox").is(':checked')) {
+      $(".unenroll_checkbox").siblings('label').html('checked');
+    } else {
+      $(".unenroll_checkbox").siblings('label').html(' not checked');
+  }
   });
 });
 
