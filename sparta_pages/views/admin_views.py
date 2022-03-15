@@ -332,7 +332,7 @@ def admin_approve_unenrollment_view(username, course_key):
             return False
 
     if username is not None:
-        uname = User.objects.get(username=username)
+        uname = User.objects.get(username=username[1])
         _unenroll_user(username=uname, email_address=uname.email, course_key=course_key,  course_name=course_name)
     
     # ARRAY HERE
