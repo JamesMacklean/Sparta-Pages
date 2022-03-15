@@ -219,7 +219,7 @@ def admin_inactivity(request):
             
                 course_id = form.cleaned_data['course']
                 return export_six_months_to_csv(course_id)
-        else:
+        elif 'unenroll' in request.POST:
 
             if form.is_valid():
                 users_to_unenroll = []
@@ -233,6 +233,12 @@ def admin_inactivity(request):
                         })
                         
                 return admin_approve_unenrollment_view(users_to_unenroll, course_id)
+        else:
+            if form.is_valid():
+                
+                course_id = form.cleaned_data['course']
+                return export_six_months_to_csv(course_id)
+
 
     return render(request, template_name, context)
 
