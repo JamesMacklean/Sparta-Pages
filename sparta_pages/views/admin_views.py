@@ -229,11 +229,14 @@ def admin_inactivity(request):
                 email = []
                 course_id = form.cleaned_data['course']
 
-                for every_user in request.POST.getlist('username'):
+                for every_user in user_list:
                     if request.POST.getlist('status') == "true":
                         usernames.append({
-                            "username": every_user,
+                            "username": request.POST.getlist('username'),
                             "email": request.POST.getlist('email'),
+                            # "username": e.user.username,
+                            # "email": e.user.email,
+
                         })
                 
                 return admin_approve_unenrollment_view(usernames, course_id)
