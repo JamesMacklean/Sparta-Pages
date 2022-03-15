@@ -226,14 +226,14 @@ def admin_inactivity(request):
                 for every_user in request.POST.getlist('username'):
                     if request.POST.getlist('status') == "true":
                         usernames.append({
-                            request.POST.getlist('username[]'),
+                            request.POST.getlist('username'),
 
                         })
                         emails.append({
-                            request.POST.getlist('email[]'),
+                            request.POST.getlist('email'),
                         })
-                
-                return admin_approve_unenrollment_view(usernames, emails, course_id)
+                context['usernames'] = usernames
+                #return admin_approve_unenrollment_view(usernames, emails, course_id)
 
     return render(request, template_name, context)
 
