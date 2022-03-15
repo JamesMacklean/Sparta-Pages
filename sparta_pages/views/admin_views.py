@@ -204,12 +204,21 @@ def admin_inactivity(request):
                     "access_date": check_date.strftime("%Y-%m-%d"),
                     })
                      
-    context['course_key'] = course_key
+    #context['course_key'] = course_key
     context['user_list'] = user_list
     context['generate_form'] = GenerateCourseForm(request.GET or None)
     context['csv_form'] = GenerateCourseForm
 
-        #context['users_to_unenroll'] = email
+
+    users_to_unenroll = []
+    
+    for every_user in user_list:
+        users_to_unenroll.append({
+            'username': every_user['username'],
+            'email': every_user['email'],
+        })
+        
+    context['course_key'] = users_to_unenroll
 
     if request.method == "POST":
         form = GenerateCourseForm(request.POST)
@@ -310,10 +319,10 @@ def export_six_months_to_csv(course_key):
     return response
 
 @require_POST
-def admin_approve_unenrollment_view(users_to_unenroll, course_key):
+def admin_approve_unenrollment_view(users_to_unenroll, course_id):
     
-    response = HttpResponse()
-    courseoverview = CourseOverview.get_from_id(course_key)
+    #response = HttpResponse()
+    courseoverview = CourseOverview.get_from_id(course_id)
     course_name = courseoverview.display_name
 
     def _unenroll_user(username=None, email_address=None, course_key=None, course_name=None):
@@ -332,7 +341,6 @@ def admin_approve_unenrollment_view(users_to_unenroll, course_key):
         except Exception as e:
             return False
             
-    failed_users = []
     line_count = 0
 
     for every_user in users_to_unenroll:
@@ -340,15 +348,11 @@ def admin_approve_unenrollment_view(users_to_unenroll, course_key):
             line_count += 1
         uname=every_user['username']
         email=every_user['email']
-        result = _unenroll_user(username=uname, email_address=email, course_key=course_key,  course_name=course_name)
-        if not result:
-            failed_users.append(every_user)
+        _unenroll_user(username=uname, email_address=email, course_key=course_id,  course_name=course_name)
         line_count += 1
     
-    #return redirect('sparta-admin-inactivity')
-    #return line_count-1, failed_users
-    return response
-    
+    #return response
+
 def export_pathway_applications_to_csv(apps):
     tnow = timezone.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
     filename = "sparta-pathway-applications-{}.csv".format(tnow)
