@@ -216,6 +216,7 @@ def admin_inactivity(request):
             'email': every_user['email'],
         })
 
+    line_count = 0
     for every_user in users_to_unenroll:
         if line_count == 0:
             line_count += 1
