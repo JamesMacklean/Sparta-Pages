@@ -217,7 +217,7 @@ def admin_inactivity(request):
                 'username': every_user.username,
                 'email': every_user.email,
             })
-    context['users_to_unenroll'] = users_to_unenroll
+    context['users_to_unenroll'] = user_list
     
     if request.method == "POST":
         form = GenerateCourseForm(request.POST)
