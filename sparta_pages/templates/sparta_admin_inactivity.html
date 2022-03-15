@@ -61,9 +61,15 @@ $(document).ready(function(){
                   </div>
                 </div>
                 <div class="modal-body">
-                  {% for b in user_list %}
-                    {{ usernames = b.username }}
-                  {% endfor %}  
+                  <script>
+                    var usernames = new Array(user_count);
+                    
+                    for (i=0; i<=user_count; i++){
+                      usernames[a.username]
+                    }
+
+                  </script>
+                  
                   Are you sure you want to unenroll a total of {{ usernames }} learner/s in {{ course_key }}? 
                           
                 </div>
