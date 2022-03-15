@@ -25,15 +25,16 @@ $(document).ready(function(){
   });
 });
 
-function myFunction() {
-  var checkBox = document.getElementsByClassName("unenroll_checkbox");
-  var text = document.getElementsByClassName("selected");
-  if (checkBox.checked == true){
-    text.text = "true";
+$(document).ready(function(){
+  $('.unenroll_checkbox').click(function() {
+  if ($(this).is(':checked')) {
+    $(".selected").siblings('label').html('checked');
   } else {
-     text.text = "false";
+    $(".selected").siblings('label').html(' not checked');
   }
-}
+})
+});
+
 </script>
 
 <div class="card">
@@ -59,7 +60,7 @@ function myFunction() {
           <td>{{ a.name }}</td>
           <td>{{ a.pathway }}</td>
           <td>{{ a.access_date }}</td>
-          <td class="selected">false</td>
+          <td class="selected"> not checked</td>
           <td><input type="checkbox" class="unenroll_checkbox" onclick="myFunction"/></td>
 
           <!-- Modal Block -->
