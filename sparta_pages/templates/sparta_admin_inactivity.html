@@ -15,7 +15,7 @@
 <form action="" method="post">
   {% csrf_token %}
   {{ csv_form }}
-  <input type="submit" value="Export to CSV" />
+  <input name="generate" type="submit" value="Export to CSV" />
 </form>
 
 <script>
@@ -23,9 +23,9 @@ $(document).ready(function(){
   $('#checkbox_all').click(function(){
     $(".unenroll_checkbox").prop('checked', $ (this).prop('checked'));
     if ($(".unenroll_checkbox").is(':checked')) {
-      $(".unenroll_checkbox").siblings('label').html('checked');
+      $(".unenroll_checkbox").siblings('label').html('true');
     } else {
-      $(".unenroll_checkbox").siblings('label').html(' not checked');
+      $(".unenroll_checkbox").siblings('label').html('false');
   }
   });
 });
@@ -33,9 +33,9 @@ $(document).ready(function(){
 $(document).ready(function(){
   $('.unenroll_checkbox').click(function(){
     if ($(this).is(':checked')) {
-    $(this).siblings('label').html('checked');
+    $(this).siblings('label').html('true');
   } else {
-    $(this).siblings('label').html(' not checked');
+    $(this).siblings('label').html('false');
   }})
 });
 </script>
@@ -83,7 +83,7 @@ $(document).ready(function(){
                   <form action="{% url 'sparta-unenrollment-approve' course_key=course_key %}" method="POST">
                     {% csrf_token %}
                     <div type="div" class="btn btn-secondary" data-dismiss="modal">Cancel</div>
-                    <input class="btn btn-success" id="submit" type="submit" value="Approve" />
+                    <input class="btn btn-success" id="submit" name="unenroll" type="submit" value="Approve" />
                   </form>
                 </div>
               </div>

@@ -217,12 +217,19 @@ def admin_inactivity(request):
     context['csv_form'] = GenerateCourseForm
     
     if request.method == "POST":
-        form = GenerateCourseForm(request.POST)
-        if form.is_valid():
+        if 'generate' in request.POST:
+            form = GenerateCourseForm(request.POST)
             
-            course_id = form.cleaned_data['course']
+            if form.is_valid():
             
-            return export_six_months_to_csv(course_id)
+                course_id = form.cleaned_data['course']
+                return export_six_months_to_csv(course_id)
+        elif 'unenroll' in request.POST:
+            if form.is_valid():
+                
+                course_id = form.cleaned_data['course']
+                # username = 
+                # return admin_approve_unenrollment_view(username, course_id)
 
     return render(request, template_name, context)
 
@@ -300,9 +307,9 @@ def export_six_months_to_csv(course_key):
     return response
 
 @require_POST
-def admin_approve_unenrollment_view(request, course_key):
-    if not request.user.is_staff:
-        raise HttpResponse(status=500)
+def admin_approve_unenrollment_view(username, course_key):
+    # if not request.user.is_staff:
+    #     raise HttpResponse(status=500)
 
     courseoverview = CourseOverview.get_from_id(course_key)
     course_name = courseoverview.display_name
@@ -323,9 +330,9 @@ def admin_approve_unenrollment_view(request, course_key):
         except Exception as e:
             return False
 
-    # if username is not None:
-    #     uname = User.objects.get(username=username)
-    #     _unenroll_user(username=uname, email_address=uname.email, course_key=course_key,  course_name=course_name)
+    if username is not None:
+        uname = User.objects.get(username=username)
+        _unenroll_user(username=uname, email_address=uname.email, course_key=course_key,  course_name=course_name)
     
     # ARRAY HERE
     # failed_users= []
