@@ -63,35 +63,38 @@ $(document).ready(function(){
           <td>{{ a.pathway }}</td>
           <td>{{ a.access_date }}</td>
           <td><input type="checkbox" class="unenroll_checkbox"/><label for="unenroll_checkbox"></label></td>
-
-          <!-- Modal Block -->
-          <div class="modal fade" id="approveModal" tabindex="-1" role="dialog" aria-labelledby="approveModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="approveModalLabel">Unenroll Learners</h5>
-                  <div type="div" class="close" style="cursor: pointer" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </div>
-                </div>
-                <div class="modal-body">
-                  Are you sure you want to unenroll a total of {{ user_count }} learner/s in {{ course_key }}? 
-                          
-                </div>
-                
-                <div class="modal-footer">
-                  <form action="{% url 'sparta-unenrollment-approve' course_key=course_key %}" method="POST">
-                    {% csrf_token %}
-                    <div type="div" class="btn btn-secondary" data-dismiss="modal">Cancel</div>
-                    <input class="btn btn-success" id="submit" name="unenroll" type="submit" value="Approve" />
-                  </form>
-                </div>
-              </div>
-            </div>
-          </div>
+          <!--id="check_{{a.username}}"-->
+          
         </tr>
 
         {% endfor %}
+
+        <!-- Modal Block -->
+        <div class="modal fade" id="approveModal" tabindex="-1" role="dialog" aria-labelledby="approveModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="approveModalLabel">Unenroll Learners</h5>
+                <div type="div" class="close" style="cursor: pointer" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </div>
+              </div>
+              <div class="modal-body">
+                Are you sure you want to unenroll a total of {{ user_count }} learner/s in {{ course_key }}? 
+                        
+              </div>
+              
+              <div class="modal-footer">
+                <form action="{% url 'sparta-unenrollment-approve' course_key=course_key %}" method="POST">
+                  
+                  {% csrf_token %}
+                  <div type="div" class="btn btn-secondary" data-dismiss="modal">Cancel</div>
+                  <input class="btn btn-success" id="submit" name="unenroll" type="submit" value="Approve" />
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
         <tr>
           <td>-</td>
           <td>-</td>
