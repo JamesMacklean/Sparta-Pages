@@ -202,13 +202,7 @@ def admin_inactivity(request):
                     "pathway": pathway,
                     "access_date": check_date.strftime("%Y-%m-%d"),
                     })
-                
-                total_learners=0
-                for to_be_unenrolled in user_list:
-                    total_learners = total_learners + 1
-                
-
-    
+                     
     context['course_key'] = course_key
     context['user_list'] = user_list
     context['generate_form'] = GenerateCourseForm(request.GET or None)
@@ -240,7 +234,7 @@ def admin_inactivity(request):
                         emails.append({
                             request.POST.get('email'),
                         })
-                        
+
                 context['user_count'] = total_learners
                 
                 return admin_approve_unenrollment_view(usernames, emails, course_id)
