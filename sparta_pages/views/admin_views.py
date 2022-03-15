@@ -226,6 +226,7 @@ def admin_inactivity(request):
 
             if form.is_valid():
                 usernames = []
+                email = []
                 course_id = form.cleaned_data['course']
 
                 for every_user in request.POST.getlist('username'):
@@ -343,8 +344,8 @@ def admin_approve_unenrollment_view(usernames, course_key):
             line_count += 1
     
         if usernames is not None:
-            uname=usernames.username
-            email=usernames.email
+            uname=every_user['username']
+            email=every_user['email']
             _unenroll_user(username=uname, email_address=email, course_key=course_key,  course_name=course_name)
         line_count += 1
     
