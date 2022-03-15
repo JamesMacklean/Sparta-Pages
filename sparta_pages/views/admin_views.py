@@ -374,6 +374,19 @@ def admin_approve_unenrollment_view(request, username, course_key):
         uname = User.objects.get(username=username)
         _unenroll_user(username=uname, email_address=uname.email, course_key=course_key,  course_name=course_name)
     
+    # ARRAY HERE
+    # failed_users= []
+    # line_count = 0
+    # for row in csv_reader:
+    #     if line_count == 0:
+    #         line_count += 1
+    #     username=row['username']
+    #     email_address=row['email']
+    #     result = _unenroll_user(username=username, email_address=email_address, course_key=course_key, course_name=course_name)
+    #     if not result:
+    #         failed_users.append(row)
+    #     line_count += 1
+
     return redirect('sparta-admin-inactivity')
 
 @require_POST
