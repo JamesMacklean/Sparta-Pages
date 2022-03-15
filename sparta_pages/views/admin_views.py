@@ -204,29 +204,30 @@ def admin_inactivity(request):
                     "access_date": check_date.strftime("%Y-%m-%d"),
                     })
                      
-    #context['course_key'] = course_key
+    context['course_key'] = course_key
     context['user_list'] = user_list
     context['generate_form'] = GenerateCourseForm(request.GET or None)
     context['csv_form'] = GenerateCourseForm
 
     #######################TESTING
-    users_to_unenroll = []
-    line_count = 0
-    for every_user in user_list:
-        users_to_unenroll.append({
-            'username': every_user['username'],
-            'email': every_user['email'],
-        })
+    #
+    # users_to_unenroll = []
+    # line_count = 0
+    # for every_user in user_list:
+    #     users_to_unenroll.append({
+    #         'username': every_user['username'],
+    #         'email': every_user['email'],
+    #     })
         
-    for every_user in users_to_unenroll:
-        if line_count == 0:
-            line_count += 1
-        uname=every_user['username']
-        email=every_user['email']
+    # for every_user in users_to_unenroll:
+    #     if line_count == 0:
+    #         line_count += 1
+    #     uname=every_user['username']
+    #     email=every_user['email']
 
-        context['course_key'] = uname
-        context['asd'] = email
-        line_count += 1
+    #     context['course_key'] = uname
+    #     context['asd'] = email
+    #     line_count += 1
         
     ############################
 
@@ -350,16 +351,18 @@ def admin_approve_unenrollment_view(users_to_unenroll, course_id):
 
         except Exception as e:
             return False
-            
-    line_count = 0
 
-    for every_user in users_to_unenroll:
-        if line_count == 0:
-            line_count += 1
-        uname=every_user['username']
-        email=every_user['email']
-        _unenroll_user(username=uname, email_address=email, course_key=course_id,  course_name=course_name)
-        line_count += 1
+    uname = "havocalypse"
+    email = "vanessanoellezamora@gmail.com"        
+    _unenroll_user(username=uname, email_address=email, course_key=course_id,  course_name=course_name)
+    # line_count = 0
+    # for every_user in users_to_unenroll:
+    #     if line_count == 0:
+    #         line_count += 1
+    #     uname=every_user['username']
+    #     email=every_user['email']
+    #     _unenroll_user(username=uname, email_address=email, course_key=course_id,  course_name=course_name)
+    #     line_count += 1
     
     #return response
 
