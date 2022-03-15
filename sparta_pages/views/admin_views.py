@@ -225,22 +225,22 @@ def admin_inactivity(request):
         elif 'unenroll' in request.POST:
 
             if form.is_valid():
-                users_to_unenroll = []
-                # emails = []
+                usernames = []
+                emails = []
                 course_id = form.cleaned_data['course']
 
                 for every_user in request.POST.getlist('username'):
                     if request.POST.getlist('status') == "true":
-                        users_to_unenroll.append({
-                            "username": request.POST.getlist('username'),
-                            "email": request.POST.getlist('email'),
-                            # "username": e.user.username,
-                            # "email": e.user.email,
+                        usernames.append({
+                            request.POST.get('username'),
 
+                        })
+                        emails.append({
+                            request.POST.get('email'),
                         })
                         
                 
-                return admin_approve_unenrollment_view(users_to_unenroll, course_id)
+                return admin_approve_unenrollment_view(usernames, emails, course_id)
 
     return render(request, template_name, context)
 
@@ -318,7 +318,7 @@ def export_six_months_to_csv(course_key):
     return response
 
 @require_POST
-def admin_approve_unenrollment_view(users_to_unenroll,course_key):
+def admin_approve_unenrollment_view(usernames,emails,course_key):
     
     # if not request.user.is_staff:
     #     raise HttpResponse(status=500)
@@ -343,12 +343,13 @@ def admin_approve_unenrollment_view(users_to_unenroll,course_key):
             return False
     
     line_count = 0
-    for every_user in users_to_unenroll:
+    for every_user in usernames:
         if line_count == 0:
             line_count += 1
-    
-        uname=every_user.username
-        email=every_user.email
+
+        if emails is not None:
+            uname=usernames
+            email=emails
         _unenroll_user(username=uname, email_address=email, course_key=course_key,  course_name=course_name)
         line_count += 1
     
