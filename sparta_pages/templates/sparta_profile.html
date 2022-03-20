@@ -49,50 +49,18 @@
         </thead>
 
         <tbody>
-          {% if applications %}
-          {% for app in applications %}
+          <!--Status-->
           <tr>
-            <a style="cursor: pointer" target="blank" href="/sparta/">Learn More</a>
-            <a style="cursor: pointer" target="blank" href="https://dict.coursebank.ph">Learn More</a>
-            <a style="cursor: pointer" target="blank" href="#">Learn More</a>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
           </tr>
+          <!--Apply Button-->
           <tr>
-            <div type="div" class="btn btn-primary" style="cursor: pointer" target="blank" href="/sparta/application-page">Apply</div>
-            <div type="div" class="btn btn-primary" style="cursor: pointer" target="blank" href="/dict/application-page">Apply</div><
-            <div type="div" class="btn btn-primary" style="cursor: pointer" target="blank" href="#">Apply</div>
+            <td><div type="div" class="btn btn-outline-success btn-sm" style="cursor: pointer" target="blank" href="{% url 'sparta-main' %}">Apply</div></td>
+            <td><div type="div" class="btn btn-outline-success btn-sm" style="cursor: pointer" target="blank" href="{% url 'sparta-main' %}">Apply</div></td>
+            <td><div type="div" class="btn btn-outline-success btn-sm" style="cursor: pointer" data-toggle="modal" data-target="#approveModal">modal test</div></td>
           </tr>
-          {% if app.status == 'PE' %}
-          <tr>
-            <td><div type="div" class="btn btn-outline-secondary" style="cursor: pointer" data-toggle="modal" data-target="#withdrawModal">Withdraw</div></td>
-            <!-- Modal Block -->
-            <div class="modal fade" id="withdrawModal" tabindex="-1" role="dialog" aria-labelledby="withdrawModalLabel" aria-hidden="true">
-              <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="withdrawModalLabel">Withdraw Application</h5>
-                    <div type="div" class="close" style="cursor: pointer" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </div>
-                  </div>
-                  <div class="modal-body">
-                    Are you sure you want to withdraw your application for this Learning Pathway ({{ app.pathway }})?
-                  </div>
-                  <div class="modal-footer">
-                    <form action="{% url 'sparta-withdraw' id=app.id %}" method="POST">
-                      {% csrf_token %}
-                      <div type="div" class="btn btn-secondary" data-dismiss="modal">Cancel</div>
-                      <input class="btn btn-primary" id="submit" type="submit" value="Yes, Withdraw My Application" />
-                    </form>
-                  </div>
-                </div>
-              </div>
-            </div>
-            {% else %}
-            <td>{{ app.get_status_display }}</td>
-            {% endif %}
-          </tr>
-          {% endfor %}
-          {% endif %}
         </tbody>
       </table>
     </div>
