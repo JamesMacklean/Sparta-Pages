@@ -217,10 +217,10 @@ def admin_inactivity(request):
                 course_id = form.cleaned_data['course']
                 return export_six_months_to_csv(course_id)
         
-        elif 'unenroll' in request.POST:
-            if form.is_valid():
-                users_to_unenroll = []
-                course_id = form.cleaned_data['course']
+        # elif 'unenroll' in request.POST:
+        #     if form.is_valid():
+        #         users_to_unenroll = []
+        #         course_id = form.cleaned_data['course']
 
                 # for every_user in user_list:
                 #     #if request.POST.getlist('status') == "true":
