@@ -275,7 +275,7 @@ def admin_inactivity(request):
                 if line_count == 0:
                     line_count += 1
 
-                a = request.POST.get['status']
+                a = request.POST.get('status')
                 if a == "true":
                     uname=every_user['username']
                     email=every_user['email']
