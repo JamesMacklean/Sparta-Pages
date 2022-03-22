@@ -1,7 +1,6 @@
 import collections
 import csv
 from email.message import EmailMessage
-from operator import truediv
 from socket import SO_BROADCAST
 import unicodecsv
 
@@ -155,7 +154,6 @@ def admin_inactivity(request):
     context = {}
 
     course_key = request.GET.get('course', None)
-    # status = request.GET.get('status', None)
 
     tnow = datetime.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
 
@@ -259,31 +257,31 @@ def admin_inactivity(request):
                 except Exception as e:
                     return False
             
-            # users_to_unenroll = []
+            users_to_unenroll = []
+            
+            for a in user_list:
+                users_to_unenroll.append({
+                    'username': every_user['username'],
+                    'email': every_user['email'],
+                    'course_id': course_key,
+                    'status': request.POST.getlist('status')
+                })  
 
-            # for a in user_list:
-            #     #if request.POST.getlist('status') == "true":
-            #         users_to_unenroll.append({
-
-            #             'username': every_user['username'],
-            #             'email': every_user['email'],
-            #             'course_id': course_key
-            #         })  
-                
             line_count = 0
-            for every_user in user_list:
+            for every_user in users_to_unenroll:
                 if line_count == 0:
                     line_count += 1
-
-                a = request.POST.get('status')
-                if a == "true":
+                
+                if every_user['status'] == "true":
                     uname=every_user['username']
                     email=every_user['email']
                     course_id=course_key
                     courseoverview = CourseOverview.get_from_id(course_id)
                     course_name = courseoverview.display_name
+
                     _unenroll_user(username=uname, email_address=email, course_key=course_id,  course_name=course_name)
-                    line_count += 1
+                
+                line_count += 1
             
             # return admin_approve_unenrollment_view(users_to_unenroll)
 
