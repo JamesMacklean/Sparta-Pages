@@ -239,8 +239,7 @@ def admin_inactivity(request):
             
                 course_id = form.cleaned_data['course']
                 return export_six_months_to_csv(course_id)
-        else:
-        #  'unenroll' in request.POST:
+        elif 'unenroll' in request.POST:
 
             # if form.is_valid():
 
