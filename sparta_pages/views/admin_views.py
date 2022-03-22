@@ -257,21 +257,19 @@ def admin_inactivity(request):
                 except Exception as e:
                     return False
             
-            users_to_unenroll = []
+            # users_to_unenroll = []
 
-            for a in user_list:
-                #if request.POST.getlist('status') == "true":
-                    users_to_unenroll.append({
+            # for a in user_list:
+            #     #if request.POST.getlist('status') == "true":
+            #         users_to_unenroll.append({
 
-                        # 'username': every_user['username'],
-                        # 'email': every_user['email'],
-                        'username': request.POST.getlist('username'),
-                        'email': request.POST.getlist('email'),
-                        'course_id': course_key
-                    })  
-
+            #             'username': every_user['username'],
+            #             'email': every_user['email'],
+            #             'course_id': course_key
+            #         })  
+                
             line_count = 0
-            for every_user in users_to_unenroll:
+            for every_user in user_list:
                 if line_count == 0:
                     line_count += 1
                 uname=every_user['username']
