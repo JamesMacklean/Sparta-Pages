@@ -249,8 +249,9 @@ def admin_inactivity(request):
                         'username': every_user['username'],
                         'email': every_user['email'],
                         'course_id': course_key
-                    })    
-            return admin_approve_unenrollment_view(users_to_unenroll)
+                    })   
+
+            return admin_approve_unenrollment_view({users_to_unenroll})
 
     return render(request, template_name, context)
 
