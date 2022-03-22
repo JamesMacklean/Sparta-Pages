@@ -264,7 +264,8 @@ def admin_inactivity(request):
                     'username': a['username'],
                     'email': a['email'],
                     'course_id': course_key,
-                    'status': request.POST.getlist('status[]')
+                    # 'status': request.POST.getlist('status[]')
+                    'status': dict(request.POST)["key"]
                 })  
 
             line_count = 0
