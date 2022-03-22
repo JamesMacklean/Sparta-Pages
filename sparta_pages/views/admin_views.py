@@ -263,7 +263,6 @@ def admin_inactivity(request):
                 users_to_unenroll.append({
                     'username': a['username'],
                     'email': a['email'],
-                    'course_id': course_key,
                     'status': request.POST.get(a['username']+'_status')
                 })  
 
