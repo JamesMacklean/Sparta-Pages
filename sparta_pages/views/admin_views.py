@@ -209,28 +209,6 @@ def admin_inactivity(request):
     context['generate_form'] = GenerateCourseForm(request.GET or None)
     context['csv_form'] = GenerateCourseForm
 
-    ######################TESTING
-    
-    # users_to_unenroll = []
-    # line_count = 0
-    # for every_user in user_list:
-    #     users_to_unenroll.append({
-    #         'username': every_user['username'],
-    #         'email': every_user['email'],
-    #     })
-        
-    # for every_user in users_to_unenroll:
-    #     if line_count == 0:
-    #         line_count += 1
-    #     uname=every_user['username']
-    #     email=every_user['email']
-
-    #     context['course_key'] = uname
-    #     context['asd'] = email
-    #     line_count += 1
-        
-    ###########################
-
     if request.method == "POST":
         form = GenerateCourseForm(request.POST)
         if 'generate' in request.POST:
@@ -244,13 +222,13 @@ def admin_inactivity(request):
                 users_to_unenroll = []
                 course_id = form.cleaned_data['course']
 
-                for every_user in user_list:
-                    #if request.POST.getlist('status') == "true":
-                        users_to_unenroll.append({
-                            'username': every_user['username'],
-                            'email': every_user['email'],
-                            'course_id': course_id
-                        })
+                # for every_user in user_list:
+                #     #if request.POST.getlist('status') == "true":
+                #         users_to_unenroll.append({
+                #             'username': every_user['username'],
+                #             'email': every_user['email'],
+                #             'course_id': course_id
+                #         })
 
                 return admin_approve_unenrollment_view(course_id)
 
@@ -330,7 +308,7 @@ def export_six_months_to_csv(course_key):
     return response
 
 @require_POST
-def admin_approve_unenrollment_view(users_to_unenroll):
+def admin_approve_unenrollment_view(course_key):
     
     #response = HttpResponse()
 
@@ -352,11 +330,10 @@ def admin_approve_unenrollment_view(users_to_unenroll):
 
     uname = "Roland"
     email = "rolandopalattaojr@gmail.com" 
-    course_id = "course-v1:DAP+SP501+2020_Q1"
-    courseoverview = CourseOverview.get_from_id(course_id)
+    courseoverview = CourseOverview.get_from_id(course_key)
     course_name = courseoverview.display_name
            
-    _unenroll_user(username=uname, email_address=email, course_key=course_id,  course_name=course_name)
+    _unenroll_user(username=uname, email_address=email, course_key=course_key,  course_name=course_name)
     
     # line_count = 0
     # for every_user in users_to_unenroll:
