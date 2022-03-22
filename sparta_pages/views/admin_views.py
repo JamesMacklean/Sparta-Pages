@@ -310,8 +310,6 @@ def export_six_months_to_csv(course_key):
 @require_POST
 def admin_approve_unenrollment_view(username, course_id):
     
-    #response = HttpResponse()
-
     def _unenroll_user(username=None, email_address=None, course_key=None, course_name=None):
         """ unenroll a user """
         try:
