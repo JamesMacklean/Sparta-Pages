@@ -250,9 +250,10 @@ def admin_inactivity(request):
                         users_to_unenroll.append({
                             'username': every_user['username'],
                             'email': every_user['email'],
+                            'course_id': course_id
                         })
-                        
-                return admin_approve_unenrollment_view(users_to_unenroll, course_id)
+
+                return admin_approve_unenrollment_view(users_to_unenroll[0])
 
     return render(request, template_name, context)
 
@@ -330,11 +331,9 @@ def export_six_months_to_csv(course_key):
     return response
 
 @require_POST
-def admin_approve_unenrollment_view(users_to_unenroll, course_id):
+def admin_approve_unenrollment_view(users_to_unenroll):
     
     #response = HttpResponse()
-    courseoverview = CourseOverview.get_from_id(course_id)
-    course_name = courseoverview.display_name
 
     def _unenroll_user(username=None, email_address=None, course_key=None, course_name=None):
         """ unenroll a user """
@@ -352,19 +351,28 @@ def admin_approve_unenrollment_view(users_to_unenroll, course_id):
         except Exception as e:
             return False
 
-    uname = "havocalypse"
-    email = "vanessanoellezamora@gmail.com" 
+    uname = "Roland"
+    email = "rolandopalattaojr@gmail.com" 
+    course_id = "course-v1:DAP+SP501+2020_Q1"
+    courseoverview = CourseOverview.get_from_id(course_id)
+    course_name = courseoverview.display_name
            
     _unenroll_user(username=uname, email_address=email, course_key=course_id,  course_name=course_name)
+    
     # line_count = 0
     # for every_user in users_to_unenroll:
     #     if line_count == 0:
     #         line_count += 1
     #     uname=every_user['username']
     #     email=every_user['email']
+    #     course_id=every_user['course_id']
+    
+    #     courseoverview = CourseOverview.get_from_id(course_id)
+    #     course_name = courseoverview.display_name
     #     _unenroll_user(username=uname, email_address=email, course_key=course_id,  course_name=course_name)
     #     line_count += 1
     
+    return redirect('sparta-admin-inactivity')
     #return response
 
 def export_pathway_applications_to_csv(apps):
