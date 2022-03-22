@@ -239,8 +239,8 @@ def admin_inactivity(request):
             
                 course_id = form.cleaned_data['course']
                 return export_six_months_to_csv(course_id)
-        elif 'unenroll' in request.POST:
-
+        # elif 'unenroll' in request.POST:
+        else:
             def _unenroll_user(username=None, email_address=None, course_key=None, course_name=None):
                 """ unenroll a user """
                 try:
