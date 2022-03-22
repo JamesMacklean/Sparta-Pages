@@ -230,7 +230,7 @@ def admin_inactivity(request):
                 #             'course_id': course_id
                 #         })
 
-                return admin_approve_unenrollment_view(course_key)
+                return admin_approve_unenrollment_view(course_id)
 
     return render(request, template_name, context)
 
@@ -308,7 +308,7 @@ def export_six_months_to_csv(course_key):
     return response
 
 @require_POST
-def admin_approve_unenrollment_view(course_key):
+def admin_approve_unenrollment_view(course_id):
     
     #response = HttpResponse()
 
@@ -330,10 +330,10 @@ def admin_approve_unenrollment_view(course_key):
 
     uname = "Roland"
     email = "rolandopalattaojr@gmail.com" 
-    courseoverview = CourseOverview.get_from_id(course_key)
+    courseoverview = CourseOverview.get_from_id(course_id)
     course_name = courseoverview.display_name
            
-    _unenroll_user(username=uname, email_address=email, course_key=course_key,  course_name=course_name)
+    _unenroll_user(username=uname, email_address=email, course_key=course_id,  course_name=course_name)
     
     # line_count = 0
     # for every_user in users_to_unenroll:
