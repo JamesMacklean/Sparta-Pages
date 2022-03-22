@@ -308,7 +308,7 @@ def export_six_months_to_csv(course_key):
     return response
 
 @require_POST
-def admin_approve_unenrollment_view(course_id):
+def admin_approve_unenrollment_view(username, course_id):
     
     #response = HttpResponse()
 
@@ -328,12 +328,11 @@ def admin_approve_unenrollment_view(course_id):
         except Exception as e:
             return False
 
-    uname = "Roland"
-    email = "rolandopalattaojr@gmail.com" 
+    uname = User.objects.get(username=username) 
     courseoverview = CourseOverview.get_from_id(course_id)
     course_name = courseoverview.display_name
            
-    _unenroll_user(username=uname, email_address=email, course_key=course_id,  course_name=course_name)
+    _unenroll_user(username=uname, email_address=uname.email, course_key=course_id,  course_name=course_name)
     
     # line_count = 0
     # for every_user in users_to_unenroll:
