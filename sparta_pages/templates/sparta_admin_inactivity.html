@@ -89,12 +89,12 @@ $(document).ready(function(){
                 </div>
               </div>
               <div class="modal-body">
-                <p id="count"></p>{{ course_key }} {{asd}}? 
+                <p id="count"></p>{{ course_key }}? 
                         
               </div>
               
               <div class="modal-footer">
-                <form action="" method="POST">
+                <form action="{% url 'sparta-unenrollment-approve' course_key=course_key  %}" method="POST">
                   {% csrf_token %}
                   <div type="div" class="btn btn-secondary" data-dismiss="modal">Cancel</div>
                   <input class="btn btn-success" id="submit" type="submit" value="Approve" name="unenroll"/>
