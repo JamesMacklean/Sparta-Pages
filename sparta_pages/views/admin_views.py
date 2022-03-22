@@ -239,8 +239,8 @@ def admin_inactivity(request):
             
                 course_id = form.cleaned_data['course']
                 return export_six_months_to_csv(course_id)
-        # elif 'unenroll' in request.POST:
-        else:
+        elif 'unenroll' in request.POST:
+
             def _unenroll_user(username=None, email_address=None, course_key=None, course_name=None):
                 """ unenroll a user """
                 try:
@@ -259,13 +259,16 @@ def admin_inactivity(request):
             
             users_to_unenroll = []
 
-            for every_user in user_list:
-                if request.POST.getlist('status') == "true":
+            for a in user_list:
+                #if request.POST.getlist('status') == "true":
                     users_to_unenroll.append({
-                        'username': every_user['username'],
-                        'email': every_user['email'],
+
+                        # 'username': every_user['username'],
+                        # 'email': every_user['email'],
+                        'username': request.POST.getlist('username'),
+                        'email': request.POST.getlist('email'),
                         'course_id': course_key
-                    })   
+                    })  
 
             line_count = 0
             for every_user in users_to_unenroll:
