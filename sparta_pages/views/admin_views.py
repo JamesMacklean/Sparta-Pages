@@ -261,8 +261,8 @@ def admin_inactivity(request):
             
             for a in user_list:
                 users_to_unenroll.append({
-                    'username': every_user['username'],
-                    'email': every_user['email'],
+                    'username': a['username'],
+                    'email': a['email'],
                     'course_id': course_key,
                     'status': request.POST.getlist('status')
                 })  
