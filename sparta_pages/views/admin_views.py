@@ -230,7 +230,7 @@ def admin_inactivity(request):
                 #             'course_id': course_id
                 #         })
 
-                return admin_approve_unenrollment_view(course_id)
+                # return admin_approve_unenrollment_view(course_id)
 
     return render(request, template_name, context)
 
