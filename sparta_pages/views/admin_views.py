@@ -240,21 +240,18 @@ def admin_inactivity(request):
                 course_id = form.cleaned_data['course']
                 return export_six_months_to_csv(course_id)
         elif 'unenroll' in request.POST:
+    
+            users_to_unenroll = []
+            course_id = form.cleaned_data['course']
 
-            # if form.is_valid():
-
-            return export_six_months_to_csv(course_key)
-                # users_to_unenroll = []
-                # course_id = form.cleaned_data['course']
-
-                # for every_user in user_list:
-                #     #if request.POST.getlist('status') == "true":
-                #         users_to_unenroll.append({
-                #             'username': every_user['username'],
-                #             'email': every_user['email'],
-                #             'course_id': course_id
-                #         })    
-                # return admin_approve_unenrollment_view(users_to_unenroll)
+            for every_user in user_list:
+                #if request.POST.getlist('status') == "true":
+                    users_to_unenroll.append({
+                        'username': every_user['username'],
+                        'email': every_user['email'],
+                        'course_id': course_id
+                    })    
+            return admin_approve_unenrollment_view(users_to_unenroll)
 
     return render(request, template_name, context)
 
@@ -353,10 +350,12 @@ def admin_approve_unenrollment_view(users_to_unenroll):
             return False
 
     
-    # uname = "havocalypse"
-    # email = "vanessanoellezamora@gmail.com" 
-           
-    # _unenroll_user(username=uname, email_address=email, course_key=course_id,  course_name=course_name)
+    uname = "Roland"
+    email = "	rolandopalattaojr@gmail.com" 
+    course_id = "course-v1:DAP+SP501+2020_Q1" 
+    courseoverview = CourseOverview.get_from_id(course_id)
+    course_name = courseoverview.display_name
+    _unenroll_user(username=uname, email_address=email, course_key=course_id,  course_name=course_name)
     
     # line_count = 0
     # for every_user in users_to_unenroll:
