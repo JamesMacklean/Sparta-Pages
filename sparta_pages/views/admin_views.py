@@ -240,16 +240,6 @@ def admin_inactivity(request):
                 course_id = form.cleaned_data['course']
                 return export_six_months_to_csv(course_id)
         elif 'unenroll' in request.POST:
-    
-            # users_to_unenroll = []
-
-            # for every_user in user_list:
-            #     #if request.POST.getlist('status') == "true":
-            #         users_to_unenroll.append({
-            #             'username': every_user['username'],
-            #             'email': every_user['email'],
-            #             'course_id': course_key
-            #         })   
 
             def _unenroll_user(username=None, email_address=None, course_key=None, course_name=None):
                 """ unenroll a user """
@@ -266,20 +256,31 @@ def admin_inactivity(request):
 
                 except Exception as e:
                     return False
+            
+            users_to_unenroll = []
+
+            for every_user in user_list:
+                if request.POST.getlist('status') == "true":
+                    users_to_unenroll.append({
+                        'username': every_user['username'],
+                        'email': every_user['email'],
+                        'course_id': course_key
+                    })   
 
             line_count = 0
-            for every_user in user_list:
+            for every_user in users_to_unenroll:
                 if line_count == 0:
                     line_count += 1
                 uname=every_user['username']
                 email=every_user['email']
                 course_id=course_key
+
                 courseoverview = CourseOverview.get_from_id(course_id)
                 course_name = courseoverview.display_name
                 _unenroll_user(username=uname, email_address=email, course_key=course_id,  course_name=course_name)
                 line_count += 1
             
-            # return admin_approve_unenrollment_view({users_to_unenroll})
+            # return admin_approve_unenrollment_view(users_to_unenroll)
 
     return render(request, template_name, context)
 
