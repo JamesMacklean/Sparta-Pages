@@ -251,7 +251,30 @@ def admin_inactivity(request):
                         'course_id': course_key
                     })   
 
-            return admin_approve_unenrollment_view({users_to_unenroll})
+            def _unenroll_user(username=None, email_address=None, course_key=None, course_name=None):
+                """ unenroll a user """
+                try:
+                    usname = User.objects.get(username=username)
+                    CourseEnrollment.unenroll(usname, course_key, skip_refund=True)
+                    email = EmailMessage(
+                        'Course Access Unenrollment',
+                        'Your course access has expired due to failure to complete it in 6 months OR you have been inactive for 3 months. You are now unenrolled from {}.\n\nHow long can I complete a Project SPARTA course?\nUpon enrollment, you have 6 months to finish a SPARTA course. Failure to complete the course in 6 months and/or inactivity for 3 months will result in course access revocation.\n\nFill out the Learner Request form within five business days should you wish to reenroll in this course.\n\nLearner Request Form:\n https://forms.gle/nc9e9JwK287BSDxv5'.format(course_name),
+                        'learn@coursebank.ph',
+                        [email_address],
+                    )
+                    email.send()
+
+                except Exception as e:
+                    return False
+
+            uname = "Roland"
+            email = "rolandopalattaojr@gmail.com" 
+            course_id = "course-v1:DAP+SP501+2020_Q1" 
+            courseoverview = CourseOverview.get_from_id(course_id)
+            course_name = courseoverview.display_name
+            _unenroll_user(username=uname, email_address=email, course_key=course_id,  course_name=course_name)
+            
+            # return admin_approve_unenrollment_view({users_to_unenroll})
 
     return render(request, template_name, context)
 
