@@ -267,12 +267,18 @@ def admin_inactivity(request):
                 except Exception as e:
                     return False
 
-            uname = "Roland"
-            email = "rolandopalattaojr@gmail.com" 
-            course_id = "course-v1:DAP+SP501+2020_Q1" 
+            line_count = 0
+            for every_user in users_to_unenroll:
+                if line_count == 0:
+                    line_count += 1
+                uname=every_user['username']
+                email=every_user['email']
+                course_id=every_user['course_id']
+    
             courseoverview = CourseOverview.get_from_id(course_id)
             course_name = courseoverview.display_name
             _unenroll_user(username=uname, email_address=email, course_key=course_id,  course_name=course_name)
+            line_count += 1
             
             # return admin_approve_unenrollment_view({users_to_unenroll})
 
