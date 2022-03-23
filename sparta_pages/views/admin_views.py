@@ -209,28 +209,6 @@ def admin_inactivity(request):
     context['generate_form'] = GenerateCourseForm(request.GET or None)
     context['csv_form'] = GenerateCourseForm
 
-    #######################TESTING
-    #
-    # users_to_unenroll = []
-    # line_count = 0
-    # for every_user in user_list:
-    #     users_to_unenroll.append({
-    #         'username': every_user['username'],
-    #         'email': every_user['email'],
-    #     })
-        
-    # for every_user in users_to_unenroll:
-    #     if line_count == 0:
-    #         line_count += 1
-    #     uname=every_user['username']
-    #     email=every_user['email']
-
-    #     context['course_key'] = uname
-    #     context['asd'] = email
-    #     line_count += 1
-        
-    ############################
-
     if request.method == "POST":
         form = GenerateCourseForm(request.POST)
         if 'generate' in request.POST:
@@ -239,6 +217,7 @@ def admin_inactivity(request):
             
                 course_id = form.cleaned_data['course']
                 return export_six_months_to_csv(course_id)
+
         elif 'unenroll' in request.POST:
 
             def _unenroll_user(username=None, email_address=None, course_key=None, course_name=None):
@@ -271,14 +250,13 @@ def admin_inactivity(request):
                 if line_count == 0:
                     line_count += 1
                 
-                if every_user['status'] == "true":
-                    uname=every_user['username']
-                    email=every_user['email']
-                    course_id=course_key
-                    courseoverview = CourseOverview.get_from_id(course_id)
-                    course_name = courseoverview.display_name
+                # if every_user['status'] == "true":
+                uname=every_user['username']
+                email=every_user['email']
+                courseoverview = CourseOverview.get_from_id(course_key)
+                course_name = courseoverview.display_name
 
-                    _unenroll_user(username=uname, email_address=email, course_key=course_id,  course_name=course_name)
+                _unenroll_user(username=uname, email_address=email, course_key=course_key,  course_name=course_name)
                 
                 line_count += 1
             
@@ -358,51 +336,6 @@ def export_six_months_to_csv(course_key):
         ]) 
 
     return response
-
-@require_POST
-def admin_approve_unenrollment_view(users_to_unenroll):
-    
-    #response = HttpResponse()
-
-    def _unenroll_user(username=None, email_address=None, course_key=None, course_name=None):
-        """ unenroll a user """
-        try:
-            usname = User.objects.get(username=username)
-            CourseEnrollment.unenroll(usname, course_key, skip_refund=True)
-            email = EmailMessage(
-                'Course Access Unenrollment',
-                'Your course access has expired due to failure to complete it in 6 months OR you have been inactive for 3 months. You are now unenrolled from {}.\n\nHow long can I complete a Project SPARTA course?\nUpon enrollment, you have 6 months to finish a SPARTA course. Failure to complete the course in 6 months and/or inactivity for 3 months will result in course access revocation.\n\nFill out the Learner Request form within five business days should you wish to reenroll in this course.\n\nLearner Request Form:\n https://forms.gle/nc9e9JwK287BSDxv5'.format(course_name),
-                'learn@coursebank.ph',
-                [email_address],
-            )
-            email.send()
-
-        except Exception as e:
-            return False
-
-    
-    uname = "Roland"
-    email = "	rolandopalattaojr@gmail.com" 
-    course_id = "course-v1:DAP+SP501+2020_Q1" 
-    courseoverview = CourseOverview.get_from_id(course_id)
-    course_name = courseoverview.display_name
-    _unenroll_user(username=uname, email_address=email, course_key=course_id,  course_name=course_name)
-    
-    # line_count = 0
-    # for every_user in users_to_unenroll:
-    #     if line_count == 0:
-    #         line_count += 1
-    #     uname=every_user['username']
-    #     email=every_user['email']
-    #     course_id=every_user['course_id']
-    
-    #     courseoverview = CourseOverview.get_from_id(course_id)
-    #     course_name = courseoverview.display_name
-    #     _unenroll_user(username=uname, email_address=email, course_key=course_id,  course_name=course_name)
-    #     line_count += 1
-    
-    return redirect('sparta-admin-inactivity')
-    #return response
 
 def export_pathway_applications_to_csv(apps):
     tnow = timezone.now().strftime('%Y-%m-%dT%H:%M:%S.000Z')
