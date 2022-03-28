@@ -260,6 +260,7 @@ def admin_inactivity(request):
                 
                 line_count += 1
             
+            redirect('sparta-admin-inactivity')
             # return admin_approve_unenrollment_view(users_to_unenroll)
 
     return render(request, template_name, context)
