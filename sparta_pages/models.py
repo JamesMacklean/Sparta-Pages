@@ -146,6 +146,7 @@ class SpartaProfile(models.Model):
     ISCF = "IC"
     DAPCOSM = "DC"
     FPANDAPH= "FP"
+    DOSTXII = "DX"
     NOT_INVOLVED = "NA"
     ORG_CHOICES = (
         (NOT_INVOLVED, "N/A"),
@@ -179,7 +180,8 @@ class SpartaProfile(models.Model):
 	(SPH,"Shopee Philippines"),
 	(ISCF,"Iloilo State College of Fisheries"),
         (DAPCOSM,"Development Academy of the Philippines-COSM"),
-	(FPANDAPH,"foodpanda Philippines")
+	(FPANDAPH,"foodpanda Philippines"),
+	(DOSTXII,"Department of Science and Technology XII")
     )
 
     ANZ = "AN"
