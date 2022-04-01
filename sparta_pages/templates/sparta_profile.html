@@ -35,10 +35,6 @@
       <h2 class="card-title">Applications</h2>
 
 
-
-      <p>To enroll and take Sparta courses for free, you must apply for Pathways and get enrollment access to their corresponding courses. Once you apply and get accepted for a Pathway, you will receive an email with instructions on how to access the courses of the Pathway you applied for.</p>
-      <p><a target="blank" href="{% url 'sparta-main' %}">(Click here for details about Sparta Pathways)</a></p>
-  {% endif %}
       <table style="width: 70%; text-align: center;">
         <thead>
           <tr>
@@ -51,15 +47,23 @@
         <tbody>
           <!--Status-->
           <tr>
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
+            {% if applications %}
+            {% for app in applications %}
+              <td>{{ app.get_status_display }}</td>
+              <td>{{ app.get_status_display }}</td>
+              <td>{{ app.get_status_display }}</td>
+            {% else %}
+              <td>-</td>
+              <td>-</td>
+              <td>-</td>
+            {% endif %}
+            {% endfor %}
           </tr>
           <!--Apply Button-->
           <tr>
-            <td><div type="div" class="btn btn-outline-success btn-sm" style="cursor: pointer" target="blank" href="{% url 'sparta-main' %}">Apply</div></td>
-            <td><div type="div" class="btn btn-outline-success btn-sm" style="cursor: pointer" target="blank" href="{% url 'sparta-main' %}">Apply</div></td>
-            <td><div type="div" class="btn btn-outline-success btn-sm" style="cursor: pointer" data-toggle="modal" data-target="#approveModal">modal test</div></td>
+            <td><div type="button" class="btn btn-outline-success btn-sm" target="blank" href="{% url 'sparta-register' %}">Apply</div></td>
+            <td><div type="button" class="btn btn-outline-success btn-sm" target="blank" href="https://dict.coursebank.ph">Apply</div></td>
+            <td><div type="div" class="btn btn-outline-success btn-sm" data-toggle="modal" data-target="#approveModal">Appy</div></td>
           </tr>
         </tbody>
       </table>
@@ -92,5 +96,5 @@
     evt.currentTarget.className += " active";
   }
 </script>
-
+{% endif %}
 {% endblock %}
