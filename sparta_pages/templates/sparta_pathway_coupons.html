@@ -36,7 +36,7 @@
         {% for course in courses %}
         <tr>
           <td>{{ course.courseoverview.display_name }}</td>
-          <td>{{ course.courseoverview.course.id }}</td>
+          <td>{{ course.courseoverview.id }}</td>
           <td>
             <%
             course_id=courses.courseoverview.id
