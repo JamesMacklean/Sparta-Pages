@@ -26,7 +26,7 @@
       <thead class="thead-light">
         <tr>
           <th>Course</th>
-          <th> </th>
+          <th>Course ID</th>
           <th>Actions</th>
         </tr>
       </thead>
@@ -35,8 +35,8 @@
         {% if courses %}
         {% for course in courses %}
         <tr>
-          <td>{{ courses.courseoverview.display_name }}</td>
-          <td>{{ courses.courseoverview.course.id }}</td>
+          <td>{{ course.courseoverview.display_name }}</td>
+          <td>{{ course.courseoverview.course.id }}</td>
           <td>
             <%
             course_id=courses.courseoverview.id
