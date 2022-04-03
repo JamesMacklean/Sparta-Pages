@@ -47,17 +47,9 @@
         <tbody>
           <!--Status-->
           <tr>
-            {% if applications %}
-            {% for app in applications %}
-              <td>{{ app.get_status_display }}</td>
-              <td>{{ app.get_status_display }}</td>
-              <td>{{ app.get_status_display }}</td>
-            {% else %}
               <td>-</td>
               <td>-</td>
               <td>-</td>
-            {% endif %}
-            {% endfor %}
           </tr>
           <!--Apply Button-->
           <tr>
