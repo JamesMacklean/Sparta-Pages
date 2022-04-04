@@ -38,19 +38,6 @@
           <td>{{ course.courseoverview.display_name }}</td>
           <td>{{ course.courseoverview.id }}</td>
           <td>
-            <%
-            course_id=courses.courseoverview.id
-            if ecommerce_checkout:
-              reg_href = ecommerce_checkout_link
-            else:
-              reg_href="#"
-            if single_paid_mode:
-              href_class = "add-to-cart"
-            else:
-              href_class = "register"
-
-            endif
-          %>
             <a class="btn btn-primary" target="_blank" href="${reg_href}" class="${href_class}">
               ${_("Enroll")}
             </a>
