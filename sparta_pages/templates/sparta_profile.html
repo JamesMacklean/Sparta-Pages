@@ -31,41 +31,79 @@
       {% include "sparta_scholar_profile.html" %}
      </div>
 
-     <div id="LearningPathways" class="tabcontent">
+    <div id="LearningPathways" class="tabcontent">
       <h2 class="card-title">Applications</h2>
+      <section class="container-container">
+        <div class="card-container">
+          <div class="card-image spartabg">
+            <h2>SPARTA Scholarship</h2>
+            <p>Project SPARTA was launched in order to put in place the necessary online education, research and development mechanisms and infrastructure to not only enable the industry of data science and analytics but also to advance smart governance practices. It aims to train and graduate 30,000 learners in data science, analytics, and related fields through online learning.              
+            </p>
+            <a href="{% url 'sparta-main' %}">Learn More</a>
+            <a href="{% url 'sparta-application-page' %}">Apply</a>
+          </div>
+        </div>
+        <div class="card-container">
+          <div class="card-image">
+            <h2>DICT Scholarship</h2>
+            <p>abt
 
-
-      <table style="width: 70%; text-align: center;">
-        <thead>
-          <tr>
-            <th>SPARTA</th>
-            <th>DICT</th>
-            <th>TBA</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          <!--Status-->
-          <tr>
-              <td>-</td>
-              <td>-</td>
-              <td>-</td>
-          </tr>
-          <!--Apply Button-->
-          <tr>
-            <td><div type="button" class="btn btn-outline-success btn-sm" target="blank" href="{% url 'sparta-register' %}">Apply</div></td>
-            <td><div type="button" class="btn btn-outline-success btn-sm" target="blank" href="https://dict.coursebank.ph">Apply</div></td>
-            <td><div type="div" class="btn btn-outline-success btn-sm" data-toggle="modal" data-target="#approveModal">Appy</div></td>
-          </tr>
-        </tbody>
-      </table>
+            </p>
+            <a href="https://dict.coursebank.ph">Learn More</a>
+            <a href="{% sparta_pathway_coupons.html %}">Apply</a>
+          </div>
+        </div>
+        <div class="card-container">
+          <div class="card-image">
+            <h2>TBA</h2>
+            <p></p>
+          </div>
+        </div>
+      </section>
     </div>
     <div id="Courses" class="tabcontent">
       {% include "sparta_pathway_coupons.html" %}
     </div>
   </div>
 </div>
-
+<style>
+  .container-container {
+    display: flex;
+    justify-content: center;
+  }
+  .card-container {
+    background-color: azure;
+    width: 270px;
+    height: 400px;
+    margin: 15px;
+    border-radius: 15px;
+  }
+  .card-image {
+    background-color: lightskyblue;
+    height: 130px;
+    margin-bottom: 15px;
+    background-size: cover;
+    border-radius: 15px 15px 0 0;
+  }
+  .spartabg {
+    background-image: url('https://coursebank-static-assets-tmtg.s3-ap-northeast-1.amazonaws.com/sparta-logo.png');
+  }
+  .dictbg {
+    background-image: url('https://coursebank-static-assets-tmtg.s3.ap-northeast-1.amazonaws.com/DICT-Logo-nobg.png');
+  }
+  .card-container h2 {
+    text-align: center;
+  }
+  .card-container p {
+    padding: 10px;
+  }
+  .card-container a {
+    font-family: "Helvetica", Sans-serif;
+    background-color: #4EBCE8;
+    border-radius: 11px 11px 11px 11px;
+    padding: 10px 20px;
+  }
+</style>
 <script>
   function openTab(evt, cityName) {
     // Declare all variables
