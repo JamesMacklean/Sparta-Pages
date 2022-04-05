@@ -447,7 +447,7 @@ class ProfilePageView(TemplateView):
         try:
             profile = SpartaProfile.objects.get(user=request.user)
         except SpartaProfile.DoesNotExist:
-            return redirect('sparta-main')
+            return redirect('sparta-register')
         context = self.get_context_data()
         return render(request, self.template_name, context)
 
@@ -883,24 +883,19 @@ class StudentCouponRecordsView(TemplateView):
         context = super(StudentCouponRecordsView, self).get_context_data(**kwargs)
         pathway = get_object_or_404(Pathway, id=self.kwargs['pathway_id'])
 
-        profile = self.request.user.sparta_profile
-        student_records = StudentCouponRecord.objects.filter(profile=profile)
-
-        coupons = []
+        courses = []
         for c in pathway.courses.all().filter(is_active=True):
-            course_screcord = student_records.filter(coupon__course_id=c.course_id)
-            if course_screcord.exists():
+            
                 course_key = CourseKey.from_string(c.course_id)
                 courseoverview = CourseOverview.get_from_id(course_key)
-                coupon_data = {
+                course_data = {
                     'course_id': c.course_id,
                     'courseoverview': courseoverview,
-                    'coupon_code': course_screcord[0].coupon.code
                 }
-                coupons.append(coupon_data)
+                courses.append(course_data)
 
         context['pathway'] = pathway
-        context['coupons'] = coupons
+        context['courses'] = courses
 
         return context
 
