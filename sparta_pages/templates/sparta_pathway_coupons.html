@@ -1,6 +1,7 @@
+{% extends "sparta_base.html" %}
 {% load static %}
 
-{% block title %} Coursebank | SPARTA | Your Enrollment Codes{% endblock %}
+{% block title %}Coursebank | SPARTA | Your Enrollment Codes{% endblock %}
 
 {% block sparta_body %}
 
@@ -26,31 +27,20 @@
       <thead class="thead-light">
         <tr>
           <th>Course</th>
-          <th>Course ID</th>
+          <th>Coupon Code</th>
           <th>Actions</th>
         </tr>
       </thead>
 
       <tbody>
-        {% if courses %}
-        {% for course in courses %}
+        {% if coupons %}
+        {% for coupon in coupons %}
         <tr>
-          <td>{{ course.courseoverview.display_name }}</td>
-          <td>{{ course.courseoverview.id }}</td>
+          <td>{{ coupon.courseoverview.display_name }}</td>
+          <td>{{ coupon.coupon_code }}</td>
           <td>
-            <%
-            course_id=courses.courseoverview.id
-            if ecommerce_checkout:
-              reg_href = ecommerce_checkout_link
-            else:
-              reg_href="#"
-            if single_paid_mode:
-              href_class = "add-to-cart"
-            else:
-              href_class = "register"
-          %>
-            <a class="btn btn-primary" target="_blank" href="${reg_href}" class="${href_class}">
-              ${_("Enroll")}
+            <a class="btn btn-primary" target="_blank" href="{% url 'about_course' course_id=coupon.courseoverview.id %}">
+              View Course
             </a>
           </td>
         </tr>

@@ -883,19 +883,24 @@ class StudentCouponRecordsView(TemplateView):
         context = super(StudentCouponRecordsView, self).get_context_data(**kwargs)
         pathway = get_object_or_404(Pathway, id=self.kwargs['pathway_id'])
 
-        courses = []
+        profile = self.request.user.sparta_profile
+        student_records = StudentCouponRecord.objects.filter(profile=profile)
+
+        coupons = []
         for c in pathway.courses.all().filter(is_active=True):
-            
+            course_screcord = student_records.filter(coupon__course_id=c.course_id)
+            if course_screcord.exists():
                 course_key = CourseKey.from_string(c.course_id)
                 courseoverview = CourseOverview.get_from_id(course_key)
-                course_data = {
+                coupon_data = {
                     'course_id': c.course_id,
                     'courseoverview': courseoverview,
+                    'coupon_code': course_screcord[0].coupon.code
                 }
-                courses.append(course_data)
+                coupons.append(coupon_data)
 
         context['pathway'] = pathway
-        context['courses'] = courses
+        context['coupons'] = coupons
 
         return context
 

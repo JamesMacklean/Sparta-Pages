@@ -31,41 +31,93 @@
       {% include "sparta_scholar_profile.html" %}
      </div>
 
-     <div id="LearningPathways" class="tabcontent">
+    <div id="LearningPathways" class="tabcontent">
       <h2 class="card-title">Applications</h2>
-
-
-      <table style="width: 70%; text-align: center;">
-        <thead>
-          <tr>
-            <th>SPARTA</th>
-            <th>DICT</th>
-            <th>TBA</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          <!--Status-->
-          <tr>
-              <td>-</td>
-              <td>-</td>
-              <td>-</td>
-          </tr>
-          <!--Apply Button-->
-          <tr>
-            <td><div type="button" class="btn btn-outline-success btn-sm" target="blank" href="{% url 'sparta-register' %}">Apply</div></td>
-            <td><div type="button" class="btn btn-outline-success btn-sm" target="blank" href="https://dict.coursebank.ph">Apply</div></td>
-            <td><div type="div" class="btn btn-outline-success btn-sm" data-toggle="modal" data-target="#approveModal">Appy</div></td>
-          </tr>
-        </tbody>
-      </table>
+      <section class="container-container">
+        <div class="card-container">
+          <div class="card-image spartabg"></div>
+            <h2>SPARTA Scholarship</h2>
+            <p>Project SPARTA was launched in order to put in place the necessary online education, research and development mechanisms and infrastructure to not only enable the industry of data science and analytics but also to advance smart governance practices. It aims to train and graduate 30,000 learners in data science, analytics, and related fields through online learning.              
+            </p>
+              <div class="buttons">
+              <a href="{% url 'sparta-main' %}">Learn More</a>
+              <br>
+              <a href="{% url 'sparta-application-page' %}">Apply</a>
+              </div>
+        </div>
+      </section>
+      <section class="container-container">
+        <div class="card-container">
+          <div class="card-image dictbg"></div>
+            <h2>DICT Scholarship</h2>
+            <p>The training programs within this initiative aim to upskill the Philippine workforce in various fields of study that are relevant to today’s technology driven landscape.
+              <br>
+              The curation of courses that will be made available to learners is a mix of international courses from Coursera as well as local online courses from the DICT’s growing content library.
+            </p>
+            <div class="buttons">
+              <a href="https://dict.coursebank.ph">Learn More</a>
+              <br>
+              <a href="#">Apply</a>
+            </div>
+        </div>
+      </section>
     </div>
     <div id="Courses" class="tabcontent">
       {% include "sparta_pathway_coupons.html" %}
     </div>
   </div>
 </div>
-
+<style>
+  .container-container {
+    display: flex;
+    justify-content: center;
+    margin: 30px;
+  }
+  .card-container {
+    background-color: lightgray;
+    width: 700px;
+    height: 560px;
+    margin-bottom: 15px;
+    border-radius: 15px;
+  }
+  .card-image {
+    height: 230px;
+    background-size: cover;
+    border-radius: 15px 15px 0 0;
+  }
+  .spartabg {
+    background-image: url('https://coursebank-static-assets-tmtg.s3-ap-northeast-1.amazonaws.com/sparta-logo.png');
+    background-color: maroon;
+  }
+  .dictbg {
+    background-image: url('https://coursebank-static-assets-tmtg.s3.ap-northeast-1.amazonaws.com/DICT-Logo-nobg.png');
+    background-color: #4EBCE8;
+  }
+  .card-container h2 {
+    text-align: center;
+    color: black;
+  }
+  .card-container p {
+    opacity: 100%;
+    color: black;
+    padding: 20px;
+    margin: 15px;
+  }
+  .buttons{
+    text-align: right;
+    margin-right: 15px;
+  }
+  .buttons a{
+    text-decoration: none;
+    color: white;
+    font-family: "Helvetica", Sans-serif;
+    background-color: #4EBCE8;
+    border-radius: 11px 11px 11px 11px;
+    padding: 10px 20px;
+    margin-bottom: 10px;
+    display:inline-flex;
+    }
+</style>
 <script>
   function openTab(evt, cityName) {
     // Declare all variables
