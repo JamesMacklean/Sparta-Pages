@@ -20,7 +20,7 @@
 {% else %}
 <div class="tab col col-2">
   <div class="tablinks btn btn-outline-info" onclick="openTab(event, 'ScholarProfile')">Scholarship Profile</div>
-  <div class="tablinks btn btn-outline-info" onclick="openTab(event, 'LearningPathways')">Pathway Applications</div>
+  <div class="tablinks btn btn-outline-info" onclick="openTab(event, 'PathwayApplications')">Pathway Applications</div>
   <div class="tablinks btn btn-outline-info" onclick="openTab(event, 'Courses')">Courses</div>
 </div>
 
@@ -31,7 +31,7 @@
       {% include "sparta_scholar_profile.html" %}
      </div>
 
-    <div id="LearningPathways" class="tabcontent">
+    <div id="PathwayApplications" class="tabcontent">
       <h2 class="card-title">Applications</h2>
       <section class="container-container">
         <div class="card-container">
@@ -62,6 +62,7 @@
         </div>
       </section>
     </div>
+
     <div id="Courses" class="tabcontent">
       <h2 class="card-title">Your Learning Pathways</h2>
 
@@ -190,6 +191,7 @@
     display:inline-flex;
     }
 </style>
+
 <script>
   function openTab(evt, cityName) {
     // Declare all variables
