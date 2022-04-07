@@ -8,7 +8,7 @@
 <div class="card">
   <div class="card-body">
     
-    <h2 class="card-title">Your Enrollment Codes for the {{ pathway.name|title }} Learning Pathway</h2>
+    <h2 class="card-title">Available Courses for the {{ pathway.name|title }} Learning Pathway</h2>
 
     {% if coupons %}
     <div class="p">
@@ -27,7 +27,6 @@
       <thead class="thead-light">
         <tr>
           <th>Course</th>
-          <th>Coupon Code</th>
           <th>Actions</th>
         </tr>
       </thead>
@@ -37,10 +36,12 @@
         {% for coupon in coupons %}
         <tr>
           <td>{{ coupon.courseoverview.display_name }}</td>
-          <td>{{ coupon.coupon_code }}</td>
           <td>
             <a class="btn btn-primary" target="_blank" href="{% url 'about_course' course_id=coupon.courseoverview.id %}">
               View Course
+            </a>
+            <a class="btn btn-primary" href="#">
+              Enroll
             </a>
           </td>
         </tr>
