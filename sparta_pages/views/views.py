@@ -886,6 +886,12 @@ class StudentCouponRecordsView(TemplateView):
         profile = self.request.user.sparta_profile
         student_records = StudentCouponRecord.objects.filter(profile=profile)
 
+        applications = PathwayApplication.objects.all().filter(profile=profile).exclude(status='WE')
+        display_applications = []
+        
+        if applications.exists():
+            display_applications.append(applications.order_by('created_at')[0])
+
         coupons = []
         for c in pathway.courses.all().filter(is_active=True):
             course_screcord = student_records.filter(coupon__course_id=c.course_id)
@@ -901,6 +907,7 @@ class StudentCouponRecordsView(TemplateView):
 
         context['pathway'] = pathway
         context['coupons'] = coupons
+        context['pathway_applications'] = display_applications
 
         return context
 
