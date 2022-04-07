@@ -87,10 +87,12 @@
             {% if app.status == 'AP' %}
             <td>
               <div class="dropdown show">
-                <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink{{app.pathway.id}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> </a>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink{{app.pathway.id}}">
-                  <a class="dropdown-item" href="{% url 'sparta-pathway-progress' pathway_id=app.pathway.id %}">View Progress</a>
-                  <a class="dropdown-item" href="{% url 'sparta-pathway-coupons' pathway_id=app.pathway.id %}">Enrollment Codes</a>
+                <a class="btn btn-primary" target="_blank" href="{% url 'sparta-pathway-progress' pathway_id=app.pathway.id %}">
+                  Progress
+                </a>
+                <a class="btn btn-primary" target="_blank" href="{% url 'sparta-pathway-coupons' pathway_id=app.pathway.id %}">
+                  Courses
+                </a>
                 </div>
               </div>
             </td>
