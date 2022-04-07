@@ -888,7 +888,6 @@ class StudentCouponRecordsView(TemplateView):
 
         applications = PathwayApplication.objects.all().filter(profile=profile).exclude(status='WE')
         display_applications = []
-        
         if applications.exists():
             display_applications.append(applications.order_by('created_at')[0])
 
