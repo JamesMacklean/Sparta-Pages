@@ -63,7 +63,80 @@
       </section>
     </div>
     <div id="Courses" class="tabcontent">
-      {% include "sparta_pathway_coupons.html" %}
+      <h2 class="card-title">Your Learning Pathways</h2>
+
+      <p>To enroll and take Sparta courses for free, you must apply for Pathways and get enrollment access to their corresponding courses. Once you apply and get accepted for a Pathway, you will receive an email with instructions on how to access the courses of the Pathway you applied for.</p>
+      <p><a target="blank" href="{% url 'sparta-main' %}">(Click here for details about Sparta Pathways)</a></p>
+
+      <table class="table">
+        <thead class="thead-light">
+          <tr>
+            <th>Pathway</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {% if applications %}
+          {% for app in applications %}
+          <tr>
+            <td>{{ app.pathway }}</td>
+            <td>{{ app.get_status_display }}</td>
+            {% if app.status == 'AP' %}
+            <td>
+              <div class="dropdown show">
+                <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink{{app.pathway.id}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> </a>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink{{app.pathway.id}}">
+                  <a class="dropdown-item" href="{% url 'sparta-pathway-progress' pathway_id=app.pathway.id %}">View Progress</a>
+                  <a class="dropdown-item" href="{% url 'sparta-pathway-coupons' pathway_id=app.pathway.id %}">Enrollment Codes</a>
+                </div>
+              </div>
+            </td>
+            {% elif app.status == 'DE' %}
+            <td>-</td>
+            {% else %}
+            <td><div type="div" class="btn btn-outline-secondary" style="cursor: pointer" data-toggle="modal" data-target="#withdrawModal">Withdraw</div></td>
+            <!-- Modal Block -->
+            <div class="modal fade" id="withdrawModal" tabindex="-1" role="dialog" aria-labelledby="withdrawModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="withdrawModalLabel">Withdraw Application</h5>
+                    <div type="div" class="close" style="cursor: pointer" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </div>
+                  </div>
+                  <div class="modal-body">
+                    Are you sure you want to withdraw your application for this Learning Pathway ({{ app.pathway }})?
+                  </div>
+                  <div class="modal-footer">
+                    <form action="{% url 'sparta-withdraw' id=app.id %}" method="POST">
+                      {% csrf_token %}
+                      <div type="div" class="btn btn-secondary" data-dismiss="modal">Cancel</div>
+                      <input class="btn btn-primary" id="submit" type="submit" value="Yes, Withdraw My Application" />
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {% endif %}
+          </tr>
+          {% endfor %}
+          {% else %}
+          <tr>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+          </tr>
+          {% endif %}
+        </tbody>
+      </table>
+
+      {% if not max_applied %}
+        <a class="btn btn-primary" href="{% url 'sparta-application-page' %}">Apply for a pathway</a>
+      {% endif %}
+      <!-- {% include "sparta_pathway_coupons.html" %} -->
     </div>
   </div>
 </div>
