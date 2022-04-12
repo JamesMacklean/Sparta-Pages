@@ -41,9 +41,9 @@
             <a class="btn btn-primary" target="_blank" href="{% url 'about_course' course_id=coupon.courseoverview.id %}">
               View Course
             </a>
-            <form action="" method="POST">
+            <form action="{% url 'sparta-pathway-coupons' %}" method="POST">
               {% csrf_token %}
-              <a class="btn btn-primary" href="{% url 'about_course' course_id=coupon.courseoverview.id %}">Enroll</a>
+              <a class="btn btn-primary">Enroll</a>
             </form>
           </td>
         </tr>

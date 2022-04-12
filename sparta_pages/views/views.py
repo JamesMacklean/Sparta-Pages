@@ -889,7 +889,7 @@ class StudentCouponRecordsView(TemplateView):
         context = super(StudentCouponRecordsView, self).get_context_data(**kwargs)    
         return context
 
-    def get(self, request, *args, **kwargs):
+    def get(request, self, *args, **kwargs):
         try:
             profile = SpartaProfile.objects.get(user=request.user)
         except SpartaProfile.DoesNotExist:
@@ -913,8 +913,7 @@ class StudentCouponRecordsView(TemplateView):
                 course_key = CourseKey.from_string(c.course_id)
                 courseoverview = CourseOverview.get_from_id(course_key)
                 coupon_data = {
-                    'username': profile.user.username,
-                    'course_id': c.course_id,
+                    'course_id': course_key,
                     'courseoverview': courseoverview,
                     'coupon_code': course_screcord[0].coupon.code
                 }
@@ -923,7 +922,11 @@ class StudentCouponRecordsView(TemplateView):
         context['pathway'] = pathway
         context['coupons'] = coupons
         
-        if self.request.method == "POST":
+        uname = profile.user.username
+        course_name = courseoverview
+        mode = "verified"
+
+        if request.method == "POST":
    
             def _enroll_user(username=None, email_address=None, course_key=None, course_name=None, mode=None):
                 """ enroll a user """
@@ -931,21 +934,12 @@ class StudentCouponRecordsView(TemplateView):
                     tnow = timezone.now()
                     uname = User.objects.get(username=username)
                     enrollment = CourseEnrollment.enroll(uname, course_key, mode=mode, check_access=False)
-                    reenrollment = SpartaEnrollment.objects.create(enrollment=enrollment,enroll_date=tnow)
-                    email = EmailMessage(
-                        'Course Access Reenrollment',
-                        'This is a confirmation that you have been re-enrolled in {}.\nEach re-enrollment after the 6-month access OR 3-month inactivity will grant you 30-day additional access to complete the course.'.format(course_name),
-                        'learn@coursebank.ph',
-                        [email_address],
-                    )
-                    email.send()
+                    enrollment = SpartaEnrollment.objects.create(enrollment=enrollment,enroll_date=tnow)
                 except Exception as e:
                     return False
 
             # ENROLL COMMAND
-            uname = profile.user.username
-            course_name = courseoverview
-            mode = "verified"
+            
             _enroll_user(username=uname, email_address=uname.email, course_key=course_key, course_name=course_name, mode=mode)
             redirect('sparta-pathway-coupons')
             
