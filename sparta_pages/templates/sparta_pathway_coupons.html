@@ -45,7 +45,6 @@
             </a>
           </td>
         </tr>
-        {% endfor %}
 
         <!-- Modal Block -->
         <div class="modal fade" id="approveModal" tabindex="-1" role="dialog" aria-labelledby="approveModalLabel" aria-hidden="true">
@@ -58,7 +57,7 @@
                 </div>
               </div>
               <div class="modal-body">
-                <p>Are you sure you want to enroll in the course {{ coupon.courseoverview }}? </p>
+                <p>Are you sure you want to enroll in the course {{ coupon.courseoverview.display_name }}? </p>
                         
               </div>
               
@@ -73,6 +72,8 @@
           </div>
         </div>
         
+
+        {% endfor %}
         {% else %}
         <tr>
           <td>-</td>
