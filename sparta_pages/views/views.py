@@ -943,8 +943,8 @@ class StudentCouponRecordsView(TemplateView):
 
 
         
-
-        return context
+        return render(request, self.template_name, context)
+        # return context
 
     def get(self, request, *args, **kwargs):
         try:
