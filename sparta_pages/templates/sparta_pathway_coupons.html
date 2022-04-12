@@ -37,14 +37,13 @@
         <tr>
           <td>{{ coupon.courseoverview.display_name }}</td>
           <td>{{ coupon.course_id }}</td>
-          <td>{{ coupon.username }}</td>
           <td>
             <a class="btn btn-primary" target="_blank" href="{% url 'about_course' course_id=coupon.courseoverview.id %}">
               View Course
             </a>
             <form action="" method="POST">
               {% csrf_token %}
-              <a class="btn btn-primary" href="#">Enroll</a>
+              <a class="btn btn-primary">Enroll</a>
             </form>
           </td>
         </tr>

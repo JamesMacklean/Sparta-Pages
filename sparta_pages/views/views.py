@@ -886,9 +886,23 @@ class StudentCouponRecordsView(TemplateView):
         return super(StudentCouponRecordsView, self).dispatch(*args, **kwargs)
 
     def get_context_data(self, **kwargs):
-        context = super(StudentCouponRecordsView, self).get_context_data(**kwargs)
-        pathway = get_object_or_404(Pathway, id=self.kwargs['pathway_id'])
+        context = super(StudentCouponRecordsView, self).get_context_data(**kwargs)    
+        return context
 
+    def get(self, request, *args, **kwargs):
+        try:
+            profile = SpartaProfile.objects.get(user=request.user)
+        except SpartaProfile.DoesNotExist:
+            return redirect('sparta-main')
+
+        try:
+            applications = PathwayApplication.objects.filter(profile=profile).filter(pathway__id=self.kwargs['pathway_id']).filter(status="AP")
+        except PathwayApplication.DoesNotExist:
+            return redirect('sparta-profile')
+
+        context = self.get_context_data()
+
+        pathway = get_object_or_404(Pathway, id=self.kwargs['pathway_id'])
         profile = self.request.user.sparta_profile
         student_records = StudentCouponRecord.objects.filter(profile=profile)
 
@@ -909,40 +923,8 @@ class StudentCouponRecordsView(TemplateView):
         context['pathway'] = pathway
         context['coupons'] = coupons
         
-        
-        return context
+        if self.method == "POST":
 
-    def get(self, request, *args, **kwargs):
-        try:
-            profile = SpartaProfile.objects.get(user=request.user)
-        except SpartaProfile.DoesNotExist:
-            return redirect('sparta-main')
-
-        try:
-            applications = PathwayApplication.objects.filter(profile=profile).filter(pathway__id=self.kwargs['pathway_id']).filter(status="AP")
-        except PathwayApplication.DoesNotExist:
-            return redirect('sparta-profile')
-
-        context = self.get_context_data()
-
-        profile = self.request.user.sparta_profile
-        student_records = StudentCouponRecord.objects.filter(profile=profile)
-
-        coupons = []
-        for c in pathway.courses.all().filter(is_active=True):
-            course_screcord = student_records.filter(coupon__course_id=c.course_id)
-            if course_screcord.exists():
-                course_key = CourseKey.from_string(c.course_id)
-                courseoverview = CourseOverview.get_from_id(course_key)
-                coupon_data = {
-                    'username': profile.user.username,
-                    'course_id': c.course_id,
-                    'courseoverview': courseoverview,
-                    'coupon_code': course_screcord[0].coupon.code
-                }
-                coupons.append(coupon_data)
-                
-        if request.method == "POST":
     
             def _enroll_user(username=None, email_address=None, course_key=None, course_name=None, mode=None):
                 """ enroll a user """
