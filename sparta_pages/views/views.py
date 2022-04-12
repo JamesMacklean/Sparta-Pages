@@ -889,7 +889,7 @@ class StudentCouponRecordsView(TemplateView):
         context = super(StudentCouponRecordsView, self).get_context_data(**kwargs)    
         return context
 
-    def get(request, self, *args, **kwargs):
+    def get(self, request, *args, **kwargs):
         try:
             profile = SpartaProfile.objects.get(user=request.user)
         except SpartaProfile.DoesNotExist:
