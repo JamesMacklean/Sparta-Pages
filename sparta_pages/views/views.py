@@ -885,7 +885,7 @@ class StudentCouponRecordsView(TemplateView):
     def dispatch(self, *args, **kwargs):
         return super(StudentCouponRecordsView, self).dispatch(*args, **kwargs)
 
-    def get_context_data(self, request, **kwargs):
+    def get_context_data(self, **kwargs):
         context = super(StudentCouponRecordsView, self).get_context_data(**kwargs)
         pathway = get_object_or_404(Pathway, id=self.kwargs['pathway_id'])
 
@@ -909,9 +909,9 @@ class StudentCouponRecordsView(TemplateView):
         context['pathway'] = pathway
         context['coupons'] = coupons
         
-        if request.method == "POST":
-
-            def _enroll_user(username=None, email_address=None, course_key=None, course_name=None, mode=None, aaction=None):
+        # if request.method == "POST":
+    
+        def _enroll_user(username=None, email_address=None, course_key=None, course_name=None, mode=None, aaction=None):
                 """ enroll a user """
                 try:
                     tnow = timezone.now()
@@ -943,8 +943,7 @@ class StudentCouponRecordsView(TemplateView):
 
 
         
-        return render(request, self.template_name, context)
-        # return context
+        return context
 
     def get(self, request, *args, **kwargs):
         try:
