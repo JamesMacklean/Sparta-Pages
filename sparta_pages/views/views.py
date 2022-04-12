@@ -923,7 +923,7 @@ class StudentCouponRecordsView(TemplateView):
         context['pathway'] = pathway
         context['coupons'] = coupons
         
-        if self.method == "POST":
+        if self.request.method == "POST":
    
             def _enroll_user(username=None, email_address=None, course_key=None, course_name=None, mode=None):
                 """ enroll a user """
