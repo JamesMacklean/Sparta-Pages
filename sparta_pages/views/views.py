@@ -925,6 +925,7 @@ class StudentCouponRecordsView(TemplateView):
 
         context = self.get_context_data()
 
+        pathway = get_object_or_404(Pathway, id=self.kwargs['pathway_id'])
         profile = self.request.user.sparta_profile
         student_records = StudentCouponRecord.objects.filter(profile=profile)
 
@@ -941,7 +942,7 @@ class StudentCouponRecordsView(TemplateView):
                     'coupon_code': course_screcord[0].coupon.code
                 }
                 coupons.append(coupon_data)
-                
+
         if request.method == "POST":
     
             def _enroll_user(username=None, email_address=None, course_key=None, course_name=None, mode=None):
