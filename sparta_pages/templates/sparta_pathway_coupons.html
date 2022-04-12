@@ -43,7 +43,7 @@
             </a>
             <form action="" method="POST">
               {% csrf_token %}
-              <a class="btn btn-primary" href="#">Enroll</a>
+              <a class="btn btn-primary" href="{% url 'about_course' course_id=coupon.courseoverview.id %}">Enroll</a>
             </form>
           </td>
         </tr>
