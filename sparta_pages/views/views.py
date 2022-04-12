@@ -909,39 +909,6 @@ class StudentCouponRecordsView(TemplateView):
         context['pathway'] = pathway
         context['coupons'] = coupons
         
-        # if request.method == "POST":
-    
-        def _enroll_user(username=None, email_address=None, course_key=None, course_name=None, mode=None, aaction=None):
-                """ enroll a user """
-                try:
-                    tnow = timezone.now()
-                    uname = User.objects.get(username=username)
-                    enrollment = CourseEnrollment.enroll(uname, course_key, mode=mode, check_access=False)
-                    reenrollment = SpartaEnrollment.objects.create(enrollment=enrollment,enroll_date=tnow)
-                    if aaction == "unfreeze":
-                        email = EmailMessage(
-                            'Course Access Unenrollment',
-                            'This is to notify you that the SPARTA team has received your NTE to rework and resubmit your {} capstone.\nThe capstone open-response assessment has been reset and you may now resubmit your work via Coursebank platform.\n\nYou are required to reply to this email with your revised output.\nThis will be forwarded to SPARTA leads and is subject to approval of Dr. Alan Cajes.'.format(course_name),
-                            'learn@coursebank.ph',
-                            [email_address],
-                        )
-                    else:
-                        email = EmailMessage(
-                            'Course Access Reenrollment',
-                            'This is a confirmation that you have been re-enrolled in {}.\nEach re-enrollment after the 6-month access OR 3-month inactivity will grant you 30-day additional access to complete the course.'.format(course_name),
-                            'learn@coursebank.ph',
-                            [email_address],
-                        )
-                    email.send()
-                except Exception as e:
-                    return False
-
-                redirect('sparta-pathway-coupons')
-
-            # ENROLL COMMAND
-            # _enroll_user(username=uname, email_address=uname.email, course_key=course_key, course_name=course_name, mode=mode, aaction=aaction)
-
-
         
         return context
 
@@ -957,6 +924,51 @@ class StudentCouponRecordsView(TemplateView):
             return redirect('sparta-profile')
 
         context = self.get_context_data()
+
+        profile = self.request.user.sparta_profile
+        student_records = StudentCouponRecord.objects.filter(profile=profile)
+
+        coupons = []
+        for c in pathway.courses.all().filter(is_active=True):
+            course_screcord = student_records.filter(coupon__course_id=c.course_id)
+            if course_screcord.exists():
+                course_key = CourseKey.from_string(c.course_id)
+                courseoverview = CourseOverview.get_from_id(course_key)
+                coupon_data = {
+                    'username': profile.user.username,
+                    'course_id': c.course_id,
+                    'courseoverview': courseoverview,
+                    'coupon_code': course_screcord[0].coupon.code
+                }
+                coupons.append(coupon_data)
+                
+        if request.method == "POST":
+    
+            def _enroll_user(username=None, email_address=None, course_key=None, course_name=None, mode=None):
+                """ enroll a user """
+                try:
+                    tnow = timezone.now()
+                    uname = User.objects.get(username=username)
+                    enrollment = CourseEnrollment.enroll(uname, course_key, mode=mode, check_access=False)
+                    reenrollment = SpartaEnrollment.objects.create(enrollment=enrollment,enroll_date=tnow)
+                    email = EmailMessage(
+                        'Course Access Reenrollment',
+                        'This is a confirmation that you have been re-enrolled in {}.\nEach re-enrollment after the 6-month access OR 3-month inactivity will grant you 30-day additional access to complete the course.'.format(course_name),
+                        'learn@coursebank.ph',
+                        [email_address],
+                    )
+                    email.send()
+                except Exception as e:
+                    return False
+
+                redirect('sparta-pathway-coupons')
+
+            # ENROLL COMMAND
+            uname = profile.user.username
+            course_name = courseoverview
+            mode = "verified"
+            _enroll_user(username=uname, email_address=uname.email, course_key=course_key, course_name=course_name, mode=mode)
+        
         return render(request, self.template_name, context)
 
 class AdditionalEditPageView(View):
