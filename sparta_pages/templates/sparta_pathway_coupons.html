@@ -36,18 +36,18 @@
         {% for coupon in coupons %}
         <tr>
           <td>{{ coupon.courseoverview.display_name }}</td>
-          <td>{{ coupon.username }}</td>
-          <td>{{ coupon.course_id }}</td>
           <td>
             <a class="btn btn-primary" target="_blank" href="{% url 'about_course' course_id=coupon.courseoverview.id %}">
               View Course
             </a>
+          </td>
+          <td>
             <a class="btn btn-primary" style="cursor: pointer" data-toggle="modal" href="" data-target="#approveModal">
               Enroll
             </a>
           </td>
           <!-- Modal Block -->
-          <div class="modal fade" id="approveModal" tabindex="-2" role="dialog" aria-labelledby="approveModalLabel" aria-hidden="true">
+          <div class="modal fade" id="approveModal" tabindex="-1" role="dialog" aria-labelledby="approveModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
               <div class="modal-content">
                 <div class="modal-header">
