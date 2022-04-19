@@ -925,8 +925,14 @@ class StudentCouponRecordsView(TemplateView):
             
         return render(request, self.template_name, context)
 
-def enrollment_approve_application(username, course_key):
+def enrollment_approve_application(request, username, course_key):
 
+    profiles = SpartaProfile.objects.filter(is_active=True)
+    try:
+        sparta_profile = profiles.get(user=request.user)
+    except SpartaProfile.DoesNotExist:
+        raise HttpResponse(status=403)
+    
     courseoverview = CourseOverview.get_from_id(course_key)
     course_name = courseoverview.display_name
     mode = "verified" 
