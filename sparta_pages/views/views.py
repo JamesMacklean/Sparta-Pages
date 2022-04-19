@@ -886,21 +886,7 @@ class StudentCouponRecordsView(TemplateView):
         return super(StudentCouponRecordsView, self).dispatch(*args, **kwargs)
 
     def get_context_data(self, **kwargs):
-        context = super(StudentCouponRecordsView, self).get_context_data(**kwargs)    
-        return context
-
-    def get(self, request, *args, **kwargs):
-        try:
-            profile = SpartaProfile.objects.get(user=request.user)
-        except SpartaProfile.DoesNotExist:
-            return redirect('sparta-main')
-
-        try:
-            applications = PathwayApplication.objects.filter(profile=profile).filter(pathway__id=self.kwargs['pathway_id']).filter(status="AP")
-        except PathwayApplication.DoesNotExist:
-            return redirect('sparta-profile')
-
-        context = self.get_context_data()
+        context = super(StudentCouponRecordsView, self).get_context_data(**kwargs)
 
         pathway = get_object_or_404(Pathway, id=self.kwargs['pathway_id'])
         profile = self.request.user.sparta_profile
@@ -920,30 +906,43 @@ class StudentCouponRecordsView(TemplateView):
                 coupons.append(coupon_data)
 
         context['pathway'] = pathway
-        context['coupons'] = coupons
-        
-        uname = profile.user.username
-        course_name = courseoverview
-        mode = "verified"
+        context['coupons'] = coupons    
+        return context
 
-        if request.method == "POST":
-   
-            def _enroll_user(username=None, email_address=None, course_key=None, course_name=None, mode=None):
-                """ enroll a user """
-                try:
-                    tnow = timezone.now()
-                    uname = User.objects.get(username=username)
-                    enrollment = CourseEnrollment.enroll(uname, course_key, mode=mode, check_access=False)
-                    enrollment = SpartaEnrollment.objects.create(enrollment=enrollment,enroll_date=tnow)
-                except Exception as e:
-                    return False
+    def get(self, request, *args, **kwargs):
+        try:
+            profile = SpartaProfile.objects.get(user=request.user)
+        except SpartaProfile.DoesNotExist:
+            return redirect('sparta-main')
+        try:
+            applications = PathwayApplication.objects.filter(profile=profile).filter(pathway__id=self.kwargs['pathway_id']).filter(status="AP")
+        except PathwayApplication.DoesNotExist:
+            return redirect('sparta-profile')
+
+        context = self.get_context_data()      
+            
+        return render(request, self.template_name, context)
+
+def enrollment_approve_application(request, username, course_key):
+
+    courseoverview = CourseOverview.get_from_id(course_key)
+    course_name = courseoverview.display_name
+    mode = "verified" 
+
+    def _enroll_user(username=None, email_address=None, course_key=None, course_name=None, mode=None):
+            """ enroll a user """
+            try:
+                tnow = timezone.now()
+                uname = User.objects.get(username=username)
+                enrollment = CourseEnrollment.enroll(uname, course_key, mode=mode, check_access=False)
+                enrollment = SpartaEnrollment.objects.create(enrollment=enrollment,enroll_date=tnow)
+            except Exception as e:
+                return False
 
             # ENROLL COMMAND
             
-            _enroll_user(username=uname, email_address=uname.email, course_key=course_key, course_name=course_name, mode=mode)
-            redirect('sparta-pathway-coupons')
-            
-        return render(request, self.template_name, context)
+    _enroll_user(username=username, email_address=username.email, course_key=course_key, course_name=course_name, mode=mode)
+    redirect('sparta-pathway-coupons')
 
 class AdditionalEditPageView(View):
     """
