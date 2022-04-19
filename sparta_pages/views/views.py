@@ -925,20 +925,11 @@ class StudentCouponRecordsView(TemplateView):
             
         return render(request, self.template_name, context)
 
-def enrollment_approve_application(request, username, course_key):
+def enrollment_approve_application(username, course_key):
 
-    profiles = SpartaProfile.objects.filter(is_active=True)
-    try:
-        sparta_profile = profiles.get(user=request.user)
-    except SpartaProfile.DoesNotExist:
-        raise HttpResponse(status=403)
-    
-    uname = sparta_profile
-    courseoverview = CourseOverview.get_from_id(course_key)
-    course_name = courseoverview.display_name
     mode = "verified" 
 
-    def _enroll_user(username=None, email_address=None, course_key=None, course_name=None, mode=None):
+    def _enroll_user(username=None, course_key=None, mode=None):
             """ enroll a user """
             try:
                 tnow = timezone.now()
@@ -950,8 +941,8 @@ def enrollment_approve_application(request, username, course_key):
 
             # ENROLL COMMAND
             
-    _enroll_user(username=uname, email_address=uname.email, course_key=course_key, course_name=course_name, mode=mode)
-    redirect('sparta-profile')
+    _enroll_user(username=username, course_key=course_key, mode=mode)
+    redirect('sparta-main')
 
 class AdditionalEditPageView(View):
     """
