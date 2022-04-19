@@ -32,7 +32,7 @@
       </thead>
 
       <tbody>
-      
+        {% if coupons %}
         {% for coupon in coupons %}
         <tr>
           <td>{{ coupon.courseoverview.display_name }}</td>
@@ -55,14 +55,14 @@
                   </div>
                 </div>
                 <div class="modal-body">
-                  Are you sure you want to enroll in the course {{ coupon.courseoverview.display_name }}?
+                  Are you sure you want to enroll in the course {{ coupon.courseoverview }}?
                 </div>
               
                 <div class="modal-footer">
                   <form action="{% url 'sparta-enrollment-approve' username=username course_key=coupon.course_id %}" method="POST">
                     {% csrf_token %}
                     <div type="div" class="btn btn-secondary" data-dismiss="modal">Cancel</div>
-                    <input class="btn btn-success" id="submit" type="submit" value="Approve" name="Confirm"/>
+                    <input class="btn btn-success" id="submit" type="submit" value="Approve" />
                   </form>
                 </div>
               </div>
@@ -70,15 +70,14 @@
           </div>
         </tr>
 
-        
-        
-
         {% endfor %}
+        {% else %}
         <tr>
           <td>-</td>
           <td>-</td>
           <td>-</td>
         </tr>
+        {% endif %}
       </tbody>
     </table>
 
