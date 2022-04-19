@@ -925,7 +925,13 @@ class StudentCouponRecordsView(TemplateView):
             
         return render(request, self.template_name, context)
 
-def enrollment_approve_application(username, course_key):
+@require_POST
+def enrollment_approve_application(request, username, course_key):
+
+    try:
+        profile = SpartaProfile.objects.get(user=request.user)
+    except SpartaProfile.DoesNotExist:
+        return redirect('sparta-main')
 
     mode = "verified" 
 
@@ -940,7 +946,7 @@ def enrollment_approve_application(username, course_key):
                 return False
 
             # ENROLL COMMAND
-            
+
     _enroll_user(username2Benrolled=username, course_key=course_key, mode=mode)
     redirect('sparta-main')
 
