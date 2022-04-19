@@ -36,6 +36,8 @@
         {% for coupon in coupons %}
         <tr>
           <td>{{ coupon.courseoverview.display_name }}</td>
+          <td>{{ coupon.username }}</td>
+          <td>{{ coupon.course_id }}</td>
           <td>
             <a class="btn btn-primary" target="_blank" href="{% url 'about_course' course_id=coupon.courseoverview.id %}">
               View Course
@@ -61,7 +63,7 @@
               </div>
               
               <div class="modal-footer">
-                <form action="{% url 'sparta-enrollment-approve' username=coupon.username course_key=coupon.course_key %}" method="POST">
+                <form action="{% url 'sparta-enrollment-approve' username={{username}} course_key=coupon.course_id %}" method="POST">
                   {% csrf_token %}
                   <div type="div" class="btn btn-secondary" data-dismiss="modal">Cancel</div>
                   <input class="btn btn-success" id="submit" type="submit" value="Approve" name="Confirm"/>

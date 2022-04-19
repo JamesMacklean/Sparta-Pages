@@ -905,6 +905,8 @@ class StudentCouponRecordsView(TemplateView):
                 }
                 coupons.append(coupon_data)
 
+        uname = profile.user.username
+        context['username'] = uname
         context['pathway'] = pathway
         context['coupons'] = coupons    
         return context
@@ -923,7 +925,7 @@ class StudentCouponRecordsView(TemplateView):
             
         return render(request, self.template_name, context)
 
-def enrollment_approve_application(request, username, course_key):
+def enrollment_approve_application(username, course_key):
 
     courseoverview = CourseOverview.get_from_id(course_key)
     course_name = courseoverview.display_name
