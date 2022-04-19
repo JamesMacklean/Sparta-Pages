@@ -46,32 +46,33 @@
               Enroll
             </a>
           </td>
-        </tr>
-
-        <!-- Modal Block -->
-        <div class="modal fade" id="approveModal" tabindex="-1" role="dialog" aria-labelledby="approveModalLabel" aria-hidden="true">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="approveModalLabel">Enrollment Confirmation</h5>
-                <div type="div" class="close" style="cursor: pointer" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
+          <!-- Modal Block -->
+          <div class="modal fade" id="approveModal" tabindex="-1" role="dialog" aria-labelledby="approveModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="approveModalLabel">Enrollment Confirmation</h5>
+                  <div type="div" class="close" style="cursor: pointer" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </div>
                 </div>
-              </div>
-              <div class="modal-body">
-                <p>Are you sure you want to enroll in the course {{ coupon.courseoverview.display_name }}? </p> 
-              </div>
+                <div class="modal-body">
+                  <p>Are you sure you want to enroll in the course {{ coupon.courseoverview.display_name }}? </p> 
+                </div>
               
-              <div class="modal-footer">
-                <form action="{% url 'sparta-enrollment-approve' username=coupon.username course_key=coupon.course_id %}" method="POST">
-                  {% csrf_token %}
-                  <div type="div" class="btn btn-secondary" data-dismiss="modal">Cancel</div>
-                  <input class="btn btn-success" id="submit" type="submit" value="Approve" name="Confirm"/>
-                </form>
+                <div class="modal-footer">
+                  <form action="{% url 'sparta-enrollment-approve' username=coupon.username course_key=coupon.course_id %}" method="POST">
+                    {% csrf_token %}
+                    <div type="div" class="btn btn-secondary" data-dismiss="modal">Cancel</div>
+                    <input class="btn btn-success" id="submit" type="submit" value="Approve" name="Confirm"/>
+                  </form>
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        </tr>
+
+        
         
 
         {% endfor %}
