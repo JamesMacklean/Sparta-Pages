@@ -906,8 +906,10 @@ class StudentCouponRecordsView(TemplateView):
                 }
                 coupons.append(coupon_data)
 
+        context['username'] = profile.user.username
         context['pathway'] = pathway
         context['coupons'] = coupons    
+        
         return context
 
     def get(self, request, *args, **kwargs):

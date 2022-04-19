@@ -32,7 +32,7 @@
       </thead>
 
       <tbody>
-        {% if coupons %}
+      
         {% for coupon in coupons %}
         <tr>
           <td>{{ coupon.courseoverview.display_name }}</td>
@@ -40,7 +40,7 @@
             <a class="btn btn-primary" target="_blank" href="{% url 'about_course' course_id=coupon.courseoverview.id %}">
               View Course
             </a>
-            <a class="btn btn-primary" style="cursor: pointer" data-toggle="modal" data-target="#approveModal">
+            <a class="btn btn-primary" data-toggle="modal" href="" data-target="#approveModal">
               Enroll
             </a>
           </td>
@@ -59,7 +59,7 @@
                 </div>
               
                 <div class="modal-footer">
-                  <form action="{% url 'sparta-enrollment-approve' username=coupon.username course_key=coupon.course_id %}" method="POST">
+                  <form action="{% url 'sparta-enrollment-approve' username=username course_key=coupon.course_id %}" method="POST">
                     {% csrf_token %}
                     <div type="div" class="btn btn-secondary" data-dismiss="modal">Cancel</div>
                     <input class="btn btn-success" id="submit" type="submit" value="Approve" name="Confirm"/>
@@ -74,13 +74,11 @@
         
 
         {% endfor %}
-        {% else %}
         <tr>
           <td>-</td>
           <td>-</td>
           <td>-</td>
         </tr>
-        {% endif %}
       </tbody>
     </table>
 
