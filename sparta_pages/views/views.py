@@ -900,7 +900,6 @@ class StudentCouponRecordsView(TemplateView):
                 courseoverview = CourseOverview.get_from_id(course_key)
                 coupon_data = {
                     'username' : profile.user.username,
-                    'course_id': course_key,
                     'courseoverview': courseoverview,
                     'coupon_code': course_screcord[0].coupon.code
                 }
