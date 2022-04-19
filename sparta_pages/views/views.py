@@ -905,7 +905,7 @@ class StudentCouponRecordsView(TemplateView):
                 }
                 coupons.append(coupon_data)
 
-        context['username'] = profile.user.username
+        context['uname'] = profile.user.username
         context['pathway'] = pathway
         context['coupons'] = coupons    
         
@@ -929,11 +929,11 @@ def enrollment_approve_application(username, course_key):
 
     mode = "verified" 
 
-    def _enroll_user(username=None, course_key=None, mode=None):
+    def _enroll_user(username2Benrolled=None, course_key=None, mode=None):
             """ enroll a user """
             try:
                 tnow = timezone.now()
-                uname = User.objects.get(username=username)
+                uname = User.objects.get(username=username2Benrolled)
                 enrollment = CourseEnrollment.enroll(uname, course_key, mode=mode, check_access=False)
                 enrollment = SpartaEnrollment.objects.create(enrollment=enrollment,enroll_date=tnow)
             except Exception as e:
@@ -941,7 +941,7 @@ def enrollment_approve_application(username, course_key):
 
             # ENROLL COMMAND
             
-    _enroll_user(username=username, course_key=course_key, mode=mode)
+    _enroll_user(username2Benrolled=username, course_key=course_key, mode=mode)
     redirect('sparta-main')
 
 class AdditionalEditPageView(View):
