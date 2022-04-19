@@ -951,7 +951,7 @@ def enrollment_approve_application(request, username, course_key):
             # ENROLL COMMAND
             
     _enroll_user(username=uname, email_address=uname.email, course_key=course_key, course_name=course_name, mode=mode)
-    redirect('sparta-pathway-coupons')
+    redirect('sparta-data-dashboard-main')
 
 class AdditionalEditPageView(View):
     """
