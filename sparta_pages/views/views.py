@@ -933,6 +933,7 @@ def enrollment_approve_application(request, username, course_key):
     except SpartaProfile.DoesNotExist:
         raise HttpResponse(status=403)
     
+    uname = sparta_profile
     courseoverview = CourseOverview.get_from_id(course_key)
     course_name = courseoverview.display_name
     mode = "verified" 
@@ -949,7 +950,7 @@ def enrollment_approve_application(request, username, course_key):
 
             # ENROLL COMMAND
             
-    _enroll_user(username=username, email_address=username.email, course_key=course_key, course_name=course_name, mode=mode)
+    _enroll_user(username=uname, email_address=uname.email, course_key=course_key, course_name=course_name, mode=mode)
     redirect('sparta-pathway-coupons')
 
 class AdditionalEditPageView(View):
