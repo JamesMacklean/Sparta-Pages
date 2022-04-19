@@ -39,12 +39,8 @@
           <td>{{ coupon.username }}</td>
           <td>{{ coupon.course_id }}</td>
           <td>
-            <a class="btn btn-primary" target="_blank" href="{% url 'about_course' course_id=coupon.courseoverview.id %}">
-              View Course
-            </a>
-            <a type="div" class="btn btn-primary" style="cursor: pointer" data-toggle="modal" href="" data-target="#approveModal">
-              Enroll
-            </a>
+            <div class="btn btn-outline-success btn-sm" target="_blank" href="{% url 'about_course' course_id=coupon.courseoverview.id %}">View Course</div>
+            <div type="div" class="btn btn-outline-success btn-sm" style="cursor: pointer" data-toggle="modal" data-target="#approveModal">Enroll</div>
           </td>
           <!-- Modal Block -->
           <div class="modal fade" id="approveModal" tabindex="-1" role="dialog" aria-labelledby="approveModalLabel" aria-hidden="true">
@@ -61,7 +57,7 @@
                 </div>
               
                 <div class="modal-footer">
-                  <form action="{% url 'sparta-enrollment-approve' username=coupon.username course_key=coupon.course_id %}" method="POST">
+                  <form action="{% url 'sparta-enrollment-approve' username=username course_key=coupon.course_id %}" method="POST">
                     {% csrf_token %}
                     <div type="div" class="btn btn-secondary" data-dismiss="modal">Cancel</div>
                     <input class="btn btn-success" id="submit" type="submit" value="Approve" name="Confirm"/>
