@@ -63,7 +63,7 @@
               </div>
               
               <div class="modal-footer">
-                <form action="{% url 'sparta-enrollment-approve' username=username course_key=coupon.course_id %}" method="POST">
+                <form action="{% url 'sparta-enrollment-approve' username=coupon.username course_key=coupon.course_id %}" method="POST">
                   {% csrf_token %}
                   <div type="div" class="btn btn-secondary" data-dismiss="modal">Cancel</div>
                   <input class="btn btn-success" id="submit" type="submit" value="Approve" name="Confirm"/>

@@ -899,14 +899,13 @@ class StudentCouponRecordsView(TemplateView):
                 course_key = CourseKey.from_string(c.course_id)
                 courseoverview = CourseOverview.get_from_id(course_key)
                 coupon_data = {
+                    'username' : profile.user.username,
                     'course_id': course_key,
                     'courseoverview': courseoverview,
                     'coupon_code': course_screcord[0].coupon.code
                 }
                 coupons.append(coupon_data)
 
-        uname = profile.user.username
-        context['username'] = uname
         context['pathway'] = pathway
         context['coupons'] = coupons    
         return context
