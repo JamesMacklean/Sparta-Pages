@@ -53,11 +53,11 @@
                   </div>
                 </div>
                 <div class="modal-body">
-                  Are you sure you want to enroll in the course {{ coupons }} {{ coupon.courseoverview.display_name }}?
+                  Are you sure you want to enroll in the course {{ coupon.courseoverview.display_name }}?
                 </div>
               
                 <div class="modal-footer">
-                  <form action="{% url 'sparta-enrollment-approve' username=coupon.username course_key=coupon.courseoverview.id %}" method="POST">
+                  <form action="{% url 'sparta-enrollment-approve' username=uname course_key=coupon.courseoverview.id %}" method="POST">
                     {% csrf_token %}
                     <div type="div" class="btn btn-secondary" data-dismiss="modal">Cancel</div>
                     <input class="btn btn-success" id="submit" type="submit" value="Approve" />
