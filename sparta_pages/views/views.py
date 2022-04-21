@@ -948,6 +948,7 @@ def enrollment_approve_application(request, username, course_key):
             # ENROLL COMMAND
 
     _enroll_user(username2Benrolled=username, course_key=course_key, mode=mode)
+    
     return redirect('sparta-main')
 
 class AdditionalEditPageView(View):
