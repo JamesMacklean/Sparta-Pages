@@ -956,19 +956,16 @@ def enrollment_approve_application(request, username, course_key):
         
         ##########################
         ##########################
-        try:
-            tnow = timezone.now()
-            enrollment = CourseEnrollment.enroll(uname, course_key, mode=mode, check_access=False)
-            enrollmentData = SpartaReEnrollment.objects.create(enrollment=enrollment,reenroll_date=tnow)
-            # enrollmentData = SpartaEnrollment.objects.create(enrollment=enrollment,enroll_date=tnow)
-        except Exception as e:
-            return False
+        tnow = timezone.now()
+        enrollment = CourseEnrollment.enroll(uname, course_key, mode=mode, check_access=False)
+        enrollmentData = SpartaReEnrollment.objects.create(enrollment=enrollment,reenroll_date=tnow)
+        # enrollmentData = SpartaEnrollment.objects.create(enrollment=enrollment,enroll_date=tnow)
         ##########################
         ##########################
 
-        return redirect('sparta-main')
-    else:
         return redirect('sparta-profile')
+    else:
+        return redirect('sparta-main')
     
     # return redirect('sparta-profile')
 
