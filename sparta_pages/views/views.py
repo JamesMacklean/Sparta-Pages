@@ -966,9 +966,9 @@ def enrollment_approve_application(request, username, course_key):
         ##########################
         ##########################
 
-        return redirect('sparta-profile')
-    else:
         return redirect('sparta-main')
+    else:
+        return redirect('sparta-profile')
     
     # return redirect('sparta-profile')
 
