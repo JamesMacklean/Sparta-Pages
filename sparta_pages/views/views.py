@@ -29,7 +29,7 @@ from student.models import CourseEnrollment
 ##### For Self-Enrollment #####
 from django.contrib.auth.models import User
 from email.message import EmailMessage
-from sparta_pages.models import SpartaEnrollment, SpartaReEnrollment
+from sparta_pages.models import SpartaEnrollment
 ############################
 
 from ..analytics import OverallAnalytics, PathwayAnalytics, CourseAnalytics
@@ -936,7 +936,7 @@ def enrollment_approve_application(request, username, course_key):
             try:
                 tnow = timezone.now()
                 usname = User.objects.get(username=username)
-                enrollment = CourseEnrollment.enroll(usname, course_key, mode=mode, check_access=False)
+                enrollment = CourseEnrollment.enroll(usname, course_key, mode="verified", check_access=False)
                 enrollmentData = SpartaReEnrollment.objects.create(enrollment=enrollment,reenroll_date=tnow)
                 # enrollmentData = SpartaEnrollment.objects.create(enrollment=enrollment,enroll_date=tnow)
             except Exception as e:
