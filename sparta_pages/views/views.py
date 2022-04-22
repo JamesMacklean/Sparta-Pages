@@ -43,7 +43,7 @@ from ..forms import (
 )
 from ..models import (
     Pathway, SpartaCourse, SpartaProfile, ExtendedSpartaProfile,
-    EducationProfile, EmploymentProfile, TrainingProfile,
+    EducationProfile, EmploymentProfile, SpartaReEnrollment, TrainingProfile,
     PathwayApplication, Event,
     SpartaCoupon, StudentCouponRecord
 )
@@ -943,7 +943,8 @@ def enrollment_approve_application(request, username, course_key):
                 tnow = timezone.now()
                 uname = User.objects.get(username=username2Benrolled)
                 enrollment = CourseEnrollment.enroll(uname, course_key, mode=mode, check_access=False)
-                enrollment = SpartaEnrollment.objects.create(enrollment=enrollment,enroll_date=tnow)
+                enrollment = SpartaReEnrollment.objects.create(enrollment=enrollment,reenroll_date=tnow)
+                # enrollment = SpartaEnrollment.objects.create(enrollment=enrollment,enroll_date=tnow)
             except Exception as e:
                 return False
 
