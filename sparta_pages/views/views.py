@@ -936,16 +936,16 @@ def enrollment_approve_application(request, username, course_key):
     course_name = courseoverview.display_name
     mode = "verified" 
 
-    def _enroll_user(username=None, email_address=None, course_key=None, course_name=None, mode=None):
-        """ enroll a user """
-        try:
-            tnow = timezone.now()
-            usname = User.objects.get(username=username)
-            enrollment = CourseEnrollment.enroll(usname, course_key, mode=mode, check_access=False)
-            enrollmentData = SpartaReEnrollment.objects.create(enrollment=enrollment,reenroll_date=tnow)
-            # enrollmentData = SpartaEnrollment.objects.create(enrollment=enrollment,enroll_date=tnow)
-        except Exception as e:
-            return False
+    # def _enroll_user(username=None, email_address=None, course_key=None, course_name=None, mode=None):
+    #     """ enroll a user """
+    #     try:
+    #         tnow = timezone.now()
+    #         usname = User.objects.get(username=username)
+    #         enrollment = CourseEnrollment.enroll(usname, course_key, mode=mode, check_access=False)
+    #         enrollmentData = SpartaReEnrollment.objects.create(enrollment=enrollment,reenroll_date=tnow)
+    #         # enrollmentData = SpartaEnrollment.objects.create(enrollment=enrollment,enroll_date=tnow)
+    #     except Exception as e:
+    #         return False
             
     # unametest="JamesMacklean"
     # coursetest="course-v1:CirroLytix+CX101+2019_T4"
