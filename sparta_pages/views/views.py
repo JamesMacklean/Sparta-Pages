@@ -935,8 +935,8 @@ def enrollment_approve_application(request, username, course_key):
             """ enroll a user """
             try:
                 tnow = timezone.now()
-                uname = User.objects.get(username=username)
-                enrollment = CourseEnrollment.enroll(uname, course_key, mode=mode, check_access=False)
+                usname = User.objects.get(username=username)
+                enrollment = CourseEnrollment.enroll(usname, course_key, mode=mode, check_access=False)
                 enrollmentData = SpartaReEnrollment.objects.create(enrollment=enrollment,reenroll_date=tnow)
                 # enrollmentData = SpartaEnrollment.objects.create(enrollment=enrollment,enroll_date=tnow)
             except Exception as e:
