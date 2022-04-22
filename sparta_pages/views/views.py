@@ -1,3 +1,4 @@
+from ast import If
 import csv
 import unicodecsv
 
@@ -932,15 +933,22 @@ def enrollment_approve_application(request, username, course_key):
         return redirect('sparta-main')
 
     def _enroll_user(username=None, email_address=None, course_key=None, course_name=None, mode=None):
-            """ enroll a user """
+        """ enroll a user """
+        if username is not None:
             try:
                 tnow = timezone.now()
                 usname = User.objects.get(username=username)
-                enrollment = CourseEnrollment.enroll(usname, course_key, mode="verified", check_access=False)
+                enrollment = CourseEnrollment.enroll(usname, course_key, mode=mode, check_access=False)
                 enrollmentData = SpartaReEnrollment.objects.create(enrollment=enrollment,reenroll_date=tnow)
                 # enrollmentData = SpartaEnrollment.objects.create(enrollment=enrollment,enroll_date=tnow)
             except Exception as e:
                 return False
+            return redirect('sparta-profile')
+        else:    
+            return redirect('sparta-main')
+
+
+        
 
     # ENROLL COMMAND
     # unametest="JamesMacklean"
@@ -951,9 +959,8 @@ def enrollment_approve_application(request, username, course_key):
     course_name = courseoverview.display_name
     mode = "verified" 
 
-    _enroll_user(username=uname, email_address=uname.email, course_key=course_key, course_name=course_name, mode=mode)    
-    
-    return redirect('sparta-profile')
+    _enroll_user(username=uname, email_address=uname.email, course_key=course_key, course_name=course_name, mode=mode)
+    # return redirect('sparta-profile')
 
 class AdditionalEditPageView(View):
     """
