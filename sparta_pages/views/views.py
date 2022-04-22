@@ -43,7 +43,7 @@ from ..forms import (
 )
 from ..models import (
     Pathway, SpartaCourse, SpartaProfile, ExtendedSpartaProfile,
-    EducationProfile, EmploymentProfile, SpartaReEnrollment, TrainingProfile,
+    EducationProfile, EmploymentProfile, TrainingProfile,
     PathwayApplication, Event,
     SpartaCoupon, StudentCouponRecord
 )
@@ -933,6 +933,8 @@ def enrollment_approve_application(request, username, course_key):
     except SpartaProfile.DoesNotExist:
         return redirect('sparta-main')
 
+    unametest="JamesMacklean"
+    coursetest="course-v1:CirroLytix+CX101+2019_T4"
     mode = "verified" 
 
     def _enroll_user(username2Benrolled=None, course_key=None, mode=None):
@@ -941,13 +943,12 @@ def enrollment_approve_application(request, username, course_key):
                 tnow = timezone.now()
                 uname = User.objects.get(username=username2Benrolled)
                 enrollment = CourseEnrollment.enroll(uname, course_key, mode=mode, check_access=False)
-                enrollment = SpartaReEnrollment.objects.create(enrollment=enrollment,reenroll_date=tnow)
-                # enrollment = SpartaEnrollment.objects.create(enrollment=enrollment,enroll_date=tnow)
+                enrollment = SpartaEnrollment.objects.create(enrollment=enrollment,enroll_date=tnow)
             except Exception as e:
                 return False
 
     # ENROLL COMMAND
-    _enroll_user(username2Benrolled=username, course_key=course_key, mode=mode)
+    _enroll_user(username2Benrolled=unametest, course_key=coursetest, mode=mode)
     return redirect('sparta-profile')
 
 class AdditionalEditPageView(View):
