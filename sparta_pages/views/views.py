@@ -934,22 +934,17 @@ def enrollment_approve_application(request, username, course_key):
 
     def _enroll_user(username=None, email_address=None, course_key=None, course_name=None, mode=None):
         """ enroll a user """
-
         try:
             tnow = timezone.now()
-            usname = User.objects.get(username=username)
-            enrollment = CourseEnrollment.enroll(usname, course_key, mode=mode, check_access=False)
+            enrollment = CourseEnrollment.enroll(username, course_key, mode=mode, check_access=False)
             enrollmentData = SpartaReEnrollment.objects.create(enrollment=enrollment,reenroll_date=tnow)
             # enrollmentData = SpartaEnrollment.objects.create(enrollment=enrollment,enroll_date=tnow)
         except Exception as e:
             return False
             
-        return redirect('sparta-profile')
-
-    # ENROLL COMMAND
     # unametest="JamesMacklean"
     # coursetest="course-v1:CirroLytix+CX101+2019_T4"
-    
+    # ENROLL COMMAND
     uname = User.objects.get(username=username)
     courseoverview = CourseOverview.get_from_id(course_key)
     course_name = courseoverview.display_name
@@ -957,7 +952,21 @@ def enrollment_approve_application(request, username, course_key):
 
     if username is not None:
         uname = User.objects.get(username=username)
-        _enroll_user(username=uname, email_address=uname.email, course_key=course_key, course_name=course_name, mode=mode)
+        # _enroll_user(username=uname, email_address=uname.email, course_key=course_key, course_name=course_name, mode=mode)
+        
+        ##########################
+        ##########################
+        try:
+            tnow = timezone.now()
+            enrollment = CourseEnrollment.enroll(uname, course_key, mode=mode, check_access=False)
+            enrollmentData = SpartaReEnrollment.objects.create(enrollment=enrollment,reenroll_date=tnow)
+            # enrollmentData = SpartaEnrollment.objects.create(enrollment=enrollment,enroll_date=tnow)
+        except Exception as e:
+            return False
+        ##########################
+        ##########################
+
+        return redirect('sparta-profile')
     else:
         return redirect('sparta-main')
     
