@@ -933,23 +933,30 @@ def enrollment_approve_application(request, username, course_key):
     except SpartaProfile.DoesNotExist:
         return redirect('sparta-main')
 
-    unametest="JamesMacklean"
-    coursetest="course-v1:CirroLytix+CX101+2019_T4"
-    mode = "verified" 
-
-    def _enroll_user(username2Benrolled=None, course_key=None, mode=None):
+    def _enroll_user(username=None, email_address=None, course_key=None, course_name=None, mode=None):
             """ enroll a user """
             try:
                 tnow = timezone.now()
-                uname = User.objects.get(username=username2Benrolled)
-                enrollment = CourseEnrollment.enroll(uname, course_key, mode=mode, check_access=False)
-                enrollment = SpartaReEnrollment.objects.create(enrollment=enrollment,reenroll_date=tnow)
-                # enrollment = SpartaEnrollment.objects.create(enrollment=enrollment,enroll_date=tnow)
+                uname = User.objects.get(username=username)
+                unametest="JamesMacklean"
+                coursetest="course-v1:CirroLytix+CX101+2019_T4"
+                enrollment = CourseEnrollment.enroll(unametest, coursetest, mode=mode, check_access=False)
+                enrollmentData = SpartaReEnrollment.objects.create(enrollment=enrollment,reenroll_date=tnow)
+                # enrollmentData = SpartaEnrollment.objects.create(enrollment=enrollment,enroll_date=tnow)
             except Exception as e:
                 return False
 
     # ENROLL COMMAND
-    _enroll_user(username2Benrolled=unametest, course_key=coursetest, mode=mode)
+    # unametest="JamesMacklean"
+    # coursetest="course-v1:CirroLytix+CX101+2019_T4"
+    
+    uname = User.objects.get(username=username)
+    courseoverview = CourseOverview.get_from_id(course_key)
+    course_name = courseoverview.display_name
+    mode = "verified" 
+
+    _enroll_user(username=uname, email_address=uname.email, course_key=course_key, course_name=course_name, mode=mode)    
+    
     return redirect('sparta-profile')
 
 class AdditionalEditPageView(View):
