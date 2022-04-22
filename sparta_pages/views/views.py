@@ -938,9 +938,7 @@ def enrollment_approve_application(request, username, course_key):
             try:
                 tnow = timezone.now()
                 uname = User.objects.get(username=username)
-                unametest="JamesMacklean"
-                coursetest="course-v1:CirroLytix+CX101+2019_T4"
-                enrollment = CourseEnrollment.enroll(unametest, coursetest, mode=mode, check_access=False)
+                enrollment = CourseEnrollment.enroll(uname, course_key, mode=mode, check_access=False)
                 enrollmentData = SpartaReEnrollment.objects.create(enrollment=enrollment,reenroll_date=tnow)
                 # enrollmentData = SpartaEnrollment.objects.create(enrollment=enrollment,enroll_date=tnow)
             except Exception as e:
@@ -953,9 +951,9 @@ def enrollment_approve_application(request, username, course_key):
     uname = User.objects.get(username=username)
     courseoverview = CourseOverview.get_from_id(course_key)
     course_name = courseoverview.display_name
-    # mode = "verified" 
+    mode = "verified" 
 
-    _enroll_user(username=uname, email_address=uname.email, course_key=course_key, course_name=course_name)    
+    _enroll_user(username=uname, email_address=uname.email, course_key=course_key, course_name=course_name, mode=mode)    
     
     return redirect('sparta-profile')
 
