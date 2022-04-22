@@ -952,8 +952,12 @@ def enrollment_approve_application(request, username, course_key):
     
     # ENROLL COMMAND
     if username is not None:
-        uname = User.objects.get(username=username)
-        _enroll_user(username=uname, email_address=uname.email, course_key=course_key, course_name=course_name, mode=mode)   
+        # uname = User.objects.get(username=username)
+        # _enroll_user(username=uname, email_address=uname.email, course_key=course_key, course_name=course_name, mode=mode)   
+        tnow = timezone.now()
+        usname = User.objects.get(username=username)
+        enrollment = CourseEnrollment.enroll(usname, course_key, mode=mode, check_access=False)
+        enrollmentData = SpartaReEnrollment.objects.create(enrollment=enrollment,reenroll_date=tnow)
 
     return redirect('sparta-profile')
 
