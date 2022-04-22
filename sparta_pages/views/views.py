@@ -925,7 +925,6 @@ class StudentCouponRecordsView(TemplateView):
             
         return render(request, self.template_name, context)
 
-@require_POST
 def enrollment_approve_application(request, username, course_key):
 
     try:
@@ -945,11 +944,9 @@ def enrollment_approve_application(request, username, course_key):
             except Exception as e:
                 return False
 
-            # ENROLL COMMAND
-
+    # ENROLL COMMAND
     _enroll_user(username2Benrolled=username, course_key=course_key, mode=mode)
-    
-    return redirect('sparta-main')
+    return redirect('sparta-profile')
 
 class AdditionalEditPageView(View):
     """
