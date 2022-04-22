@@ -953,9 +953,9 @@ def enrollment_approve_application(request, username, course_key):
     uname = User.objects.get(username=username)
     courseoverview = CourseOverview.get_from_id(course_key)
     course_name = courseoverview.display_name
-    mode = "verified" 
+    # mode = "verified" 
 
-    _enroll_user(username=uname, email_address=uname.email, course_key=course_key, course_name=course_name, mode=mode)    
+    _enroll_user(username=uname, email_address=uname.email, course_key=course_key, course_name=course_name)    
     
     return redirect('sparta-profile')
 
