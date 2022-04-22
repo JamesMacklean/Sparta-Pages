@@ -29,7 +29,7 @@ from student.models import CourseEnrollment
 ##### For Self-Enrollment #####
 from django.contrib.auth.models import User
 from email.message import EmailMessage
-from sparta_pages.models import SpartaEnrollment
+from sparta_pages.models import SpartaEnrollment, SpartaReEnrollment
 ############################
 
 from ..analytics import OverallAnalytics, PathwayAnalytics, CourseAnalytics
