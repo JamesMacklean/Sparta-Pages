@@ -933,8 +933,7 @@ def enrollment_approve_application(request, username, course_key):
         return redirect('sparta-main')
 
     def _enroll_user(username=None, email_address=None, course_key=None, course_name=None, mode=None):
-        """ enroll a user """
-        if username is not None:
+            """ enroll a user """
             try:
                 tnow = timezone.now()
                 usname = User.objects.get(username=username)
@@ -943,12 +942,6 @@ def enrollment_approve_application(request, username, course_key):
                 # enrollmentData = SpartaEnrollment.objects.create(enrollment=enrollment,enroll_date=tnow)
             except Exception as e:
                 return False
-            return redirect('sparta-profile')
-        else:    
-            return redirect('sparta-main')
-
-
-        
 
     # ENROLL COMMAND
     # unametest="JamesMacklean"
@@ -962,6 +955,9 @@ def enrollment_approve_application(request, username, course_key):
     if username is not None:
         uname = User.objects.get(username=username)
         _enroll_user(username=uname, email_address=uname.email, course_key=course_key, course_name=course_name, mode=mode)
+        return redirect('sparta-profile')
+    else:
+        return redirect('sparta-main')
     
     # return redirect('sparta-profile')
 
