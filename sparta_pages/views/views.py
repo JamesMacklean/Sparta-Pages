@@ -929,12 +929,16 @@ class StudentCouponRecordsView(TemplateView):
 @require_POST
 def enrollment_approve_application(request, username, course_key):
 
+    try:
+        profile = SpartaProfile.objects.get(user=request.user)
+    except SpartaProfile.DoesNotExist:
+        return redirect('sparta-main')
+
     if not request.user.sparta_profile.is_active:
         return redirect('sparta-main')
 
     courseoverview = CourseOverview.get_from_id(course_key)
     course_name = courseoverview.display_name
-    mode = "verified" 
 
     # def _enroll_user(username=None, email_address=None, course_key=None, course_name=None, mode=None):
     #     """ enroll a user """
@@ -953,16 +957,16 @@ def enrollment_approve_application(request, username, course_key):
     # ENROLL COMMAND
     if username is not None:
         # uname = User.objects.get(username=username)
-        # _enroll_user(username=uname, email_address=uname.email, course_key=course_key, course_name=course_name, mode=mode)   
+        # _enroll_user(username=uname, email_address=uname.email, course_key=course_key, course_name=course_name, mode=mode, aaction=None)   
+        
+        ##############################REMOVE THIS##############################
         tnow = timezone.now()
         usname = User.objects.get(username=username)
-        enrollment = CourseEnrollment.enroll(usname, course_key, mode=mode, check_access=False)
+        enrollment = CourseEnrollment.enroll(usname, course_key, mode="verified", check_access=False)
         enrollmentData = SpartaReEnrollment.objects.create(enrollment=enrollment,reenroll_date=tnow)
+        ##############################REMOVE THIS##############################
 
     return redirect('sparta-profile')
-
-    
-    # return redirect('sparta-profile')
 
 class AdditionalEditPageView(View):
     """
