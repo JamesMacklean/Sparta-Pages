@@ -926,12 +926,12 @@ class StudentCouponRecordsView(TemplateView):
         return render(request, self.template_name, context)
 
 @require_POST
-def enrollment_approve_application(request, username, course_key):
+def enrollment_approve_application(username, course_key):
 
-    try:
-        profile = SpartaProfile.objects.get(user=request.user)
-    except SpartaProfile.DoesNotExist:
-        return redirect('sparta-main')
+    # try:
+    #     profile = SpartaProfile.objects.get(user=request.user)
+    # except SpartaProfile.DoesNotExist:
+    #     return redirect('sparta-main')
 
     def _enroll_user(username=None, email_address=None, course_key=None, course_name=None, mode=None):
             """ enroll a user """
@@ -955,7 +955,8 @@ def enrollment_approve_application(request, username, course_key):
 
     _enroll_user(username=uname, email_address=uname.email, course_key=course_key, course_name=course_name, mode=mode)    
     
-    return redirect('sparta-profile')
+    return
+    # return redirect('sparta-profile')
 
 class AdditionalEditPageView(View):
     """
