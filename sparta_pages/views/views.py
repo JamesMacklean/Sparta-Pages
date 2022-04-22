@@ -943,7 +943,7 @@ def enrollment_approve_application(request, username, course_key):
             return False
             
     # unametest="JamesMacklean"
-    # coursetest="course-v1:CirroLytix+CX101+2019_T4"
+    coursetest="course-v1:CirroLytix+CX101+2019_T4"
     # ENROLL COMMAND
     uname = User.objects.get(username=username)
     courseoverview = CourseOverview.get_from_id(course_key)
@@ -957,7 +957,7 @@ def enrollment_approve_application(request, username, course_key):
         ##########################
         ##########################
         tnow = timezone.now()
-        enrollment = CourseEnrollment.enroll(uname, course_key, mode=mode, check_access=False)
+        enrollment = CourseEnrollment.enroll(uname, coursetest, mode=mode, check_access=False)
         enrollmentData = SpartaReEnrollment.objects.create(enrollment=enrollment,reenroll_date=tnow)
         # enrollmentData = SpartaEnrollment.objects.create(enrollment=enrollment,enroll_date=tnow)
         ##########################
