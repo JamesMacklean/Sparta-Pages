@@ -40,14 +40,14 @@
             <a class="btn btn-primary" target="_blank" href="{% url 'about_course' course_id=coupon.courseoverview.id %}">
               View Course
             </a>
-            <a class="btn btn-primary" data-toggle="modal" href="" data-target="#approveModal">Enroll</a>
+            <a class="btn btn-primary" data-toggle="modal" href="" data-target="#approveEnrollmentModal">Enroll</a>
           </td>
           <!-- Modal Block -->
-          <div class="modal fade" id="approveModal" tabindex="-1" role="dialog" aria-labelledby="approveModalLabel" aria-hidden="true">
+          <div class="modal-fade" id="approveEnrollmentModal" tabindex="-1" role="dialog" aria-labelledby="approveModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title" id="approveModalLabel">Enrollment Confirmation</h5>
+                  <h5 class="modal-title" id="approveEnrollmentModalLabel">Enrollment Confirmation</h5>
                   <div type="div" class="close" style="cursor: pointer" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                   </div>
