@@ -947,7 +947,7 @@ def enrollment_approve_application(request, username, course_key):
             usname = User.objects.get(username=username)
             course_id = CourseKey.from_string(course_key)
             enrollment = CourseEnrollment.enroll(usname, course_id, mode, check_access=False)
-            enrollmentData = SpartaEnrollment.objects.create(enrollment=enrollment,reenroll_date=tnow)
+            enrollmentData = SpartaEnrollment.objects.create(enrollment=enrollment,enroll_date=tnow)
         except Exception as e:
             return False
             
