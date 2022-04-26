@@ -40,39 +40,35 @@
             <a class="btn btn-primary" target="_blank" href="{% url 'about_course' course_id=coupon.courseoverview.id %}">
               View Course
             </a>
-            <a class="btn btn-primary" data-toggle="modal" href="#approveModal">Enroll</a>
+            <a class="btn btn-primary" data-toggle="modal" href="" data-target="#approveModal_{{coupon.courseoverview}}">Enroll</a>
           </td>
-        </tr>
-
-        <!-- Modal Block -->
-        <div class="modal fade" id="approveModal" tabindex="-1" role="dialog" aria-labelledby="approveModalLabel" aria-hidden="true">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="approveModalLabel">Enrollment Confirmation</h5>
-                <div type="div" class="close" style="cursor: pointer" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
+          <!-- Modal Block -->
+          <div class="modal fade" id="approveModal_{{coupon.courseoverview}}" tabindex="-1" role="dialog" aria-labelledby="approveModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="approveModalLabel">Enrollment Confirmation</h5>
+                  <div type="div" class="close" style="cursor: pointer" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </div>
                 </div>
-              </div>
-              <div class="modal-body">
-                Are you sure you want to enroll in the course {{ coupon.courseoverview.display_name }}?
-              </div>
-            
-              <div class="modal-footer">
-                <form action="{% url 'sparta-enrollment-approve' username=uname course_key=coupon.courseoverview.id %}" method="POST">
-                  {% csrf_token %}
-                  <div type="div" class="btn btn-secondary" data-dismiss="modal">Cancel</div>
-                  <input class="btn btn-success" id="submit" type="submit" value="Approve" />
-                </form>
+                <div class="modal-body">
+                  Are you sure you want to enroll in the course {{ coupon.courseoverview.display_name }}?
+                </div>
+              
+                <div class="modal-footer">
+                  <form action="{% url 'sparta-enrollment-approve' username=uname course_key=coupon.courseoverview.id %}" method="POST">
+                    {% csrf_token %}
+                    <div type="div" class="btn btn-secondary" data-dismiss="modal">Cancel</div>
+                    <input class="btn btn-success" id="submit" type="submit" value="Approve" />
+                  </form>
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        </tr>
 
-        
         {% endfor %}
-
-        
         {% else %}
         <tr>
           <td>-</td>
