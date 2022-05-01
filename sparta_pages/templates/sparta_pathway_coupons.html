@@ -34,7 +34,7 @@
 
         {% if courses %}
         {% for course in courses %}
-        {% if course.group = "CO "%}
+        {% if course.group == "CO" %}
         <tr>
           <td>{{ course.courseoverview.display_name }}</td>
           <td>{{ course.group }}</td>
