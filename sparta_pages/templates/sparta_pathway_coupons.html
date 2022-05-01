@@ -33,7 +33,6 @@
       <tbody>
         {% if courses %}
         {% for course in courses %}
-        {% if course.group == "CO" %}
         <tr>
           <td>{{ course.courseoverview.display_name }}</td>
           <td>{{ course.group }}</td>
@@ -98,7 +97,6 @@
         {% if course.group == "EL" %}
         <tr>
           <td>{{ course.courseoverview.display_name }}</td>
-          <td>{{ course.group }}</td>
           <td>
             <a class="btn btn-primary" target="_blank" href="{% url 'about_course' course_id=course.courseoverview.id %}">
               View Course
