@@ -927,7 +927,9 @@ class StudentCouponRecordsView(TemplateView):
                 courses.append(course)
             data = {
                 'courses': courses,
-                'complete_at_least': group.complete_at_least
+                'complete_at_least': group.complete_at_least,
+                'username' : profile.user.username,
+                'courseoverview': courseoverview,
             }
             if group.type == "EL":
                 elective_courses.append(data)
