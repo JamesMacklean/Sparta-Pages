@@ -930,6 +930,7 @@ class StudentCouponRecordsView(TemplateView):
                     'complete_at_least': group.complete_at_least,
                     'username' : profile.user.username,
                     'courseoverview': courseoverview,
+                    'course_id': course_key
                 }
 
             if group.type == "EL":
