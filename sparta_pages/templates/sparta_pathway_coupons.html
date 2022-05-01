@@ -31,8 +31,26 @@
       </thead>
 
       <tbody>
+
         {% if core_courses %}
-        {% for coupon in core_courses %}
+          {% for group in core_courses %}
+            {% if group.complete_at_least %}
+            <h5 class="text-center py-3" style="color: gray;font-weight: bolder;">
+              Complete at least {{group.complete_at_least}}
+            </h5>
+            {% endif %}
+            {% for course in group.courses %}
+              {% include "sparta_course.html" %}
+            {% endfor %}
+          {% endfor %}
+        {% else %}
+          <div class="container-grid container container-15">
+          <p class="paragraph paragraph-5">The are no core courses available for this learning pathway.</p>
+          </div>
+        {% endif %}
+
+        {% if coupons %}
+        {% for coupon in coupons %}
         <tr>
           <td>{{ coupon.courseoverview.display_name }}</td>
           <td>
