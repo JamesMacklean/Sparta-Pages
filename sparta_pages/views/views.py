@@ -920,17 +920,15 @@ class StudentCouponRecordsView(TemplateView):
             pathway_courses = sparta_courses.filter(group=group)
             courses = []
             for pathway_course in pathway_courses:
-                # course = {'pathway_course': pathway_course}
+                course = {'pathway_course': pathway_course}
                 course_key = CourseKey.from_string(pathway_course.course_id)
                 courseoverview = CourseOverview.get_from_id(course_key)
-                # course['courseoverview'] = courseoverview
-                # courses.append(course)
-                data = {
-                    'course': pathway_course,
-                    'complete_at_least': group.complete_at_least,
-                    'username' : profile.user.username,
-                    'courseoverview': courseoverview,
-                }
+                course['courseoverview'] = courseoverview
+                courses.append(course)
+            data = {
+                'courses': courses,
+                'complete_at_least': group.complete_at_least
+            }
 
             if group.type == "EL":
                 elective_courses.append(data)
@@ -982,7 +980,7 @@ class StudentCouponRecordsView(TemplateView):
 
         context['core_courses'] = core_courses
         context['elective_courses'] = elective_courses
-
+        context['courses'] = courses
         ###############################################################
         
         return context
