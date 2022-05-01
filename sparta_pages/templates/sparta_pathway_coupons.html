@@ -31,7 +31,6 @@
       </thead>
 
       <tbody>
-
         {% if courses %}
         {% for course in courses %}
         {% if course.group == "CO" %}
@@ -85,6 +84,67 @@
       </tbody>
     </table>
 
+    <table class="table table-hover">
+      <thead class="thead-light">
+        <tr>
+          <th>Elective Courses</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {% if courses %}
+        {% for course in courses %}
+        {% if course.group == "EL" %}
+        <tr>
+          <td>{{ course.courseoverview.display_name }}</td>
+          <td>{{ course.group }}</td>
+          <td>
+            <a class="btn btn-primary" target="_blank" href="{% url 'about_course' course_id=course.courseoverview.id %}">
+              View Course
+            </a>
+            <a class="btn btn-primary" data-toggle="modal" href="" data-target="#approveModal">Enroll</a>
+          </td>
+          <!-- Modal Block -->
+          <div class="modal fade" id="approveModal" tabindex="-1" role="dialog" aria-labelledby="approveModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="approveModalLabel">Enrollment Confirmation</h5>
+                  <div type="div" class="close" style="cursor: pointer" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </div>
+                </div>
+                <div class="modal-body">
+                  Are you sure you want to enroll in the course {{ course.courseoverview.display_name }}?
+                </div>
+              
+                <div class="modal-footer">
+                  <form action="{% url 'sparta-enrollment-approve' username=uname course_key=course.courseoverview.id %}" method="POST">
+                    {% csrf_token %}
+                    <div type="div" class="btn btn-secondary" data-dismiss="modal">Cancel</div>
+                    <input class="btn btn-success" id="submit" type="submit" value="Approve" />
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </tr>
+        {% endif %}
+
+        {% endfor %}
+
+        
+        {% else %}
+        <tr>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+        </tr>
+        {% endif %}
+
+      </tbody>
+    </table>
   </div>
 </div>
 {% endblock %}
