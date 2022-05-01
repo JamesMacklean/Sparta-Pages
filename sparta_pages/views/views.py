@@ -887,10 +887,12 @@ class StudentCouponRecordsView(TemplateView):
         return super(StudentCouponRecordsView, self).dispatch(*args, **kwargs)
 
     def get_context_data(self, **kwargs):
+        
         context = super(StudentCouponRecordsView, self).get_context_data(**kwargs)
 
         pathway = get_object_or_404(Pathway, id=self.kwargs['pathway_id'])
         profile = self.request.user.sparta_profile
+        
         student_records = StudentCouponRecord.objects.filter(profile=profile)
 
         coupons = []

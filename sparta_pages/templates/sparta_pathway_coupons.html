@@ -9,16 +9,14 @@
   <div class="card-body">
     
     <h2 class="card-title">Available Courses for the {{ pathway.name|title }} Learning Pathway</h2>
-    {% if coupons %}
+    {% if courses %}
     <div class="p">
-      Use these enrollment codes to enroll and get verified access to the Learning Pathway courses for free. <a href="/coupon" target="_blank">Learn how to use enrollment codes here</a>.
+      Click enroll to any of the following courses to get verified access to the Learning Pathway courses for free. Remember that Core Courses are required while the Elective Courses can be completed with at least a minimum amount.
     </div>
-    <div class="p">
-      Please <b>do not</b> share these codes with other learners. Each code can only be used once for their corresponding course and cannot be used again once redeemed for enrollment.
-    </div>
+
     {% else %}
     <div class="p">
-      There are currently no coupons available for this Learning Pathway. If you've been approved for this Learning Pathway, please wait while we process your enrollments. We'll let you know once the coupons are available via email. In the meantime, you may continue taking the courses for free in audit mode.
+      You are currently not approved in this Learning Pathway. If you've been approved for this Learning Pathway, please wait while we process your enrollments. We'll let you know once the coupons are available via email. In the meantime, you may continue taking the courses for free in audit mode.
     </div>
     {% endif %}
 
@@ -33,9 +31,9 @@
       <tbody>
         {% if courses %}
         {% for course in courses %}
+        {% if course.group == "CO" %}
         <tr>
           <td>{{ course.courseoverview.display_name }}</td>
-          <td>{{ course.group }}</td>
           <td>
             <a class="btn btn-primary" target="_blank" href="{% url 'about_course' course_id=course.courseoverview.id %}">
               View Course
