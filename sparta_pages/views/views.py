@@ -906,28 +906,31 @@ class StudentCouponRecordsView(TemplateView):
                 }
                 coupons.append(coupon_data)
 
-        context['uname'] = profile.user.username
-        context['pathway'] = pathway
-        context['coupons'] = coupons    
-        
         ###############################################################
         sparta_courses = SpartaCourse.objects.filter(is_active=True).filter(pathway=pathway)
 
         core_courses = []
         elective_courses = []
         graduate_course = []
+
         for group in pathway.groups.all().filter(is_active=True):
             pathway_courses = sparta_courses.filter(group=group)
+            
             courses = []
             for pathway_course in pathway_courses:
-                course = {'pathway_course': pathway_course}
                 course_key = CourseKey.from_string(pathway_course.course_id)
                 courseoverview = CourseOverview.get_from_id(course_key)
-                course['courseoverview'] = courseoverview
+                
+                course = {
+                    'pathway_course': pathway_course,
+                    'courseoverview': courseoverview,
+                }
                 courses.append(course)
+            
             data = {
                 'courses': courses,
-                'complete_at_least': group.complete_at_least
+                'complete_at_least': group.complete_at_least,
+                'courseoverview': courseoverview
             }
 
             if group.type == "EL":
@@ -982,7 +985,11 @@ class StudentCouponRecordsView(TemplateView):
         context['elective_courses'] = elective_courses
         context['courses'] = courses
         ###############################################################
-        
+
+        context['uname'] = profile.user.username
+        context['pathway'] = pathway
+        context['coupons'] = coupons 
+
         return context
 
     def get(self, request, *args, **kwargs):
