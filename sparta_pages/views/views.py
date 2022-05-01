@@ -917,7 +917,10 @@ class StudentCouponRecordsView(TemplateView):
             pathway_courses = sparta_courses.filter(group=group)
             
             for pathway_course in pathway_courses:
-                course = {'pathway_course': pathway_course}
+                course = {
+                    'pathway_course': pathway_course,
+                    'group': group.type
+                }
                 course_key = CourseKey.from_string(pathway_course.course_id)
                 courseoverview = CourseOverview.get_from_id(course_key)
                 course['courseoverview'] = courseoverview

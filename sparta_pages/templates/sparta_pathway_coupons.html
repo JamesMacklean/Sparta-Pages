@@ -36,6 +36,7 @@
         {% for course in courses %}
         <tr>
           <td>{{ course.courseoverview.display_name }}</td>
+          <td>{{ course.group }}</td>
           <td>
             <a class="btn btn-primary" target="_blank" href="{% url 'about_course' course_id=course.courseoverview.id %}">
               View Course
