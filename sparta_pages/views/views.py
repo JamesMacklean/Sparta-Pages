@@ -912,9 +912,10 @@ class StudentCouponRecordsView(TemplateView):
         core_courses = []
         elective_courses = []
         graduate_course = []
+        courses = []
         for group in pathway.groups.all().filter(is_active=True):
             pathway_courses = sparta_courses.filter(group=group)
-            courses = []
+            
             for pathway_course in pathway_courses:
                 course = {'pathway_course': pathway_course}
                 course_key = CourseKey.from_string(pathway_course.course_id)
