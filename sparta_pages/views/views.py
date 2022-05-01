@@ -912,32 +912,24 @@ class StudentCouponRecordsView(TemplateView):
         core_courses = []
         elective_courses = []
         graduate_course = []
-
         for group in pathway.groups.all().filter(is_active=True):
             pathway_courses = sparta_courses.filter(group=group)
-            
             courses = []
             for pathway_course in pathway_courses:
+                course = {'pathway_course': pathway_course}
                 course_key = CourseKey.from_string(pathway_course.course_id)
                 courseoverview = CourseOverview.get_from_id(course_key)
-                
-                course = {
-                    'pathway_course': pathway_course,
-                    'courseoverview': courseoverview,
-                }
+                course['courseoverview'] = courseoverview
                 courses.append(course)
-            
             data = {
                 'courses': courses,
-                'complete_at_least': group.complete_at_least,
-                'courseoverview': courseoverview
+                'complete_at_least': group.complete_at_least
             }
-
             if group.type == "EL":
                 elective_courses.append(data)
             else:
                 core_courses.append(data)
-
+        
         if pathway == "Data Analyst":
             try:
                 cap_course_key = CourseKey.from_string("course-v1:DAP+SPCapstone001+2021_Q2")
