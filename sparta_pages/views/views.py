@@ -911,70 +911,74 @@ class StudentCouponRecordsView(TemplateView):
         context['coupons'] = coupons    
         
         ###############################################################
-        # sparta_courses = SpartaCourse.objects.filter(is_active=True).filter(pathway=pathway)
+        sparta_courses = SpartaCourse.objects.filter(is_active=True).filter(pathway=pathway)
 
-        # core_courses = []
-        # elective_courses = []
-        # graduate_course = []
-        # for group in pathway.groups.all().filter(is_active=True):
-        #     pathway_courses = sparta_courses.filter(group=group)
-        #     courses = []
-        #     for pathway_course in pathway_courses:
-        #         course = {'pathway_course': pathway_course}
-        #         course_key = CourseKey.from_string(pathway_course.course_id)
-        #         courseoverview = CourseOverview.get_from_id(course_key)
-        #         course['courseoverview'] = courseoverview
-        #         courses.append(course)
-        #     data = {
-        #         'courses': courses,
-        #         'complete_at_least': group.complete_at_least
-        #     }
-        #     if group.type == "EL":
-        #         elective_courses.append(data)
-        #     else:
-        #         core_courses.append(data)
+        core_courses = []
+        elective_courses = []
+        graduate_course = []
+        for group in pathway.groups.all().filter(is_active=True):
+            pathway_courses = sparta_courses.filter(group=group)
+            courses = []
+            for pathway_course in pathway_courses:
+                course = {'pathway_course': pathway_course}
+                course_key = CourseKey.from_string(pathway_course.course_id)
+                courseoverview = CourseOverview.get_from_id(course_key)
+                course['courseoverview'] = courseoverview
+                courses.append(course)
+            data = {
+                'courses': courses,
+                'complete_at_least': group.complete_at_least
+            }
+            if group.type == "EL":
+                elective_courses.append(data)
+            else:
+                core_courses.append(data)
 
-        # if slug == "functional-analyst":
-        #     try:
-        #         cap_course_key = CourseKey.from_string("course-v1:DAP+SPCapstone001+2021_Q2")
-        #         cap_course_overview = CourseOverview.get_from_id(cap_course_key)
-        #         context['graduate_course'] = {'courseoverview': cap_course_overview}
-        #     except CourseOverview.DoesNotExist:
-        #         context['graduate_course'] = None
-        # elif slug == "data-associate":
-        #     try:
-        #         cap_course_key = CourseKey.from_string("course-v1:DAP+SPCapstone003+2021_Q4")
-        #         cap_course_overview = CourseOverview.get_from_id(cap_course_key)
-        #         context['graduate_course'] = {'courseoverview': cap_course_overview}
-        #     except CourseOverview.DoesNotExist:
-        #         context['graduate_course'] = None
-        # elif slug == "data-steward":
-        #     try:
-        #         cap_course_key = CourseKey.from_string("course-v1:DAP+SPCapstone005+2021_Q3")
-        #         cap_course_overview = CourseOverview.get_from_id(cap_course_key)
-        #         context['graduate_course'] = {'courseoverview': cap_course_overview}
-        #     except CourseOverview.DoesNotExist:
-        #         context['graduate_course'] = None
-        # elif slug == "data-engineer":
-        #     try:
-        #         cap_course_key = CourseKey.from_string("course-v1:DAP+SPCapstone004+2022_Q1")
-        #         cap_course_overview = CourseOverview.get_from_id(cap_course_key)
-        #         context['graduate_course'] = {'courseoverview': cap_course_overview}
-        #     except CourseOverview.DoesNotExist:
-        #         context['graduate_course'] = None
-        # elif slug == "data-scientist":
-        #     context['graduate_course'] = None
-        # elif slug == "analytics-manager":
-        #     try:
-        #         cap_course_key = CourseKey.from_string("course-v1:DAP+SPCapstone006+2021_Q3")
-        #         cap_course_overview = CourseOverview.get_from_id(cap_course_key)
-        #         context['graduate_course'] = {'courseoverview': cap_course_overview}
-        #     except CourseOverview.DoesNotExist:
-        #         context['graduate_course'] = None
+        if pathway == "Data Analyst":
+            try:
+                cap_course_key = CourseKey.from_string("course-v1:DAP+SPCapstone001+2021_Q2")
+                cap_course_overview = CourseOverview.get_from_id(cap_course_key)
+                context['graduate_course'] = {'courseoverview': cap_course_overview}
+            except CourseOverview.DoesNotExist:
+                context['graduate_course'] = None
+        
+        elif pathway == "Data Associate":
+            try:
+                cap_course_key = CourseKey.from_string("course-v1:DAP+SPCapstone003+2021_Q4")
+                cap_course_overview = CourseOverview.get_from_id(cap_course_key)
+                context['graduate_course'] = {'courseoverview': cap_course_overview}
+            except CourseOverview.DoesNotExist:
+                context['graduate_course'] = None
+        
+        elif pathway == "Data Steward":
+            try:
+                cap_course_key = CourseKey.from_string("course-v1:DAP+SPCapstone005+2021_Q3")
+                cap_course_overview = CourseOverview.get_from_id(cap_course_key)
+                context['graduate_course'] = {'courseoverview': cap_course_overview}
+            except CourseOverview.DoesNotExist:
+                context['graduate_course'] = None
+        
+        elif pathway == "Data Engineer":
+            try:
+                cap_course_key = CourseKey.from_string("course-v1:DAP+SPCapstone004+2022_Q1")
+                cap_course_overview = CourseOverview.get_from_id(cap_course_key)
+                context['graduate_course'] = {'courseoverview': cap_course_overview}
+            except CourseOverview.DoesNotExist:
+                context['graduate_course'] = None
+        
+        elif pathway == "Data Scientist":
+            context['graduate_course'] = None
+        
+        elif pathway == "Analytics Manager":
+            try:
+                cap_course_key = CourseKey.from_string("course-v1:DAP+SPCapstone006+2021_Q3")
+                cap_course_overview = CourseOverview.get_from_id(cap_course_key)
+                context['graduate_course'] = {'courseoverview': cap_course_overview}
+            except CourseOverview.DoesNotExist:
+                context['graduate_course'] = None
 
-        # context['core_courses'] = core_courses
-        # context['elective_courses'] = elective_courses
-        # context['pathway'] = pathway
+        context['core_courses'] = core_courses
+        context['elective_courses'] = elective_courses
 
         ###############################################################
         
