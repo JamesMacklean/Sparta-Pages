@@ -880,7 +880,7 @@ def delete_training_profile(request, pk):
 
 
 class StudentCouponRecordsView(TemplateView):
-    template_name = 'sparta_pathway_coupons.html'
+    template_name = 'sparta_pathway_courses.html'
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
