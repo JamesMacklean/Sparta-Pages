@@ -971,7 +971,7 @@ class StudentCouponRecordsView(TemplateView):
         context['elective_courses'] = elective_courses
         context['courses'] = courses
         ###############################################################
-        context['test'] = applications
+        context['pathway_is_approved'] = applications
         context['uname'] = profile.user.username
         context['pathway'] = pathway
 
