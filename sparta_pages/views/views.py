@@ -906,8 +906,12 @@ class StudentCouponRecordsView(TemplateView):
         for group in pathway.groups.all().filter(is_active=True):
             pathway_courses = sparta_courses.filter(group=group)
             
+            counter=0
             for pathway_course in pathway_courses:
+                counter = counter+1
                 course = {
+                    
+                    'unique_id': counter,
                     'pathway_course': pathway_course,
                     'group': group.type
                 }

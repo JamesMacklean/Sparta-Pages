@@ -39,14 +39,14 @@
             <a class="btn btn-primary" target="_blank" href="{% url 'about_course' course_id=course.courseoverview.id %}">
               View Course
             </a>
-            <a class="btn btn-primary" data-toggle="modal" href="" data-target="#approveModal-{{ course.courseoverview }}">Enroll</a>
+            <a class="btn btn-primary" data-toggle="modal" href="" data-target="#approveModal-{{ course.unique_id }}">Enroll</a>
           </td>
           <!-- Modal Block -->
-          <div class="modal fade" id="approveModal-{{ course.courseoverview }}" tabindex="-1" role="dialog" aria-labelledby="approveModalLabel-{{ course.courseoverview }}" aria-hidden="true">
+          <div class="modal fade" id="approveModal-{{ course.unique_id }}" tabindex="-1" role="dialog" aria-labelledby="approveModalLabel-{{ course.unique_id }}" aria-hidden="true">
             <div class="modal-dialog" role="document">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title" id="approveModalLabel-{{ course.courseoverview }}">Enrollment Confirmation</h5>
+                  <h5 class="modal-title" id="approveModalLabel-{{ course.unique_id }}">Enrollment Confirmation</h5>
                   <div type="div" class="close" style="cursor: pointer" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                   </div>
