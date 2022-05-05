@@ -39,7 +39,7 @@
             <a class="btn btn-primary" target="_blank" href="{% url 'about_course' course_id=course.courseoverview.id %}">
               View Course
             </a>
-            <a class="btn btn-primary" data-toggle="modal" href="" data-target="#{{ course.courseoverview }}">Enroll</a>
+            <a class="btn btn-primary" data-toggle="modal" href="" data-target="{{ course.courseoverview }}">Enroll</a>
           </td>
           <!-- Modal Block -->
           <div class="modal fade" id="{{ course.courseoverview }}" tabindex="-1" role="dialog" aria-labelledby="Label-{{ course.courseoverview }}" aria-hidden="true">
