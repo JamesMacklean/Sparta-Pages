@@ -39,7 +39,7 @@
             <a class="btn btn-primary" target="_blank" href="{% url 'about_course' course_id=course.courseoverview.id %}">
               View Course
             </a>
-            <a class="btn btn-primary" data-toggle="modal" href="" data-target="#approveModal-{{ course.courseoverview }}">Enroll</a>
+            <div type="button" class="btn btn-primary" data-toggle="modal" data-target="#approveModal-{{ course.courseoverview }}">Enroll</div>
           </td>
           <!-- Modal Block -->
           <div class="modal fade" id="approveModal-{{ course.courseoverview }}" tabindex="-1" role="dialog" aria-labelledby="approveModalLabel-{{ course.courseoverview }}" aria-hidden="true">
