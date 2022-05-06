@@ -1,3 +1,4 @@
+from ast import If
 import csv
 import unicodecsv
 
@@ -26,6 +27,12 @@ from openedx.core.djangoapps.content.course_overviews.models import CourseOvervi
 from opaque_keys.edx.keys import CourseKey
 from student.models import CourseEnrollment
 
+##### For Self-Enrollment #####
+from django.contrib.auth.models import User
+from email.message import EmailMessage
+from sparta_pages.models import SpartaEnrollment
+############################
+
 from ..analytics import OverallAnalytics, PathwayAnalytics, CourseAnalytics
 from ..forms import (
     SpartaProfileForm, EducationProfileForm, EmploymentProfileForm,
@@ -37,7 +44,7 @@ from ..forms import (
 )
 from ..models import (
     Pathway, SpartaCourse, SpartaProfile, ExtendedSpartaProfile,
-    EducationProfile, EmploymentProfile, TrainingProfile,
+    EducationProfile, EmploymentProfile, SpartaReEnrollment, TrainingProfile,
     PathwayApplication, Event,
     SpartaCoupon, StudentCouponRecord
 )
@@ -873,34 +880,104 @@ def delete_training_profile(request, pk):
 
 
 class StudentCouponRecordsView(TemplateView):
-    template_name = 'sparta_pathway_coupons.html'
+    template_name = 'sparta_pathway_courses.html'
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
         return super(StudentCouponRecordsView, self).dispatch(*args, **kwargs)
 
     def get_context_data(self, **kwargs):
+        
         context = super(StudentCouponRecordsView, self).get_context_data(**kwargs)
+
         pathway = get_object_or_404(Pathway, id=self.kwargs['pathway_id'])
-
         profile = self.request.user.sparta_profile
-        student_records = StudentCouponRecord.objects.filter(profile=profile)
+     
+        ###############################################################
 
-        coupons = []
-        for c in pathway.courses.all().filter(is_active=True):
-            course_screcord = student_records.filter(coupon__course_id=c.course_id)
-            if course_screcord.exists():
-                course_key = CourseKey.from_string(c.course_id)
-                courseoverview = CourseOverview.get_from_id(course_key)
-                coupon_data = {
-                    'course_id': c.course_id,
-                    'courseoverview': courseoverview,
-                    'coupon_code': course_screcord[0].coupon.code
+        applications = PathwayApplication.objects.filter(profile=profile).filter(pathway__id=self.kwargs['pathway_id']).filter(status="AP")
+        
+        sparta_courses = SpartaCourse.objects.filter(is_active=True).filter(pathway=pathway)
+
+        core_courses = []
+        elective_courses = []
+        graduate_course = []
+        courses = []
+        for group in pathway.groups.all().filter(is_active=True):
+            pathway_courses = sparta_courses.filter(group=group)
+            
+            counter=0
+            for pathway_course in pathway_courses:
+                counter = counter+1
+                course = {
+                    
+                    'unique_id': counter,
+                    'pathway_course': pathway_course,
+                    'group': group.type
                 }
-                coupons.append(coupon_data)
+                course_key = CourseKey.from_string(pathway_course.course_id)
+                courseoverview = CourseOverview.get_from_id(course_key)
+                course['courseoverview'] = courseoverview
+                courses.append(course)
+            data = {
+                'courses': courses,
+                'complete_at_least': group.complete_at_least
+            }
+            if group.type == "EL":
+                elective_courses.append(data)
+            else:
+                core_courses.append(data)
+        
+        if pathway == "Data Analyst":
+            try:
+                cap_course_key = CourseKey.from_string("course-v1:DAP+SPCapstone001+2021_Q2")
+                cap_course_overview = CourseOverview.get_from_id(cap_course_key)
+                context['graduate_course'] = {'courseoverview': cap_course_overview}
+            except CourseOverview.DoesNotExist:
+                context['graduate_course'] = None
+        
+        elif pathway == "Data Associate":
+            try:
+                cap_course_key = CourseKey.from_string("course-v1:DAP+SPCapstone003+2021_Q4")
+                cap_course_overview = CourseOverview.get_from_id(cap_course_key)
+                context['graduate_course'] = {'courseoverview': cap_course_overview}
+            except CourseOverview.DoesNotExist:
+                context['graduate_course'] = None
+        
+        elif pathway == "Data Steward":
+            try:
+                cap_course_key = CourseKey.from_string("course-v1:DAP+SPCapstone005+2021_Q3")
+                cap_course_overview = CourseOverview.get_from_id(cap_course_key)
+                context['graduate_course'] = {'courseoverview': cap_course_overview}
+            except CourseOverview.DoesNotExist:
+                context['graduate_course'] = None
+        
+        elif pathway == "Data Engineer":
+            try:
+                cap_course_key = CourseKey.from_string("course-v1:DAP+SPCapstone004+2022_Q1")
+                cap_course_overview = CourseOverview.get_from_id(cap_course_key)
+                context['graduate_course'] = {'courseoverview': cap_course_overview}
+            except CourseOverview.DoesNotExist:
+                context['graduate_course'] = None
+        
+        elif pathway == "Data Scientist":
+            context['graduate_course'] = None
+        
+        elif pathway == "Analytics Manager":
+            try:
+                cap_course_key = CourseKey.from_string("course-v1:DAP+SPCapstone006+2021_Q3")
+                cap_course_overview = CourseOverview.get_from_id(cap_course_key)
+                context['graduate_course'] = {'courseoverview': cap_course_overview}
+            except CourseOverview.DoesNotExist:
+                context['graduate_course'] = None
 
+        context['core_courses'] = core_courses
+        context['elective_courses'] = elective_courses
+        context['courses'] = courses
+        ###############################################################
+        context['pathway_is_approved'] = applications
+        context['uname'] = profile.user.username
         context['pathway'] = pathway
-        context['coupons'] = coupons
 
         return context
 
@@ -915,8 +992,41 @@ class StudentCouponRecordsView(TemplateView):
         except PathwayApplication.DoesNotExist:
             return redirect('sparta-profile')
 
-        context = self.get_context_data()
+        context = self.get_context_data()      
+            
         return render(request, self.template_name, context)
+
+@require_POST
+def enrollment_approve_application(request, username, course_key):
+
+    try:
+        profile = SpartaProfile.objects.get(user=request.user)
+    except SpartaProfile.DoesNotExist:
+        return redirect('sparta-main')
+
+    if not request.user.sparta_profile.is_active:
+        return redirect('sparta-main')
+
+    courseoverview = CourseOverview.get_from_id(course_key)
+    course_name = courseoverview.display_name
+
+    def _enroll_user(username=None, email_address=None, course_key=None, course_name=None, mode=None):
+        """ enroll a user """
+        try:
+            tnow = timezone.now()
+            usname = User.objects.get(username=username)
+            course_id = CourseKey.from_string(course_key)
+            enrollment = CourseEnrollment.enroll(usname, course_id, mode, check_access=False)
+            enrollmentData = SpartaEnrollment.objects.create(enrollment=enrollment,enroll_date=tnow)
+        except Exception as e:
+            return False
+            
+    # ENROLL COMMAND
+    if username is not None:
+        uname = User.objects.get(username=username)
+        _enroll_user(username=uname, email_address=uname.email, course_key=course_key, course_name=course_name, mode="verified")
+
+    return redirect('sparta-profile')
 
 class AdditionalEditPageView(View):
     """

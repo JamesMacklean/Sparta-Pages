@@ -34,7 +34,8 @@ urlpatterns = [
     url(r'^sparta/pathway/(?P<slug>[-\w]+)$', views.pathway, name='sparta-pathway'),
     url(r'^sparta/pathway/(?P<pathway_id>\d+)/progress$', views.PathwayProgressView.as_view(), name='sparta-pathway-progress'),
     url(r'^sparta/widthraw/(?P<id>\d+)$', views.widthraw, name='sparta-withdraw'),
-    url(r'^sparta/pathway/(?P<pathway_id>\d+)/coupons$', views.StudentCouponRecordsView.as_view(), name='sparta-pathway-coupons'),
+    url(r'^sparta/pathway/(?P<pathway_id>\d+)/courses$', views.StudentCouponRecordsView.as_view(), name='sparta-pathway-courses'),
+    url(r'^sparta/pathway/enroll/(?P<username>[-:+\w]+)/(?P<course_key>[-:+\w]+)$', views.enrollment_approve_application, name='sparta-enrollment-approve'),
 
     url(r'^sparta/admin-view/main$', admin_views.admin_main_view, name='sparta-admin-main'),
     url(r'^sparta/admin-view/profiles$', admin_views.admin_profiles_view, name='sparta-admin-profiles'),
@@ -45,7 +46,7 @@ urlpatterns = [
     url(r'^sparta/admin-view/analytics/pathways/(?P<slug>[-\w]+)$', admin_views.admin_pathway_analytics_view, name='sparta-admin-pathway-analytics'),
     url(r'^sparta/admin-view/analytics/courses/(?P<course_id>[-:+\w]+)$', admin_views.admin_course_analytics_view, name='sparta-admin-course-analytics'),
     url(r'^sparta/admin-view/inactivity$', admin_views.admin_inactivity, name='sparta-admin-inactivity'),
-    url(r'^sparta/admin-view/inactivity/unenroll/(?P<username>[-\w]+)/(?P<course_key>[-:+\w]+)$', admin_views.admin_approve_unenrollment_view, name='sparta-unenrollment-approve'),
+    #url(r'^sparta/admin-view/inactivity/unenroll/(?P<username>[-:+\w]+)/(?P<course_key>[-:+\w]+)$', admin_views.admin_approve_unenrollment_view, name='sparta-unenrollment-approve'),
 
     url(r'^sparta/admin/dashboard/main$', admin_views.data_dashboard_main_view, name='sparta-data-dashboard-main'),
     url(r'^sparta/admin/dashboard/profiles$', admin_views.data_dashboard_profiles_view, name='sparta-data-dashboard-profiles'),
