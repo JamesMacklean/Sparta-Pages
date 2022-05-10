@@ -1,0 +1,99 @@
+{% extends "sparta_base.html" %}
+{% load static %}
+
+{% block title %}Coursebank | SPARTA | {{ micropathway.name }}{% endblock %}
+
+{% block sparta_body %}
+<div class="container-grid container col header_block">
+    <div class="responsive-picture sparta_logo mx-auto">
+      <picture><img alt="Placeholder Picture" src="https://coursebank-static-assets-tmtg.s3-ap-northeast-1.amazonaws.com/sparta-logo.png">
+      </picture>
+    </div>
+    <p class="paragraph paragraph-2 mx-auto"><span class="paragraph-text-1">Creating a <span class="paragraph-text-4">S</span>marter <span class="paragraph-text-5">P</span>hilippines Through Data <span class="paragraph-text-6">A</span>nalytics <span class="paragraph-text-7">R</span>esearch and <span class="paragraph-text-8">D</span>evelopment (R&amp;D), <span class="paragraph-text-9">T</span>raining and <span class="paragraph-text-10">A</span>doption</span><br>
+    </p>
+    <a href="{% url 'sparta-register' %}" class="btn mx-auto">Register Now to become a SPARTA Scholar</a>
+</div>
+
+<div class="container-grid container-21 container">
+  <h1 class="heading-3"><span class="heading-text-1">{{ micropathway.name }}</span>
+  </h1>
+</div>
+
+<div class="container-grid container container-10 col">
+  <p class="paragraph paragraph-3"><span class="paragraph-text-3">{{ micropathway.long_description|safe }}</span>
+  </p>
+</div>
+
+
+<div class="container-grid container-21 container">
+  <h1 class="heading-3" style="text-align: center;"><span class="heading-text-1" style="font-size: 30px;font-weight: 700;">CORE COURSES</span>
+  </h1>
+</div>
+
+<div class="container-grid container container-9">
+  {% if core_courses %}
+    {% for group in core_courses %}
+      {% if group.complete_at_least %}
+      <h5 class="text-center py-3" style="color: gray;font-weight: bolder;">
+        Complete at least {{group.complete_at_least}}
+      </h5>
+      {% endif %}
+      {% for course in group.courses %}
+        {% include "sparta_course.html" %}
+      {% endfor %}
+    {% endfor %}
+  {% else %}
+    <div class="container-grid container container-15">
+      <p class="paragraph paragraph-5">The are no core courses available for this learning pathway.</p>
+    </div>
+  {% endif %}
+</div>
+
+{% if elective_courses %}
+<div class="container-grid container-21 container">
+  <h1 class="heading-3" style="text-align: center;"><span class="heading-text-1" style="font-size: 26px;font-weight: 700;">ELECTIVES</span>
+  </h1>
+</div>
+
+<div class="container-grid container container-9">
+  {% for group in elective_courses %}
+    {% if group.complete_at_least %}
+    <h5 class="text-center py-3" style="color: gray;font-weight: bolder;">
+      Complete at least {{group.complete_at_least}}
+    </h5>
+    {% endif %}
+    <div class="row mb-md-5 mb-3 mx-auto">
+    {% for course in group.courses %}
+      {% include "sparta_elective_course.html" %}
+    {% endfor %}
+    </div>
+  {% endfor %}
+</div>
+{% endif %}
+
+{% if graduate_course %}
+<div class="container-grid container-21 container" style="border: 2px solid black;">
+  <h1 class="heading-3" style="text-align: center;"><span class="heading-text-1" style="font-size: 26px;font-weight: 700;">CAPSTONE COURSE</span>
+  </h1>
+  <br><br>
+  <div class="row mb-md-5 mb-3 mx-auto">
+  {% include "sparta_capstone_course.html" with course=graduate_course %}
+  </div>
+</div>
+
+<br />
+<br />
+{% endif %}
+
+<div class="container-grid cta-2_block">
+    <div class="container-grid row">
+      <div class="container-grid col-sm-12 col-md-8 col-lg-8 col-xl-8 container-4">
+        <h1 class="start-learning_headings">Start learning Data Science today</h1>
+        <p class="paragraph apply-scholarship_paragraph">Apply for scholarship and join thousands of learners in six unique learning pathways involving data.</p>
+      </div>
+      <div class="container-grid col-sm-12 col-md-4 col-lg-4 col-xl-4 container-5"><a href="{% url 'sparta-register' %}" class="btn mx-auto apply-now-2_button">APPLY&nbsp;NOW</a>
+      </div>
+    </div>
+</div>
+
+{% endblock %}

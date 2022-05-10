@@ -46,7 +46,7 @@ from ..models import (
     Pathway, SpartaCourse, SpartaProfile, ExtendedSpartaProfile,
     EducationProfile, EmploymentProfile, SpartaReEnrollment, TrainingProfile,
     PathwayApplication, Event,
-    SpartaCoupon, StudentCouponRecord
+    SpartaCoupon, StudentCouponRecord,MicroPathway
 )
 from ..local_settings import LOCAL_MAX_APPLIED
 
@@ -71,6 +71,35 @@ def main(request):
 
 
 def pathway(request, slug):
+    """"""
+    template_name = "sparta_pathway.html"
+    context = {}
+
+    pathway = get_object_or_404(Pathway, slug=slug)
+    sparta_courses = SpartaCourse.objects.filter(is_active=True).filter(pathway=pathway)
+
+    core_courses = []
+    elective_courses = []
+    graduate_course = []
+    for group in pathway.groups.all().filter(is_active=True):
+        pathway_courses = sparta_courses.filter(group=group)
+        courses = []
+        for pathway_course in pathway_courses:
+            course = {'pathway_course': pathway_course}
+            course_key = CourseKey.from_string(pathway_course.course_id)
+            courseoverview = CourseOverview.get_from_id(course_key)
+            course['courseoverview'] = courseoverview
+            courses.append(course)
+        data = {
+            'courses': courses,
+            'complete_at_least': group.complete_at_least
+        }
+        if group.type == "EL":
+            elective_courses.append(data)
+        else:
+            core_courses.append(data)
+
+def micropathway(request, slug):
     """"""
     template_name = "sparta_pathway.html"
     context = {}

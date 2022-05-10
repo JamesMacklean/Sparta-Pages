@@ -89,6 +89,12 @@ class CourseGroup(models.Model):
         null=True, blank=True,
         related_name="groups"
     )
+    micropathway = models.ForeignKey(
+        'MicroPathway',
+        on_delete=models.CASCADE,
+        null=True, blank=True,
+        related_name="groups"
+    )
     complete_at_least = models.PositiveSmallIntegerField(null=True, blank=True)
     is_active = models.BooleanField(default=True)
 
@@ -96,7 +102,7 @@ class CourseGroup(models.Model):
         verbose_name_plural = "2.2 Course Groups"
 
     def __str__(self):
-        return self.name or "{}: {}".format(self.pathway.name, self.type)
+        return self.name or "{}: {}".format(self.pathway.name,self.micropathway.name, self.type)
 
 
 class SpartaProfile(models.Model):
@@ -622,3 +628,25 @@ class SpartaEnrollment(models.Model):
     """
     enrollment = models.ForeignKey(CourseEnrollment, on_delete=models.CASCADE)
     enroll_date = models.DateTimeField(auto_now_add=True)
+
+class MicroPathway(models.Model):
+    """
+    """
+    name = models.CharField(max_length=255)
+    slug = models.SlugField(max_length=255)
+    short_description = models.CharField(max_length=255, blank=True, default="")
+    long_description = models.TextField(blank=True, default="")
+    card_description = models.TextField(blank=True, default="")
+    image_url = models.CharField(max_length=255)
+    order = models.PositiveSmallIntegerField(default=0)
+    is_active = models.BooleanField(default=True)
+
+    class Meta:
+        ordering = ['order']
+        verbose_name_plural = "1.2 Micro Pathways"
+
+    def get_absolute_url(self):
+        return reverse('sparta-micropathway', kwargs={'slug': self.slug})
+
+    def __str__(self):
+        return self.name
