@@ -70,23 +70,23 @@ def main(request):
     return render(request, template_name, context)
 
 
-def pathway(request, slug):
+def micropathway(request, slug):
     """"""
-    template_name = "sparta_pathway.html"
+    template_name = "sparta_micropathway.html"
     context = {}
 
-    pathway = get_object_or_404(Pathway, slug=slug)
-    sparta_courses = SpartaCourse.objects.filter(is_active=True).filter(pathway=pathway)
+    micropathway = get_object_or_404(MicroPathway, slug=slug)
+    sparta_courses = SpartaCourse.objects.filter(is_active=True).filter(micropathway=micropathway)
 
     core_courses = []
     elective_courses = []
     graduate_course = []
-    for group in pathway.groups.all().filter(is_active=True):
-        pathway_courses = sparta_courses.filter(group=group)
+    for group in micropathway.groups.all().filter(is_active=True):
+        micropathway_courses = sparta_courses.filter(group=group)
         courses = []
-        for pathway_course in pathway_courses:
-            course = {'pathway_course': pathway_course}
-            course_key = CourseKey.from_string(pathway_course.course_id)
+        for micropathway_course in micropathway_courses:
+            course = {'micropathway_course': micropathway_course}
+            course_key = CourseKey.from_string(micropathway_course.course_id)
             courseoverview = CourseOverview.get_from_id(course_key)
             course['courseoverview'] = courseoverview
             courses.append(course)
@@ -99,7 +99,7 @@ def pathway(request, slug):
         else:
             core_courses.append(data)
 
-def micropathway(request, slug):
+def pathway(request, slug):
     """"""
     template_name = "sparta_pathway.html"
     context = {}
