@@ -36,7 +36,7 @@ urlpatterns = [
     url(r'^sparta/widthraw/(?P<id>\d+)$', views.widthraw, name='sparta-withdraw'),
     url(r'^sparta/pathway/(?P<pathway_id>\d+)/courses$', views.StudentCouponRecordsView.as_view(), name='sparta-pathway-courses'),
     url(r'^sparta/pathway/enroll/(?P<username>[-:+\w]+)/(?P<course_key>[-:+\w]+)$', views.enrollment_approve_application, name='sparta-enrollment-approve'),
-    url(r'^sparta/micropathway/(?P<slug>[-\w]+)$', views.pathway, name='sparta-micropathway'),
+    url(r'^sparta/micropathway/(?P<slug>[-\w]+)$', views.micropathway, name='sparta-micropathway'),
 
     url(r'^sparta/admin-view/main$', admin_views.admin_main_view, name='sparta-admin-main'),
     url(r'^sparta/admin-view/profiles$', admin_views.admin_profiles_view, name='sparta-admin-profiles'),

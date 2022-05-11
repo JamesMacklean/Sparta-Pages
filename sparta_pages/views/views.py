@@ -99,6 +99,11 @@ def micropathway(request, slug):
         else:
             core_courses.append(data)
 
+    context['core_courses'] = core_courses
+    context['elective_courses'] = elective_courses
+    context['micropathway'] = micropathway
+    return render(request, template_name, context)
+
 def pathway(request, slug):
     """"""
     template_name = "sparta_pathway.html"
