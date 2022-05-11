@@ -183,7 +183,7 @@ class SpartaProfile(models.Model):
         (DAPCOSM,"Development Academy of the Philippines-COSM"),
 	(FPANDAPH,"foodpanda Philippines"),
 	(DOSTXII,"Department of Science and Technology XII"),
-	(PHILSCA,"Philippine State College of Aeronautics (PhilSCA)")
+	(PHILSCA,"Philippine State College of Aeronautics (PhilSCA)"),
     )
 
     ANZ = "AN"
