@@ -73,7 +73,7 @@
 
 {# List of Micro Pathways Section #}
 <div class="container-grid pathways_block col container">
-    <h1 style="text-align: left;" class="how-to_headings pb-2">Micro Pathways</h1>
+    <h1 style="text-align: center;" class="how-to_headings pb-2">Micro Pathways</h1>
   <div class="container-grid row container-8">
     <div class="rule rule-2">
       <hr>
@@ -82,7 +82,7 @@
     {% for micropathway in micropathways %}
     <div class="container-grid col col-12 col-lg-4 col-xl-4 col-sm-12 col-md-6 pathways_container-1">
       <a href="{% url 'sparta-micropathway' slug=micropathway.slug %}" class="link-container mx-auto link-container-1">
-        <div class="container-grid {{ pathway.slug }}_image">
+        <div class="container-grid {{ micropathway.slug }}_image">
           <h1 class="heading-1" style="text-align: left;">{{ micropathway.name }}</h1>
         </div>
         <div class="rule rule-1">
