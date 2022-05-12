@@ -47,6 +47,12 @@ class SpartaCourse(models.Model):
         null=True, blank=True,
         related_name="courses"
     )
+    micropathway = models.ForeignKey(
+        'MicroPathway',
+        on_delete=models.CASCADE,
+        null=True, blank=True,
+        related_name="courses"
+    )
     short_description = models.CharField(max_length=255, blank=True, default="")
     long_description = models.TextField(blank=True, default="")
     image_url = models.CharField(max_length=255, default="https://coursebank-static-assets-tmtg.s3-ap-northeast-1.amazonaws.com/sparta+black.png")
