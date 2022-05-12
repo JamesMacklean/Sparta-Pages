@@ -89,6 +89,8 @@ class CourseGroup(models.Model):
         null=True, blank=True,
         related_name="groups"
     )
+    type = models.CharField(max_length=2, choices=GROUP_TYPE, default=CORE)
+    name = models.CharField(max_length=255, null=True, blank=True)
     micropathway = models.ForeignKey(
         'MicroPathway',
         on_delete=models.CASCADE,
