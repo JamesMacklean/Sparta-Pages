@@ -231,18 +231,6 @@
     });
   </script>
 <style>
-  *{
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-  }
-  body{
-      height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: #f2f2f2;
-  }
   .swiper{
       width: 950px;
   }
@@ -284,23 +272,6 @@
   }
 
 </style>
-<!--
-    {% for micropathway in micropathways %}
-    <div class="container-grid col col-12 col-lg-4 col-xl-4 col-sm-12 col-md-6 pathways_container-1">
-      <a href="{% url 'sparta-micropathway' slug=micropathway.slug %}" class="link-container mx-auto link-container-1">
-        <div class="container-grid {{ micropathway.slug }}_image">
-          <h1 class="heading-1" style="text-align: left;">{{ micropathway.name }}</h1>
-        </div>
-        <div class="rule rule-1">
-          <hr>
-        </div>
-        {{ micropathway.card_description|safe }}
-      </a>
-    </div>
-    {% endfor %}
-  </div>
-</div>
--->
 {# How To Section #}
 <div class="container-grid how-to-text_container mb-5">
   <div class="d-flex align-items-center flex-column">
