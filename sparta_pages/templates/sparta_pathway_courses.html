@@ -8,16 +8,17 @@
 <div class="card">
   <div class="card-body">
     
-    <h2 class="card-title">Available Courses for the {{ pathway.name|title }} Learning Pathway</h2>
+    <h2 class="card-title">Courses Under Your Chosen Pathway</h2>
     <!-- <h2>Test context {{ test }}</h2> -->
     {% if pathway_is_approved %}
     <div class="p">
-      Click enroll to any of the following courses to get verified access to the Learning Pathway courses for free. Remember that Core Courses are required while the Elective Courses can be completed with at least a minimum amount.
+      <p>Click VIEW COURSE to view the course details. Click ENROLL to get Verified access and start taking the course. The Verified access allows you to access all course contents including assessment items and get a Verified certificate upon completion and passing. We recommend taking one course at a time.</p>
+      <p>Please note that there is a required number of elective courses under each pathway except Data Associate. </p>
     </div>
 
     {% else %}
     <div class="p">
-      You are currently not approved in this Learning Pathway. If you've been approved for this Learning Pathway, please wait while we process your enrollments. We'll let you know once the coupons are available via email. In the meantime, you may continue taking the courses for free in audit mode.
+      You are currently not approved to take this pathway. If you’ve requested a pathway change (allowed to pathway completers only), please wait for 3-5 days to process the request. We’ll let you know via email once your request has been approved. 
     </div>
     {% endif %}
 
@@ -59,7 +60,7 @@
                   <form action="{% url 'sparta-enrollment-approve' username=uname course_key=course.courseoverview.id %}" method="POST">
                     {% csrf_token %}
                     <div type="div" class="btn btn-secondary" data-dismiss="modal">Cancel</div>
-                    <input class="btn btn-success" id="submit" type="submit" value="Approve" />
+                    <input class="btn btn-success" id="submit" type="submit" value="Confirm" />
                   </form>
                 </div>
               </div>
@@ -119,7 +120,7 @@
                   <form action="{% url 'sparta-enrollment-approve' username=uname course_key=course.courseoverview.id %}" method="POST">
                     {% csrf_token %}
                     <div type="div" class="btn btn-secondary" data-dismiss="modal">Cancel</div>
-                    <input class="btn btn-success" id="submit" type="submit" value="Approve" />
+                    <input class="btn btn-success" id="submit" type="submit" value="Confirm" />
                   </form>
                 </div>
               </div>
