@@ -211,68 +211,8 @@
   <div class="swiper-pagination"></div>
   </section>
   <!-- Swiper JS -->
-  <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 
   <!-- Initialize Swiper -->
-  <script>
-    var swiper = new Swiper(".mySwiper", {
-      slidesPerView: 3,
-      spaceBetween: 30,
-      slidesPerGroup: 3,
-      loop: true,
-      loopFillGroupWithBlank: true,
-      pagination: {
-        el: ".swiper-pagination",
-        clickable: true,
-      },
-      navigation: {
-        nextEl: ".swiper-button-next",
-        prevEl: ".swiper-button-prev",
-      },
-    });
-  </script>
-<style>
-  .swiper{
-      width: 950px;
-  }
-  .sec .card .image{
-      height: 140px;
-      width: 140px;
-  }
-  .sec .card .image img{
-      height: 100%;
-      width: 100%;
-      object-fit: cover;
-  }
-  .card{
-      position: relative;
-      background: #fff;
-      border-radius: 20px;
-      height: 350px;
-  }
-  .card::before{
-      content: "";
-      position: absolute;
-      height: 45%;
-      width: 100%;
-      background: maroon;
-  }
-  .card .card-content{
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 30px;
-      position: relative;
-      z-index: 100;
-  }
-  .card .card-title{
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin-top: 5px;
-  }
-
-</style>
 {# How To Section #}
 <div class="container-grid how-to-text_container mb-5">
   <div class="d-flex align-items-center flex-column">

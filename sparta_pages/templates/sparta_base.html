@@ -8,6 +8,7 @@
 <script>document.createElement( "picture" );</script>
 <script class="picturefill" async="async" src="{% static 'js/sparta/picturefill.min.js' %}"></script>
 <script src="{% static 'js/sparta/jquery.min.js' %}"></script>
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 <link rel="stylesheet" href="{% static 'css/sparta/main.css' %}">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:300,400,600,b">
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -28,6 +29,21 @@
       document.getElementById("ccap_div").style.display="none";
     }
   }
+  var swiper = new Swiper(".mySwiper", {
+      slidesPerView: 3,
+      spaceBetween: 30,
+      slidesPerGroup: 3,
+      loop: true,
+      loopFillGroupWithBlank: true,
+      pagination: {
+        el: ".swiper-pagination",
+        clickable: true,
+      },
+      navigation: {
+        nextEl: ".swiper-button-next",
+        prevEl: ".swiper-button-prev",
+      },
+    });
 </script>
 
 <style>
@@ -122,6 +138,48 @@
 
   .font-roboto {
     font-family: Roboto;
+  }
+
+  /* carousel */
+  
+  .swiper{
+      width: 950px;
+  }
+  .sec .card .image{
+      height: 140px;
+      width: 140px;
+  }
+  .sec .card .image img{
+      height: 100%;
+      width: 100%;
+      object-fit: cover;
+  }
+  .card{
+      position: relative;
+      background: #fff;
+      border-radius: 20px;
+      height: 350px;
+  }
+  .card::before{
+      content: "";
+      position: absolute;
+      height: 45%;
+      width: 100%;
+      background: maroon;
+  }
+  .card .card-content{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 30px;
+      position: relative;
+      z-index: 100;
+  }
+  .card .card-title{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 5px;
   }
 
 </style>
