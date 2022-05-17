@@ -71,7 +71,7 @@ class SpartaCourse(models.Model):
         verbose_name_plural = "2. Sparta Courses"
 
     def __str__(self):
-        return "{}: {}".format(self.pathway.name, self.course_id)
+        return "{}: {}".format(self.pathway.name,self.micropathway.name,self.course_id)
 
     @property
     def related_courses(self):
