@@ -23,6 +23,7 @@
   <div class="tablinks btn btn-outline-info" onclick="openTab(event, 'ScholarProfile')">Scholarship Profile</div>
   <div class="tablinks btn btn-outline-info" onclick="openTab(event, 'PathwayApplications')">Pathway Applications</div>
   <div class="tablinks btn btn-outline-info" onclick="openTab(event, 'Courses')">Courses</div>
+  <div class="tablinks btn btn-outline-info" onclick="openTab(event, 'MicropathwayApplications')">Micropathway Applications</div>
 </div>
 
 <div class="card col col-10">
@@ -141,6 +142,25 @@
         <a class="btn btn-primary" href="{% url 'sparta-application-page' %}">Apply for a pathway</a>
       {% endif %}
     </div>
+
+    <div id="MicropathwayApplications" class="tabcontent">
+      <h2 class="card-title">Micropathway Applications</h2>
+      <section class="container-container">
+        <div class="card-container">
+          <div class="card-image spartabg"></div>
+            <h2>SPARTA Scholarship</h2>
+            <p>Project SPARTA was launched in order to put in place the necessary online education, research and development mechanisms and infrastructure to not only enable the industry of data science and analytics but also to advance smart governance practices. It aims to train and graduate 30,000 learners in data science, analytics, and related fields through online learning.              
+            </p>
+              <div class="buttons">
+              <a href="{% url 'sparta-main' %}">Learn More</a>
+              <br>
+              <a href="{% url 'sparta-application-page' %}">Apply</a>
+              </div>
+        </div>
+      </section>
+    </div>
+
+
   </div>
 </div>
 <style>
