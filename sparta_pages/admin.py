@@ -45,7 +45,7 @@ class PathwayApplicationAdmin(admin.ModelAdmin):
     readonly_fields = ('created_at',)
 
 @admin.register(MicroPathwayApplication)
-class MicroPathwayApplicationAdmin(admin.ModelAdmin):
+class PathwayApplicationAdmin(admin.ModelAdmin):
     list_display = ('profile', 'micropathway', 'status')
     list_filter = ('micropathway', 'status', 'created_at')
     search_fields = ['micropathway__name', 'profile__user__username', 'profile__user__email']
