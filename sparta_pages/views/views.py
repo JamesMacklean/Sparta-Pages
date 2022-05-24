@@ -488,7 +488,7 @@ class ProfilePageView(TemplateView):
         context['education_profiles'] = EducationProfile.objects.all().filter(profile=profile)
         context['employment_profiles'] = EmploymentProfile.objects.all().filter(profile=profile)
         context['training_profiles'] = TrainingProfile.objects.all().filter(profile=profile)
-        
+
         max_applied = LOCAL_MAX_APPLIED or Pathway.objects.all().count()
         if applications.count() >= max_applied:
             context['max_applied'] = True
@@ -611,6 +611,22 @@ def widthraw(request, id):
     )
     return redirect('sparta-profile')
 
+
+@require_POST
+def micropathwayWidthraw(request, id):
+    """"""
+    if not request.user.sparta_profile.is_active:
+        return redirect('sparta-profile')
+    app = get_object_or_404(MicroPathwayApplication, id=id)
+    if request.user != app.profile.user:
+        return HttpResponse(status=403)
+    app.withdraw()
+    Event.objects.create(
+        event="Withdraw Application",
+        description="User {} has withdrawn application for the micropathway {}.".format(app.profile.user.username, app.micropathway.name),
+        profile=app.profile
+    )
+    return redirect('sparta-profile')
 
 class PathwayProgressView(TemplateView):
     """

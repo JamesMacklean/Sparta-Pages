@@ -163,10 +163,10 @@
         </thead>
 
         <tbody>
-          {% if applications %}
-          {% for app in applications %}
+          {% if micropathway_applications %}
+          {% for app in micropathway_applications %}
           <tr>
-            <td>{{ app.pathway }}</td>
+            <td>{{ app.micropathway }}</td>
             <td>{{ app.get_status_display }}</td>
             {% if app.status == 'AP' %}
             <td>
@@ -195,10 +195,10 @@
                     </div>
                   </div>
                   <div class="modal-body">
-                    Are you sure you want to withdraw your application for this Learning Pathway ({{ app.pathway }})?
+                    Are you sure you want to withdraw your application for this Learning Pathway ({{ app.micropathway }})?
                   </div>
                   <div class="modal-footer">
-                    <form action="{% url 'sparta-withdraw' id=app.id %}" method="POST">
+                    <form action="{% url 'sparta-micropathway-withdraw' id=app.id %}" method="POST">
                       {% csrf_token %}
                       <div type="div" class="btn btn-secondary" data-dismiss="modal">Cancel</div>
                       <input class="btn btn-primary" id="submit" type="submit" value="Yes, Withdraw My Application" />
