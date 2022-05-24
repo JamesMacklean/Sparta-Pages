@@ -30,7 +30,9 @@ urlpatterns = [
     url(r'^sparta/profile/training/(?P<pk>\d+)/delete$', views.delete_training_profile, name='sparta-training-delete'),
 
     url(r'^sparta/application-page$', views.PathwayApplicationView.as_view(), name='sparta-application-page'),
+    url(r'^sparta/micropathway-application-page$', views.MicroPathwayApplicationView.as_view(), name='sparta-micropathway-application-page'),
     url(r'^sparta/apply/(?P<id>\d+)$', views.apply, name='sparta-apply'),
+    url(r'^sparta/micropathway-apply/(?P<id>\d+)$', views.micropathwayApply, name='sparta-micropathway-apply'),
     url(r'^sparta/pathway/(?P<slug>[-\w]+)$', views.pathway, name='sparta-pathway'),
     url(r'^sparta/pathway/(?P<pathway_id>\d+)/progress$', views.PathwayProgressView.as_view(), name='sparta-pathway-progress'),
     url(r'^sparta/widthraw/(?P<id>\d+)$', views.widthraw, name='sparta-withdraw'),

@@ -1,6 +1,6 @@
 from django.contrib import admin
 from .models import (
-    Pathway, SpartaCourse, CourseGroup, SpartaEnrollment,
+    MicroPathwayApplication, Pathway, SpartaCourse, CourseGroup, SpartaEnrollment,
     SpartaProfile, PathwayApplication, ExtendedSpartaProfile,
     EducationProfile, EmploymentProfile, TrainingProfile,
     Event, APIToken,
@@ -42,6 +42,13 @@ class PathwayApplicationAdmin(admin.ModelAdmin):
     list_display = ('profile', 'pathway', 'status')
     list_filter = ('pathway', 'status', 'created_at')
     search_fields = ['pathway__name', 'profile__user__username', 'profile__user__email']
+    readonly_fields = ('created_at',)
+
+@admin.register(MicroPathwayApplication)
+class MicroPathwayApplicationAdmin(admin.ModelAdmin):
+    list_display = ('profile', 'micropathway', 'status')
+    list_filter = ('micropathway', 'status', 'created_at')
+    search_fields = ['micropathway__name', 'profile__user__username', 'profile__user__email']
     readonly_fields = ('created_at',)
 
 @admin.register(EducationProfile)

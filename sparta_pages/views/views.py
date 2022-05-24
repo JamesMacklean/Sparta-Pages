@@ -43,7 +43,7 @@ from ..forms import (
     EditSpartaProfileForm
 )
 from ..models import (
-    Pathway, SpartaCourse, SpartaProfile, ExtendedSpartaProfile,
+    MicroPathwayApplication, Pathway, SpartaCourse, SpartaProfile, ExtendedSpartaProfile,
     EducationProfile, EmploymentProfile, SpartaReEnrollment, TrainingProfile,
     PathwayApplication, Event,
     SpartaCoupon, StudentCouponRecord,MicroPathway
@@ -520,6 +520,31 @@ class PathwayApplicationView(TemplateView):
             return redirect('sparta-profile')
         return render(request, self.template_name, context)
 
+class MicroPathwayApplicationView(TemplateView):
+    template_name = 'sparta_micropathway_apply.html'
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(MicroPathwayApplicationView, self).dispatch(*args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super(MicroPathwayApplicationView, self).get_context_data(**kwargs)
+        get_micropathways = MicroPathway.objects.filter(is_active=True)
+        micropathways = []
+        sparta_profile = self.request.user.sparta_profile
+        for p in get_micropathways:
+            # apps = p.applications.all().filter(profile=sparta_profile).exclude(status='WE')
+            # if not apps.exists():
+            #     micropathways.append(p)
+            micropathways.append(p)
+        context['micropathways'] = micropathways
+        return context
+
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data()
+        if not request.user.sparta_profile.is_active:
+            return redirect('sparta-profile')
+        return render(request, self.template_name, context)
 
 @require_POST
 def apply(request, id):
@@ -536,6 +561,25 @@ def apply(request, id):
         raise HttpResponse(status=403)
 
     app, created = PathwayApplication.objects.get_or_create(profile=sparta_profile, pathway=pathway)
+    app.pend()
+
+    return redirect('sparta-profile')
+
+@require_POST
+def micropathwayApply(request, id):
+    """"""
+    try:
+        micropathway = MicroPathway.objects.get(id=id)
+    except MicroPathway.DoesNotExist:
+        raise HttpResponse(status=500)
+
+    profiles = SpartaProfile.objects.filter(is_active=True)
+    try:
+        sparta_profile = profiles.get(user=request.user)
+    except SpartaProfile.DoesNotExist:
+        raise HttpResponse(status=403)
+
+    app, created = MicroPathwayApplication.objects.get_or_create(profile=sparta_profile, micropathway=micropathway)
     app.pend()
 
     return redirect('sparta-profile')
