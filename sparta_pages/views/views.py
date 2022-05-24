@@ -468,17 +468,27 @@ class ProfilePageView(TemplateView):
             extended_profile = None
 
         applications = PathwayApplication.objects.all().filter(profile=profile).exclude(status='WE')
+        micropathway_applications = MicroPathwayApplication.objects.all().filter(profile=profile).exclude(status='WE')
+
         display_applications = []
+        display_micropathway_applications = []
+
         if applications.exists():
             display_applications.append(applications.order_by('created_at')[0])
+        
+        if micropathway_applications.exists():
+            display_micropathway_applications.append(applications.order_by('created_at')[0])
+
         context['profile'] = profile
         context['discovery'] = profile.get_discovery_display()
         context['org'] = profile.get_org_display()
         context['extended_profile'] = extended_profile
         context['applications'] = display_applications
+        context['micropathway_applications'] = micropathway_applications
         context['education_profiles'] = EducationProfile.objects.all().filter(profile=profile)
         context['employment_profiles'] = EmploymentProfile.objects.all().filter(profile=profile)
         context['training_profiles'] = TrainingProfile.objects.all().filter(profile=profile)
+        
         max_applied = LOCAL_MAX_APPLIED or Pathway.objects.all().count()
         if applications.count() >= max_applied:
             context['max_applied'] = True
