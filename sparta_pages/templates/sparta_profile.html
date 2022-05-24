@@ -171,10 +171,10 @@
             {% if app.status == 'AP' %}
             <td>
               <div class="dropdown show">
-                <a class="btn btn-primary" href="{% url 'sparta-pathway-progress' pathway_id=app.pathway.id %}">
+                <a class="btn btn-primary" href="{% url 'sparta-micropathway-progress' micropathway_id=app.micropathway.id %}">
                   Progress
                 </a>
-                <a class="btn btn-primary" href="{% url 'sparta-pathway-courses' pathway_id=app.pathway.id %}">
+                <a class="btn btn-primary" href="{% url 'sparta-micropathway-courses' micropathway_id=app.micropathway.id %}">
                   Courses
                 </a>
                 </div>
