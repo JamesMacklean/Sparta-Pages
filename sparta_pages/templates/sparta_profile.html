@@ -22,7 +22,7 @@
 <div class="tab col col-2">
   <div class="tablinks btn btn-outline-info" onclick="openTab(event, 'ScholarProfile')">Scholarship Profile</div>
   <div class="tablinks btn btn-outline-info" onclick="openTab(event, 'PathwayApplications')">Pathway Applications</div>
-  <div class="tablinks btn btn-outline-info" onclick="openTab(event, 'Courses')">Courses</div>
+  <div class="tablinks btn btn-outline-info" onclick="openTab(event, 'MyPathways')">My Pathways</div>
   <div class="tablinks btn btn-outline-info" onclick="openTab(event, 'MicropathwayApplications')">Micropathway Applications</div>
 </div>
 
@@ -54,7 +54,7 @@
             <h2>DICT Scholarship</h2>
             <p>The training programs within this initiative aim to upskill the Philippine workforce in various fields of study that are relevant to today’s technology driven landscape.
               <br>
-              The curation of courses that will be made available to learners is a mix of international courses from Coursera as well as local online courses from the DICT’s growing content library.
+              The duration of courses that will be made available to learners is a mix of international courses from Coursera as well as local online courses from the DICT’s growing content library.
             </p>
             <div class="buttons">
               <a href="https://dict.coursebank.ph">Learn More</a>
@@ -65,8 +65,25 @@
       </section>
     </div>
 
-    <div id="Courses" class="tabcontent">
-      <h2 class="card-title">Your Learning Pathway</h2>
+    <div id="MicropathwayApplications" class="tabcontent">
+      <h2 class="card-title">Micropathway Applications</h2>
+      <section class="container-container">
+        <div class="card-container">
+          <div class="card-image spartabg"></div>
+            <h2>SPARTA Scholarship</h2>
+            <p>Project SPARTA was launched in order to put in place the necessary online education, research and development mechanisms and infrastructure to not only enable the industry of data science and analytics but also to advance smart governance practices. It aims to train and graduate 30,000 learners in data science, analytics, and related fields through online learning.              
+            </p>
+              <div class="buttons">
+              <a href="{% url 'sparta-main' %}">Learn More</a>
+              <br>
+              <a href="{% url 'sparta-micropathway-application-page' %}">Apply</a>
+              </div>
+        </div>
+      </section>
+    </div>
+
+    <div id="MyPathways" class="tabcontent">
+      <h2 class="card-title">Your Learning Pathways</h2>
 
       <p>As a SPARTA scholar, you must select ONE of six (6) learning pathways. Once you have chosen a pathway, you will have access to courses under this pathway.</p>
       <p><a target="blank" href="{% url 'sparta-main' %}">(Click here for details about SPARTA Pathways)</a></p>
@@ -136,31 +153,77 @@
           </tr>
           {% endif %}
         </tbody>
+
+        <thead class="thead-light">
+          <tr>
+            <th>Micropathway</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {% if applications %}
+          {% for app in applications %}
+          <tr>
+            <td>{{ app.pathway }}</td>
+            <td>{{ app.get_status_display }}</td>
+            {% if app.status == 'AP' %}
+            <td>
+              <div class="dropdown show">
+                <a class="btn btn-primary" href="{% url 'sparta-pathway-progress' pathway_id=app.pathway.id %}">
+                  Progress
+                </a>
+                <a class="btn btn-primary" href="{% url 'sparta-pathway-courses' pathway_id=app.pathway.id %}">
+                  Courses
+                </a>
+                </div>
+              </div>
+            </td>
+            {% elif app.status == 'DE' %}
+            <td>-</td>
+            {% else %}
+            <td><div type="div" class="btn btn-outline-secondary" style="cursor: pointer" data-toggle="modal" data-target="#withdrawModal">Withdraw</div></td>
+            <!-- Modal Block -->
+            <div class="modal fade" id="withdrawModal" tabindex="-1" role="dialog" aria-labelledby="withdrawModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="withdrawModalLabel">Withdraw Application</h5>
+                    <div type="div" class="close" style="cursor: pointer" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </div>
+                  </div>
+                  <div class="modal-body">
+                    Are you sure you want to withdraw your application for this Learning Pathway ({{ app.pathway }})?
+                  </div>
+                  <div class="modal-footer">
+                    <form action="{% url 'sparta-withdraw' id=app.id %}" method="POST">
+                      {% csrf_token %}
+                      <div type="div" class="btn btn-secondary" data-dismiss="modal">Cancel</div>
+                      <input class="btn btn-primary" id="submit" type="submit" value="Yes, Withdraw My Application" />
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {% endif %}
+          </tr>
+          {% endfor %}
+          {% else %}
+          <tr>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+          </tr>
+          {% endif %}
+        </tbody>
       </table>
 
       {% if not max_applied %}
         <a class="btn btn-primary" href="{% url 'sparta-application-page' %}">Apply for a pathway</a>
       {% endif %}
     </div>
-
-    <div id="MicropathwayApplications" class="tabcontent">
-      <h2 class="card-title">Micropathway Applications</h2>
-      <section class="container-container">
-        <div class="card-container">
-          <div class="card-image spartabg"></div>
-            <h2>SPARTA Scholarship</h2>
-            <p>Project SPARTA was launched in order to put in place the necessary online education, research and development mechanisms and infrastructure to not only enable the industry of data science and analytics but also to advance smart governance practices. It aims to train and graduate 30,000 learners in data science, analytics, and related fields through online learning.              
-            </p>
-              <div class="buttons">
-              <a href="{% url 'sparta-main' %}">Learn More</a>
-              <br>
-              <a href="{% url 'sparta-micropathway-application-page' %}">Apply</a>
-              </div>
-        </div>
-      </section>
-    </div>
-
-
   </div>
 </div>
 <style>
