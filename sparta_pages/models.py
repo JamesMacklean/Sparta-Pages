@@ -453,7 +453,7 @@ class MicroPathwayApplication(models.Model):
         (DENIED, "Denied"),
         (WITHDRAWN, "Withdrawn")
     )
-    pathway = models.ForeignKey(
+    micropathway = models.ForeignKey(
         'MicroPathway',
         on_delete=models.CASCADE,
         related_name="micropathway_applications"
@@ -471,7 +471,7 @@ class MicroPathwayApplication(models.Model):
         verbose_name_plural = "4.2 MicroPathway Applications"
 
     def __str__(self):
-        return "{}: {}".format(self.profile.user.username, self.pathway.name)
+        return "{}: {}".format(self.profile.user.username, self.micropathway.name)
 
     def withdraw(self):
         if self.status != self.WITHDRAWN:
