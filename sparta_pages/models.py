@@ -456,12 +456,12 @@ class MicroPathwayApplication(models.Model):
     pathway = models.ForeignKey(
         'MicroPathway',
         on_delete=models.CASCADE,
-        related_name="applications"
+        related_name="micropathway applications"
         )
     profile = models.ForeignKey(
         'SpartaProfile',
         on_delete=models.CASCADE,
-        related_name="applications",
+        related_name="micropathway applications",
         verbose_name="sparta profile"
         )
     created_at = models.DateTimeField(auto_now_add=True)
