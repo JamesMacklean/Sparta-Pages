@@ -16,29 +16,29 @@
     .swiper{
         width: 950px;
     }
-    section .card .image{
+    section .swiper-card .image{
         height: 140px;
         width: 140px;
     }
-    section .card .image img{
+    section .swiper-card .image img{
         height: 100%;
         width: 100%;
         object-fit: cover;
     }
-    .card{
+    .swiper-card{
         position: relative;
         background: #fff;
         border-radius: 20px;
         height: 350px;
     }
-    .card::before{
+    .swiper-card::before{
         content: "";
         position: absolute;
         height: 45%;
         width: 100%;
         background: maroon;
     }
-    .card .card-content{
+    .swiper-card .swiper-card-content{
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -46,7 +46,7 @@
         position: relative;
         z-index: 100;
     }
-    .card .card-title{
+    .swiper-card .swiper-card-title{
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -56,25 +56,25 @@
 </style>
 
 <section>
-    <div class="swiper mySwiper container">
-        <div class="swiper-wrapper content">
+    <div class="swiper mySwiper swiper-container">
+        <div class="swiper-wrapper swiper-content">
 
-            <div class="swiper-slide card">
-                <div class="card-content">
+            <div class="swiper-slide swiper-card">
+                <div class="swiper-card-content">
                     <div class="image">
                         <img src="https://coursebank-static-assets-tmtg.s3-ap-northeast-1.amazonaws.com/dataassociate.jpg" alt="">
                     </div>
                 </div>
 
-                <div class="card-title">
-                    <span class="pathway">Domain Knowledge: Analytics Project</span>
+                <div class="swiper-card-title">
+                    <span class="micropathway">Domain Knowledge: Analytics Project</span>
                 </div> 
             </div>
         </div>
-        <div class="swiper-button-next"></div>
-        <div class="swiper-button-prev"></div>
-        <div class="swiper-pagination"></div>
     </div>
+    <div class="swiper-button-next"></div>
+    <div class="swiper-button-prev"></div>
+    <div class="swiper-pagination"></div>
 </section>
 
 <!-- Swiper JS -->
