@@ -1,0 +1,100 @@
+<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css"/>
+<style>
+    *{
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    body{
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #f2f2f2;
+    }
+    .swiper{
+        width: 950px;
+    }
+    section .card .image{
+        height: 140px;
+        width: 140px;
+    }
+    section .card .image img{
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+    }
+    .card{
+        position: relative;
+        background: #fff;
+        border-radius: 20px;
+        height: 350px;
+    }
+    .card::before{
+        content: "";
+        position: absolute;
+        height: 45%;
+        width: 100%;
+        background: maroon;
+    }
+    .card .card-content{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 30px;
+        position: relative;
+        z-index: 100;
+    }
+    .card .card-title{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 5px;
+    }
+
+</style>
+
+<section>
+    <div class="swiper mySwiper container">
+        <div class="swiper-wrapper content">
+
+            <div class="swiper-slide card">
+                <div class="card-content">
+                    <div class="image">
+                        <img src="https://coursebank-static-assets-tmtg.s3-ap-northeast-1.amazonaws.com/dataassociate.jpg" alt="">
+                    </div>
+                </div>
+
+                <div class="card-title">
+                    <span class="pathway">Domain Knowledge: Analytics Project</span>
+                </div> 
+            </div>
+        </div>
+    </div>
+    
+<div class="swiper-button-next"></div>
+<div class="swiper-button-prev"></div>
+<div class="swiper-pagination"></div>
+</section>
+
+<!-- Swiper JS -->
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+
+<!-- Initialize Swiper -->
+<script>
+  var swiper = new Swiper(".mySwiper", {
+    slidesPerView: 3,
+    spaceBetween: 30,
+    slidesPerGroup: 3,
+    loop: true,
+    loopFillGroupWithBlank: true,
+    pagination: {
+      el: ".swiper-pagination",
+      clickable: true,
+    },
+    navigation: {
+      nextEl: ".swiper-button-next",
+      prevEl: ".swiper-button-prev",
+    },
+  });
+</script>
