@@ -7,7 +7,7 @@
     .swiper{
         width: 900px;
     }
-/*    section .swiper-card .image{
+    section .swiper-card .image{
         height: 140px;
         width: 100px;
     }
@@ -15,12 +15,12 @@
         height: 100%;
         width: 100%;
         object-fit: cover;
-    } */
+    }
     .swiper-card{
         position: relative;
         background: #fff;
         border-radius: 20px;
-        height: 300px;
+        height: 350px;
     }
     .swiper-card::before{
         content: "";
@@ -51,8 +51,11 @@
         <div class="swiper-wrapper swiper-content">
             {% for micropathway in micropathways %}
             <div class="swiper-slide swiper-card">
-                <div class="microimage {{ micropathway.slug }}_image"></div>
-                    <a href="{% url 'sparta-micropathway' slug=micropathway.slug %}">
+            <a href="{% url 'sparta-micropathway' slug=micropathway.slug %}">
+
+                <div class="swiper-card-content">
+                        <div class="image {{ micropathway.slug }}_image"></div>
+                </div>
 
                 <div class="swiper-card-title">
                     <span class="micro-name">{{ micropathway.name }}</span>
