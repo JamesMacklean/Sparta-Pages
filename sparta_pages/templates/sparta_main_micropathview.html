@@ -44,8 +44,8 @@
 </style>
 
 <section>
+{% for micropathway in micropathways %}
     <div class="swiper mySwiper swiper-container">
-    {% for micropathway in micropathways %}
         <div class="swiper-wrapper swiper-content">
             <div class="swiper-slide swiper-card">
             <a href="{% url 'sparta-micropathway' slug=micropathway.slug %}">
