@@ -64,9 +64,11 @@ def main(request):
             pass
 
     pathways = Pathway.objects.filter(is_active=True)
+    micropathways = MicroPathway.objects.filter(is_active=True)
 
     context['pathways'] = pathways
     context['profile'] = profile
+    context['micropathways'] = micropathways
     return render(request, template_name, context)
 
 
