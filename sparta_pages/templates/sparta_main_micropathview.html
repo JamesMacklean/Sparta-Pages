@@ -8,8 +8,9 @@
         width: 900px;
     }
     section .swiper-card .image{
-        height: 140px;
-        width: 100px;
+        height: 50%;
+        width: 80%;
+        z-index: -1;
     }
     section .swiper-card .image .microimage{
         height: 100%;
@@ -54,7 +55,7 @@
             <a href="{% url 'sparta-micropathway' slug=micropathway.slug %}">
 
                 <div class="swiper-card-content">
-                        <div class="image {{ micropathway.slug }}_image"></div>
+                    <div class="image {{ micropathway.slug }}_image"></div>
                 </div>
 
                 <div class="swiper-card-title">
