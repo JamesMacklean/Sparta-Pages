@@ -25,7 +25,7 @@
 
 
 <div class="container-grid container-21 container">
-  <h1 class="heading-3" style="text-align: center;"><span class="heading-text-1" style="font-size: 30px;font-weight: 700;">CORE COURSES</span>
+  <h1 class="heading-3" style="text-align: center;"><span class="heading-text-1" style="font-size: 30px;font-weight: 700;">COURSES</span>
   </h1>
 </div>
 
@@ -34,7 +34,7 @@
     {% for group in core_courses %}
       {% if group.complete_at_least %}
       <h5 class="text-center py-3" style="color: gray;font-weight: bolder;">
-        Complete at least {{group.complete_at_least}}
+        Complete all {{group.complete_at_least}} courses
       </h5>
       {% endif %}
       {% for course in group.courses %}
