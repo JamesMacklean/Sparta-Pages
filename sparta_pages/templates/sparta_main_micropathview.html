@@ -44,9 +44,10 @@
 </style>
 
 <section>
-{% for micropathway in micropathways %}
+
     <div class="swiper mySwiper swiper-container">
         <div class="swiper-wrapper swiper-content">
+            {% for micropathway in micropathways %}
             <div class="swiper-slide swiper-card">
             <a href="{% url 'sparta-micropathway' slug=micropathway.slug %}">
                 <div class="swiper-card-content">
@@ -60,9 +61,9 @@
                     <!--<p>{{ micropathway.card_description|safe }}</p>-->
                 </div> 
             </a>
+            {% endfor %}
             </div>
         </div>
-    {% endfor %}
         <div class="swiper-button-next"></div>
         <div class="swiper-button-prev"></div>
         <div class="swiper-pagination"></div>
