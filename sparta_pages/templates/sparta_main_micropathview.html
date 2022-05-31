@@ -1,6 +1,9 @@
 {% block sparta_base %}
 <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css"/>
 <style>
+    .section{
+        width: 100%;
+    }
     .swiper{
         width: 900px;
     }
@@ -44,10 +47,6 @@
 </style>
 
 <section>
-    <div class="swiper-button-next"></div>
-    <div class="swiper-button-prev"></div>
-    <div class="swiper-pagination"></div>
-    
     <div class="swiper mySwiper swiper-container">
         <div class="swiper-wrapper swiper-content">
             {% for micropathway in micropathways %}
@@ -67,6 +66,9 @@
             </div>
             {% endfor %}
         </div>
+        <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-pagination"></div>
     </div>
 </section>
 
