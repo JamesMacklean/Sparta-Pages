@@ -78,16 +78,16 @@ def micropathway(request, slug):
     context = {}
 
     micropathway = get_object_or_404(MicroPathway, slug=slug)
-    micro_courses = MicroCourse.objects.filter(is_active=True).filter(micropathway=micropathway)
+    micropathway_courses = MicroCourse.objects.filter(is_active=True).filter(micropathway=micropathway)
 
     micro_courses = []
     elective_courses = []
     for group in micropathway.groups.all().filter(is_active=True):
-        micro_courses = micro_courses.filter(group=group)
+        micropathway_courses = micropathway_courses.filter(group=group)
         courses = []
-        for micro_course in micro_courses:
-            course = {'micropathway_course': micro_course}
-            course_key = CourseKey.from_string(micro_course.course_id)
+        for micropathway_course in micropathway_courses:
+            course = {'micropathway_course': micropathway_course}
+            course_key = CourseKey.from_string(micropathway_course.course_id)
             courseoverview = CourseOverview.get_from_id(course_key)
             course['courseoverview'] = courseoverview
             courses.append(course)

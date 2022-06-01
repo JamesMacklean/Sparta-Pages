@@ -31,7 +31,7 @@
 
 <div class="container-grid container container-9">
   {% if micro_courses %}
-    {% for group in micro_courses %}
+    {% for group in micropathway_courses %}
       {% if group.complete_at_least %}
       <h5 class="text-center py-3" style="color: gray;font-weight: bolder;">
         Complete all {{group.complete_at_least}} courses
