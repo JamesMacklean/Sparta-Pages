@@ -1,6 +1,6 @@
 from django.contrib import admin
 from .models import (
-    MicroPathwayApplication, Pathway, SpartaCourse, CourseGroup, SpartaEnrollment,
+    Pathway, SpartaCourse, CourseGroup, SpartaEnrollment,
     SpartaProfile, PathwayApplication, ExtendedSpartaProfile,
     EducationProfile, EmploymentProfile, TrainingProfile,
     Event, APIToken,

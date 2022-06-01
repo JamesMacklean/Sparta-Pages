@@ -43,7 +43,7 @@ from ..forms import (
     EditSpartaProfileForm
 )
 from ..models import (
-    MicroPathwayApplication, Pathway, SpartaCourse, SpartaProfile, ExtendedSpartaProfile,
+    Pathway, SpartaCourse, SpartaProfile, ExtendedSpartaProfile,
     EducationProfile, EmploymentProfile, SpartaReEnrollment, TrainingProfile,
     PathwayApplication, Event,
     SpartaCoupon, StudentCouponRecord,MicroPathway
