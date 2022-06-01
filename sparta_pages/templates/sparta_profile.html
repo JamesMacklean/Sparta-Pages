@@ -21,9 +21,9 @@
 
 <div class="tab col col-2">
   <div class="tablinks btn btn-outline-info" onclick="openTab(event, 'ScholarProfile')">Scholarship Profile</div>
-  <div class="tablinks btn btn-outline-info" onclick="openTab(event, 'PathwayApplications')">Pathway Applications</div>
+  <div class="tablinks btn btn-outline-info" onclick="openTab(event, 'ScholarshipApplications')">Scholarship Applications</div>
   <div class="tablinks btn btn-outline-info" onclick="openTab(event, 'MicropathwayApplications')">Micropathway Applications</div>
-  <div class="tablinks btn btn-outline-info" onclick="openTab(event, 'MyPathways')">My Pathways</div>
+  <div class="tablinks btn btn-outline-info" onclick="openTab(event, 'MyScholarships')">My Scholarship Programs</div>
 </div>
 
 <div class="card col col-10">
@@ -33,7 +33,7 @@
       {% include "sparta_scholar_profile.html" %}
      </div>
 
-    <div id="PathwayApplications" class="tabcontent">
+    <div id="ScholarshipApplications" class="tabcontent">
       <h2 class="card-title">Applications</h2>
       <section class="container-container">
         <div class="card-container">
@@ -80,7 +80,7 @@
               <div class="buttons">
               <a href="{% url 'sparta-main' %}">Learn More</a>
               <br>
-              <a href="{% url 'sparta-micropathway-courses' micropathway_id = micropathway.id %}">View Courses</a>
+              <a href="{% url 'sparta-micropathway-application-page' %}">View Courses</a>
               </div>
               {% endfor %}
             </div>
@@ -90,8 +90,8 @@
       </section>
     </div>
 
-    <div id="MyPathways" class="tabcontent">
-      <h2 class="card-title">Your Learning Pathways</h2>
+    <div id="MyScholarships" class="tabcontent">
+      <h2 class="card-title">My Scholarship Programs</h2>
 
       <p>As a SPARTA scholar, you must select ONE of six (6) learning pathways. Once you have chosen a pathway, you will have verified access to courses under this pathway for free.</p>
       <p><a target="blank" href="{% url 'sparta-main' %}">(Click here for details about SPARTA Pathways)</a></p>
