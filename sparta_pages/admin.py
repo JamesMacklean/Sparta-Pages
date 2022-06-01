@@ -105,7 +105,7 @@ class MicroCourseAdmin(admin.ModelAdmin):
     list_filter = ('micropathway',)
     search_fields = ['micropathway__name', 'course_id']
 
-@admin.register(CourseGroup)
+@admin.register(MicroGroup)
 class MicroGroupAdmin(admin.ModelAdmin):
     list_display = ('name', 'micropathway', 'type')
     list_filter = ('micropathway', 'type')
