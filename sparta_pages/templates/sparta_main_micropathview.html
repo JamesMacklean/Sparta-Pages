@@ -21,6 +21,9 @@
         background: #fff;
         border-radius: 20px;
         height: 350px;
+        /* Add shadows to create the "card" effect */
+        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+        transition: 0.3s;
     }
     .swiper-card::before{
         content: "";
@@ -28,6 +31,10 @@
         height: 45%;
         width: 100%;
         background: maroon;
+    }
+    /* On mouse-over, add a deeper shadow */
+    .swiper-card:hover {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
     }
     .swiper-card .swiper-card-content{
         display: flex;
