@@ -688,7 +688,7 @@ class MicroGroup(models.Model):
     GROUP_TYPE = (
         (MICRO, "Micro"),
     )
-    type = models.CharField(max_length=2, choices=GROUP_TYPE, default=CORE)
+    type = models.CharField(max_length=2, choices=GROUP_TYPE, default=MICRO)
     name = models.CharField(max_length=255, null=True, blank=True)
     micropathway = models.ForeignKey(
         'MicroPathway',
