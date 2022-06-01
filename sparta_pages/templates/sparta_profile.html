@@ -69,15 +69,27 @@
       <h2 class="card-title">Micropathway Applications</h2>
       <section class="container-container">
         <div class="card-container">
-          <div class="card-image spartabg"></div>
-            <h2>SPARTA Scholarship</h2>
-            <p>Project SPARTA was launched in order to put in place the necessary online education, research and development mechanisms and infrastructure to not only enable the industry of data science and analytics but also to advance smart governance practices. It aims to train and graduate 30,000 learners in data science, analytics, and related fields through online learning.              
-            </p>
+          <div class="card">
+            <div class="card-body">
+              <h2 class="card-title">Apply for a micropathway</h2>
+              <p><a target="blank" href="{% url 'sparta-main' %}">Click here for micropathway details.</a></p>
+          
+              {% for micropathway in micropathways %}
+              <div class="card-image micropathway"></div>
+                <h2>{{ micropathway.name }}</h2>
+                <p>{{ micropathway.long_description|safe }}</p>
               <div class="buttons">
               <a href="{% url 'sparta-main' %}">Learn More</a>
               <br>
-              <a href="{% url 'sparta-micropathway-application-page' %}">Apply</a>
+              <a href="{% url 'sparta-micropathway-application-page' %}">View Courses</a>
               </div>
+              {% endfor %}
+
+              
+          
+            </div>
+          </div>
+          
         </div>
       </section>
     </div>
@@ -134,71 +146,6 @@
                   </div>
                   <div class="modal-footer">
                     <form action="{% url 'sparta-withdraw' id=app.id %}" method="POST">
-                      {% csrf_token %}
-                      <div type="div" class="btn btn-secondary" data-dismiss="modal">Cancel</div>
-                      <input class="btn btn-primary" id="submit" type="submit" value="Yes, Withdraw My Application" />
-                    </form>
-                  </div>
-                </div>
-              </div>
-            </div>
-            {% endif %}
-          </tr>
-          {% endfor %}
-          {% else %}
-          <tr>
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
-          </tr>
-          {% endif %}
-        </tbody>
-
-        <thead class="thead-light">
-          <tr>
-            <th>Micropathway</th>
-            <th>Status</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          {% if micropathway_applications %}
-          {% for app in micropathway_applications %}
-          <tr>
-            <td>{{ app.micropathway }}</td>
-            <td>{{ app.get_status_display }}</td>
-            {% if app.status == 'AP' %}
-            <td>
-              <div class="dropdown show">
-                <a class="btn btn-primary" href="{% url 'sparta-micropathway-progress' micropathway_id=app.micropathway.id %}">
-                  Progress
-                </a>
-                <a class="btn btn-primary" href="{% url 'sparta-micropathway-courses' micropathway_id=app.micropathway.id %}">
-                  Courses
-                </a>
-                </div>
-              </div>
-            </td>
-            {% elif app.status == 'DE' %}
-            <td>-</td>
-            {% else %}
-            <td><div type="div" class="btn btn-outline-secondary" style="cursor: pointer" data-toggle="modal" data-target="#withdrawModal">Withdraw</div></td>
-            <!-- Modal Block -->
-            <div class="modal fade" id="withdrawModal" tabindex="-1" role="dialog" aria-labelledby="withdrawModalLabel" aria-hidden="true">
-              <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="withdrawModalLabel">Withdraw Application</h5>
-                    <div type="div" class="close" style="cursor: pointer" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </div>
-                  </div>
-                  <div class="modal-body">
-                    Are you sure you want to withdraw your application for this Learning Pathway ({{ app.micropathway }})?
-                  </div>
-                  <div class="modal-footer">
-                    <form action="{% url 'sparta-micropathway-withdraw' id=app.id %}" method="POST">
                       {% csrf_token %}
                       <div type="div" class="btn btn-secondary" data-dismiss="modal">Cancel</div>
                       <input class="btn btn-primary" id="submit" type="submit" value="Yes, Withdraw My Application" />

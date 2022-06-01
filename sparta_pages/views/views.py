@@ -462,29 +462,42 @@ class ProfilePageView(TemplateView):
         context = super(ProfilePageView, self).get_context_data(**kwargs)
         profile = self.request.user.sparta_profile
 
+        ##################### MICROPATHWAYS #####################
+        get_micropathways = MicroPathway.objects.filter(is_active=True)
+        micropathways = []
+        sparta_profile = self.request.user.sparta_profile
+        for p in get_micropathways:
+            # apps = p.applications.all().filter(profile=sparta_profile).exclude(status='WE')
+            # if not apps.exists():
+            #     micropathways.append(p)
+            micropathways.append(p)
+        context['micropathways'] = micropathways
+        ##################### MICROPATHWAYS #####################
+        
         try:
             extended_profile = ExtendedSpartaProfile.objects.get(user=self.request.user)
         except ExtendedSpartaProfile.DoesNotExist:
             extended_profile = None
 
         applications = PathwayApplication.objects.all().filter(profile=profile).exclude(status='WE')
-        micropathway_applications = MicroPathwayApplication.objects.all().filter(profile=profile).exclude(status='WE')
+        # micropathway_applications = MicroPathwayApplication.objects.all().filter(profile=profile).exclude(status='WE')
 
         display_applications = []
-        display_micropathway_applications = []
+        # display_micropathway_applications = []
 
         if applications.exists():
             display_applications.append(applications.order_by('created_at')[0])
         
-        if micropathway_applications.exists():
-            display_micropathway_applications.append(applications.order_by('created_at')[0])
+        # if micropathway_applications.exists():
+        #     display_micropathway_applications.append(applications.order_by('created_at')[0])
 
         context['profile'] = profile
         context['discovery'] = profile.get_discovery_display()
         context['org'] = profile.get_org_display()
         context['extended_profile'] = extended_profile
         context['applications'] = display_applications
-        context['micropathway_applications'] = micropathway_applications
+        
+        # context['micropathway_applications'] = micropathway_applications
         context['education_profiles'] = EducationProfile.objects.all().filter(profile=profile)
         context['employment_profiles'] = EmploymentProfile.objects.all().filter(profile=profile)
         context['training_profiles'] = TrainingProfile.objects.all().filter(profile=profile)
