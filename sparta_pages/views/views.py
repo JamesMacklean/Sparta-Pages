@@ -466,14 +466,56 @@ class ProfilePageView(TemplateView):
         ##################### MICROPATHWAYS #####################
         get_micropathways = MicroPathway.objects.filter(is_active=True)
         micropathways = []
-        sparta_profile = self.request.user.sparta_profile
+        
         for p in get_micropathways:
-            # apps = p.applications.all().filter(profile=sparta_profile).exclude(status='WE')
+            # apps = p.applications.all().filter(profile=profile).exclude(status='WE')
             # if not apps.exists():
             #     micropathways.append(p)
             micropathways.append(p)
         context['micropathways'] = micropathways
         ##################### MICROPATHWAYS #####################
+
+        ###############################################################
+
+        ###################### COURSES ######################
+        micropathway = get_object_or_404(MicroPathway, id=self.kwargs['micropathway_id'])
+        
+        micro_courses = MicroCourse.objects.filter(is_active=True).filter(micropathway=micropathway)
+
+        # core_courses = []
+        # elective_courses = []
+        courses = []
+        for group in micropathway.groups.all().filter(is_active=True):
+            micropathway_courses = micro_courses.filter(group=group)
+            
+            counter=0
+            for micropathway_course in micropathway_courses:
+                counter = counter+1
+                course = {
+                    
+                    'unique_id': counter,
+                    'micropathway_course': micropathway_course,
+                    'group': group.type
+                }
+                course_key = CourseKey.from_string(micropathway_course.course_id)
+                courseoverview = CourseOverview.get_from_id(course_key)
+                course['courseoverview'] = courseoverview
+                courses.append(course)
+            # data = {
+            #     'courses': courses,
+            #     'complete_at_least': group.complete_at_least
+            # }
+            # if group.type == "EL":
+            #     elective_courses.append(data)
+            # else:
+            #     core_courses.append(data)
+        
+        # context['core_courses'] = core_courses
+        # context['elective_courses'] = elective_courses
+        context['courses'] = courses
+        context['uname'] = profile.user.username
+
+        ###################### COURSES ######################
 
         try:
             extended_profile = ExtendedSpartaProfile.objects.get(user=self.request.user)

@@ -428,59 +428,6 @@ class PathwayApplication(models.Model):
             self.status = self.DENIED
             self.save()
 
-# class MicroPathwayApplication(models.Model):
-#     """
-#     """
-#     PENDING = "PE"
-#     APPROVED = "AP"
-#     DENIED = "DE"
-#     WITHDRAWN = "WE"
-#     STATUS_CHOICES = (
-#         (PENDING, "Pending"),
-#         (APPROVED, "Approved"),
-#         (DENIED, "Denied"),
-#         (WITHDRAWN, "Withdrawn")
-#     )
-#     micropathway = models.ForeignKey(
-#         'MicroPathway',
-#         on_delete=models.CASCADE,
-#         related_name="micropathway_applications"
-#         )
-#     profile = models.ForeignKey(
-#         'SpartaProfile',
-#         on_delete=models.CASCADE,
-#         related_name="micropathway_applications",
-#         verbose_name="sparta profile"
-#         )
-#     created_at = models.DateTimeField(auto_now_add=True)
-#     status = models.CharField(max_length=2, choices=STATUS_CHOICES, default=APPROVED)
-
-#     class Meta:
-#         verbose_name_plural = "4.2 MicroPathway Applications"
-
-#     def __str__(self):
-#         return "{}: {}".format(self.profile.user.username, self.micropathway.name)
-
-#     def withdraw(self):
-#         if self.status != self.WITHDRAWN:
-#             self.status = self.WITHDRAWN
-#             self.save()
-
-#     def pend(self):
-#         if self.status != self.PENDING:
-#             self.status = self.PENDING
-#             self.save()
-
-#     def approve(self):
-#         if self.status != self.APPROVED:
-#             self.status = self.APPROVED
-#             self.save()
-
-#     def deny(self):
-#         if self.status != self.DENIED:
-#             self.status = self.DENIED
-#             self.save()
-
 class EducationProfile(models.Model):
     """
     """
