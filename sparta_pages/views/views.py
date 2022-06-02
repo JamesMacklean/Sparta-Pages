@@ -969,13 +969,13 @@ class StudentCouponRecordsView(TemplateView):
                     'group': group.type,
 
                 }
-                
+
                 course_key = CourseKey.from_string(pathway_course.course_id)
                 courseoverview = CourseOverview.get_from_id(course_key)       
-                enrollment = CourseEnrollment.get_enrollment(profile, course_key)
-                
                 course['courseoverview'] = courseoverview  
+
                 # To check if user is enrolled
+                enrollment = CourseEnrollment.get_enrollment(self.profile.user, course_key)
                 if enrollment.is_active:
                     course['enrollment_status'] = "enrolled"
                 else:
