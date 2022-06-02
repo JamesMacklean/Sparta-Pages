@@ -1129,6 +1129,14 @@ class MicroPathwayRecordsView(TemplateView):
                 course_key = CourseKey.from_string(micropathway_course.course_id)
                 courseoverview = CourseOverview.get_from_id(course_key)
                 course['courseoverview'] = courseoverview
+
+                # To check if user is enrolled
+                enrollment = CourseEnrollment.is_enrolled(self.request.user, course_key)
+                if enrollment is True:
+                    course['enrollment_status'] = "enrolled"
+                else:
+                    course['enrollment_status'] = "not enrolled"
+
                 courses.append(course)
             # data = {
             #     'courses': courses,
