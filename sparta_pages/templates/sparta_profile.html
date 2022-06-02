@@ -20,6 +20,7 @@
 {% else %}
 
 <div class="tab col col-2">
+
   {% if has_approved_application %}
   <div class="tablinks btn btn-outline-info" onclick="openTab(event, 'ScholarProfile')">Scholarship Profile</div>
   <div class="tablinks btn btn-outline-info active" onclick="openTab(event, 'Applications')">Applications</div>
@@ -77,9 +78,7 @@
       <h2 class="card-title">Micropathway Applications</h2>
       <section class="container-container">
         <div class="card-container">
-          <div class="card">
-            <div class="card-body">
-          
+
               {% for micropathway in micropathways %}
               <div class="card-image spartabg"></div>
                 <h2>{{ micropathway.name }}</h2>
@@ -90,8 +89,6 @@
               <a href="{% url 'sparta-micropathway-courses' slug=micropathway.slug %}">View Courses</a>
               </div>
               {% endfor %}
-            </div>
-          </div>
          
         </div>
       </section>
@@ -177,6 +174,9 @@
     </div>
   </div>
 </div>
+
+
+
 <style>
   .container-container {
     display: flex;
