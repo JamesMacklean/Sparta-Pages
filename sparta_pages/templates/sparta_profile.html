@@ -21,7 +21,7 @@
 
 <div class="tab col col-2">
   <div class="tablinks btn btn-outline-info" onclick="openTab(event, 'ScholarProfile')">Scholarship Profile</div>
-  <div class="tablinks btn btn-outline-info" style="display:block" onclick="openTab(event, 'Applications')">Applications</div>
+  <div class="tablinks btn btn-outline-info" onclick="openTab(event, 'Applications')">Applications</div>
   <div class="tablinks btn btn-outline-info" onclick="openTab(event, 'SpartaMicropathways')">Sparta Micropathways</div>
   <div class="tablinks btn btn-outline-info" onclick="openTab(event, 'MyScholarships')">My Scholarship Programs</div>
 </div>
@@ -29,11 +29,11 @@
 <div class="card col col-10">
   <div class="card-body">
 
-    <div id="ScholarProfile" class="tabcontent">
+    <div id="ScholarProfile" class="tabcontent" style="display: none">
       {% include "sparta_scholar_profile.html" %}
      </div>
 
-    <div id="Applications" class="tabcontent">
+    <div id="Applications" class="tabcontent" style="display: block">
       <h2 class="card-title">Applications</h2>
       <section class="container-container">
         <div class="card-container">
@@ -66,7 +66,7 @@
     </div>
 
     <!-- Micropathways nakahide dapat to kapag walang pathway si user -->
-    <div id="SpartaMicropathways" class="tabcontent">
+    <div id="SpartaMicropathways" class="tabcontent" style="display: none">
       <h2 class="card-title">Micropathway Applications</h2>
       <section class="container-container">
         <div class="card-container">
@@ -91,7 +91,7 @@
     </div>
      <!--  ############################################################# -->
 
-    <div id="MyScholarships" class="tabcontent">
+    <div id="MyScholarships" class="tabcontent" style="display: none">
       <h2 class="card-title">My Scholarship Programs</h2>
 
       <p>As a SPARTA scholar, you must select ONE of six (6) learning pathways. Once you have chosen a pathway, you will have verified access to courses under this pathway for free.</p>
