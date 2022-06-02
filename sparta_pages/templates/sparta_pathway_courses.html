@@ -39,7 +39,9 @@
           <td>
             
             {% if course.enrollment_status == "enrolled" %}
-            <a class="btn btn-primary" href="" disabled>Enrolled</a>
+            <a class="btn btn-primary" target="_blank" href="{% url 'about_course' course_id=course.courseoverview.id %}">
+              View Course
+            </a>
             {% else %}
             <a class="btn btn-primary" target="_blank" href="{% url 'about_course' course_id=course.courseoverview.id %}">
               View Course
@@ -102,10 +104,16 @@
         <tr>
           <td>{{ course.courseoverview.display_name }}</td>
           <td>
+            {% if course.enrollment_status == "enrolled" %}
+            <a class="btn btn-primary" target="_blank" href="{% url 'about_course' course_id=course.courseoverview.id %}">
+              View Course
+            </a>
+            {% else %}
             <a class="btn btn-primary" target="_blank" href="{% url 'about_course' course_id=course.courseoverview.id %}">
               View Course
             </a>
             <a class="btn btn-primary" data-toggle="modal" href="" data-target="#approveModal_{{ course.unique_id }}">Enroll</a>
+            {% endif %}
           </td>
           <!-- Modal Block -->
           <div class="modal fade" id="approveModal_{{ course.unique_id }}" tabindex="-1" role="dialog" aria-labelledby="approveModalLabel_{{ course.unique_id }}" aria-hidden="true">
