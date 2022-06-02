@@ -93,10 +93,10 @@
           
                 <tbody>
                   {% for course in courses %}
-            
+                  {% ifequal micropathway.name course.micropathway %}
                   <tr>
                     <td>{{ course.courseoverview.display_name }}</td>
-                    <td>{{ micropathway.name }}</td>
+                    
                     <td>
                       <a class="btn btn-primary" target="_blank" href="{% url 'about_course' course_id=course.courseoverview.id %}">
                         View Course
@@ -128,7 +128,7 @@
                       </div>
                     </div>
                   </tr>
-                
+                  {% endifequal %}
                   {% endfor %}
           
                 </tbody>
