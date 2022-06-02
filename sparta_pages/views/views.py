@@ -476,7 +476,7 @@ class ProfilePageView(TemplateView):
             # apps = p.applications.all().filter(profile=profile).exclude(status='WE')
             # if not apps.exists():
             #     micropathways.append(p)
-            # micropathways.append(micropathway)
+            micropathways.append(micropathway)
             for group in micropathway.groups.all().filter(is_active=True):
                 micro_courses = get_microcourses.filter(micropathway=micropathway)
                 micropathway_courses = micro_courses.filter(group=group)
