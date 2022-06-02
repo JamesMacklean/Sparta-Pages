@@ -962,11 +962,6 @@ class StudentCouponRecordsView(TemplateView):
             for pathway_course in pathway_courses:
                 counter = counter+1
                 
-                course_key = CourseKey.from_string(pathway_course.course_id)
-                courseoverview = CourseOverview.get_from_id(course_key)
-                course['courseoverview'] = courseoverview                
-                enrollment = CourseEnrollment.get_enrollment(profile, course_key)
-                
                 course = {
                     
                     'unique_id': counter,
@@ -974,7 +969,12 @@ class StudentCouponRecordsView(TemplateView):
                     'group': group.type,
 
                 }
-
+                
+                course_key = CourseKey.from_string(pathway_course.course_id)
+                courseoverview = CourseOverview.get_from_id(course_key)       
+                enrollment = CourseEnrollment.get_enrollment(profile, course_key)
+                
+                course['courseoverview'] = courseoverview  
                 # To check if user is enrolled
                 if enrollment.is_active:
                     course['enrollment_status'] = "enrolled"
