@@ -93,6 +93,7 @@
           
                 <tbody>
                   {% for course in courses %}
+                  {% if course.micropathway == micropathway.name %}
                   <tr>
                     <td>{{ course.courseoverview.display_name }}</td>
                     <td>
@@ -126,6 +127,7 @@
                       </div>
                     </div>
                   </tr>
+                  {% endif %}
                   {% endfor %}
           
                 </tbody>

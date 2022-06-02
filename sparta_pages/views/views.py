@@ -465,53 +465,46 @@ class ProfilePageView(TemplateView):
 
         ##################### MICROPATHWAYS #####################
         get_micropathways = MicroPathway.objects.filter(is_active=True)
+        get_microgroups = MicroGroup.objects.filter(is_active=True)
+
         micropathways = []
-        
+        microgroups = []
+
         for p in get_micropathways:
             # apps = p.applications.all().filter(profile=profile).exclude(status='WE')
             # if not apps.exists():
             #     micropathways.append(p)
             micropathways.append(p)
+        
+        for p in get_microgroups:
+            microgroups.append(p)
+
         context['micropathways'] = micropathways
+        context['microgroups'] = microgroups
+        
         ##################### MICROPATHWAYS #####################
 
         ###############################################################
 
         ###################### COURSES ######################
-        micropathway = get_object_or_404(MicroPathway, id=self.kwargs['micropathway_id'])
         
-        micro_courses = MicroCourse.objects.filter(is_active=True).filter(micropathway=micropathway)
+        micro_courses = MicroCourse.objects.filter(is_active=True)
 
-        # core_courses = []
-        # elective_courses = []
         courses = []
-        for group in micropathway.groups.all().filter(is_active=True):
-            micropathway_courses = micro_courses.filter(group=group)
-            
-            counter=0
-            for micropathway_course in micropathway_courses:
-                counter = counter+1
-                course = {
-                    
-                    'unique_id': counter,
-                    'micropathway_course': micropathway_course,
-                    'group': group.type
-                }
-                course_key = CourseKey.from_string(micropathway_course.course_id)
-                courseoverview = CourseOverview.get_from_id(course_key)
-                course['courseoverview'] = courseoverview
-                courses.append(course)
-            # data = {
-            #     'courses': courses,
-            #     'complete_at_least': group.complete_at_least
-            # }
-            # if group.type == "EL":
-            #     elective_courses.append(data)
-            # else:
-            #     core_courses.append(data)
-        
-        # context['core_courses'] = core_courses
-        # context['elective_courses'] = elective_courses
+        counter = 0
+        for micro_course in micro_courses:
+            counter = counter + 1
+            course = {
+                'unique_id': counter,
+                'micropathway_course': micro_course,
+                'group': micro_course.group,
+                'micropathway': micro_course.micropathway
+            }
+            course_key = CourseKey.from_string(micro_course.course_id)
+            courseoverview = CourseOverview.get_from_id(course_key)
+            course['courseoverview'] = courseoverview
+            courses.append(course)
+    
         context['courses'] = courses
         context['uname'] = profile.user.username
 
