@@ -465,69 +465,16 @@ class ProfilePageView(TemplateView):
 
         ##################### MICROPATHWAYS #####################
         get_micropathways = MicroPathway.objects.filter(is_active=True)
-        get_microgroups = MicroGroup.objects.filter(is_active=True)
-        get_microcourses = MicroCourse.objects.filter(is_active=True)
 
         micropathways = []
-        microgroups = []
-        courses = []
 
         for micropathway in get_micropathways:
             # apps = p.applications.all().filter(profile=profile).exclude(status='WE')
             # if not apps.exists():
             #     micropathways.append(p)
             micropathways.append(micropathway)
-            for group in micropathway.groups.all().filter(is_active=True):
-                micro_courses = get_microcourses.filter(micropathway=micropathway)
-                micropathway_courses = micro_courses.filter(group=group)
-                
-                counter=0
-                for micropathway_course in micropathway_courses:
-                    counter = counter+1
-                    course = {
-                        
-                        'unique_id': counter,
-                        'pathway_course': micropathway_course,
-                        'group': group.type,
-                    }
-                    course_key = CourseKey.from_string(micropathway_course.course_id)
-                    courseoverview = CourseOverview.get_from_id(course_key)
-                    course['courseoverview'] = courseoverview
-                    courses.append(course)
-                    
-                
-        
-        for x in get_microgroups:
-            microgroups.append(x)
-
+     
         context['micropathways'] = micropathways
-        context['microgroups'] = microgroups
-        
-        ##################### MICROPATHWAYS #####################
-
-        ###############################################################
-
-        ###################### COURSES ######################
-        
-        # counter = 0
-        
-        # for micro_course in get_microcourses:
-        #     counter = counter + 1
-        #     course = {
-        #         'unique_id': counter,
-        #         'micropathway_course': micro_course,
-        #         'group': micro_course.group,
-        #         'micropathway': micro_course.micropathway
-        #     }
-        #     course_key = CourseKey.from_string(micro_course.course_id)
-        #     courseoverview = CourseOverview.get_from_id(course_key)
-        #     course['courseoverview'] = courseoverview
-        #     courses.append(course)
-    
-        context['courses'] = courses
-        context['uname'] = profile.user.username
-
-        ###################### COURSES ######################
 
         try:
             extended_profile = ExtendedSpartaProfile.objects.get(user=self.request.user)
