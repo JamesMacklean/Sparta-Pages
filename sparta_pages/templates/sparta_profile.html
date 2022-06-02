@@ -21,7 +21,7 @@
 
 <div class="tab col col-2">
   <div class="tablinks btn btn-outline-info" onclick="openTab(event, 'ScholarProfile')">Scholarship Profile</div>
-  <div class="tablinks btn btn-outline-info" onclick="openTab(event, 'Applications')">Scholarship Applications</div>
+  <div class="tablinks btn btn-outline-info" style="display:block" onclick="openTab(event, 'Applications')">Applications</div>
   <div class="tablinks btn btn-outline-info" onclick="openTab(event, 'SpartaMicropathways')">Sparta Micropathways</div>
   <div class="tablinks btn btn-outline-info" onclick="openTab(event, 'MyScholarships')">My Scholarship Programs</div>
 </div>
@@ -65,13 +65,13 @@
       </section>
     </div>
 
+    <!-- Micropathways nakahide dapat to kapag walang pathway si user -->
     <div id="SpartaMicropathways" class="tabcontent">
       <h2 class="card-title">Micropathway Applications</h2>
       <section class="container-container">
         <div class="card-container">
           <div class="card">
             <div class="card-body">
-              <p><a target="blank" href="{% url 'sparta-main' %}">Click here for micropathway details.</a></p>
           
               {% for micropathway in micropathways %}
               <div class="card-image spartabg"></div>
@@ -85,10 +85,11 @@
               {% endfor %}
             </div>
           </div>
-          
+         
         </div>
       </section>
     </div>
+     <!--  ############################################################# -->
 
     <div id="MyScholarships" class="tabcontent">
       <h2 class="card-title">My Scholarship Programs</h2>
