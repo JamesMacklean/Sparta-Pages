@@ -474,7 +474,7 @@ class ProfilePageView(TemplateView):
             #     micropathways.append(p)
             micropathways.append(micropathway)
      
-        context['micropathways'] = micropathways
+        
 
         try:
             extended_profile = ExtendedSpartaProfile.objects.get(user=self.request.user)
@@ -493,7 +493,10 @@ class ProfilePageView(TemplateView):
         context['org'] = profile.get_org_display()
         context['extended_profile'] = extended_profile
         context['applications'] = display_applications
+        context['micropathways'] = micropathways
         
+        context['has_approved_application'] = PathwayApplication.objects.filter(profile=profile).filter(status='AP').exists()
+
         context['education_profiles'] = EducationProfile.objects.all().filter(profile=profile)
         context['employment_profiles'] = EmploymentProfile.objects.all().filter(profile=profile)
         context['training_profiles'] = TrainingProfile.objects.all().filter(profile=profile)
