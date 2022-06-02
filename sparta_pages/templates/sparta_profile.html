@@ -20,7 +20,7 @@
 {% else %}
 
 <div class="tab col col-2">
-
+  
   {% if has_approved_application %}
   <div class="tablinks btn btn-outline-info" onclick="openTab(event, 'ScholarProfile')">Scholarship Profile</div>
   <div class="tablinks btn btn-outline-info active" onclick="openTab(event, 'Applications')">Applications</div>
@@ -76,10 +76,13 @@
     <!-- Micropathways nakahide dapat to kapag walang pathway si user -->
     <div id="SpartaMicropathways" class="tabcontent" style="display: none">
       <h2 class="card-title">Micropathway Applications</h2>
+      {% for micropathway in micropathways %}
       <section class="container-container">
         <div class="card-container">
-
-              {% for micropathway in micropathways %}
+          <div class="card">
+            <div class="card-body">
+          
+              
               <div class="card-image spartabg"></div>
                 <h2>{{ micropathway.name }}</h2>
                 <p>{{ micropathway.long_description|safe }}</p>
@@ -88,10 +91,13 @@
               <br>
               <a href="{% url 'sparta-micropathway-courses' slug=micropathway.slug %}">View Courses</a>
               </div>
-              {% endfor %}
+              
+            </div>
+          </div>
          
         </div>
       </section>
+      {% endfor %}
     </div>
      <!--  ############################################################# -->
 
@@ -174,9 +180,6 @@
     </div>
   </div>
 </div>
-
-
-
 <style>
   .container-container {
     display: flex;
