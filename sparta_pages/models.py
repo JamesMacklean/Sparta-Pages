@@ -47,12 +47,6 @@ class SpartaCourse(models.Model):
         null=True, blank=True,
         related_name="courses"
     )
-    micropathway = models.ForeignKey(
-        'MicroPathway',
-        on_delete=models.CASCADE,
-        null=True, blank=True,
-        related_name="courses"
-    )
     short_description = models.CharField(max_length=255, blank=True, default="")
     long_description = models.TextField(blank=True, default="")
     image_url = models.CharField(max_length=255, default="https://coursebank-static-assets-tmtg.s3-ap-northeast-1.amazonaws.com/sparta+black.png")
@@ -71,10 +65,7 @@ class SpartaCourse(models.Model):
         verbose_name_plural = "2. Sparta Courses"
 
     def __str__(self):
-        try:
-            return "{}: {}".format(self.pathway.name,self.micropathway.name,self.course_id)
-        except:
-            return "{}: {}".format(self.pathway.name,self.course_id)
+        return "{}: {}".format(self.pathway.name,self.course_id)
 
     @property
     def related_courses(self):
@@ -100,12 +91,6 @@ class CourseGroup(models.Model):
     )
     type = models.CharField(max_length=2, choices=GROUP_TYPE, default=CORE)
     name = models.CharField(max_length=255, null=True, blank=True)
-    micropathway = models.ForeignKey(
-        'MicroPathway',
-        on_delete=models.CASCADE,
-        null=True, blank=True,
-        related_name="groups"
-    )
     complete_at_least = models.PositiveSmallIntegerField(null=True, blank=True)
     is_active = models.BooleanField(default=True)
 
@@ -713,3 +698,61 @@ class MicroPathway(models.Model):
 
     def __str__(self):
         return self.name
+
+class MicroCourse(models.Model):
+    """
+    """
+    course_id = models.CharField(max_length=255, null=True, blank=True)
+    micropathway = models.ForeignKey(
+        'MicroPathway',
+        on_delete=models.CASCADE,
+        null=True, blank=True,
+        related_name="courses"
+    )
+    short_description = models.CharField(max_length=255, blank=True, default="")
+    long_description = models.TextField(blank=True, default="")
+    image_url = models.CharField(max_length=255, default="https://coursebank-static-assets-tmtg.s3-ap-northeast-1.amazonaws.com/sparta+black.png")
+    order = models.PositiveSmallIntegerField(default=0)
+    display_order = models.CharField(max_length=255, blank=True, default="")
+    group = models.ForeignKey(
+        'MicroGroup',
+        on_delete=models.CASCADE,
+        null=True, blank=True,
+        related_name="courses"
+    )
+    is_active = models.BooleanField(default=True)
+
+    class Meta:
+        ordering = ['order']
+        verbose_name_plural = "1.3 Micropathway Courses"
+
+    def __str__(self):
+        return "{}: {}".format(self.micropathway.name,self.course_id)
+
+    @property
+    def related_courses(self):
+        pass
+
+class MicroGroup(models.Model):
+    """
+    """
+    MICRO = "MC"
+    GROUP_TYPE = (
+        (MICRO, "Micro"),
+    )
+    type = models.CharField(max_length=2, choices=GROUP_TYPE, default=MICRO)
+    name = models.CharField(max_length=255, null=True, blank=True)
+    micropathway = models.ForeignKey(
+        'MicroPathway',
+        on_delete=models.CASCADE,
+        null=True, blank=True,
+        related_name="groups"
+    )
+    complete_at_least = models.PositiveSmallIntegerField(null=True, blank=True)
+    is_active = models.BooleanField(default=True)
+
+    class Meta:
+        verbose_name_plural = "1.4 MicroPathway Groups"
+
+    def __str__(self):
+        return self.name or "{}: {}".format(self.micropathway.name, self.type)

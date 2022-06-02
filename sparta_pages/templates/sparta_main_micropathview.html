@@ -1,0 +1,101 @@
+{% block sparta_base %}
+<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css"/>
+<style>
+    .section{
+        width: 100%;
+    }
+    .swiper{
+        width: 900px;
+    }
+    section .swiper-card .image{
+        height: 150px;
+        width: 300px;
+    }
+    section .swiper-card .image .microimage{
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+    }
+    .swiper-card{
+        position: relative;
+        height: 320px;
+        /* Add shadows to create the "card" effect */
+        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+        transition: 0.3s;
+    }
+    .swiper-card::before{
+        content: "";
+        position: absolute;
+        height: 45%;
+        width: 100%;
+        background: maroon;
+    }
+    /* On mouse-over, add a deeper shadow */
+    .swiper-card:hover {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    }
+    .swiper-card .swiper-card-content{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 30px;
+        position: relative;
+        z-index: 100;
+    }
+    .swiper-card .swiper-card-title{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 5px;
+        padding: 10px;
+    }
+
+</style>
+<section>
+
+    <div class="swiper mySwiper swiper-container">
+        <div class="swiper-wrapper swiper-content">
+            {% for micropathway in micropathways %}
+            <div class="swiper-slide swiper-card">
+            <a href="{% url 'sparta-micropathway' slug=micropathway.slug %}">
+
+                <div class="swiper-card-content">
+                    <div class="image {{ micropathway.slug }}_image"></div>
+                </div>
+
+                <div class="swiper-card-title">
+                    <span class="micro-name">{{ micropathway.name }}</span>
+                    <!--<p>{{ micropathway.card_description|safe }}</p>-->
+                </div> 
+            </a>
+            </div>
+            {% endfor %}
+        </div>
+    <div class="swiper-button-next"></div>
+    <div class="swiper-button-prev"></div>
+    <div class="swiper-pagination"></div>
+    </div>
+</section>
+
+<!-- Swiper JS -->
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+
+<!-- Initialize Swiper -->
+<script>
+  var swiper = new Swiper(".mySwiper", {
+    slidesPerView: 3,
+    spaceBetween: 30,
+    slidesPerGroup: 3,
+    loop: true,
+    loopFillGroupWithBlank: true,
+    pagination: {
+      el: ".swiper-pagination",
+      clickable: true,
+    },
+    navigation: {
+      nextEl: ".swiper-button-next",
+      prevEl: ".swiper-button-prev",
+    },
+  });
+</script>
+{% endblock %}
