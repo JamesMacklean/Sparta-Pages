@@ -975,8 +975,8 @@ class StudentCouponRecordsView(TemplateView):
                 course['courseoverview'] = courseoverview  
 
                 # To check if user is enrolled
-                enrollment = CourseEnrollment.get_enrollment(self.request.user, course_key)
-                if enrollment.is_active:
+                enrollment = CourseEnrollment.is_enrolled(self.request.user, course_key)
+                if enrollment is True:
                     course['enrollment_status'] = "enrolled"
                 else:
                     course['enrollment_status'] = "not enrolled"
