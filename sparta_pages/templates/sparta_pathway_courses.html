@@ -37,12 +37,13 @@
         <tr>
           <td>{{ course.courseoverview.display_name }}</td>
           <td>
+            
+            {% if course.enrollment_status == "enrolled" %}
+            <a class="btn btn-primary" href="" disabled>Enrolled</a>
+            {% else %}
             <a class="btn btn-primary" target="_blank" href="{% url 'about_course' course_id=course.courseoverview.id %}">
               View Course
             </a>
-            {% if course.enrollment_status == "enrolled" %}
-            <a class="btn btn-primary" disabled>Enrolled</a>
-            {% else %}
             <a class="btn btn-primary" data-toggle="modal" href="" data-target="#approveModal-{{ course.unique_id }}">Enroll</a>
             {% endif %}
           </td>
