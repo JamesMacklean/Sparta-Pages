@@ -22,7 +22,10 @@
 <div class="tab col col-2">
   <div class="tablinks btn btn-outline-info" onclick="openTab(event, 'ScholarProfile')">Scholarship Profile</div>
   <div class="tablinks btn btn-outline-info active" onclick="openTab(event, 'Applications')">Applications</div>
+  
+  {% if applications %}
   <div class="tablinks btn btn-outline-info" onclick="openTab(event, 'SpartaMicropathways')">Sparta Micropathways</div>
+  {% endif %}
   <div class="tablinks btn btn-outline-info" onclick="openTab(event, 'MyScholarships')">My Scholarship Programs</div>
 </div>
 
@@ -66,6 +69,7 @@
     </div>
 
     <!-- Micropathways nakahide dapat to kapag walang pathway si user -->
+    {% if applications %}
     <div id="SpartaMicropathways" class="tabcontent" style="display: none">
       <h2 class="card-title">Micropathway Applications</h2>
       <section class="container-container">
@@ -89,6 +93,7 @@
         </div>
       </section>
     </div>
+    {% endif %}
      <!--  ############################################################# -->
 
     <div id="MyScholarships" class="tabcontent" style="display: none">
