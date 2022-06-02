@@ -1248,7 +1248,7 @@ class MicroPathwayRecordsView(TemplateView):
             return redirect('sparta-main')
 
         try:
-            applications = PathwayApplication.objects.filter(profile=profile).filter(pathway__id=self.kwargs['pathway_id']).filter(status="AP")
+            applications = PathwayApplication.objects.filter(profile=profile).filter(status="AP")
         except PathwayApplication.DoesNotExist:
             return redirect('sparta-profile')
 
