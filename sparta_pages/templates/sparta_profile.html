@@ -20,19 +20,28 @@
 {% else %}
 
 <div class="tab col col-2">
+  
+  {% if has_approved_application %}
   <div class="tablinks btn btn-outline-info" onclick="openTab(event, 'ScholarProfile')">Scholarship Profile</div>
-  <div class="tablinks btn btn-outline-info" onclick="openTab(event, 'PathwayApplications')">Pathway Applications</div>
-  <div class="tablinks btn btn-outline-info" onclick="openTab(event, 'Courses')">Courses</div>
+  <div class="tablinks btn btn-outline-info active" onclick="openTab(event, 'Applications')">Applications</div>
+  <div class="tablinks btn btn-outline-info" onclick="openTab(event, 'SpartaMicropathways')">Sparta Micropathways</div>
+  <div class="tablinks btn btn-outline-info" onclick="openTab(event, 'MyScholarships')">My Scholarship Programs</div>
+  {% else %}
+  <div class="tablinks btn btn-outline-info" onclick="openTab(event, 'ScholarProfile')">Scholarship Profile</div>
+  <div class="tablinks btn btn-outline-info active" onclick="openTab(event, 'Applications')">Applications</div>
+  <div class="tablinks btn btn-outline-info" onclick="openTab(event, 'MyScholarships')">My Scholarship Programs</div>
+  {% endif %}
+
 </div>
 
 <div class="card col col-10">
   <div class="card-body">
 
-
-    <div id="ScholarProfile" class="tabcontent">
+    <div id="ScholarProfile" class="tabcontent" style="display: none">
       {% include "sparta_scholar_profile.html" %}
      </div>
-    <div id="PathwayApplications" class="tabcontent">
+
+    <div id="Applications" class="tabcontent" style="display: block">
       <h2 class="card-title">Applications</h2>
       <section class="container-container">
         <div class="card-container">
@@ -53,7 +62,7 @@
             <h2>DICT Scholarship</h2>
             <p>The training programs within this initiative aim to upskill the Philippine workforce in various fields of study that are relevant to today’s technology driven landscape.
               <br>
-              The curation of courses that will be made available to learners is a mix of international courses from Coursera as well as local online courses from the DICT’s growing content library.
+              The duration of courses that will be made available to learners is a mix of international courses from Coursera as well as local online courses from the DICT’s growing content library.
             </p>
             <div class="buttons">
               <a href="https://dict.coursebank.ph">Learn More</a>
@@ -64,11 +73,35 @@
       </section>
     </div>
 
-    <div id="Courses" class="tabcontent">
-      <h2 class="card-title">Your Learning Pathways</h2>
+    <!-- Micropathways nakahide dapat to kapag walang pathway si user -->
+    <div id="SpartaMicropathways" class="tabcontent" style="display: none">
+      <h2 class="card-title">Micropathway Applications</h2>
+      {% for micropathway in micropathways %}
+      <section class="container-container">
+        <div class="card-container">
+          
+          
+              
+              <div class="card-image spartabg"></div>
+                <h2>{{ micropathway.name }}</h2>
+                <p>{{ micropathway.long_description|safe }}</p>
+              <div class="buttons">
+              <a href="{% url 'sparta-main' %}">Learn More</a>
+              <br>
+              <a href="{% url 'sparta-micropathway-courses' slug=micropathway.slug %}">View Courses</a>
+              </div>
+              
+        </div>
+      </section>
+      {% endfor %}
+    </div>
+     <!--  ############################################################# -->
 
-      <p>To enroll and take Sparta courses for free, you must apply for Pathways and get enrollment access to their corresponding courses. Once you apply and get accepted for a Pathway, you will receive an email with instructions on how to access the courses of the Pathway you applied for.</p>
-      <p><a target="blank" href="{% url 'sparta-main' %}">(Click here for details about Sparta Pathways)</a></p>
+    <div id="MyScholarships" class="tabcontent" style="display: none">
+      <h2 class="card-title">My Scholarship Programs</h2>
+
+      <p>As a SPARTA scholar, you must select ONE of six (6) learning pathways. Once you have chosen a pathway, you will have verified access to courses under this pathway for free.</p>
+      <p><a target="blank" href="{% url 'sparta-main' %}">(Click here for details about SPARTA Pathways)</a></p>
 
       <table class="table">
         <thead class="thead-light">
@@ -134,7 +167,7 @@
             <td>-</td>
           </tr>
           {% endif %}
-        </tbody>
+        </tbody>   
       </table>
 
       {% if not max_applied %}

@@ -46,7 +46,7 @@ from ..models import (
     Pathway, SpartaCourse, SpartaProfile, ExtendedSpartaProfile,
     EducationProfile, EmploymentProfile, SpartaReEnrollment, TrainingProfile,
     PathwayApplication, Event,
-    SpartaCoupon, StudentCouponRecord
+    SpartaCoupon, StudentCouponRecord,MicroPathway,MicroCourse,MicroGroup
 )
 from ..local_settings import LOCAL_MAX_APPLIED
 
@@ -64,11 +64,46 @@ def main(request):
             pass
 
     pathways = Pathway.objects.filter(is_active=True)
+    micropathways = MicroPathway.objects.filter(is_active=True)
 
     context['pathways'] = pathways
     context['profile'] = profile
+    context['micropathways'] = micropathways
     return render(request, template_name, context)
 
+
+def micropathway(request, slug):
+    """"""
+    template_name = "sparta_micropathway.html"
+    context = {}
+
+    micropathway = get_object_or_404(MicroPathway, slug=slug)
+    micropathway_courses = MicroCourse.objects.filter(is_active=True).filter(micropathway=micropathway)
+
+    micro_courses = []
+    elective_courses = []
+    for group in micropathway.groups.all().filter(is_active=True):
+        micropathway_courses = micropathway_courses.filter(group=group)
+        courses = []
+        for micropathway_course in micropathway_courses:
+            course = {'micropathway_course': micropathway_course}
+            course_key = CourseKey.from_string(micropathway_course.course_id)
+            courseoverview = CourseOverview.get_from_id(course_key)
+            course['courseoverview'] = courseoverview
+            courses.append(course)
+        data = {
+            'courses': courses,
+            'complete_at_least': group.complete_at_least
+        }
+        if group.type == "EL":
+            elective_courses.append(data)
+        else:
+            micro_courses.append(data)
+
+    context['micro_courses'] = micro_courses
+    context['elective_courses'] = elective_courses
+    context['micropathway'] = micropathway
+    return render(request, template_name, context)
 
 def pathway(request, slug):
     """"""
@@ -428,23 +463,44 @@ class ProfilePageView(TemplateView):
         context = super(ProfilePageView, self).get_context_data(**kwargs)
         profile = self.request.user.sparta_profile
 
+        ##################### MICROPATHWAYS #####################
+        get_micropathways = MicroPathway.objects.filter(is_active=True)
+
+        micropathways = []
+
+        for micropathway in get_micropathways:
+            # apps = p.applications.all().filter(profile=profile).exclude(status='WE')
+            # if not apps.exists():
+            #     micropathways.append(p)
+            micropathways.append(micropathway)
+     
+        
+
         try:
             extended_profile = ExtendedSpartaProfile.objects.get(user=self.request.user)
         except ExtendedSpartaProfile.DoesNotExist:
             extended_profile = None
 
         applications = PathwayApplication.objects.all().filter(profile=profile).exclude(status='WE')
+
         display_applications = []
+
         if applications.exists():
             display_applications.append(applications.order_by('created_at')[0])
+
         context['profile'] = profile
         context['discovery'] = profile.get_discovery_display()
         context['org'] = profile.get_org_display()
         context['extended_profile'] = extended_profile
         context['applications'] = display_applications
+        context['micropathways'] = micropathways
+        
+        context['has_approved_application'] = PathwayApplication.objects.filter(profile=profile).filter(status='AP').exists()
+
         context['education_profiles'] = EducationProfile.objects.all().filter(profile=profile)
         context['employment_profiles'] = EmploymentProfile.objects.all().filter(profile=profile)
         context['training_profiles'] = TrainingProfile.objects.all().filter(profile=profile)
+
         max_applied = LOCAL_MAX_APPLIED or Pathway.objects.all().count()
         if applications.count() >= max_applied:
             context['max_applied'] = True
@@ -486,7 +542,6 @@ class PathwayApplicationView(TemplateView):
             return redirect('sparta-profile')
         return render(request, self.template_name, context)
 
-
 @require_POST
 def apply(request, id):
     """"""
@@ -506,7 +561,6 @@ def apply(request, id):
 
     return redirect('sparta-profile')
 
-
 @require_POST
 def widthraw(request, id):
     """"""
@@ -522,7 +576,6 @@ def widthraw(request, id):
         profile=app.profile
     )
     return redirect('sparta-profile')
-
 
 class PathwayProgressView(TemplateView):
     """
@@ -571,8 +624,6 @@ class PathwayProgressView(TemplateView):
         context['courses'] = courses
 
         return render(request, self.template_name, context)
-
-
 class ExtendedSpartaProfileUpdateView(UpdateView):
     model = ExtendedSpartaProfile
     form_class = ExtendedSpartaProfileForm
@@ -888,6 +939,7 @@ class StudentCouponRecordsView(TemplateView):
 
     def get_context_data(self, **kwargs):
         
+            
         context = super(StudentCouponRecordsView, self).get_context_data(**kwargs)
 
         pathway = get_object_or_404(Pathway, id=self.kwargs['pathway_id'])
@@ -909,16 +961,28 @@ class StudentCouponRecordsView(TemplateView):
             counter=0
             for pathway_course in pathway_courses:
                 counter = counter+1
+                
                 course = {
                     
                     'unique_id': counter,
                     'pathway_course': pathway_course,
-                    'group': group.type
+                    'group': group.type,
+
                 }
+
                 course_key = CourseKey.from_string(pathway_course.course_id)
-                courseoverview = CourseOverview.get_from_id(course_key)
-                course['courseoverview'] = courseoverview
+                courseoverview = CourseOverview.get_from_id(course_key)       
+                course['courseoverview'] = courseoverview  
+
+                # To check if user is enrolled
+                enrollment = CourseEnrollment.is_enrolled(self.request.user, course_key)
+                if enrollment is True:
+                    course['enrollment_status'] = "enrolled"
+                else:
+                    course['enrollment_status'] = "not enrolled"
+
                 courses.append(course)
+
             data = {
                 'courses': courses,
                 'complete_at_least': group.complete_at_least
@@ -1028,6 +1092,82 @@ def enrollment_approve_application(request, username, course_key):
 
     return redirect('sparta-profile')
 
+
+class MicroPathwayRecordsView(TemplateView):
+    template_name = 'sparta_micropathway_courses.html'
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(MicroPathwayRecordsView, self).dispatch(*args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        
+        context = super(MicroPathwayRecordsView, self).get_context_data(**kwargs)
+
+        micropathway = get_object_or_404(MicroPathway, slug=self.kwargs['slug'])
+        # micropathway = get_object_or_404(MicroPathway, id=self.kwargs['micropathway_id'])
+        profile = self.request.user.sparta_profile
+     
+        ###############################################################
+
+        applications = PathwayApplication.objects.filter(profile=profile).filter(status="AP")
+        
+        micro_courses = MicroCourse.objects.filter(is_active=True).filter(micropathway=micropathway)
+
+        courses = []
+        for group in micropathway.groups.all().filter(is_active=True):
+            micropathway_courses = micro_courses.filter(group=group)
+            
+            counter=0
+            for micropathway_course in micropathway_courses:
+                counter = counter+1
+                course = {
+                    'unique_id': counter,
+                    'micropathway_course': micropathway_course,
+                    'group': group.type
+                }
+                course_key = CourseKey.from_string(micropathway_course.course_id)
+                courseoverview = CourseOverview.get_from_id(course_key)
+                course['courseoverview'] = courseoverview
+
+                # To check if user is enrolled
+                enrollment = CourseEnrollment.is_enrolled(self.request.user, course_key)
+                if enrollment is True:
+                    course['enrollment_status'] = "enrolled"
+                else:
+                    course['enrollment_status'] = "not enrolled"
+
+                courses.append(course)
+            # data = {
+            #     'courses': courses,
+            #     'complete_at_least': group.complete_at_least
+            # }
+            # if group.type == "EL":
+            #     elective_courses.append(data)
+            # else:
+            #     core_courses.append(data)
+        
+        context['courses'] = courses
+        context['pathway_is_approved'] = applications
+        context['uname'] = profile.user.username
+        context['micropathway'] = micropathway
+
+        return context
+
+    def get(self, request, *args, **kwargs):
+        try:
+            profile = SpartaProfile.objects.get(user=request.user)
+        except SpartaProfile.DoesNotExist:
+            return redirect('sparta-main')
+
+        try:
+            applications = PathwayApplication.objects.filter(profile=profile).filter(status="AP")
+        except PathwayApplication.DoesNotExist:
+            return redirect('sparta-profile')
+
+        context = self.get_context_data()      
+            
+        return render(request, self.template_name, context)
 class AdditionalEditPageView(View):
     """
     """

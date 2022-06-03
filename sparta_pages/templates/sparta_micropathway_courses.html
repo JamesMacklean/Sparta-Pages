@@ -8,24 +8,23 @@
 <div class="card">
   <div class="card-body">
     
-    <h2 class="card-title">Courses Under Your Chosen Pathway</h2>
+    <h2 class="card-title">Courses Under this Micropathway</h2>
     <!-- <h2>Test context {{ test }}</h2> -->
     {% if pathway_is_approved %}
     <div class="p">
       <p>Click VIEW COURSE to view the course details. Click ENROLL to get Verified access and start taking the course. The Verified access allows you to access all course contents including assessment items and get a Verified certificate upon completion and passing. We recommend taking one course at a time.</p>
-      <p>Please note that there is a required number of elective courses under each pathway except Data Associate. </p>
     </div>
 
     {% else %}
     <div class="p">
-      You are currently not approved to take this pathway. If you’ve requested a pathway change (allowed to pathway completers only), please wait for 3-5 days to process the request. We’ll let you know via email once your request has been approved. 
+      You must be approved to at least one (1) pathway to access the micropathways. If you’ve requested a pathway change (allowed to pathway completers only), please wait for 3-5 days to process the request. We’ll let you know via email once your request has been approved. 
     </div>
     {% endif %}
 
     <table class="table table-hover">
       <thead class="thead-light">
         <tr>
-          <th>Core Courses</th>
+          <th>Courses</th>
           <th>Actions</th>
         </tr>
       </thead>
@@ -33,11 +32,10 @@
       <tbody>
         {% if pathway_is_approved %}
         {% for course in courses %}
-        {% if course.group == "CO"  %}
+        
         <tr>
           <td>{{ course.courseoverview.display_name }}</td>
           <td>
-            
             {% if course.enrollment_status == "enrolled" %}
             <a class="btn btn-primary" target="_blank" href="{% url 'about_course' course_id=course.courseoverview.id %}">
               View Course
@@ -74,73 +72,6 @@
             </div>
           </div>
         </tr>
-        {% endif %}
-        {% endfor %}
-
-        
-        {% else %}
-        <tr>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-        </tr>
-        {% endif %}
-
-      </tbody>
-    </table>
-
-    <table class="table table-hover">
-      <thead class="thead-light">
-        <tr>
-          <th>Elective Courses</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-
-      <tbody>
-        {% if pathway_is_approved %}
-        {% for course in courses %}
-        {% if course.group == "EL" %}
-        <tr>
-          <td>{{ course.courseoverview.display_name }}</td>
-          <td>
-            {% if course.enrollment_status == "enrolled" %}
-            <a class="btn btn-primary" target="_blank" href="{% url 'about_course' course_id=course.courseoverview.id %}">
-              View Course
-            </a>
-            {% else %}
-            <a class="btn btn-primary" target="_blank" href="{% url 'about_course' course_id=course.courseoverview.id %}">
-              View Course
-            </a>
-            <a class="btn btn-primary" data-toggle="modal" href="" data-target="#approveModal_{{ course.unique_id }}">Enroll</a>
-            {% endif %}
-          </td>
-          <!-- Modal Block -->
-          <div class="modal fade" id="approveModal_{{ course.unique_id }}" tabindex="-1" role="dialog" aria-labelledby="approveModalLabel_{{ course.unique_id }}" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="approveModalLabel_{{ course.unique_id }}">Enrollment Confirmation</h5>
-                  <div type="div" class="close" style="cursor: pointer" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </div>
-                </div>
-                <div class="modal-body">
-                  Are you sure you want to enroll in the course {{ course.courseoverview.display_name }}?
-                </div>
-              
-                <div class="modal-footer">
-                  <form action="{% url 'sparta-enrollment-approve' username=uname course_key=course.courseoverview.id %}" method="POST">
-                    {% csrf_token %}
-                    <div type="div" class="btn btn-secondary" data-dismiss="modal">Cancel</div>
-                    <input class="btn btn-success" id="submit" type="submit" value="Confirm" />
-                  </form>
-                </div>
-              </div>
-            </div>
-          </div>
-        </tr>
-        {% endif %}
 
         {% endfor %}
 
@@ -155,6 +86,7 @@
 
       </tbody>
     </table>
+
   </div>
 </div>
 {% endblock %}
