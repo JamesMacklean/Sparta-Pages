@@ -464,24 +464,43 @@ class ProfilePageView(TemplateView):
         profile = self.request.user.sparta_profile
 
         ##################### MICROPATHWAYS #####################
+        micropathway = get_object_or_404(MicroPathway, slug=self.kwargs['slug'])
         get_micropathways = MicroPathway.objects.filter(is_active=True)
 
         micropathways = []
 
-        for micropathway in get_micropathways:
+        for micro in get_micropathways:
             # apps = p.applications.all().filter(profile=profile).exclude(status='WE')
             # if not apps.exists():
             #     micropathways.append(p)
-            micropathways.append(micropathway)
+            micropathways.append(micro)
         
+        micro_courses = MicroCourse.objects.filter(is_active=True).filter(micropathway=micropathway)
+
         courses = []
-        
-        for micropathway_course in MicroCourse.objects.filter(is_active=True).filter(micropathway=micropathway):
-            course = {'micropathway_course': micropathway_course}
-            course_key = CourseKey.from_string(micropathway_course.course_id)
-            courseoverview = CourseOverview.get_from_id(course_key)
-            course['courseoverview'] = courseoverview
-            courses.append(course)
+        for group in micropathway.groups.all().filter(is_active=True):
+            micropathway_courses = micro_courses.filter(group=group)
+            
+            counter=0
+            for micropathway_course in micropathway_courses:
+                counter = counter+1
+                course = {
+                    'unique_id': counter,
+                    'micropathway_course': micropathway_course,
+                    'group': group.type
+                }
+                course_key = CourseKey.from_string(micropathway_course.course_id)
+                courseoverview = CourseOverview.get_from_id(course_key)
+                course['courseoverview'] = courseoverview
+
+                # To check if user is enrolled
+                enrollment = CourseEnrollment.is_enrolled(self.request.user, course_key)
+                if enrollment is True:
+                    course['enrollment_status'] = "enrolled"
+                else:
+                    course['enrollment_status'] = "not enrolled"
+
+                courses.append(course)
         
 
         try:
@@ -501,10 +520,13 @@ class ProfilePageView(TemplateView):
         context['org'] = profile.get_org_display()
         context['extended_profile'] = extended_profile
         context['applications'] = display_applications
-        context['micropathways'] = micropathways
+        context['micro'] = micro
         context['courses'] = courses
         context['has_approved_application'] = PathwayApplication.objects.filter(profile=profile).filter(status='AP').exists()
-
+        context['pathway_is_approved'] = applications
+        context['uname'] = profile.user.username
+        context['micropathway'] = micropathway
+        
         context['education_profiles'] = EducationProfile.objects.all().filter(profile=profile)
         context['employment_profiles'] = EmploymentProfile.objects.all().filter(profile=profile)
         context['training_profiles'] = TrainingProfile.objects.all().filter(profile=profile)
