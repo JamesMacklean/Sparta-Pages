@@ -91,12 +91,11 @@
               <a href="{% url 'sparta-micropathway-courses' slug=micropathway.slug %}">View Courses</a>
               </div>
               -->
-              <div><p>
+              <span>
                 {% for course in courses %}
                 {{ course.courseoverview.display_name }}
                 {% endfor %}
-              </p>
-              </div>
+              <span>
         </div>
       </section>
       
