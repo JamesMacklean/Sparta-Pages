@@ -81,7 +81,7 @@
         <div class="micro-card-container">
 
               <div class="microcard microbg">
-                <h2>{{ micropathway.name }}</h2>
+                <h2 class="become-scholar_headings">{{ micropathway.name }}</h2>
               </div>
                 <p>{{ micropathway.long_description|safe }}</p>
               <!--  
@@ -96,6 +96,73 @@
               <a href="{% url 'sparta-micropathway-courses' slug=micropathway.slug %}">View Courses</a>
               </div>
               -->
+              <div>
+                <table class="table table-hover">
+                  <thead class="thead-light">
+                    <tr>
+                      <th>Courses</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+            
+                  <tbody>
+                    {% if pathway_is_approved %}
+                    {% for course in courses %}
+                    
+                    <tr>
+                      <td>{{ course.courseoverview.display_name }}</td>
+                      <td>
+                        {% if course.enrollment_status == "enrolled" %}
+                        <a class="btn btn-primary" target="_blank" href="{% url 'about_course' course_id=course.courseoverview.id %}">
+                          View Course
+                        </a>
+                        {% else %}
+                        <a class="btn btn-primary" target="_blank" href="{% url 'about_course' course_id=course.courseoverview.id %}">
+                          View Course
+                        </a>
+                        <a class="btn btn-primary" data-toggle="modal" href="" data-target="#approveModal-{{ course.unique_id }}">Enroll</a>
+                        {% endif %}
+                      </td>
+                      <!-- Modal Block -->
+                      <div class="modal fade" id="approveModal-{{ course.unique_id }}" tabindex="-1" role="dialog" aria-labelledby="approveModalLabel-{{ course.unique_id }}" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="approveModalLabel-{{ course.unique_id }}">Enrollment Confirmation</h5>
+                              <div type="div" class="close" style="cursor: pointer" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </div>
+                            </div>
+                            <div class="modal-body">
+                              Are you sure you want to enroll in the course {{ course.courseoverview.display_name }}?
+                            </div>
+                          
+                            <div class="modal-footer">
+                              <form action="{% url 'sparta-enrollment-approve' username=uname course_key=course.courseoverview.id %}" method="POST">
+                                {% csrf_token %}
+                                <div type="div" class="btn btn-secondary" data-dismiss="modal">Cancel</div>
+                                <input class="btn btn-success" id="submit" type="submit" value="Confirm" />
+                              </form>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </tr>
+            
+                    {% endfor %}
+            
+                    
+                    {% else %}
+                    <tr>
+                      <td>-</td>
+                      <td>-</td>
+                      <td>-</td>
+                    </tr>
+                    {% endif %}
+            
+                  </tbody>
+                </table>
+              </div>
         </div>
       </section>
       
@@ -227,11 +294,6 @@
   }
   .microbg{
     background-color: maroon;
-  }
-  .micro-card-container h2 {
-    padding: 10px;
-    text-align: center;
-    color: black;
   }
   .micro-card-container p {
     opacity: 100%;
