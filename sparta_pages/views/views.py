@@ -468,14 +468,17 @@ class ProfilePageView(TemplateView):
         get_micropathways = MicroPathway.objects.filter(is_active=True)
 
         micropathways = []
+        
         for micropathway in get_micropathways:
             micropathways.append(micropathway)
 
         micro_courses = MicroCourse.objects.filter(is_active=True).filter(micropathway=micropathway)
         
         courses = []
-        for group in micropathways:
-            micropathway_courses = micro_courses.filter(group=group)
+        for getmicro in get_micropathways:
+            for group in getmicro.groups.all().filter(is_active=True):
+                micropathway_courses = micro_courses.filter(group=group)
+            
             counter=0
             for micropathway_course in micropathway_courses:
                 counter = counter+1
@@ -487,10 +490,9 @@ class ProfilePageView(TemplateView):
                 course_key = CourseKey.from_string(micropathway_course.course_id)
                 courseoverview = CourseOverview.get_from_id(course_key)
                 course['courseoverview'] = courseoverview
-
+                
                 courses.append(course)
 
-                
                 # To check if user is enrolled
                 enrollment = CourseEnrollment.is_enrolled(self.request.user, course_key)
                 if enrollment is True:
@@ -517,6 +519,7 @@ class ProfilePageView(TemplateView):
         context['extended_profile'] = extended_profile
         context['applications'] = display_applications
         context['micropathways'] = micropathways
+        context['micropathway'] = micropathway
         context['courses'] = courses
         context['has_approved_application'] = PathwayApplication.objects.filter(profile=profile).filter(status='AP').exists()
         context['pathway_is_approved'] = applications
