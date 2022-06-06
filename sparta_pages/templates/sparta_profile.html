@@ -91,11 +91,22 @@
               <a href="{% url 'sparta-micropathway-courses' slug=micropathway.slug %}">View Courses</a>
               </div>
               -->
-              <span>
+              <table>
                 {% for course in courses %}
-                {{ course.courseoverview.display_name }}
+                <thead>
+                  <tr>
+                    <th>Courses</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>{{ course.courseoverview.display_name }}</td>
+                    <td><a href="#" class="btn btn-primary" >enroll</a></td>
+                  </tr>
+                </tbody>
                 {% endfor %}
-              <span>
+              </table>
         </div>
       </section>
       
@@ -227,6 +238,10 @@
   }
   .microbg{
     background-color: maroon;
+  }
+  .micro-card-container h2 {
+    text-align: center;
+    color: rgb(255, 255, 255);
   }
   .micro-card-container p {
     opacity: 100%;
