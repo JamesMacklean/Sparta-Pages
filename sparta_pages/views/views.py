@@ -471,6 +471,7 @@ class ProfilePageView(TemplateView):
 
         for micropathway in get_micropathways:
             micropathways.append(micropathway)
+
             micropathway_courses = MicroCourse.objects.filter(is_active=True).filter(micropathway=micropathway)
             for group in micropathway.groups.all().filter(is_active=True):
                 micropathway_courses = micropathway_courses.filter(group=group)
@@ -486,7 +487,8 @@ class ProfilePageView(TemplateView):
                         course['enrollment_status'] = "enrolled"
                     else:
                         course['enrollment_status'] = "not enrolled"
-                        courses.append(course)
+                        
+                courses.append(course)
         
 
         try:
