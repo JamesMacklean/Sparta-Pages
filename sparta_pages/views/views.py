@@ -464,7 +464,9 @@ class ProfilePageView(TemplateView):
         profile = self.request.user.sparta_profile
 
         ##################### MICROPATHWAYS #####################
-
+        micropathway = get_object_or_404(MicroPathway, slug=slug)
+        micropathway_courses = MicroCourse.objects.filter(is_active=True).filter(micropathway=micropathway)
+    
         get_micropathways = MicroPathway.objects.filter(is_active=True)
 
         micropathways = []
@@ -475,32 +477,27 @@ class ProfilePageView(TemplateView):
             #     micropathways.append(p)
             micropathways.append(micro)
         
-        micro_courses = MicroCourse.objects.filter(is_active=True).filter(micropathway=micro)
-
+        for group in micropathway.groups.all().filter(is_active=True):
+            micropathway_courses = micropathway_courses.filter(group=group)
         courses = []
-        for group in micro_courses.groups.all().filter(is_active=True):
-            micropathway_courses = micro_courses.filter(group=group)
-            
-            counter=0
-            for micropathway_course in micropathway_courses:
-                counter = counter+1
-                course = {
-                    'unique_id': counter,
-                    'micropathway_course': micropathway_course,
-                    'group': group.type
-                }
-                course_key = CourseKey.from_string(micropathway_course.course_id)
-                courseoverview = CourseOverview.get_from_id(course_key)
-                course['courseoverview'] = courseoverview
+        for micropathway_course in micropathway_courses:
+            course = {'micropathway_course': micropathway_course}
+            course_key = CourseKey.from_string(micropathway_course.course_id)
+            courseoverview = CourseOverview.get_from_id(course_key)
+            course['courseoverview'] = courseoverview
+            courses.append(course)
+        data = {
+            'courses': courses
+            }
 
-                # To check if user is enrolled
-                enrollment = CourseEnrollment.is_enrolled(self.request.user, course_key)
-                if enrollment is True:
-                    course['enrollment_status'] = "enrolled"
-                else:
-                    course['enrollment_status'] = "not enrolled"
+             # To check if user is enrolled
+        enrollment = CourseEnrollment.is_enrolled(self.request.user, course_key)
+        if enrollment is True:
+            course['enrollment_status'] = "enrolled"
+        else:
+            course['enrollment_status'] = "not enrolled"
 
-                courses.append(course)
+        courses.append(course)
         
 
         try:
