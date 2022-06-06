@@ -506,7 +506,7 @@ class ProfilePageView(TemplateView):
         context['org'] = profile.get_org_display()
         context['extended_profile'] = extended_profile
         context['applications'] = display_applications
-        context['micropathway'] = micropathway
+        context['micropathways'] = micropathways
         context['courses'] = courses
         context['has_approved_application'] = PathwayApplication.objects.filter(profile=profile).filter(status='AP').exists()
         context['pathway_is_approved'] = applications
