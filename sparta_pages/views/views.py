@@ -465,6 +465,7 @@ class ProfilePageView(TemplateView):
 
         ##################### MICROPATHWAYS #####################
         get_micropathways = MicroPathway.objects.filter(is_active=True)
+        micropathway_courses = MicroCourse.objects.filter(is_active=True).filter(micropathway=micropathway)
 
         courses = []
         for micropathway_course in micropathway_courses:
