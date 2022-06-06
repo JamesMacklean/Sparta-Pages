@@ -477,10 +477,8 @@ class ProfilePageView(TemplateView):
         courses = []
         for group in micropathways:
             micropathway_courses = micro_courses.filter(group=group)
-            
             counter=0
             for micropathway_course in micropathway_courses:
-                courses.append(course)
                 counter = counter+1
                 course = {
                     'unique_id': counter,
@@ -490,6 +488,8 @@ class ProfilePageView(TemplateView):
                 course_key = CourseKey.from_string(micropathway_course.course_id)
                 courseoverview = CourseOverview.get_from_id(course_key)
                 course['courseoverview'] = courseoverview
+
+                courses.append(course)
 
                 # To check if user is enrolled
                 enrollment = CourseEnrollment.is_enrolled(self.request.user, course_key)
