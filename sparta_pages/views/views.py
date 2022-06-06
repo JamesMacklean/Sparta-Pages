@@ -496,6 +496,7 @@ class ProfilePageView(TemplateView):
                     course['enrollment_status'] = "not enrolled"
 
                 courses.append(course)
+                
                 micropathways.append(micropathway)
 
         try:
