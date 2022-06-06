@@ -464,7 +464,7 @@ class ProfilePageView(TemplateView):
         profile = self.request.user.sparta_profile
 
         ##################### MICROPATHWAYS #####################
-        micropathway = get_object_or_404(MicroPathway, id=self.kwargs['micropathway_id'])
+
         get_micropathways = MicroPathway.objects.filter(is_active=True)
 
         micropathways = []
@@ -475,10 +475,10 @@ class ProfilePageView(TemplateView):
             #     micropathways.append(p)
             micropathways.append(micro)
         
-        micro_courses = MicroCourse.objects.filter(is_active=True).filter(micropathway=micropathway)
+        micro_courses = MicroCourse.objects.filter(is_active=True).filter(micropathway=micro)
 
         courses = []
-        for group in micropathway.groups.all().filter(is_active=True):
+        for group in MicroPathway.groups.all().filter(is_active=True):
             micropathway_courses = micro_courses.filter(group=group)
             
             counter=0
