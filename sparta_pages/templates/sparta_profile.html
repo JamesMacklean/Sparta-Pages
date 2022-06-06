@@ -92,7 +92,6 @@
               </div>
               -->
               <table>
-                {% for course in courses %}
                 <thead>
                   <tr>
                     <th>Courses</th>
@@ -101,11 +100,12 @@
                 </thead>
                 <tbody>
                   <tr>
+                    {% for course in courses %}
                     <td>{{ course.courseoverview.display_name }}</td>
                     <td><a href="#" class="btn btn-primary" >enroll</a></td>
+                    {% endfor %}
                   </tr>
                 </tbody>
-                {% endfor %}
               </table>
         </div>
       </section>
