@@ -39,7 +39,7 @@ urlpatterns = [
 
     # url(r'^sparta/micropathway-application-page$', views.MicroPathwayApplicationView.as_view(), name='sparta-micropathway-application-page'),
     # url(r'^sparta/micropathway/(?P<micropathway_id>\d+)/progress$', views.MicroPathwayProgressView.as_view(), name='sparta-micropathway-progress'),
-    url(r'^sparta/micropathway/(?P<slug>[-\w]+)/courses$', views.MicroPathwayRecordsView.as_view(), name='sparta-micropathway-courses'),
+    url(r'^sparta/micropathway/(?P<micropathway_id>\d+)/courses$', views.MicroPathwayRecordsView.as_view(), name='sparta-micropathway-courses'),
     # url(r'^sparta/micropathway-apply/(?P<id>\d+)$', views.micropathwayApply, name='sparta-micropathway-apply'),
     url(r'^sparta/micropathway/(?P<slug>[-\w]+)$', views.micropathway, name='sparta-micropathway'),
     # url(r'^sparta/micropathway-widthraw/(?P<id>\d+)$', views.micropathwayWidthraw, name='sparta-micropathway-withdraw'),

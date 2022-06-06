@@ -464,7 +464,7 @@ class ProfilePageView(TemplateView):
         profile = self.request.user.sparta_profile
 
         ##################### MICROPATHWAYS #####################
-        micropathway = MicroPathway.objects.filter(is_active=True)
+        micropathway = get_object_or_404(MicroPathway, id=self.kwargs['micropathway_id'])
         get_micropathways = MicroPathway.objects.filter(is_active=True)
 
         micropathways = []
