@@ -476,7 +476,7 @@ class ProfilePageView(TemplateView):
         
         courses = []
         
-        for micropathway_course in MicroCourse.filter(micropathway=micropathway):
+        for micropathway_course in MicroCourse.objects.filter(is_active=True).filter(micropathway=micropathway):
             course = {'micropathway_course': micropathway_course}
             course_key = CourseKey.from_string(micropathway_course.course_id)
             courseoverview = CourseOverview.get_from_id(course_key)
