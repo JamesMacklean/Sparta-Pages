@@ -80,12 +80,14 @@
       <section class="container-container">
         <div class="card-container">
 
-              <div class="card-image microbg">
+              <div class="microcard microbg">
                 <h2>{{ micropathway.name }}</h2>
               </div>
                 <p>{{ micropathway.long_description|safe }}</p>
               <div>
-                {% include "sparta_micropathway_courses.html" %}
+                {% for course in courses %}
+                {{ course.courseoverview.display_name }}
+                {% endfor %}
               </div>
               <!--  <div class="buttons">
                 <a href="{% url 'sparta-main' %}">Learn More</a>
@@ -203,6 +205,11 @@
   .dictbg {
     background-image: url('https://coursebank-static-assets-tmtg.s3.ap-northeast-1.amazonaws.com/DICT-Logo-nobg.png');
     background-color: #4EBCE8;
+  }
+  .microcard {
+    height: 150px;
+    background-size: cover;
+    border-radius: 15px 15px 0 0;
   }
   .microbg{
     background-color: maroon;
