@@ -1094,7 +1094,7 @@ def enrollment_approve_application(request, username, course_key):
 
 
 class MicroPathwayRecordsView(TemplateView):
-    template_name = 'sparta_micropathway_courses.html'
+    template_name = 'sparta_profile.html'
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
