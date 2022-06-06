@@ -490,6 +490,8 @@ class ProfilePageView(TemplateView):
                 course_key = CourseKey.from_string(micropathway_course.course_id)
                 courseoverview = CourseOverview.get_from_id(course_key)
                 course['courseoverview'] = courseoverview
+                
+                courses.append(course)
 
                 # To check if user is enrolled
                 enrollment = CourseEnrollment.is_enrolled(self.request.user, course_key)
@@ -497,8 +499,6 @@ class ProfilePageView(TemplateView):
                     course['enrollment_status'] = "enrolled"
                 else:
                     course['enrollment_status'] = "not enrolled"
-
-                courses.append(course)
                 
 
         try:
