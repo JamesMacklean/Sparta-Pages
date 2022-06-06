@@ -488,7 +488,7 @@ class ProfilePageView(TemplateView):
                     else:
                         course['enrollment_status'] = "not enrolled"
                         
-                courses.append(course)
+                    courses.append(course)
         
 
         try:
