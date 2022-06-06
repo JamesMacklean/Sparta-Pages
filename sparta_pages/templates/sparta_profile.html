@@ -77,8 +77,8 @@
     <div id="SpartaMicropathways" class="tabcontent" style="display: none">
       <h2 class="card-title">Micropathway Applications</h2>
       {% for micropathway in micropathways %}
-      <section class="container-container">
-        <div class="card-container">
+      <section class="micro-container-container">
+        <div class="micro-card-container">
 
               <div class="microcard microbg">
                 <h2>{{ micropathway.name }}</h2>
@@ -206,8 +206,20 @@
     background-image: url('https://coursebank-static-assets-tmtg.s3.ap-northeast-1.amazonaws.com/DICT-Logo-nobg.png');
     background-color: #4EBCE8;
   }
+  .micro-container-container {
+    display: flex;
+    justify-content: center;
+    margin: 30px;
+  }
+  .micro-card-container {
+    background-color: rgb(236, 228, 228);
+    width: 500px;
+    height: 500px;
+    margin-bottom: 15px;
+    border-radius: 15px;
+  }
   .microcard {
-    height: 150px;
+    height: 100px;
     background-size: cover;
     border-radius: 15px 15px 0 0;
   }

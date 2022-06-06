@@ -466,6 +466,14 @@ class ProfilePageView(TemplateView):
         ##################### MICROPATHWAYS #####################
         get_micropathways = MicroPathway.objects.filter(is_active=True)
 
+        courses = []
+        for micropathway_course in micropathway_courses:
+            course = {'micropathway_course': micropathway_course}
+            course_key = CourseKey.from_string(micropathway_course.course_id)
+            courseoverview = CourseOverview.get_from_id(course_key)
+            course['courseoverview'] = courseoverview
+            courses.append(course)
+
         micropathways = []
 
         for micropathway in get_micropathways:
@@ -494,7 +502,7 @@ class ProfilePageView(TemplateView):
         context['extended_profile'] = extended_profile
         context['applications'] = display_applications
         context['micropathways'] = micropathways
-        
+        context['courses'] = courses
         context['has_approved_application'] = PathwayApplication.objects.filter(profile=profile).filter(status='AP').exists()
 
         context['education_profiles'] = EducationProfile.objects.all().filter(profile=profile)
