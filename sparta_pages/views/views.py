@@ -497,7 +497,7 @@ class ProfilePageView(TemplateView):
 
                 courses.append(course)
                 
-            micropathways.append(micropathway)
+        micropathways.append(micropathway)
 
         try:
             extended_profile = ExtendedSpartaProfile.objects.get(user=self.request.user)
