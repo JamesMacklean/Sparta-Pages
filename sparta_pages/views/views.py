@@ -459,7 +459,7 @@ class ProfilePageView(TemplateView):
     def dispatch(self, *args, **kwargs):
         return super(ProfilePageView, self).dispatch(*args, **kwargs)
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, slug, **kwargs):
         context = super(ProfilePageView, self).get_context_data(**kwargs)
         profile = self.request.user.sparta_profile
 
