@@ -87,7 +87,6 @@
               <div>
                 {% for course in courses %}
                 {{ course.courseoverview.display_name }}
-                {% endfor %}
               </div>
               <!--  <div class="buttons">
                 <a href="{% url 'sparta-main' %}">Learn More</a>
@@ -225,6 +224,17 @@
   }
   .microbg{
     background-color: maroon;
+  }
+  .micro-card-container h2 {
+    padding: 10px;
+    text-align: center;
+    color: black;
+  }
+  .micro-card-container p {
+    opacity: 100%;
+    color: black;
+    padding: 20px;
+    margin: 15px;
   }
   .card-container h2 {
     text-align: center;
