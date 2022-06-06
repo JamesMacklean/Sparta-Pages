@@ -465,14 +465,6 @@ class ProfilePageView(TemplateView):
 
         ##################### MICROPATHWAYS #####################
         get_micropathways = MicroPathway.objects.filter(is_active=True)
-        
-        courses = []
-        for micropathway_course in get_micropathways:
-            course = {'micropathway_course': micropathway_course}
-            course_key = CourseKey.from_string(micropathway_course.course_id)
-            courseoverview = CourseOverview.get_from_id(course_key)
-            course['courseoverview'] = courseoverview
-            courses.append(course)
 
         micropathways = []
 
@@ -481,7 +473,15 @@ class ProfilePageView(TemplateView):
             # if not apps.exists():
             #     micropathways.append(p)
             micropathways.append(micropathway)
-     
+        
+        courses = []
+        
+        for micropathway_course in get_micropathways.filter(micropathway=micropathway):
+            course = {'micropathway_course': micropathway_course}
+            course_key = CourseKey.from_string(micropathway_course.course_id)
+            courseoverview = CourseOverview.get_from_id(course_key)
+            course['courseoverview'] = courseoverview
+            courses.append(course)
         
 
         try:
