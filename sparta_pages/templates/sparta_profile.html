@@ -84,11 +84,13 @@
                 <h2>{{ micropathway.name }}</h2>
               </div>
                 <p>{{ micropathway.long_description|safe }}</p>
+              <!--  
               <div>
                 {% for course in courses %}
                 {{ course.courseoverview.display_name }}
+                {% endfor %}
               </div>
-              <!--  <div class="buttons">
+              <div class="buttons">
                 <a href="{% url 'sparta-main' %}">Learn More</a>
               <br>
               <a href="{% url 'sparta-micropathway-courses' slug=micropathway.slug %}">View Courses</a>
@@ -96,6 +98,7 @@
               -->
         </div>
       </section>
+      
       {% endfor %}
     </div>
      <!--  ############################################################# -->
