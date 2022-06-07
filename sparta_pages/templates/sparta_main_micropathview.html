@@ -7,14 +7,44 @@
     }
     .swiper-card{
         position: relative;
-        height: 300px;
+        height: 200px;
     }
     .swiper-card:hover {
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
     }
     .swiperbg{
         background-color: maroon !important;
+        height: 180px !important;
     }
+    .swiper-overlay {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 100%;
+        width: 100%;
+        opacity: 0;
+        transition: .5s ease;
+        background-color: white;
+    }
+
+    .swiper-card:hover .overlay {
+        opacity: 1;
+    }
+
+    .swiper-text {
+    color: maroon;
+    font-family: "Montserrat",sans-serif !important;
+    font-size: 20px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
 
 </style>
 
@@ -25,16 +55,20 @@
             <div class="swiper-slide swiper-card">
             <a href="{% url 'sparta-micropathway' slug=micropathway.slug %}">
                 <div class="swiperbg {{ micropathway.slug }}_image">
-                    <h1 class="heading-1" style="text-align: left;">{{ micropathway.name }}</h1>
+                    <h1 class="heading-1" style="text-align: left; padding-top: 30px !important; font-size: 25px !important;">{{ micropathway.name }}</h1>
                 </div>
                 <div class="rule rule-1">
                     <hr>
                 </div>
+                    <div class="swiper-overlay">
+                        <div class="swiper-text">{{ micropathway.long_description|safe }}</div>
+                    </div>
                     {{ micropathway.card_description|safe }}
             </a>
             </div>
             {% endfor %}
         </div>
+
     <div class="swiper-button-next"></div>
     <div class="swiper-button-prev"></div>
     <div class="swiper-pagination"></div>
