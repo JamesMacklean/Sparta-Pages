@@ -100,7 +100,7 @@
                     <td>
                       {% if course.enrollment_status == "enrolled" %}
                       <a class="btn btn-primary" target="_blank" href="{% url 'about_course' course_id=course.courseoverview.id %}">
-                        About
+                        View
                       </a>
                       {% else %}
                       <a class="btn btn-primary" data-toggle="modal" href="" data-target="#approveModal-{{ course.unique_id }}">Enroll</a>
@@ -161,7 +161,7 @@
       <table class="table">
         <thead class="thead-light">
           <tr>
-            <th>Pathway</th>
+            <th>Sparta Pathway</th>
             <th>Status</th>
             <th>Actions</th>
           </tr>
