@@ -24,7 +24,7 @@
   {% if has_approved_application %}
   <div class="tablinks btn btn-outline-info" onclick="openTab(event, 'ScholarProfile')">Scholarship Profile</div>
   <div class="tablinks btn btn-outline-info active" onclick="openTab(event, 'Applications')">Applications</div>
-  <div class="tablinks btn btn-outline-info" onclick="openTab(event, 'SpartaMicropathways')">Sparta Micropathways</div>
+  <div class="tablinks btn btn-outline-info" onclick="openTab(event, 'SpartaMicrospecializations')">Microspecializations</div>
   <div class="tablinks btn btn-outline-info" onclick="openTab(event, 'MyScholarships')">My Scholarship Programs</div>
   {% else %}
   <div class="tablinks btn btn-outline-info" onclick="openTab(event, 'ScholarProfile')">Scholarship Profile</div>
@@ -47,8 +47,7 @@
         <div class="card-container">
           <div class="card-image spartabg"></div>
             <h2>SPARTA Scholarship</h2>
-            <p>Project SPARTA was launched in order to put in place the necessary online education, research and development mechanisms and infrastructure to not only enable the industry of data science and analytics but also to advance smart governance practices. It aims to train and graduate 30,000 learners in data science, analytics, and related fields through online learning.              
-            </p>
+            <p>Project SPARTA was launched in order to put in place the necessary online education, research and development mechanisms and infrastructure to not only enable the industry of data science and analytics but also to advance smart governance practices. It aims to train and graduate 30,000 learners in data science, analytics, and related fields through online learning.</p>
               <div class="buttons">
               <a href="{% url 'sparta-main' %}">Learn More</a>
               <br>
@@ -74,25 +73,86 @@
     </div>
 
     <!-- Micropathways nakahide dapat to kapag walang pathway si user -->
-    <div id="SpartaMicropathways" class="tabcontent" style="display: none">
-      <h2 class="card-title">Micropathway Applications</h2>
+    <div id="SpartaMicrospecializations" class="tabcontent" style="display: none">
+      <h2 class="card-title">Microspecializations</h2>
       {% for micropathway in micropathways %}
-      <section class="container-container">
-        <div class="card-container">
-          
-          
-              
-              <div class="card-image spartabg"></div>
-                <h2>{{ micropathway.name }}</h2>
-                <p>{{ micropathway.long_description|safe }}</p>
-              <div class="buttons">
-              <a href="{% url 'sparta-main' %}">Learn More</a>
-              <br>
-              <a href="{% url 'sparta-micropathway-courses' slug=micropathway.slug %}">View Courses</a>
+      <section class="micro-container-container">
+        <div class="micro-card-container">
+
+              <div class="microcard microbg">
+                <h2 class="become-scholar_headings">{{ micropathway.name }}</h2>
               </div>
-              
+              <table class="table table-hover">
+                          
+                <tbody>
+                  {% if pathway_is_approved %}
+                    <!-- KUNG APPROVED SI PATHWAY, IDISPLAY ANG COURSES -->
+                    {% for progress in learner_progress %}
+                      {% if progress.micropathway_id == micropathway.id %}
+                        <!-- KUNG PAREHAS NG MICROPATHWAY ANG NAKADISPLAY AT ANG PROGRESS, IDISPLAY ANG BELOW -->
+                        {% if progress.required_courses <= progress.completed_courses %}
+                            <!-- DITO ANG MESSAGE -->
+                            <p>Congratulations on completing this Micropathway! <a target="blank" href="{% url 'sparta-main' %}">Click here to earn your Microspecialization certificate.</a></p>
+                        {% else %}
+                          {% for course in courses %}
+                            <!-- KUNG DI PA NIYA TAPOS LAHAT NG COURSES, DISPLAY LAHAT NG BELOW -->
+                            {% if course.micropathway_id == micropathway.id %}
+                              <!-- KUNG ANG COURSE AY BELONG SA MICROPATHWAY NA NAKADISPLAY, IDISPLAY ANG BELOW -->
+                              <tr>
+                                <td>{{ course.courseoverview.display_name }}</td>
+                                <td>
+                                  {% if course.enrollment_status == "enrolled" %}
+                                  <a class="btn btn-primary" target="_blank" href="{% url 'about_course' course_id=course.courseoverview.id %}">
+                                    View
+                                  </a>
+                                  {% else %}
+                                  <a class="btn btn-primary" data-toggle="modal" href="" data-target="#approveModal-{{ course.unique_id }}">Enroll</a>
+                                  {% endif %}
+                                </td>
+                                <!-- Modal Block -->
+                                <div class="modal fade" id="approveModal-{{ course.unique_id }}" tabindex="-1" role="dialog" aria-labelledby="approveModalLabel-{{ course.unique_id }}" aria-hidden="true">
+                                  <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                      <div class="modal-header">
+                                        <h5 class="modal-title" id="approveModalLabel-{{ course.unique_id }}">Enrollment Confirmation</h5>
+                                        <div type="div" class="close" style="cursor: pointer" data-dismiss="modal" aria-label="Close">
+                                          <span aria-hidden="true">&times;</span>
+                                        </div>
+                                      </div>
+                                      <div class="modal-body">
+                                        Are you sure you want to enroll in the course {{ course.courseoverview.display_name }}?
+                                      </div>
+                                    
+                                      <div class="modal-footer">
+                                        <form action="{% url 'sparta-enrollment-approve' username=uname course_key=course.courseoverview.id %}" method="POST">
+                                          {% csrf_token %}
+                                          <div type="div" class="btn btn-secondary" data-dismiss="modal">Cancel</div>
+                                          <input class="btn btn-success" id="submit" type="submit" value="Confirm" />
+                                        </form>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </tr>
+                            {% endif %}
+                          {% endfor %}
+                        {% endif %}
+                      {% endif %}
+                    {% endfor %}     
+          
+                  {% else %}
+                  <tr>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                  </tr>
+                  {% endif %}
+          
+                </tbody>
+              </table>
         </div>
       </section>
+      
       {% endfor %}
     </div>
      <!--  ############################################################# -->
@@ -106,7 +166,7 @@
       <table class="table">
         <thead class="thead-light">
           <tr>
-            <th>Pathway</th>
+            <th>Sparta Pathway</th>
             <th>Status</th>
             <th>Actions</th>
           </tr>
@@ -203,6 +263,37 @@
     background-image: url('https://coursebank-static-assets-tmtg.s3.ap-northeast-1.amazonaws.com/DICT-Logo-nobg.png');
     background-color: #4EBCE8;
   }
+  .micro-container-container {
+    display: flex;
+    justify-content: center;
+    margin: 30px;
+  }
+  .micro-card-container {
+    background-color: rgb(236, 228, 228);
+    width: 700px;
+    height: 500px;
+    margin-bottom: 15px;
+    border-radius: 15px;
+  }
+  .microcard {
+    height: 100px;
+    background-size: cover;
+    border-radius: 15px 15px 0 0;
+  }
+  .microbg{
+    background-color: maroon;
+  }
+  .micro-card-container h2 {
+    text-align: center;
+    color: rgb(255, 255, 255);
+    padding: 10px;
+  }
+  .micro-card-container p {
+    opacity: 100%;
+    color: black;
+    padding: 20px;
+    margin: 15px;
+  }
   .card-container h2 {
     text-align: center;
     color: black;
@@ -219,7 +310,7 @@
   }
   .buttons a{
     text-decoration: none;
-    color: white;
+    color: white !important;
     font-family: "Helvetica", Sans-serif;
     background-color: #4EBCE8;
     border-radius: 11px 11px 11px 11px;
@@ -230,6 +321,9 @@
 </style>
 
 <script>
+  var sensor_name = "";
+  var counter = 1;
+
   function openTab(evt, cityName) {
     // Declare all variables
     var i, tabcontent, tablinks;

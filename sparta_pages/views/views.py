@@ -464,17 +464,92 @@ class ProfilePageView(TemplateView):
         profile = self.request.user.sparta_profile
 
         ##################### MICROPATHWAYS #####################
+        
         get_micropathways = MicroPathway.objects.filter(is_active=True)
+        get_microgroups = MicroGroup.objects.filter(is_active=True)
 
         micropathways = []
-
-        for micropathway in get_micropathways:
-            # apps = p.applications.all().filter(profile=profile).exclude(status='WE')
-            # if not apps.exists():
-            #     micropathways.append(p)
-            micropathways.append(micropathway)
-     
+        microgroups = []
         
+        for micropathway in get_micropathways:
+            micropathways.append(micropathway)
+
+        for microgroup in get_microgroups:
+            microgroups.append(microgroup)
+
+        # micro_courses = MicroCourse.objects.filter(is_active=True).filter(micropathway=micropathway)
+        micro_courses = MicroCourse.objects.filter(is_active=True)
+
+        courses = []
+        learner_progress = []
+        completed_courses = []
+        unique_id=0
+        
+        # LOOP TO DISPLAY ALL MICROPATHWAYS
+        for getmicro in get_micropathways:
+
+            # LOOP TO FILTER KUNG ANONG COURSEGROUP NG MGA COURSES
+            for group in getmicro.groups.all().filter(is_active=True):
+                micropathway_courses = micro_courses.filter(group=group)
+                
+                counter_per_completed = 0
+                counter_per_required = 0
+                
+                # LOOP TO DISPLAY ALL COURSES
+                for micropathway_course in micropathway_courses:
+                    counter_per_required = counter_per_required+1
+                    unique_id = unique_id+1
+                    
+                    # LIST OF COURSES TO BE DISPLAYED
+                    course = {
+                        'unique_id': unique_id,
+                        'micropathway_course': micropathway_course,
+                        'group': micropathway_course.group,
+                        'micropathway_id' : getmicro.id
+                    }
+                    course_key = CourseKey.from_string(micropathway_course.course_id)
+                    courseoverview = CourseOverview.get_from_id(course_key)
+                    course['courseoverview'] = courseoverview
+                    courses.append(course)
+
+                    # TO CHECK IF NATAPOS NA NI LEARNER ANG COURSE
+                    cert_status = certificate_status_for_student(self.request.user, course_key)
+                    if cert_status:
+                        if cert_status['mode'] == 'verified' or cert_status['mode'] == 'honor':
+                            if cert_status['status'] not in  ['unavailable', 'notpassing', 'restricted', 'unverified']:
+                                
+                                counter_per_completed = counter_per_completed+1
+                                course['completed'] = True
+                                
+                                # LIST OF COURSES NA NATAPOS NA NI LEARNER
+                                completed = {
+                                    'unique_id': unique_id,
+                                    'micropathway_course': micropathway_course,
+                                    'group': micropathway_course.group,
+                                    'micropathway_id' : getmicro.id
+                                }
+                                completed_courses.append(completed)
+                            else:
+                                course['completed'] = False
+                        else:
+                            course['completed'] = False
+                    else:
+                        course['completed'] = False
+                    
+                    # TO CHECK IF USER IS ENROLLED
+                    enrollment = CourseEnrollment.is_enrolled(self.request.user, course_key)
+                    if enrollment is True:
+                        course['enrollment_status'] = "enrolled"
+                    else:
+                        course['enrollment_status'] = "not enrolled"  
+                
+                # COUNTER KUNG ILANG COURSES MERON SA ISANG MICROPATHWAY AT KUNG ANONG ID NO'N
+                progress = {
+                    'micropathway_id': getmicro.id,
+                    'required_courses': counter_per_required,
+                    'completed_courses' : counter_per_completed
+                }
+                learner_progress.append(progress)        
 
         try:
             extended_profile = ExtendedSpartaProfile.objects.get(user=self.request.user)
@@ -488,18 +563,27 @@ class ProfilePageView(TemplateView):
         if applications.exists():
             display_applications.append(applications.order_by('created_at')[0])
 
+        # CONTEXTS PANG LEARNER PROFILE
         context['profile'] = profile
         context['discovery'] = profile.get_discovery_display()
         context['org'] = profile.get_org_display()
         context['extended_profile'] = extended_profile
         context['applications'] = display_applications
-        context['micropathways'] = micropathways
-        
-        context['has_approved_application'] = PathwayApplication.objects.filter(profile=profile).filter(status='AP').exists()
-
         context['education_profiles'] = EducationProfile.objects.all().filter(profile=profile)
         context['employment_profiles'] = EmploymentProfile.objects.all().filter(profile=profile)
         context['training_profiles'] = TrainingProfile.objects.all().filter(profile=profile)
+
+        # CONTEXTS PANG PATHWAYS/MICROPATHWAYS
+        context['uname'] = profile.user.username
+        context['courses'] = courses
+        context['micropathways'] = micropathways
+        context['learner_progress'] = learner_progress
+        # context['completed_courses'] = completed_courses
+        context['has_approved_application'] = PathwayApplication.objects.filter(profile=profile).filter(status='AP').exists()
+        context['pathway_is_approved'] = applications
+        
+
+        
 
         max_applied = LOCAL_MAX_APPLIED or Pathway.objects.all().count()
         if applications.count() >= max_applied:
