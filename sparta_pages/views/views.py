@@ -474,14 +474,14 @@ class ProfilePageView(TemplateView):
 
         # micro_courses = MicroCourse.objects.filter(is_active=True).filter(micropathway=micropathway)
         micro_courses = MicroCourse.objects.filter(is_active=True)
-        
+
         for getmicro in get_micropathways:
             for group in getmicro.groups.all().filter(is_active=True):
                 micropathway_courses = micro_courses.filter(group=group)
                 
             courses = []
             counter=0
-            for micropathway_course in micropathway_courses:
+            for micropathway_course in micro_courses:
                 counter = counter+1
                 course = {
                     'unique_id': counter,
