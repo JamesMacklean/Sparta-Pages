@@ -481,19 +481,22 @@ class ProfilePageView(TemplateView):
         micro_courses = MicroCourse.objects.filter(is_active=True)
 
         courses = []
-        counter=0
+        
         for getmicro in get_micropathways:
 
+            group_id = 0
             for group in getmicro.groups.all().filter(is_active=True):
                 micropathway_courses = micro_courses.filter(group=group)
-
+                
+                group_id = group_id+1
+                unique_id=0
                 for micropathway_course in micropathway_courses:
 
-                    counter = counter+1
+                    unique_id = unique_id+1
                     course = {
-                        'unique_id': counter,
+                        'unique_id': unique_id,
+                        'group_id': group_id,
                         'micropathway_course': micropathway_course,
-                        # 'group': group.type,
                         'group': micropathway_course.group,
                         'micropathway_id' : getmicro.id
                     }
