@@ -481,7 +481,9 @@ class ProfilePageView(TemplateView):
         micro_courses = MicroCourse.objects.filter(is_active=True)
 
         courses = []
+        courses_per_micro_details = []
         unique_id=0
+        
         for getmicro in get_micropathways:
 
             for group in getmicro.groups.all().filter(is_active=True):
@@ -493,7 +495,6 @@ class ProfilePageView(TemplateView):
                     unique_id = unique_id+1
                     course = {
                         'unique_id': unique_id,
-                        'counter_per_micro': counter_per_micro,
                         'micropathway_course': micropathway_course,
                         'group': micropathway_course.group,
                         'micropathway_id' : getmicro.id
@@ -521,9 +522,13 @@ class ProfilePageView(TemplateView):
                     if enrollment is True:
                         course['enrollment_status'] = "enrolled"
                     else:
-                        course['enrollment_status'] = "not enrolled"   
-            
+                        course['enrollment_status'] = "not enrolled"  
                 
+                courses_per_micro = {
+                    'micropathway_id': getmicro.id,
+                    'maxcount': counter_per_micro
+                }
+                courses_per_micro_details.append(courses_per_micro)        
 
         try:
             extended_profile = ExtendedSpartaProfile.objects.get(user=self.request.user)
@@ -543,7 +548,7 @@ class ProfilePageView(TemplateView):
         context['extended_profile'] = extended_profile
         context['applications'] = display_applications
         context['micropathways'] = micropathways
-        context['micropathway'] = micropathway
+        context['courses_per_micro_details'] = courses_per_micro_details
         context['courses'] = courses
         context['has_approved_application'] = PathwayApplication.objects.filter(profile=profile).filter(status='AP').exists()
         context['pathway_is_approved'] = applications
