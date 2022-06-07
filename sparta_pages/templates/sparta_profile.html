@@ -94,11 +94,11 @@
                 <tbody>
                   {% if pathway_is_approved %}
                   {% for course in courses %}
-                    {% if course.micropathway == micropathway.name %}
+                    
                   <tr>
                     <td>{{ course.courseoverview.display_name }}</td>
                     <td>{{ course.group }}</td>
-                    <td>{{ course.micropathway }}</td>
+                    <td>{{ course.micropathway_id }}</td>
                     <td>
                       {% if course.enrollment_status == "enrolled" %}
                       <a class="btn btn-primary" target="_blank" href="{% url 'about_course' course_id=course.courseoverview.id %}">
@@ -133,7 +133,7 @@
                       </div>
                     </div>
                   </tr>
-                    {% endif %}
+          
                   {% endfor %}
           
                   
