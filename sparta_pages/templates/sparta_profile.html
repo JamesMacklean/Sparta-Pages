@@ -94,7 +94,7 @@
                 <tbody>
                   {% if pathway_is_approved %}
                   {% for course in courses %}
-                    
+                    {% if course.micropathway_id == micropathway.id %}
                   <tr>
                     <td>{{ course.courseoverview.display_name }}</td>
                     <td>{{ course.group }}</td>
@@ -133,7 +133,7 @@
                       </div>
                     </div>
                   </tr>
-          
+                    {% endif %}
                   {% endfor %}
           
                   
