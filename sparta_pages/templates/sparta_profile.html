@@ -90,14 +90,13 @@
 
                   
                   {% for course in courses %}
-                    {% with counter="0" %}
+
                     
                     {% if course.micropathway_id == micropathway.id %}
                       
                       <tr>
                         <td>{{ course.courseoverview.display_name }}</td>
-                        <td>{{ forloop.counter }}</td>
-                        <td>{{ counter|add:1 }}</td>
+                        <td>{{ course.completed }}</td>
                         <td>
                           {% if course.enrollment_status == "enrolled" %}
                           <a class="btn btn-primary" target="_blank" href="{% url 'about_course' course_id=course.courseoverview.id %}">
