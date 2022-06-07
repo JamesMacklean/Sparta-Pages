@@ -77,79 +77,80 @@
     <div id="SpartaMicrospecializations" class="tabcontent" style="display: none">
       <h2 class="card-title">Sparta Microspecializations</h2>
       {% for micropathway in micropathways %}
-      <section class="container-container">
-        <div class="card-container">
-                <h2>{{ micropathway.name }}</h2>
-                <p>{{ micropathway.long_description|safe }}</p>
+      <section class="micro-container-container">
+        <div class="micro-card-container">
 
-                <table class="table table-hover">
-                  <thead class="thead-light">
-                    <tr>
-                      <th>Courses</th>
-                      <th>Actions</th>
-                    </tr>
-                  </thead>
-            
-                  <tbody>
-                    {% if pathway_is_approved %}
-                    {% for course in courses %}
-                    
-                    <tr>
-                      <td>{{ course.courseoverview.display_name }}</td>
-                      <td>
-                        {% if course.enrollment_status == "enrolled" %}
-                        <a class="btn btn-primary" target="_blank" href="{% url 'about_course' course_id=course.courseoverview.id %}">
-                          View Course
-                        </a>
-                        {% else %}
-                        <a class="btn btn-primary" target="_blank" href="{% url 'about_course' course_id=course.courseoverview.id %}">
-                          View Course
-                        </a>
-                        <a class="btn btn-primary" data-toggle="modal" href="" data-target="#approveModal-{{ course.unique_id }}">Enroll</a>
-                        {% endif %}
-                      </td>
-                      <!-- Modal Block -->
-                      <div class="modal fade" id="approveModal-{{ course.unique_id }}" tabindex="-1" role="dialog" aria-labelledby="approveModalLabel-{{ course.unique_id }}" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                          <div class="modal-content">
-                            <div class="modal-header">
-                              <h5 class="modal-title" id="approveModalLabel-{{ course.unique_id }}">Enrollment Confirmation</h5>
-                              <div type="div" class="close" style="cursor: pointer" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                              </div>
+              <div class="microcard microbg">
+                <h2 class="become-scholar_headings">{{ micropathway.name }}</h2>
+              </div>
+              <table class="table table-hover">
+                <thead class="thead-light">
+                  <tr>
+                    <th>Courses</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+          
+                <tbody>
+                  {% if pathway_is_approved %}
+                  {% for course in courses %}
+                  
+                  <tr>
+                    <td>{{ course.courseoverview.display_name }}</td>
+                    <td>
+                      {% if course.enrollment_status == "enrolled" %}
+                      <a class="btn btn-primary" target="_blank" href="{% url 'about_course' course_id=course.courseoverview.id %}">
+                        View Course
+                      </a>
+                      {% else %}
+                      <a class="btn btn-primary" target="_blank" href="{% url 'about_course' course_id=course.courseoverview.id %}">
+                        View Course
+                      </a>
+                      <a class="btn btn-primary" data-toggle="modal" href="" data-target="#approveModal-{{ course.unique_id }}">Enroll</a>
+                      {% endif %}
+                    </td>
+                    <!-- Modal Block -->
+                    <div class="modal fade" id="approveModal-{{ course.unique_id }}" tabindex="-1" role="dialog" aria-labelledby="approveModalLabel-{{ course.unique_id }}" aria-hidden="true">
+                      <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="approveModalLabel-{{ course.unique_id }}">Enrollment Confirmation</h5>
+                            <div type="div" class="close" style="cursor: pointer" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
                             </div>
-                            <div class="modal-body">
-                              Are you sure you want to enroll in the course {{ course.courseoverview.display_name }}?
-                            </div>
-                          
-                            <div class="modal-footer">
-                              <form action="{% url 'sparta-enrollment-approve' username=uname course_key=course.courseoverview.id %}" method="POST">
-                                {% csrf_token %}
-                                <div type="div" class="btn btn-secondary" data-dismiss="modal">Cancel</div>
-                                <input class="btn btn-success" id="submit" type="submit" value="Confirm" />
-                              </form>
-                            </div>
+                          </div>
+                          <div class="modal-body">
+                            Are you sure you want to enroll in the course {{ course.courseoverview.display_name }}?
+                          </div>
+                        
+                          <div class="modal-footer">
+                            <form action="{% url 'sparta-enrollment-approve' username=uname course_key=course.courseoverview.id %}" method="POST">
+                              {% csrf_token %}
+                              <div type="div" class="btn btn-secondary" data-dismiss="modal">Cancel</div>
+                              <input class="btn btn-success" id="submit" type="submit" value="Confirm" />
+                            </form>
                           </div>
                         </div>
                       </div>
-                    </tr>
-            
-                    {% endfor %}
-            
-                    
-                    {% else %}
-                    <tr>
-                      <td>-</td>
-                      <td>-</td>
-                      <td>-</td>
-                    </tr>
-                    {% endif %}
-            
-                  </tbody>
-                </table>
-              
+                    </div>
+                  </tr>
+          
+                  {% endfor %}
+          
+                  
+                  {% else %}
+                  <tr>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                  </tr>
+                  {% endif %}
+          
+                </tbody>
+              </table>
         </div>
       </section>
+      
       {% endfor %}
     </div>
      <!--  ############################################################# -->
@@ -259,6 +260,37 @@
     background-image: url('https://coursebank-static-assets-tmtg.s3.ap-northeast-1.amazonaws.com/DICT-Logo-nobg.png');
     background-color: #4EBCE8;
   }
+  .micro-container-container {
+    display: flex;
+    justify-content: center;
+    margin: 30px;
+  }
+  .micro-card-container {
+    background-color: rgb(236, 228, 228);
+    width: 700px;
+    height: 500px;
+    margin-bottom: 15px;
+    border-radius: 15px;
+  }
+  .microcard {
+    height: 100px;
+    background-size: cover;
+    border-radius: 15px 15px 0 0;
+  }
+  .microbg{
+    background-color: maroon;
+  }
+  .micro-card-container h2 {
+    text-align: center;
+    color: rgb(255, 255, 255);
+    padding: 10px;
+  }
+  .micro-card-container p {
+    opacity: 100%;
+    color: black;
+    padding: 20px;
+    margin: 15px;
+  }
   .card-container h2 {
     text-align: center;
     color: black;
@@ -275,7 +307,7 @@
   }
   .buttons a{
     text-decoration: none;
-    color: white;
+    color: white !important;
     font-family: "Helvetica", Sans-serif;
     background-color: #4EBCE8;
     border-radius: 11px 11px 11px 11px;

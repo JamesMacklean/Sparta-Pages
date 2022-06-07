@@ -464,17 +464,42 @@ class ProfilePageView(TemplateView):
         profile = self.request.user.sparta_profile
 
         ##################### MICROPATHWAYS #####################
+        
         get_micropathways = MicroPathway.objects.filter(is_active=True)
 
         micropathways = []
-
-        for micropathway in get_micropathways:
-            # apps = p.applications.all().filter(profile=profile).exclude(status='WE')
-            # if not apps.exists():
-            #     micropathways.append(p)
-            micropathways.append(micropathway)
-     
         
+        for micropathway in get_micropathways:
+            micropathways.append(micropathway)
+
+        micro_courses = MicroCourse.objects.filter(is_active=True).filter(micropathway=micropathway)
+        
+        for getmicro in get_micropathways:
+            for group in getmicro.groups.all().filter(is_active=True):
+                micropathway_courses = micro_courses.filter(group=group)
+                
+            courses = []
+            counter=0
+            for micropathway_course in micropathway_courses:
+                counter = counter+1
+                course = {
+                    'unique_id': counter,
+                    'micropathway_course': micropathway_course,
+                    'group': group.type
+                }
+                course_key = CourseKey.from_string(micropathway_course.course_id)
+                courseoverview = CourseOverview.get_from_id(course_key)
+                course['courseoverview'] = courseoverview
+                
+                courses.append(course)
+
+                # To check if user is enrolled
+                enrollment = CourseEnrollment.is_enrolled(self.request.user, course_key)
+                if enrollment is True:
+                    course['enrollment_status'] = "enrolled"
+                else:
+                    course['enrollment_status'] = "not enrolled"
+                
 
         try:
             extended_profile = ExtendedSpartaProfile.objects.get(user=self.request.user)
@@ -494,8 +519,11 @@ class ProfilePageView(TemplateView):
         context['extended_profile'] = extended_profile
         context['applications'] = display_applications
         context['micropathways'] = micropathways
-        
+        context['micropathway'] = micropathway
+        context['courses'] = courses
         context['has_approved_application'] = PathwayApplication.objects.filter(profile=profile).filter(status='AP').exists()
+        context['pathway_is_approved'] = applications
+        context['uname'] = profile.user.username
 
         context['education_profiles'] = EducationProfile.objects.all().filter(profile=profile)
         context['employment_profiles'] = EmploymentProfile.objects.all().filter(profile=profile)
