@@ -49,19 +49,19 @@
     <div class="swiper mySwiper swiper-container">
         <div class="swiper-wrapper swiper-content">
             {% for micropathway in micropathways %}
+            <div class="swiper-slide swiper-card">
             <a href="{% url 'sparta-micropathway' slug=micropathway.slug %}">
-                <div class="swiper-slide swiper-card">
                 <div class="swiperbg {{ micropathway.slug }}_image">
                     <h1 class="heading-1" style="text-align: left; padding-top: 30px !important; font-size: 25px !important;">{{ micropathway.name }}</h1>
                 </div>
                 <div class="rule rule-1">
                     <hr>
                 </div>
-                <div class="swiper-overlay">
-                    <div class="swiper-text">{{ micropathway.card_description|safe }}</div>
-                </div>
-                </div>
             </a>
+            </div>
+            <div class="swiper-overlay">
+                <div class="swiper-text">{{ micropathway.card_description|safe }}</div>
+            </div>
             {% endfor %}
         </div>
 
