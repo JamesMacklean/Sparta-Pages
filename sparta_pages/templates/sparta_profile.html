@@ -24,7 +24,7 @@
   {% if has_approved_application %}
   <div class="tablinks btn btn-outline-info" onclick="openTab(event, 'ScholarProfile')">Scholarship Profile</div>
   <div class="tablinks btn btn-outline-info active" onclick="openTab(event, 'Applications')">Applications</div>
-  <div class="tablinks btn btn-outline-info" onclick="openTab(event, 'SpartaMicropathways')">Sparta Micropathways</div>
+  <div class="tablinks btn btn-outline-info" onclick="openTab(event, 'SpartaMicrospecializations')">Microspecializations</div>
   <div class="tablinks btn btn-outline-info" onclick="openTab(event, 'MyScholarships')">My Scholarship Programs</div>
   {% else %}
   <div class="tablinks btn btn-outline-info" onclick="openTab(event, 'ScholarProfile')">Scholarship Profile</div>
@@ -74,8 +74,8 @@
     </div>
 
     <!-- Micropathways nakahide dapat to kapag walang pathway si user -->
-    <div id="SpartaMicropathways" class="tabcontent" style="display: none">
-      <h2 class="card-title">Micropathway Applications</h2>
+    <div id="SpartaMicrospecializations" class="tabcontent" style="display: none">
+      <h2 class="card-title">Sparta Microspecializations</h2>
       {% for micropathway in micropathways %}
       <section class="container-container">
         <div class="card-container">
