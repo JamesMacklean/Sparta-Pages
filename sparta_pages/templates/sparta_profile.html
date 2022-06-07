@@ -90,7 +90,7 @@
                     {% for progress in learner_progress %}
                       {% if progress.micropathway_id == micropathway.id %}
                         <!-- KUNG PAREHAS NG MICROPATHWAY ANG NAKADISPLAY AT ANG PROGRESS, IDISPLAY ANG BELOW -->
-                        {% if progress.required_courses >= progress.completed_courses %}
+                        {% if progress.required_courses <= progress.completed_courses %}
                             <!-- DITO ANG MESSAGE -->
                             <p>Congratulations on completing this Micropathway! <a target="blank" href="{% url 'sparta-main' %}">Click here to earn your Microspecialization certificate.</a></p>
                         {% else %}
