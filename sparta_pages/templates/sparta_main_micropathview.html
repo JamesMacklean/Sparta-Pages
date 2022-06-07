@@ -41,7 +41,7 @@
     -ms-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
     text-align: center;
-}
+    }
 
 </style>
 
@@ -54,13 +54,13 @@
                 <div class="swiperbg {{ micropathway.slug }}_image">
                     <h1 class="heading-1" style="text-align: left; padding-top: 30px !important; font-size: 25px !important;">{{ micropathway.name }}</h1>
                 </div>
+                <div class="swiper-overlay">
+                    <div class="swiper-text">{{ micropathway.card_description|safe }}</div>
+                </div>
                 <div class="rule rule-1">
                     <hr>
                 </div>
             </a>
-            </div>
-            <div class="swiper-overlay">
-                <div class="swiper-text">{{ micropathway.card_description|safe }}</div>
             </div>
             {% endfor %}
         </div>
@@ -79,7 +79,7 @@
   var swiper = new Swiper(".mySwiper", {
     slidesPerView: 3,
     spaceBetween: 30,
-    slidesPerGroup: 2,
+    slidesPerGroup: 3,
     loop: true,
     loopFillGroupWithBlank: true,
     pagination: {
