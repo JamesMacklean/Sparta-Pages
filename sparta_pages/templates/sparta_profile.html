@@ -94,11 +94,11 @@
                         <td>{{ course.courseoverview.display_name }}</td>
                         <td>{{ course.unique_id }}</td>
                         <td>{{ course.completed }}</td>
-                        
+                        <td>{{ course.micropathway_id }}</td>
                         {% for micro in courses_per_micro_details %}
-                          {% if micropathway.id == course_per_micro_details.micropathway_id %}
+                              <td>{{ micro.micropathway_id }}</td>
                             <td>{{ micro.maxcount }}</td>
-                          {% endif %}
+                          
                         {% endfor %}
                         <td>
                           {% if course.enrollment_status == "enrolled" %}
