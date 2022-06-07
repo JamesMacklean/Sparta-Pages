@@ -1,13 +1,30 @@
 {% block sparta_base %}
 <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css"/>
 
+<style>
+    .swiper{
+        width: 900px;
+    }
+    .swiper-card{
+        position: relative;
+        height: 300px;
+    }
+    .swiper-card:hover {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    }
+    .swiperbg{
+        background-color: maroon !important;
+    }
+
+</style>
+
 <section>
     <div class="swiper mySwiper swiper-container">
         <div class="swiper-wrapper swiper-content">
             {% for micropathway in micropathways %}
-            <div class="container-grid col col-12 col-lg-4 col-xl-4 col-sm-12 col-md-6 pathways_container-1">
-            <a href="{% url 'sparta-micropathway' slug=micropathway.slug %}" class="link-container mx-auto link-container-1">
-                <div class="container-grid {{ micropathway.slug }}_image">
+            <div class="swiper-slide swiper-card">
+            <a href="{% url 'sparta-micropathway' slug=micropathway.slug %}">
+                <div class="swiperbg {{ micropathway.slug }}_image">
                     <h1 class="heading-1" style="text-align: left;">{{ micropathway.name }}</h1>
                 </div>
                 <div class="rule rule-1">
@@ -30,9 +47,9 @@
 <!-- Initialize Swiper -->
 <script>
   var swiper = new Swiper(".mySwiper", {
-    slidesPerView: 4,
+    slidesPerView: 3,
     spaceBetween: 30,
-    slidesPerGroup: 3,
+    slidesPerGroup: 2,
     loop: true,
     loopFillGroupWithBlank: true,
     pagination: {
