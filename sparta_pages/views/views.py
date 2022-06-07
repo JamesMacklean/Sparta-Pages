@@ -488,6 +488,7 @@ class ProfilePageView(TemplateView):
                 micropathway_courses = micro_courses.filter(group=group)
 
                 for micropathway_course in micropathway_courses:
+
                     counter = counter+1
                     course = {
                         'unique_id': counter,
@@ -499,6 +500,18 @@ class ProfilePageView(TemplateView):
                     course_key = CourseKey.from_string(micropathway_course.course_id)
                     courseoverview = CourseOverview.get_from_id(course_key)
                     course['courseoverview'] = courseoverview
+
+                    cert_status = certificate_status_for_student(self.request.user, course_key)
+                    if cert_status:
+                        if cert_status['mode'] == 'verified' or cert_status['mode'] == 'honor':
+                            if cert_status['status'] not in  ['unavailable', 'notpassing', 'restricted', 'unverified']:
+                                course['completed'] = True
+                            else:
+                                course['completed'] = False
+                        else:
+                            course['completed'] = False
+                    else:
+                        course['completed'] = False
                     
                     courses.append(course)
 
