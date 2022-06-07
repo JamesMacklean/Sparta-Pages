@@ -47,8 +47,7 @@
         <div class="card-container">
           <div class="card-image spartabg"></div>
             <h2>SPARTA Scholarship</h2>
-            <p>Project SPARTA was launched in order to put in place the necessary online education, research and development mechanisms and infrastructure to not only enable the industry of data science and analytics but also to advance smart governance practices. It aims to train and graduate 30,000 learners in data science, analytics, and related fields through online learning.              
-            </p>
+            <p>Project SPARTA was launched in order to put in place the necessary online education, research and development mechanisms and infrastructure to not only enable the industry of data science and analytics but also to advance smart governance practices. It aims to train and graduate 30,000 learners in data science, analytics, and related fields through online learning.</p>
               <div class="buttons">
               <a href="{% url 'sparta-main' %}">Learn More</a>
               <br>
@@ -91,8 +90,9 @@
                     {% for progress in learner_progress %}
                       {% if progress.micropathway_id == micropathway.id %}
                         <!-- KUNG PAREHAS NG MICROPATHWAY ANG NAKADISPLAY AT ANG PROGRESS, IDISPLAY ANG BELOW -->
-                        {% if progress.required_courses <= progress.completed_courses %}
+                        {% if progress.required_courses >= progress.completed_courses %}
                             <!-- DITO ANG MESSAGE -->
+                            <p>Congratulations on completing this Micropathway! <a target="blank" href="{% url 'sparta-main' %}">Click here to earn your Microspecialization certificate.</a></p>
                         {% else %}
                           {% for course in courses %}
                             <!-- KUNG DI PA NIYA TAPOS LAHAT NG COURSES, DISPLAY LAHAT NG BELOW -->
