@@ -90,13 +90,13 @@
 
                   
                   {% for course in courses %}
-
+                    {% define counter|add:1 as counter %}
                     
                     {% if course.micropathway_id == micropathway.id %}
                       
                       <tr>
                         <td>{{ course.courseoverview.display_name }}</td>
-                        
+                        <td>{{ counter }}</td>
                         <td>{{ course.completed }}</td>
                         <td>
                           {% if course.enrollment_status == "enrolled" %}
