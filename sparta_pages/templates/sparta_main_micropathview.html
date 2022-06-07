@@ -60,11 +60,11 @@
                 <div class="rule rule-1">
                     <hr>
                 </div>
-                    <div class="swiper-overlay">
-                        <div class="swiper-text">{{ micropathway.long_description|safe }}</div>
-                    </div>
                     {{ micropathway.card_description|safe }}
             </a>
+            <div class="swiper-overlay">
+                <div class="swiper-text">{{ micropathway.long_description|safe }}</div>
+            </div>
             </div>
             {% endfor %}
         </div>
