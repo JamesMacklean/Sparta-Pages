@@ -100,9 +100,9 @@
                                 <!-- KUNG ANG COURSE AY BELONG SA MICROPATHWAY NA NAKADISPLAY, IDISPLAY ANG BELOW -->
                                 <tr>
                                   <td>{{ course.courseoverview.display_name }}</td>
-                                  <td>{{ course.unique_id }}</td>
                                   <td>{{ course.completed }}</td>
-                                  
+                                  <td>{{ progress.required_courses }}</td>
+                                  <td>{{ progress.completed_courses }}</td>
                                   <td>
                                     {% if course.enrollment_status == "enrolled" %}
                                     <a class="btn btn-primary" target="_blank" href="{% url 'about_course' course_id=course.courseoverview.id %}">
