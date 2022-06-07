@@ -466,27 +466,35 @@ class ProfilePageView(TemplateView):
         ##################### MICROPATHWAYS #####################
         
         get_micropathways = MicroPathway.objects.filter(is_active=True)
+        get_microgroups = MicroGroup.objects.filter(is_active=True)
 
         micropathways = []
+        microgroups = []
         
         for micropathway in get_micropathways:
             micropathways.append(micropathway)
+
+        for microgroup in get_microgroups:
+            microgroups.append(microgroup)
 
         # micro_courses = MicroCourse.objects.filter(is_active=True).filter(micropathway=micropathway)
         micro_courses = MicroCourse.objects.filter(is_active=True)
 
         for getmicro in get_micropathways:
-            for group in getmicro.groups.all().filter(is_active=True):
-                micropathway_courses = micro_courses.filter(group=group)
+            # for group in getmicro.groups.all().filter(is_active=True):
+            #     micropathway_courses = micro_courses.filter(group=group)
                 
             courses = []
             counter=0
+        
             for micropathway_course in micro_courses:
                 counter = counter+1
                 course = {
                     'unique_id': counter,
                     'micropathway_course': micropathway_course,
-                    'group': group.type
+                    # 'group': group.type,
+                    'group': micropathway_course.group,
+                    'micropathway' : micropathway_course.micropathway
                 }
                 course_key = CourseKey.from_string(micropathway_course.course_id)
                 courseoverview = CourseOverview.get_from_id(course_key)
