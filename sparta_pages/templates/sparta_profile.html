@@ -96,11 +96,8 @@
                       
                       <tr>
                         <td>{{ course.courseoverview.display_name }}</td>
-                        {{% if course.completed %}}
-                        <td>Completed</td>
-                        {{else}}
-                        <td>Incomplete</td>
-                        {{endif}}
+                        
+                        <td>{{ course.completed }}</td>
                         <td>
                           {% if course.enrollment_status == "enrolled" %}
                           <a class="btn btn-primary" target="_blank" href="{% url 'about_course' course_id=course.courseoverview.id %}">
@@ -137,7 +134,7 @@
                       </tr>
                     
                     {% endif %}
-                    {% endwith %}
+
                   {% endfor %}
           
                   
