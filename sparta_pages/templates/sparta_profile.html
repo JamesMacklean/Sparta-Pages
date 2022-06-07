@@ -88,12 +88,12 @@
                 <tbody>
                   {% if pathway_is_approved %}
 
-                  
+                  {% with counter=0 %}
                   {% for course in courses %}
                     
                     
                     {% if course.micropathway_id == micropathway.id %}
-                      {% with counter=0|add:1 %}  
+                      {{ counter|add:1 }}  
                       <tr>
                         <td>{{ course.courseoverview.display_name }}</td>
                         <td>{{ counter }}</td>
