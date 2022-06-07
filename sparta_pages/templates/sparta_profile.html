@@ -96,7 +96,7 @@
                         <td>{{ course.completed }}</td>
                         
                         {% for micro in courses_per_micro_details %}
-                          {% if micropathway.id == courses_per_micro_details.micropathway_id %}
+                          {% if micro.micropathway_id == micropathway.id %}
                             <td>{{ micro.maxcount }}</td>
                           {% endif %}
                         {% endfor %}
