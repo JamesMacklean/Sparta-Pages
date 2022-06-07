@@ -510,6 +510,7 @@ class ProfilePageView(TemplateView):
                     course_key = CourseKey.from_string(micropathway_course.course_id)
                     courseoverview = CourseOverview.get_from_id(course_key)
                     course['courseoverview'] = courseoverview
+                    courses.append(course)
 
                     # TO CHECK IF NATAPOS NA NI LEARNER ANG COURSE
                     cert_status = certificate_status_for_student(self.request.user, course_key)
@@ -527,6 +528,7 @@ class ProfilePageView(TemplateView):
                                     'group': micropathway_course.group,
                                     'micropathway_id' : getmicro.id
                                 }
+                                completed_courses.append(completed)
                             else:
                                 course['completed'] = False
                         else:
@@ -534,9 +536,6 @@ class ProfilePageView(TemplateView):
                     else:
                         course['completed'] = False
                     
-                    courses.append(course)
-                    completed_courses.append(completed)
-
                     # TO CHECK IF USER IS ENROLLED
                     enrollment = CourseEnrollment.is_enrolled(self.request.user, course_key)
                     if enrollment is True:

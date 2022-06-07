@@ -103,7 +103,6 @@
                                   <td>{{ course.unique_id }}</td>
                                   <td>{{ course.completed }}</td>
                                   
-                  
                                   <td>
                                     {% if course.enrollment_status == "enrolled" %}
                                     <a class="btn btn-primary" target="_blank" href="{% url 'about_course' course_id=course.courseoverview.id %}">
