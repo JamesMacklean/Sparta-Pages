@@ -75,7 +75,7 @@
 
     <!-- Micropathways nakahide dapat to kapag walang pathway si user -->
     <div id="SpartaMicrospecializations" class="tabcontent" style="display: none">
-      <h2 class="card-title">Sparta Microspecializations</h2>
+      <h2 class="card-title">Microspecializations</h2>
       {% for micropathway in micropathways %}
       <section class="micro-container-container">
         <div class="micro-card-container">
@@ -97,8 +97,6 @@
                     {% if course.micropathway_id == micropathway.id %}
                   <tr>
                     <td>{{ course.courseoverview.display_name }}</td>
-                    <td>{{ course.group }}</td>
-                    <td>{{ course.micropathway_id }}</td>
                     <td>
                       {% if course.enrollment_status == "enrolled" %}
                       <a class="btn btn-primary" target="_blank" href="{% url 'about_course' course_id=course.courseoverview.id %}">
