@@ -88,60 +88,62 @@
                 <tbody>
                   {% if pathway_is_approved %}
                     <!-- KUNG APPROVED SI PATHWAY, IDISPLAY ANG COURSES -->
-                    {% for course in courses %}
-                      {% for progress in learner_progress %}
-                        {% if progress.micropathway_id == micropathway.id %}
-                          <!-- KUNG PAREHAS NG MICROPATHWAY ANG NAKADISPLAY AT ANG PROGRESS, IDISPLAY ANG BELOW -->
-                            {% if progress.required_courses <= progress.completed_courses %}
-                                <!-- DITO ANG MESSAGE -->
-                            {% else %}
-                              <!-- KUNG DI PA NIYA TAPOS LAHAT NG COURSES, DISPLAY LAHAT NG BELOW -->
-                              {% if course.micropathway_id == micropathway.id %}
-                                <!-- KUNG ANG COURSE AY BELONG SA MICROPATHWAY NA NAKADISPLAY, IDISPLAY ANG BELOW -->
-                                <tr>
-                                  <td>{{ course.courseoverview.display_name }}</td>
-                                  <td>{{ course.completed }}</td>
-                                  <td>{{ progress.required_courses }}</td>
-                                  <td>{{ progress.completed_courses }}</td>
-                                  <td>
-                                    {% if course.enrollment_status == "enrolled" %}
-                                    <a class="btn btn-primary" target="_blank" href="{% url 'about_course' course_id=course.courseoverview.id %}">
-                                      View
-                                    </a>
-                                    {% else %}
-                                    <a class="btn btn-primary" data-toggle="modal" href="" data-target="#approveModal-{{ course.unique_id }}">Enroll</a>
-                                    {% endif %}
-                                  </td>
-                                  <!-- Modal Block -->
-                                  <div class="modal fade" id="approveModal-{{ course.unique_id }}" tabindex="-1" role="dialog" aria-labelledby="approveModalLabel-{{ course.unique_id }}" aria-hidden="true">
-                                    <div class="modal-dialog" role="document">
-                                      <div class="modal-content">
-                                        <div class="modal-header">
-                                          <h5 class="modal-title" id="approveModalLabel-{{ course.unique_id }}">Enrollment Confirmation</h5>
-                                          <div type="div" class="close" style="cursor: pointer" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                          </div>
+                    {% for progress in learner_progress %}
+                      {% if progress.micropathway_id == micropathway.id %}
+                        <!-- KUNG PAREHAS NG MICROPATHWAY ANG NAKADISPLAY AT ANG PROGRESS, IDISPLAY ANG BELOW -->
+                        {% if progress.required_courses <= progress.completed_courses %}
+                            <!-- DITO ANG MESSAGE -->
+                        {% else %}
+                          {% for course in courses %}
+                            <!-- KUNG DI PA NIYA TAPOS LAHAT NG COURSES, DISPLAY LAHAT NG BELOW -->
+                            {% if course.micropathway_id == micropathway.id %}
+                              <!-- KUNG ANG COURSE AY BELONG SA MICROPATHWAY NA NAKADISPLAY, IDISPLAY ANG BELOW -->
+                              <tr>
+                                <td>{{ course.courseoverview.display_name }}</td>
+                                <td>{{ course.completed }}</td>
+                                <td>{{ progress.micropathway_id }}</td>
+                                <td>{{ micropathway.id }}</td>
+                                <td>{{ progress.required_courses }}</td>
+                                <td>{{ progress.completed_courses }}</td>
+                                <td>
+                                  {% if course.enrollment_status == "enrolled" %}
+                                  <a class="btn btn-primary" target="_blank" href="{% url 'about_course' course_id=course.courseoverview.id %}">
+                                    View
+                                  </a>
+                                  {% else %}
+                                  <a class="btn btn-primary" data-toggle="modal" href="" data-target="#approveModal-{{ course.unique_id }}">Enroll</a>
+                                  {% endif %}
+                                </td>
+                                <!-- Modal Block -->
+                                <div class="modal fade" id="approveModal-{{ course.unique_id }}" tabindex="-1" role="dialog" aria-labelledby="approveModalLabel-{{ course.unique_id }}" aria-hidden="true">
+                                  <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                      <div class="modal-header">
+                                        <h5 class="modal-title" id="approveModalLabel-{{ course.unique_id }}">Enrollment Confirmation</h5>
+                                        <div type="div" class="close" style="cursor: pointer" data-dismiss="modal" aria-label="Close">
+                                          <span aria-hidden="true">&times;</span>
                                         </div>
-                                        <div class="modal-body">
-                                          Are you sure you want to enroll in the course {{ course.courseoverview.display_name }}?
-                                        </div>
-                                      
-                                        <div class="modal-footer">
-                                          <form action="{% url 'sparta-enrollment-approve' username=uname course_key=course.courseoverview.id %}" method="POST">
-                                            {% csrf_token %}
-                                            <div type="div" class="btn btn-secondary" data-dismiss="modal">Cancel</div>
-                                            <input class="btn btn-success" id="submit" type="submit" value="Confirm" />
-                                          </form>
-                                        </div>
+                                      </div>
+                                      <div class="modal-body">
+                                        Are you sure you want to enroll in the course {{ course.courseoverview.display_name }}?
+                                      </div>
+                                    
+                                      <div class="modal-footer">
+                                        <form action="{% url 'sparta-enrollment-approve' username=uname course_key=course.courseoverview.id %}" method="POST">
+                                          {% csrf_token %}
+                                          <div type="div" class="btn btn-secondary" data-dismiss="modal">Cancel</div>
+                                          <input class="btn btn-success" id="submit" type="submit" value="Confirm" />
+                                        </form>
                                       </div>
                                     </div>
                                   </div>
-                                </tr>
-                              {% endif %}
-                          {% endif %}
+                                </div>
+                              </tr>
+                            {% endif %}
+                          {% endfor %}
                         {% endif %}
-                      {% endfor %}     
-                    {% endfor %}
+                      {% endif %}
+                    {% endfor %}     
           
                   {% else %}
                   <tr>
