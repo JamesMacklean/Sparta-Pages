@@ -24,7 +24,7 @@
   {% if has_approved_application %}
   <div class="tablinks btn btn-outline-info" onclick="openTab(event, 'ScholarProfile')">Scholarship Profile</div>
   <div class="tablinks btn btn-outline-info active" onclick="openTab(event, 'Applications')">Applications</div>
-  <div class="tablinks btn btn-outline-info" onclick="openTab(event, 'SpartaMicropathways')">Sparta Micropathways</div>
+  <div class="tablinks btn btn-outline-info" onclick="openTab(event, 'SpartaMicrospecializations')">Microspecializations</div>
   <div class="tablinks btn btn-outline-info" onclick="openTab(event, 'MyScholarships')">My Scholarship Programs</div>
   {% else %}
   <div class="tablinks btn btn-outline-info" onclick="openTab(event, 'ScholarProfile')">Scholarship Profile</div>
@@ -74,8 +74,8 @@
     </div>
 
     <!-- Micropathways nakahide dapat to kapag walang pathway si user -->
-    <div id="SpartaMicropathways" class="tabcontent" style="display: none">
-      <h2 class="card-title">Micropathway Applications</h2>
+    <div id="SpartaMicrospecializations" class="tabcontent" style="display: none">
+      <h2 class="card-title">Microspecializations</h2>
       {% for micropathway in micropathways %}
       <section class="micro-container-container">
         <div class="micro-card-container">
@@ -84,60 +84,56 @@
                 <h2 class="become-scholar_headings">{{ micropathway.name }}</h2>
               </div>
               <table class="table table-hover">
-                <thead class="thead-light">
-                  <tr>
-                    <th>Courses</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-          
+                          
                 <tbody>
                   {% if pathway_is_approved %}
+                  {{ forloop.counter as x }}
                   {% for course in courses %}
-                  
-                  <tr>
-                    <td>{{ course.courseoverview.display_name }}</td>
-                    <td>
-                      {% if course.enrollment_status == "enrolled" %}
-                      <a class="btn btn-primary" target="_blank" href="{% url 'about_course' course_id=course.courseoverview.id %}">
-                        View Course
-                      </a>
-                      {% else %}
-                      <a class="btn btn-primary" target="_blank" href="{% url 'about_course' course_id=course.courseoverview.id %}">
-                        View Course
-                      </a>
-                      <a class="btn btn-primary" data-toggle="modal" href="" data-target="#approveModal-{{ course.unique_id }}">Enroll</a>
-                      {% endif %}
-                    </td>
-                    <!-- Modal Block -->
-                    <div class="modal fade" id="approveModal-{{ course.unique_id }}" tabindex="-1" role="dialog" aria-labelledby="approveModalLabel-{{ course.unique_id }}" aria-hidden="true">
-                      <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <h5 class="modal-title" id="approveModalLabel-{{ course.unique_id }}">Enrollment Confirmation</h5>
-                            <div type="div" class="close" style="cursor: pointer" data-dismiss="modal" aria-label="Close">
-                              <span aria-hidden="true">&times;</span>
+                    
+                    {% if course.micropathway_id == micropathway.id %}
+                      <tr>
+                        <td>{{ course.courseoverview.display_name }}</td>
+                        <td>x</td>
+                        <td>{{ course.completed }}</td>
+                        <td>
+                          {% if course.enrollment_status == "enrolled" %}
+                          <a class="btn btn-primary" target="_blank" href="{% url 'about_course' course_id=course.courseoverview.id %}">
+                            View
+                          </a>
+                          {% else %}
+                          <a class="btn btn-primary" data-toggle="modal" href="" data-target="#approveModal-{{ course.unique_id }}">Enroll</a>
+                          {% endif %}
+                        </td>
+                        <!-- Modal Block -->
+                        <div class="modal fade" id="approveModal-{{ course.unique_id }}" tabindex="-1" role="dialog" aria-labelledby="approveModalLabel-{{ course.unique_id }}" aria-hidden="true">
+                          <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title" id="approveModalLabel-{{ course.unique_id }}">Enrollment Confirmation</h5>
+                                <div type="div" class="close" style="cursor: pointer" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                </div>
+                              </div>
+                              <div class="modal-body">
+                                Are you sure you want to enroll in the course {{ course.courseoverview.display_name }}?
+                              </div>
+                            
+                              <div class="modal-footer">
+                                <form action="{% url 'sparta-enrollment-approve' username=uname course_key=course.courseoverview.id %}" method="POST">
+                                  {% csrf_token %}
+                                  <div type="div" class="btn btn-secondary" data-dismiss="modal">Cancel</div>
+                                  <input class="btn btn-success" id="submit" type="submit" value="Confirm" />
+                                </form>
+                              </div>
                             </div>
                           </div>
-                          <div class="modal-body">
-                            Are you sure you want to enroll in the course {{ course.courseoverview.display_name }}?
-                          </div>
-                        
-                          <div class="modal-footer">
-                            <form action="{% url 'sparta-enrollment-approve' username=uname course_key=course.courseoverview.id %}" method="POST">
-                              {% csrf_token %}
-                              <div type="div" class="btn btn-secondary" data-dismiss="modal">Cancel</div>
-                              <input class="btn btn-success" id="submit" type="submit" value="Confirm" />
-                            </form>
-                          </div>
                         </div>
-                      </div>
-                    </div>
-                  </tr>
-          
+                      </tr>
+                      
+                    {% endif %}
+
                   {% endfor %}
           
-                  
                   {% else %}
                   <tr>
                     <td>-</td>
@@ -164,7 +160,7 @@
       <table class="table">
         <thead class="thead-light">
           <tr>
-            <th>Pathway</th>
+            <th>Sparta Pathway</th>
             <th>Status</th>
             <th>Actions</th>
           </tr>
@@ -318,6 +314,9 @@
 </style>
 
 <script>
+  var sensor_name = "";
+  var counter = 1;
+
   function openTab(evt, cityName) {
     // Declare all variables
     var i, tabcontent, tablinks;

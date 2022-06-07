@@ -466,39 +466,62 @@ class ProfilePageView(TemplateView):
         ##################### MICROPATHWAYS #####################
         
         get_micropathways = MicroPathway.objects.filter(is_active=True)
+        get_microgroups = MicroGroup.objects.filter(is_active=True)
 
         micropathways = []
+        microgroups = []
         
         for micropathway in get_micropathways:
             micropathways.append(micropathway)
 
-        micro_courses = MicroCourse.objects.filter(is_active=True).filter(micropathway=micropathway)
-        
+        for microgroup in get_microgroups:
+            microgroups.append(microgroup)
+
+        # micro_courses = MicroCourse.objects.filter(is_active=True).filter(micropathway=micropathway)
+        micro_courses = MicroCourse.objects.filter(is_active=True)
+
+        courses = []
+        counter=0
         for getmicro in get_micropathways:
+
             for group in getmicro.groups.all().filter(is_active=True):
                 micropathway_courses = micro_courses.filter(group=group)
-                
-            courses = []
-            counter=0
-            for micropathway_course in micropathway_courses:
-                counter = counter+1
-                course = {
-                    'unique_id': counter,
-                    'micropathway_course': micropathway_course,
-                    'group': group.type
-                }
-                course_key = CourseKey.from_string(micropathway_course.course_id)
-                courseoverview = CourseOverview.get_from_id(course_key)
-                course['courseoverview'] = courseoverview
-                
-                courses.append(course)
 
-                # To check if user is enrolled
-                enrollment = CourseEnrollment.is_enrolled(self.request.user, course_key)
-                if enrollment is True:
-                    course['enrollment_status'] = "enrolled"
-                else:
-                    course['enrollment_status'] = "not enrolled"
+                for micropathway_course in micropathway_courses:
+
+                    counter = counter+1
+                    course = {
+                        'unique_id': counter,
+                        'micropathway_course': micropathway_course,
+                        # 'group': group.type,
+                        'group': micropathway_course.group,
+                        'micropathway_id' : getmicro.id
+                    }
+                    course_key = CourseKey.from_string(micropathway_course.course_id)
+                    courseoverview = CourseOverview.get_from_id(course_key)
+                    course['courseoverview'] = courseoverview
+
+                    cert_status = certificate_status_for_student(self.request.user, course_key)
+                    if cert_status:
+                        if cert_status['mode'] == 'verified' or cert_status['mode'] == 'honor':
+                            if cert_status['status'] not in  ['unavailable', 'notpassing', 'restricted', 'unverified']:
+                                course['completed'] = True
+                            else:
+                                course['completed'] = False
+                        else:
+                            course['completed'] = False
+                    else:
+                        course['completed'] = False
+                    
+                    courses.append(course)
+
+                    # To check if user is enrolled
+                    enrollment = CourseEnrollment.is_enrolled(self.request.user, course_key)
+                    if enrollment is True:
+                        course['enrollment_status'] = "enrolled"
+                    else:
+                        course['enrollment_status'] = "not enrolled"   
+            
                 
 
         try:
