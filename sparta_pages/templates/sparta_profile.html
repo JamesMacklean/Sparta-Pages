@@ -87,13 +87,12 @@
                           
                 <tbody>
                   {% if pathway_is_approved %}
-                  {{ forloop.counter as x }}
                   {% for course in courses %}
                     
                     {% if course.micropathway_id == micropathway.id %}
                       <tr>
                         <td>{{ course.courseoverview.display_name }}</td>
-                        <td>x</td>
+                        <td>{{ course.unique_id }}</td>
                         <td>{{ course.completed }}</td>
                         <td>
                           {% if course.enrollment_status == "enrolled" %}
