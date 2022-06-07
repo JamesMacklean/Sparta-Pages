@@ -96,11 +96,9 @@
                         <td>{{ course.completed }}</td>
                         
                         {% for micro in course_per_micro_details %}
-                          {% if micropathway.id == course_per_micro_details.micropathway_id %}
                             <td>{{ micro.maxcount }}</td>
-                          {% endif %}
                         {% endfor %}
-                        
+
                         <td>
                           {% if course.enrollment_status == "enrolled" %}
                           <a class="btn btn-primary" target="_blank" href="{% url 'about_course' course_id=course.courseoverview.id %}">
