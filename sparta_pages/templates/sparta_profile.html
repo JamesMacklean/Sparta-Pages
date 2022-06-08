@@ -106,7 +106,7 @@
                                     <a class="btn btn-primary" target="_blank" href="{% url 'about_course' course_id=course.courseoverview.id %}">
                                       View Course
                                     </a>
-                                    <a class="btn btn-primary" target="_blank" href="{% url 'unique-certificate' verify_uuid=course.verify_uuid %}">
+                                    <a class="btn btn-primary" target="_blank" href="clonelms.coursebank.ph/certificates/{{ course.verify_uuid }}">
                                       View Certificate
                                     </a>
                                   {% elif course.enrollment_status == "enrolled" %}
