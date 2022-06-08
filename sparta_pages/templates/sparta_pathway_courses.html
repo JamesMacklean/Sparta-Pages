@@ -38,24 +38,24 @@
             <td>{{ course.courseoverview.display_name }}</td>
             <td>
               {% if course.completed %}
-              <a class="btn btn-primary" target="_blank" href="{% url 'about_course' course_id=course.courseoverview.id %}">
-                View Course
-              </a>
-              <a class="btn btn-primary" target="_blank" href="{% url 'unique-certificate' verify_uuid=course.verify_uuid %}">
-                View Certificate
-              </a>
+                <a class="btn btn-primary" target="_blank" href="{% url 'about_course' course_id=course.courseoverview.id %}">
+                  View Course
+                </a>
+                <a class="btn btn-primary" target="_blank" href="{% url 'unique-certificate' verify_uuid=course.verify_uuid %}">
+                  View Certificate
+                </a>
               {% elif course.enrollment_status == "enrolled" %}
-              <a class="btn btn-primary" target="_blank" href="{% url 'about_course' course_id=course.courseoverview.id %}">
-                View Course
-              </a>
-              <a class="btn btn-primary course-ongoing" target="_blank">
-                View Certificate
-              </a>
+                <a class="btn btn-primary" target="_blank" href="{% url 'about_course' course_id=course.courseoverview.id %}">
+                  View Course
+                </a>
+                <a class="btn btn-primary course-ongoing" target="_blank">
+                  View Certificate
+                </a>
               {% else %}
-              <a class="btn btn-primary" target="_blank" href="{% url 'about_course' course_id=course.courseoverview.id %}">
-                View Course
-              </a>
-              <a class="btn btn-primary" data-toggle="modal" href="" data-target="#approveModal-{{ course.unique_id }}">Enroll</a>
+                <a class="btn btn-primary" target="_blank" href="{% url 'about_course' course_id=course.courseoverview.id %}">
+                  View Course
+                </a>
+                <a class="btn btn-primary" data-toggle="modal" href="" data-target="#approveModal-{{ course.unique_id }}">Enroll</a>
               {% endif %}
             </td>
           <!-- Modal Block -->
