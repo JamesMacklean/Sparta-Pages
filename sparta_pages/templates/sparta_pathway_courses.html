@@ -182,9 +182,15 @@
 :root {
       --sparta_bg    : #441116;      /*sparta official bg*/
   }
-.btn:not(.course-ongoing):hover {
+  table .btn {
+    border-color: var(--sparta_bg);
+    background-color: var(--sparta_bg);
+    width: 152px;
+  }
+  .btn:not(.course-ongoing):hover {
     background-color: maroon;
-}
+  }
+  
 .course-ongoing,
 .course-ongoing:hover {
     background-color: gray;
