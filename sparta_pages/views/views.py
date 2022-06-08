@@ -505,6 +505,7 @@ class ProfilePageView(TemplateView):
                         'unique_id': unique_id,
                         'micropathway_course': micropathway_course,
                         'group': micropathway_course.group,
+                        'course_code': micropathway_course.short_description,
                         'micropathway_id' : getmicro.id
                     }
                     course_key = CourseKey.from_string(micropathway_course.course_id)
