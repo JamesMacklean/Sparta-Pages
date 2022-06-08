@@ -179,12 +179,17 @@
 {% endblock %}
 
 <style>
-
-  .course-ongoing,
-  .course-ongoing:hover {
+:root {
+      --sparta_bg    : #441116;      /*sparta official bg*/
+  }
+.btn:not(.course-ongoing):hover {
+    background-color: maroon;
+}
+.course-ongoing,
+.course-ongoing:hover {
     background-color: gray;
     border-color: gray;
     color:#fff;
-  }
+}
 
 </style>
