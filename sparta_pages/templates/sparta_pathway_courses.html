@@ -35,17 +35,29 @@
         {% for course in courses %}
         {% if course.group == "CO"  %}
         <tr>
-          <td>{{ course.courseoverview.display_name }}</td>
-          <td>
-            
-            {% if course.enrollment_status == "enrolled" %}
-            <a class="btn btn-primary" target="_blank" href="{% url 'about_course' course_id=course.courseoverview.id %}">
-              View
-            </a>
-            {% else %}
-            <a class="btn btn-primary" data-toggle="modal" href="" data-target="#approveModal-{{ course.unique_id }}">Enroll</a>
-            {% endif %}
-          </td>
+            <td>{{ course.courseoverview.display_name }}</td>
+            <td>
+              {% if course.completed %}
+              <a class="btn btn-primary" target="_blank" href="{% url 'about_course' course_id=course.courseoverview.id %}">
+                View Course
+              </a>
+              <a class="btn btn-primary" target="_blank" href="{% url 'unique-certificate' verify_uuid=course.verify_uuid %}">
+                View Certificate
+              </a>
+              {% elif course.enrollment_status == "enrolled" %}
+              <a class="btn btn-primary" target="_blank" href="{% url 'about_course' course_id=course.courseoverview.id %}">
+                View Course
+              </a>
+              <a class="btn btn-primary course-ongoing" target="_blank">
+                View Certificate
+              </a>
+              {% else %}
+              <a class="btn btn-primary" target="_blank" href="{% url 'about_course' course_id=course.courseoverview.id %}">
+                View Course
+              </a>
+              <a class="btn btn-primary" data-toggle="modal" href="" data-target="#approveModal-{{ course.unique_id }}">Enroll</a>
+              {% endif %}
+            </td>
           <!-- Modal Block -->
           <div class="modal fade" id="approveModal-{{ course.unique_id }}" tabindex="-1" role="dialog" aria-labelledby="approveModalLabel-{{ course.unique_id }}" aria-hidden="true">
             <div class="modal-dialog" role="document">
@@ -101,15 +113,25 @@
         <tr>
           <td>{{ course.courseoverview.display_name }}</td>
           <td>
-            {% if course.enrollment_status == "enrolled" %}
+            {% if course.completed %}
             <a class="btn btn-primary" target="_blank" href="{% url 'about_course' course_id=course.courseoverview.id %}">
               View Course
+            </a>
+            <a class="btn btn-primary" target="_blank" href="{% url 'unique-certificate' verify_uuid=course.verify_uuid %}">
+              View Certificate
+            </a>
+            {% elif course.enrollment_status == "enrolled" %}
+            <a class="btn btn-primary" target="_blank" href="{% url 'about_course' course_id=course.courseoverview.id %}">
+              View Course
+            </a>
+            <a class="btn btn-primary course-ongoing" target="_blank">
+              View Certificate
             </a>
             {% else %}
             <a class="btn btn-primary" target="_blank" href="{% url 'about_course' course_id=course.courseoverview.id %}">
               View Course
             </a>
-            <a class="btn btn-primary" data-toggle="modal" href="" data-target="#approveModal_{{ course.unique_id }}">Enroll</a>
+            <a class="btn btn-primary" data-toggle="modal" href="" data-target="#approveModal-{{ course.unique_id }}">Enroll</a>
             {% endif %}
           </td>
           <!-- Modal Block -->
@@ -155,3 +177,14 @@
   </div>
 </div>
 {% endblock %}
+
+<style>
+
+  .course-ongoing,
+  .course-ongoing:hover {
+    background-color: gray;
+    border-color: gray;
+    color:#fff;
+  }
+
+</style>
