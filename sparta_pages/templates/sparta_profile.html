@@ -51,7 +51,7 @@
               <div class="buttons">
               <a href="{% url 'sparta-main' %}">Learn More</a>
               <br>
-              <a href="{% url 'sparta-application-page' %}">Apply</a>
+              <a href="{% url 'sparta-application-page' %}">Select Pathway</a>
               </div>
         </div>
       </section>
@@ -106,7 +106,7 @@
                                   <a class="btn btn-primary" target="_blank" href="{% url 'about_course' course_id=course.courseoverview.id %}">
                                     View Course
                                   </a>
-                                  <a class="btn btn-primary" target="_blank" href="{% url 'about_course' course_id=course.courseoverview.id %}">
+                                  <a class="btn btn-primary course-ongoing" target="_blank">
                                     View Certificate
                                   </a>
 
@@ -177,7 +177,7 @@
       <h2 class="card-title">My Scholarship Programs</h2>
 
       <p>As a SPARTA scholar, you must select ONE of six (6) learning pathways. Once you have chosen a pathway, you will have verified access to courses under this pathway for free.</p>
-      <p><a target="blank" href="{% url 'sparta-main' %}">(Click here for details about SPARTA Pathways)</a></p>
+      <p><a target="blank" href="{% url 'sparta-main' %}">Click here for details about SPARTA Pathways</a></p>
 
       <table class="table">
         <thead class="thead-light">
@@ -246,13 +246,13 @@
         </tbody>   
       </table>
 
-      {% if not max_applied %}
-        <a class="btn btn-primary" href="{% url 'sparta-application-page' %}">Apply for a pathway</a>
-      {% endif %}
     </div>
   </div>
 </div>
 <style>
+  :root {
+      --sparta_bg    : #441116;      /*sparta official bg*/
+  }
   .container-container {
     display: flex;
     justify-content: center;
@@ -285,12 +285,26 @@
   }
   .micro-card-container {
     background-color: rgb(236, 228, 228);
-    width: 700px;
+    /* width: 700px; */
     margin-bottom: 15px;
     border-radius: 15px;
   }
-  .micro-card-container .btn {
-    width: 60px;
+  .micro-card-container table .btn {
+    border-color: var(--sparta_bg);
+    background-color: var(--sparta_bg);
+    width: 152px;
+  }
+  .micro-card-container .btn:not(.course-ongoing):hover {
+    background-color: maroon;
+  }
+  .micro-card-container table .course-ongoing,
+  .course-ongoing:hover {
+    background-color: gray;
+    border-color: gray;
+    color:#fff;
+  }
+  .micro-card-container table td:last-child {
+    text-align: right;
   }
   .microcard {
     height: 100px;
@@ -298,7 +312,7 @@
     border-radius: 15px 15px 0 0;
   }
   .microbg{
-    background-color: #441116;
+    background-color: var(--sparta_bg);
   }
   .micro-card-container h2 {
     text-align: center;
@@ -339,7 +353,11 @@
     padding: 10px 20px;
     margin-bottom: 10px;
     display:inline-flex;
-    }
+  }
+.modal-title {
+  width: 100%;
+}
+
 </style>
 
 <script>
