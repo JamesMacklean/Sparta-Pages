@@ -106,7 +106,7 @@
                                   <a class="btn btn-primary" target="_blank" href="{% url 'about_course' course_id=course.courseoverview.id %}">
                                     View Course
                                   </a>
-                                  <a class="btn btn-primary" target="_blank" href="{% url 'about_course' course_id=course.courseoverview.id %}">
+                                  <a class="btn btn-primary course-ongoing" target="_blank" href="{% url 'about_course' course_id=course.courseoverview.id %}" disabled="disabled">
                                     View Certificate
                                   </a>
 
@@ -300,6 +300,9 @@
   }
   .micro-card-container .btn:hover {
     background-color: maroon;
+  }
+  .micro-card-container table .course-ongoing {
+    background-color: gray;
   }
   .micro-card-container table td:last-child {
     text-align: right;
