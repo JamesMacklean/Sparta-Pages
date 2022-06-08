@@ -92,11 +92,14 @@
                         <!-- IF LEARNER FINISHED A MICROPATHWAY -->
                         {% if progress.required_courses <= progress.completed_courses %}
                             <!-- LOOP TO DISPLAY THE COURSES UNDER A MICROPATHWAY -->
-                            <thead class="thead-light">
+                            <table class="table">
+
+                            </table><thead class="thead-light">
                               <tr>
                                 <p>Congratulations on completing this microspecialization!<br><a target="blank" href="https://sparta.dap.edu.ph/">Click here to earn your microspecialization certificate.</a></p>
                               </tr>
                             </thead>
+                            <tbody>
                             {% for course in courses %}
                               {% if course.micropathway_id == micropathway.id %}
                                 <tr>
@@ -112,7 +115,8 @@
                                 </tr>
                               {% endif %}
                             {% endfor %}
-                            
+                            </tbody>
+                          </table>
                         <!-- IF LEARNER IS NOT YET FINISHED IN THE MICROPATHWAY -->
                         {% else %}
                           <!-- LOOP TO DISPLAY THE COURSES UNDER A MICROPATHWAY -->
