@@ -82,7 +82,7 @@
               <div class="microcard microbg">
                 <h2 class="become-scholar_headings">{{ micropathway.name }}</h2>
               </div>
-              <table class="table table-hover">
+              <table class="table table-hover table-course-actions">
                           
                 <tbody>
                   {% if pathway_is_approved %}
@@ -92,14 +92,6 @@
                         <!-- IF LEARNER FINISHED A MICROPATHWAY -->
                         {% if progress.required_courses <= progress.completed_courses %}
                             <!-- LOOP TO DISPLAY THE COURSES UNDER A MICROPATHWAY -->
-                            <table class="table">
-
-                            </table><thead class="thead-light">
-                              <tr>
-                                <p>Congratulations on completing this microspecialization!<br><a target="blank" href="https://sparta.dap.edu.ph/">Click here to earn your microspecialization certificate.</a></p>
-                              </tr>
-                            </thead>
-                            <tbody>
                             {% for course in courses %}
                               {% if course.micropathway_id == micropathway.id %}
                                 <tr>
@@ -115,8 +107,9 @@
                                 </tr>
                               {% endif %}
                             {% endfor %}
-                            </tbody>
-                          </table>
+
+                            <p>Congratulations on completing this microspecialization!<br><a target="blank" href="https://sparta.dap.edu.ph/">Click here to earn your microspecialization certificate.</a></p>
+                            
                         <!-- IF LEARNER IS NOT YET FINISHED IN THE MICROPATHWAY -->
                         {% else %}
                           <!-- LOOP TO DISPLAY THE COURSES UNDER A MICROPATHWAY -->
@@ -138,7 +131,7 @@
                                     <a class="btn btn-primary" target="_blank" href="{% url 'about_course' course_id=course.courseoverview.id %}">
                                       View Course
                                     </a>
-                                    <a class="btn btn-primary course-ongoing" target="_blank">
+                                    <a class="btn btn-primary btn-disabled" target="_blank">
                                       View Certificate
                                     </a>
                                   <!-- IF COURSE HAS NOT YET BEEN ENROLLED TO -->
@@ -271,9 +264,6 @@
   </div>
 </div>
 <style>
-  :root {
-      --sparta_bg    : #441116;      /*sparta official bg*/
-  }
   .container-container {
     display: flex;
     justify-content: center;
@@ -313,19 +303,16 @@
   .micro-card-container table .btn {
     border-color: var(--sparta_bg);
     background-color: var(--sparta_bg);
-    width: 152px;
+    /* width: 152px; */
   }
-  .micro-card-container .btn:not(.course-ongoing):hover {
+  .micro-card-container .btn:not(.btn-disabled):hover {
     background-color: maroon;
   }
-  .micro-card-container table .course-ongoing,
-  .course-ongoing:hover {
+  .micro-card-container table .btn-disabled,
+  .btn-disabled:hover {
     background-color: gray;
     border-color: gray;
     color:#fff;
-  }
-  .micro-card-container table td:last-child {
-    text-align: right;
   }
   .microcard {
     height: 100px;
