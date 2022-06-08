@@ -106,7 +106,7 @@
                                     <a class="btn btn-primary" target="_blank" href="{% url 'about_course' course_id=course.courseoverview.id %}">
                                       View Course
                                     </a>
-                                    <a class="btn btn-primary" target="_blank" href="clonelms.coursebank.ph/certificates/{{ course.verify_uuid }}">
+                                    <a class="btn btn-primary" target="_blank" href="{% 'unique-certificate' verify_uuid= course.verify_uuid %}">
                                       View Certificate
                                     </a>
                                   {% elif course.enrollment_status == "enrolled" %}
@@ -173,10 +173,6 @@
 
     <div id="MyScholarships" class="tabcontent" style="display: none">
       <h2 class="card-title">My Scholarship Programs</h2>
-
-      <p>As a SPARTA scholar, you must select ONE of six (6) learning pathways. Once you have chosen a pathway, you will have verified access to courses under this pathway for free.</p>
-      <p><a target="blank" href="{% url 'sparta-main' %}">Click here for details about SPARTA Pathways</a></p>
-
       <table class="table">
         <thead class="thead-light">
           <tr>
