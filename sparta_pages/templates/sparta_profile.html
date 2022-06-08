@@ -92,20 +92,36 @@
                         <!-- KUNG PAREHAS NG MICROPATHWAY ANG NAKADISPLAY AT ANG PROGRESS, IDISPLAY ANG BELOW -->
                         {% if progress.required_courses <= progress.completed_courses %}
                             <!-- DITO ANG MESSAGE -->
-                            <p>Congratulations on completing this Micropathway! <a target="blank" href="{% url 'sparta-main' %}">Click here to earn your Microspecialization certificate.</a></p>
+                            <p>Congratulations on completing this Microspecialization!</p><br>
+                            <p><a target="blank" href="https://sparta.dap.edu.ph/">Click here to earn your Microspecialization certificate.</a></p>
                         {% else %}
                           {% for course in courses %}
                             <!-- KUNG DI PA NIYA TAPOS LAHAT NG COURSES, DISPLAY LAHAT NG BELOW -->
                             {% if course.micropathway_id == micropathway.id %}
                               <!-- KUNG ANG COURSE AY BELONG SA MICROPATHWAY NA NAKADISPLAY, IDISPLAY ANG BELOW -->
                               <tr>
-                                <td>{{ course.courseoverview.display_name }}</td>
+                                <td>{{ course.course_code }}: {{ course.courseoverview.display_name }}</td>
                                 <td>
                                   {% if course.enrollment_status == "enrolled" %}
                                   <a class="btn btn-primary" target="_blank" href="{% url 'about_course' course_id=course.courseoverview.id %}">
-                                    View
+                                    View Course
                                   </a>
+                                  <a class="btn btn-primary" target="_blank" href="{% url 'about_course' course_id=course.courseoverview.id %}">
+                                    View Certificate
+                                  </a>
+
+                                  {% elif course.completed %}
+                                  <a class="btn btn-primary" target="_blank" href="{% url 'about_course' course_id=course.courseoverview.id %}">
+                                    View Course
+                                  </a>
+                                  <a class="btn btn-primary" target="_blank" href="{% url 'about_course' course_id=course.courseoverview.id %}">
+                                    View Certificate
+                                  </a>
+
                                   {% else %}
+                                  <a class="btn btn-primary" target="_blank" href="{% url 'about_course' course_id=course.courseoverview.id %}">
+                                    View Course
+                                  </a>
                                   <a class="btn btn-primary" data-toggle="modal" href="" data-target="#approveModal-{{ course.unique_id }}">Enroll</a>
                                   {% endif %}
                                 </td>
