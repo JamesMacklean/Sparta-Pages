@@ -1337,7 +1337,7 @@ class AdditionalEditPageView(View):
             return redirect(reverse('sparta-profile'))
         return render(request, self.template_name, {'sparta_profile_form': sparta_profile_form, 'extended_sparta_profile_form': extended_sparta_profile_form, 'ext_profile': ext_profile})
 
-@require_POST
-def unique_certificate(request, verify_uuid):
-    """"""
-    return render(request, 'sparta_profile.html')
+# @require_POST
+# def unique_certificate(request, verify_uuid):
+#     """"""
+#     return render(request, 'sparta_profile.html')
