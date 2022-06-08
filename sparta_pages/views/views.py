@@ -1074,7 +1074,7 @@ class StudentCouponRecordsView(TemplateView):
                 cert_status = certificate_status_for_student(self.request.user, course_key)
                 if cert_status:
                     if cert_status['mode'] == 'verified' or cert_status['mode'] == 'honor':
-                        unique_certificate = GeneratedCertificate.objects.get(user__username=self.request.user, course_id = course_key)
+                        unique_certificate = eneratedCertificate.objects.get(user__username=self.request.user, course_id = course_key)
 
                         if cert_status['status'] not in  ['unavailable', 'notpassing', 'restricted', 'unverified']:
                             course['verify_uuid'] = unique_certificate.verify_uuid
