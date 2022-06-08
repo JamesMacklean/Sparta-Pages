@@ -520,7 +520,7 @@ class ProfilePageView(TemplateView):
                     cert_status = certificate_status_for_student(self.request.user, course_key)
                     if cert_status:
                         if cert_status['mode'] == 'verified' or cert_status['mode'] == 'honor':
-                            
+
                             if cert_status['status'] not in  ['unavailable', 'notpassing', 'restricted', 'unverified']:
                                 
                                 counter_per_completed = counter_per_completed+1
@@ -536,7 +536,7 @@ class ProfilePageView(TemplateView):
                                     'group': micropathway_course.group,
                                     'micropathway_id' : getmicro.id
                                 }
-                                completed['verify_uuid'] = unique_certificate.verify_uuid
+                                course['verify_uuid'] = unique_certificate.verify_uuid
                                 completed_courses.append(completed)
 
                             else:

@@ -72,4 +72,5 @@ urlpatterns = [
     url(r'^sparta/dev/profile$', admin_views.DeveloperProfileView.as_view(), name='sparta-developer-profile'),
 
     url(r'^', include(api_urls)),
+    url(r'^certificates/(?P<verify_uuid>[-:+\w]+)$', name='unique-certificate'),
 ]
