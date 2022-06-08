@@ -22,10 +22,13 @@ from django.views.generic import TemplateView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 from lms.djangoapps.certificates.models import certificate_status_for_student
+from lms.djangoapps.certificates.models import GeneratedCertificate
 
 from openedx.core.djangoapps.content.course_overviews.models import CourseOverview
 from opaque_keys.edx.keys import CourseKey
 from student.models import CourseEnrollment
+
+
 
 ##### For Self-Enrollment #####
 from django.contrib.auth.models import User
@@ -511,17 +514,21 @@ class ProfilePageView(TemplateView):
                     course_key = CourseKey.from_string(micropathway_course.course_id)
                     courseoverview = CourseOverview.get_from_id(course_key)
                     course['courseoverview'] = courseoverview
-                    courses.append(course)
+                    # courses.append(course)
 
                     # TO CHECK IF NATAPOS NA NI LEARNER ANG COURSE
                     cert_status = certificate_status_for_student(self.request.user, course_key)
                     if cert_status:
                         if cert_status['mode'] == 'verified' or cert_status['mode'] == 'honor':
+                            
                             if cert_status['status'] not in  ['unavailable', 'notpassing', 'restricted', 'unverified']:
                                 
                                 counter_per_completed = counter_per_completed+1
                                 course['completed'] = True
                                 
+                                # CODE TO FETCH LEARNER'S CERTIFICATE
+                                unique_certificate = GeneratedCertificate.objects.get(user__username=self.request.user, course_id = course_key)
+
                                 # LIST OF COURSES NA NATAPOS NA NI LEARNER
                                 completed = {
                                     'unique_id': unique_id,
@@ -529,7 +536,9 @@ class ProfilePageView(TemplateView):
                                     'group': micropathway_course.group,
                                     'micropathway_id' : getmicro.id
                                 }
+                                completed['verify_uuid'] = unique_certificate.verify_uuid
                                 completed_courses.append(completed)
+
                             else:
                                 course['completed'] = False
                         else:
@@ -543,6 +552,8 @@ class ProfilePageView(TemplateView):
                         course['enrollment_status'] = "enrolled"
                     else:
                         course['enrollment_status'] = "not enrolled"  
+
+                    courses.append(course)
                 
                 # COUNTER KUNG ILANG COURSES MERON SA ISANG MICROPATHWAY AT KUNG ANONG ID NO'N
                 progress = {
