@@ -253,10 +253,6 @@
   </div>
 </div>
 <style>
-  :root {
-      --sparta_bg    : #441116;      /*sparta official bg*/
-  }
-
   .container-container {
     display: flex;
     justify-content: center;
@@ -301,8 +297,10 @@
   .micro-card-container .btn:not(.course-ongoing):hover {
     background-color: maroon;
   }
-  .micro-card-container table .course-ongoing {
+  .micro-card-container table .course-ongoing,
+  .course-ongoing:hover {
     background-color: gray;
+    border-color: gray;
     color:#fff;
   }
   .micro-card-container table td:last-child {
