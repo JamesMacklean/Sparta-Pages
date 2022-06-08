@@ -83,7 +83,7 @@
                 <h2 class="become-scholar_headings">{{ micropathway.name }}</h2>
               </div>
               <table class="table table-hover">
-                            
+                          
                 <tbody>
                   {% if pathway_is_approved %}
                     <!-- KUNG APPROVED SI PATHWAY, IDISPLAY ANG COURSES -->
@@ -100,8 +100,6 @@
                               <!-- KUNG ANG COURSE AY BELONG SA MICROPATHWAY NA NAKADISPLAY, IDISPLAY ANG BELOW -->
                               <tr>
                                 <td>{{ course.courseoverview.display_name }}</td>
-                                <td>{{ progress.required_courses }}</td>
-                                <td>{{ progress.completed_courses }}</td>
                                 <td>
                                   {% if course.enrollment_status == "enrolled" %}
                                   <a class="btn btn-primary" target="_blank" href="{% url 'about_course' course_id=course.courseoverview.id %}">
