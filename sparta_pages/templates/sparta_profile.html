@@ -51,7 +51,7 @@
               <div class="buttons">
               <a href="{% url 'sparta-main' %}">Learn More</a>
               <br>
-              <a href="{% url 'sparta-application-page' %}">Select a Pathway</a>
+              <a href="{% url 'sparta-application-page' %}">Select Pathway</a>
               </div>
         </div>
       </section>
@@ -177,7 +177,7 @@
       <h2 class="card-title">My Scholarship Programs</h2>
 
       <p>As a SPARTA scholar, you must select ONE of six (6) learning pathways. Once you have chosen a pathway, you will have verified access to courses under this pathway for free.</p>
-      <p><a target="blank" href="{% url 'sparta-main' %}">(Click here for details about SPARTA Pathways)</a></p>
+      <p><a target="blank" href="{% url 'sparta-main' %}">Click here for details about SPARTA Pathways</a></p>
 
       <table class="table">
         <thead class="thead-light">
@@ -353,7 +353,11 @@
     padding: 10px 20px;
     margin-bottom: 10px;
     display:inline-flex;
-    }
+  }
+.modal-title {
+  width: 100%;
+}
+
 </style>
 
 <script>
