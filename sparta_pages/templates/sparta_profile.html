@@ -51,7 +51,7 @@
               <div class="buttons">
               <a href="{% url 'sparta-main' %}">Learn More</a>
               <br>
-              <a href="{% url 'sparta-application-page' %}">Apply</a>
+              <a href="{% url 'sparta-application-page' %}">Select Pathway</a>
               </div>
         </div>
       </section>
@@ -86,27 +86,59 @@
                           
                 <tbody>
                   {% if pathway_is_approved %}
-                    <!-- KUNG APPROVED SI PATHWAY, IDISPLAY ANG COURSES -->
                     {% for progress in learner_progress %}
+                      <!-- TO COMPARE WHAT THE LEARNER COMPLETED INTO THE COURSES REQUIRED -->
                       {% if progress.micropathway_id == micropathway.id %}
-                        <!-- KUNG PAREHAS NG MICROPATHWAY ANG NAKADISPLAY AT ANG PROGRESS, IDISPLAY ANG BELOW -->
+                        <!-- IF LEARNER FINISHED A MICROPATHWAY -->
                         {% if progress.required_courses <= progress.completed_courses %}
-                            <!-- DITO ANG MESSAGE -->
-                            <p>Congratulations on completing this Micropathway! <a target="blank" href="{% url 'sparta-main' %}">Click here to earn your Microspecialization certificate.</a></p>
+                            <!-- LOOP TO DISPLAY THE COURSES UNDER A MICROPATHWAY -->
+                            {% for course in courses %}
+                              {% if course.micropathway_id == micropathway.id %}
+                                <tr>
+                                  <td>{{ course.course_code }}: {{ course.courseoverview.display_name }}</td>
+                                  <td>  
+                                      <a class="btn btn-primary" target="_blank" href="{% url 'about_course' course_id=course.courseoverview.id %}">
+                                        View Course
+                                      </a>
+                                      <a class="btn btn-primary" target="_blank" href="{% url 'unique-certificate' verify_uuid=course.verify_uuid %}">
+                                        View Certificate
+                                      </a>
+                                  </td>
+                                </tr>
+                              {% endif %}
+                            {% endfor %}
+                            <p>Congratulations on completing this microspecialization!</p>
+                            <p><a target="blank" href="https://sparta.dap.edu.ph/">Click here to earn your microspecialization certificate.</a></p>
+                        <!-- IF LEARNER IS NOT YET FINISHED IN THE MICROPATHWAY -->
                         {% else %}
+                          <!-- LOOP TO DISPLAY THE COURSES UNDER A MICROPATHWAY -->
                           {% for course in courses %}
-                            <!-- KUNG DI PA NIYA TAPOS LAHAT NG COURSES, DISPLAY LAHAT NG BELOW -->
                             {% if course.micropathway_id == micropathway.id %}
-                              <!-- KUNG ANG COURSE AY BELONG SA MICROPATHWAY NA NAKADISPLAY, IDISPLAY ANG BELOW -->
                               <tr>
-                                <td>{{ course.courseoverview.display_name }}</td>
+                                <td>{{ course.course_code }}: {{ course.courseoverview.display_name }}</td>
                                 <td>
-                                  {% if course.enrollment_status == "enrolled" %}
-                                  <a class="btn btn-primary" target="_blank" href="{% url 'about_course' course_id=course.courseoverview.id %}">
-                                    View
-                                  </a>
+                                  <!-- IF COURSE IS COMPLETED -->
+                                  {% if course.completed %}
+                                    <a class="btn btn-primary" target="_blank" href="{% url 'about_course' course_id=course.courseoverview.id %}">
+                                      View Course
+                                    </a>
+                                    <a class="btn btn-primary" target="_blank" href="{% url 'unique-certificate' verify_uuid=course.verify_uuid %}">
+                                      View Certificate
+                                    </a>
+                                  <!-- IF COURSE IS ONGOING -->
+                                  {% elif course.enrollment_status == "enrolled" %}
+                                    <a class="btn btn-primary" target="_blank" href="{% url 'about_course' course_id=course.courseoverview.id %}">
+                                      View Course
+                                    </a>
+                                    <a class="btn btn-primary course-ongoing" target="_blank">
+                                      View Certificate
+                                    </a>
+                                  <!-- IF COURSE HAS NOT YET BEEN ENROLLED TO -->
                                   {% else %}
-                                  <a class="btn btn-primary" data-toggle="modal" href="" data-target="#approveModal-{{ course.unique_id }}">Enroll</a>
+                                    <a class="btn btn-primary" target="_blank" href="{% url 'about_course' course_id=course.courseoverview.id %}">
+                                      View Course
+                                    </a>
+                                    <a class="btn btn-primary" data-toggle="modal" href="" data-target="#approveModal-{{ course.unique_id }}">Enroll</a>
                                   {% endif %}
                                 </td>
                                 <!-- Modal Block -->
@@ -159,10 +191,6 @@
 
     <div id="MyScholarships" class="tabcontent" style="display: none">
       <h2 class="card-title">My Scholarship Programs</h2>
-
-      <p>As a SPARTA scholar, you must select ONE of six (6) learning pathways. Once you have chosen a pathway, you will have verified access to courses under this pathway for free.</p>
-      <p><a target="blank" href="{% url 'sparta-main' %}">(Click here for details about SPARTA Pathways)</a></p>
-
       <table class="table">
         <thead class="thead-light">
           <tr>
@@ -230,14 +258,14 @@
         </tbody>   
       </table>
 
-      {% if not max_applied %}
-        <a class="btn btn-primary" href="{% url 'sparta-application-page' %}">Apply for a pathway</a>
-      {% endif %}
     </div>
 
   </div>
 </div>
 <style>
+  :root {
+      --sparta_bg    : #441116;      /*sparta official bg*/
+  }
   .container-container {
     display: flex;
     justify-content: center;
@@ -270,10 +298,26 @@
   }
   .micro-card-container {
     background-color: rgb(236, 228, 228);
-    width: 700px;
-    height: 500px;
+    /* width: 700px; */
     margin-bottom: 15px;
     border-radius: 15px;
+  }
+  .micro-card-container table .btn {
+    border-color: var(--sparta_bg);
+    background-color: var(--sparta_bg);
+    width: 152px;
+  }
+  .micro-card-container .btn:not(.course-ongoing):hover {
+    background-color: maroon;
+  }
+  .micro-card-container table .course-ongoing,
+  .course-ongoing:hover {
+    background-color: gray;
+    border-color: gray;
+    color:#fff;
+  }
+  .micro-card-container table td:last-child {
+    text-align: right;
   }
   .microcard {
     height: 100px;
@@ -281,12 +325,17 @@
     border-radius: 15px 15px 0 0;
   }
   .microbg{
-    background-color: maroon;
+    background-color: var(--sparta_bg);
   }
   .micro-card-container h2 {
     text-align: center;
     color: rgb(255, 255, 255);
     padding: 10px;
+    height: 100px;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
   }
   .micro-card-container p {
     opacity: 100%;
@@ -317,7 +366,11 @@
     padding: 10px 20px;
     margin-bottom: 10px;
     display:inline-flex;
-    }
+  }
+.modal-title {
+  width: 100%;
+}
+
 </style>
 
 <script>
