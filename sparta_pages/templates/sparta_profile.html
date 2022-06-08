@@ -237,6 +237,10 @@
   </div>
 </div>
 <style>
+  :root {
+      --sparta_bg    : #441116;      /*sparta official bg*/
+  }
+
   .container-container {
     display: flex;
     justify-content: center;
@@ -274,8 +278,8 @@
     border-radius: 15px;
   }
   .micro-card-container .btn {
-    border-color: #441116;
-    background-color: #441116;
+    border-color: var(--sparta_bg);
+    background-color: var(--sparta_bg);
     width: 120px;
   }
   .micro-card-container .btn:hover {
@@ -290,7 +294,7 @@
     border-radius: 15px 15px 0 0;
   }
   .microbg{
-    background-color: #441116;
+    background-color: var(--sparta_bg);
   }
   .micro-card-container h2 {
     text-align: center;
