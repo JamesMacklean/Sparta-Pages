@@ -51,7 +51,7 @@
             {% for micropathway in micropathways %}
             <div class="swiper-slide swiper-card">
             <a href="{% url 'sparta-micropathway' slug=micropathway.slug %}">
-                <div class="swiperbg {{ micropathway.slug }}_image">
+                <div class="container-grid {{ micropathway.slug }}_image">
                     <h1 class="heading-1" style="text-align: left; padding-top: 30px !important; font-size: 25px !important;">{{ micropathway.name }}</h1>
                 </div>
                 <div class="swiper-overlay">
