@@ -51,7 +51,7 @@
               <div class="buttons">
               <a href="{% url 'sparta-main' %}">Learn More</a>
               <br>
-              <a href="{% url 'sparta-application-page' %}">Apply</a>
+              <a href="{% url 'sparta-application-page' %}">Select a Pathway</a>
               </div>
         </div>
       </section>
@@ -246,9 +246,6 @@
         </tbody>   
       </table>
 
-      {% if not max_applied %}
-        <a class="btn btn-primary" href="{% url 'sparta-application-page' %}">Apply for a pathway</a>
-      {% endif %}
     </div>
   </div>
 </div>
