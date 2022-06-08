@@ -92,16 +92,13 @@
                         <!-- IF LEARNER FINISHED A MICROPATHWAY -->
                         {% if progress.required_courses <= progress.completed_courses %}
                             <p>Congratulations on completing this Microspecialization!</p>
-                            <br><a target="blank" href="https://sparta.dap.edu.ph/">Click here to earn your Microspecialization certificate.</a>
+                            <p><a target="blank" href="https://sparta.dap.edu.ph/">Click here to earn your Microspecialization certificate.</a></p>
                             <!-- LOOP TO DISPLAY THE COURSES UNDER A MICROPATHWAY -->
                             {% for course in courses %}
                               {% if course.micropathway_id == micropathway.id %}
                                 <tr>
                                   <td>{{ course.course_code }}: {{ course.courseoverview.display_name }}</td>
                                   <td>
-                                      <a class="btn btn-primary" target="_blank" href="{% url 'about_course' course_id=course.courseoverview.id %}">
-                                        View Course
-                                      </a>
                                       <a class="btn btn-primary" target="_blank" href="{% url 'unique-certificate' verify_uuid=course.verify_uuid %}">
                                         View Certificate
                                       </a>
