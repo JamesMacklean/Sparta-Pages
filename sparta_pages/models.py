@@ -630,27 +630,27 @@ class SpartaEnrollment(models.Model):
     enrollment = models.ForeignKey(CourseEnrollment, on_delete=models.CASCADE)
     enroll_date = models.DateTimeField(auto_now_add=True)
 
-class MicroPathway(models.Model):
-    """
-    """
-    name = models.CharField(max_length=255)
-    slug = models.SlugField(max_length=255)
-    short_description = models.CharField(max_length=255, blank=True, default="")
-    long_description = models.TextField(blank=True, default="")
-    card_description = models.TextField(blank=True, default="")
-    image_url = models.CharField(max_length=255)
-    order = models.PositiveSmallIntegerField(default=0)
-    is_active = models.BooleanField(default=True)
+# class MicroPathway(models.Model):
+#     """
+#     """
+#     name = models.CharField(max_length=255)
+#     slug = models.SlugField(max_length=255)
+#     short_description = models.CharField(max_length=255, blank=True, default="")
+#     long_description = models.TextField(blank=True, default="")
+#     card_description = models.TextField(blank=True, default="")
+#     image_url = models.CharField(max_length=255)
+#     order = models.PositiveSmallIntegerField(default=0)
+#     is_active = models.BooleanField(default=True)
 
-    class Meta:
-        ordering = ['order']
-        verbose_name_plural = "1.2 Micro Pathways"
+#     class Meta:
+#         ordering = ['order']
+#         verbose_name_plural = "1.2 Micro Pathways"
 
-    def get_absolute_url(self):
-        return reverse('sparta-micropathway', kwargs={'slug': self.slug})
+#     def get_absolute_url(self):
+#         return reverse('sparta-micropathway', kwargs={'slug': self.slug})
 
-    def __str__(self):
-        return self.name
+#     def __str__(self):
+#         return self.name
 
 class MicroCourse(models.Model):
     """
