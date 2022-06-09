@@ -1,7 +1,6 @@
 from django.contrib import admin
 from .models import (
-    # Pathway, SpartaCourse, CourseGroup, SpartaEnrollment,
-    Pathway, SpartaCourse, CourseGroup, 
+    Pathway, SpartaCourse, CourseGroup, SpartaEnrollment,
     SpartaProfile, PathwayApplication, ExtendedSpartaProfile,
     EducationProfile, EmploymentProfile, TrainingProfile,
     Event, APIToken,
@@ -93,9 +92,9 @@ class StudentCouponRecordAdmin(admin.ModelAdmin):
 @admin.register(SpartaReEnrollment)
 class SpartaReEnrollmentAdmin(admin.ModelAdmin):
     readonly_fields = ('enrollment', 'reenroll_date')
-# @admin.register(SpartaEnrollment)
-# class SpartaEnrollmentAdmin(admin.ModelAdmin):
-#     readonly_fields = ('enrollment', 'enroll_date')
+@admin.register(SpartaEnrollment)
+class SpartaEnrollmentAdmin(admin.ModelAdmin):
+    readonly_fields = ('enrollment', 'enroll_date')
 
 @admin.register(MicroPathway)
 class MicroPathwayAdmin(admin.ModelAdmin):

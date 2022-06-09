@@ -33,7 +33,7 @@ from student.models import CourseEnrollment
 ##### For Self-Enrollment #####
 from django.contrib.auth.models import User
 from email.message import EmailMessage
-# from sparta_pages.models import SpartaEnrollment
+from sparta_pages.models import SpartaEnrollment
 ############################
 
 from ..analytics import OverallAnalytics, PathwayAnalytics, CourseAnalytics
@@ -1198,7 +1198,7 @@ def enrollment_approve_application(request, username, course_key):
             usname = User.objects.get(username=username)
             course_id = CourseKey.from_string(course_key)
             enrollment = CourseEnrollment.enroll(usname, course_id, mode, check_access=False)
-            # enrollmentData = SpartaEnrollment.objects.create(enrollment=enrollment,enroll_date=tnow)
+            enrollmentData = SpartaEnrollment.objects.create(enrollment=enrollment,enroll_date=tnow)
         except Exception as e:
             return False
             
