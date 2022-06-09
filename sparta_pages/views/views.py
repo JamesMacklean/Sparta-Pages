@@ -49,8 +49,7 @@ from ..models import (
     Pathway, SpartaCourse, SpartaProfile, ExtendedSpartaProfile,
     EducationProfile, EmploymentProfile, SpartaReEnrollment, TrainingProfile,
     PathwayApplication, Event,
-    SpartaCoupon, StudentCouponRecord
-    # ,MicroPathway,MicroCourse,MicroGroup
+    SpartaCoupon, StudentCouponRecord,MicroPathway,MicroCourse,MicroGroup
 )
 
 
@@ -67,11 +66,11 @@ def main(request):
             pass
 
     pathways = Pathway.objects.filter(is_active=True)
-    # micropathways = MicroPathway.objects.filter(is_active=True)
+    micropathways = MicroPathway.objects.filter(is_active=True)
 
     context['pathways'] = pathways
     context['profile'] = profile
-    # context['micropathways'] = micropathways
+    context['micropathways'] = micropathways
     return render(request, template_name, context)
 
 
@@ -80,28 +79,28 @@ def micropathway(request, slug):
     template_name = "sparta_micropathway.html"
     context = {}
 
-    # micropathway = get_object_or_404(MicroPathway, slug=slug)
-    # micropathway_courses = MicroCourse.objects.filter(is_active=True).filter(micropathway=micropathway)
+    micropathway = get_object_or_404(MicroPathway, slug=slug)
+    micropathway_courses = MicroCourse.objects.filter(is_active=True).filter(micropathway=micropathway)
 
     micro_courses = []
     elective_courses = []
-    # for group in micropathway.groups.all().filter(is_active=True):
-    #     micropathway_courses = micropathway_courses.filter(group=group)
-    #     courses = []
-    #     for micropathway_course in micropathway_courses:
-    #         course = {'micropathway_course': micropathway_course}
-    #         course_key = CourseKey.from_string(micropathway_course.course_id)
-    #         courseoverview = CourseOverview.get_from_id(course_key)
-    #         course['courseoverview'] = courseoverview
-    #         courses.append(course)
-    #     data = {
-    #         'courses': courses,
-    #         'complete_at_least': group.complete_at_least
-    #     }
-    #     if group.type == "EL":
-    #         elective_courses.append(data)
-    #     else:
-    #         micro_courses.append(data)
+    for group in micropathway.groups.all().filter(is_active=True):
+        micropathway_courses = micropathway_courses.filter(group=group)
+        courses = []
+        for micropathway_course in micropathway_courses:
+            course = {'micropathway_course': micropathway_course}
+            course_key = CourseKey.from_string(micropathway_course.course_id)
+            courseoverview = CourseOverview.get_from_id(course_key)
+            course['courseoverview'] = courseoverview
+            courses.append(course)
+        data = {
+            'courses': courses,
+            'complete_at_least': group.complete_at_least
+        }
+        if group.type == "EL":
+            elective_courses.append(data)
+        else:
+            micro_courses.append(data)
 
     context['micro_courses'] = micro_courses
     context['elective_courses'] = elective_courses
@@ -468,20 +467,20 @@ class ProfilePageView(TemplateView):
 
         ##################### MICROPATHWAYS #####################
         
-        # get_micropathways = MicroPathway.objects.filter(is_active=True)
-        # get_microgroups = MicroGroup.objects.filter(is_active=True)
+        get_micropathways = MicroPathway.objects.filter(is_active=True)
+        get_microgroups = MicroGroup.objects.filter(is_active=True)
 
         micropathways = []
         microgroups = []
         
-        # for micropathway in get_micropathways:
-        #     micropathways.append(micropathway)
+        for micropathway in get_micropathways:
+            micropathways.append(micropathway)
 
-        # for microgroup in get_microgroups:
-        #     microgroups.append(microgroup)
+        for microgroup in get_microgroups:
+            microgroups.append(microgroup)
 
         # micro_courses = MicroCourse.objects.filter(is_active=True).filter(micropathway=micropathway)
-        # micro_courses = MicroCourse.objects.filter(is_active=True)
+        micro_courses = MicroCourse.objects.filter(is_active=True)
 
         courses = []
         learner_progress = []
@@ -489,79 +488,79 @@ class ProfilePageView(TemplateView):
         unique_id=0
         
         # LOOP TO DISPLAY ALL MICROPATHWAYS
-        # for getmicro in get_micropathways:
+        for getmicro in get_micropathways:
 
-        #     # LOOP TO FILTER KUNG ANONG COURSEGROUP NG MGA COURSES
-        #     for group in getmicro.groups.all().filter(is_active=True):
-        #         micropathway_courses = micro_courses.filter(group=group)
+            # LOOP TO FILTER KUNG ANONG COURSEGROUP NG MGA COURSES
+            for group in getmicro.groups.all().filter(is_active=True):
+                micropathway_courses = micro_courses.filter(group=group)
                 
-        #         counter_per_completed = 0
-        #         counter_per_required = 0
+                counter_per_completed = 0
+                counter_per_required = 0
                 
-        #         # LOOP TO DISPLAY ALL COURSES
-        #         for micropathway_course in micropathway_courses:
-        #             counter_per_required = counter_per_required+1
-        #             unique_id = unique_id+1
+                # LOOP TO DISPLAY ALL COURSES
+                for micropathway_course in micropathway_courses:
+                    counter_per_required = counter_per_required+1
+                    unique_id = unique_id+1
                     
-        #             # LIST OF COURSES TO BE DISPLAYED
-        #             course = {
-        #                 'unique_id': unique_id,
-        #                 'micropathway_course': micropathway_course,
-        #                 'group': micropathway_course.group,
-        #                 'course_code': micropathway_course.short_description,
-        #                 'micropathway_id' : getmicro.id
-        #             }
-        #             course_key = CourseKey.from_string(micropathway_course.course_id)
-        #             courseoverview = CourseOverview.get_from_id(course_key)
-        #             course['courseoverview'] = courseoverview
-        #             # courses.append(course)
+                    # LIST OF COURSES TO BE DISPLAYED
+                    course = {
+                        'unique_id': unique_id,
+                        'micropathway_course': micropathway_course,
+                        'group': micropathway_course.group,
+                        'course_code': micropathway_course.short_description,
+                        'micropathway_id' : getmicro.id
+                    }
+                    course_key = CourseKey.from_string(micropathway_course.course_id)
+                    courseoverview = CourseOverview.get_from_id(course_key)
+                    course['courseoverview'] = courseoverview
+                    # courses.append(course)
 
-        #             # TO CHECK IF NATAPOS NA NI LEARNER ANG COURSE
-        #             cert_status = certificate_status_for_student(self.request.user, course_key)
-        #             if cert_status:
-        #                 if cert_status['mode'] == 'verified' or cert_status['mode'] == 'honor':
+                    # TO CHECK IF NATAPOS NA NI LEARNER ANG COURSE
+                    cert_status = certificate_status_for_student(self.request.user, course_key)
+                    if cert_status:
+                        if cert_status['mode'] == 'verified' or cert_status['mode'] == 'honor':
 
-        #                     if cert_status['status'] not in  ['unavailable', 'notpassing', 'restricted', 'unverified']:
+                            if cert_status['status'] not in  ['unavailable', 'notpassing', 'restricted', 'unverified']:
                                 
-        #                         counter_per_completed = counter_per_completed+1
-        #                         course['completed'] = True
+                                counter_per_completed = counter_per_completed+1
+                                course['completed'] = True
                                 
-        #                         # CODE TO FETCH LEARNER'S CERTIFICATE
-        #                         unique_certificate = GeneratedCertificate.objects.get(user__username=self.request.user, course_id = course_key)
+                                # CODE TO FETCH LEARNER'S CERTIFICATE
+                                unique_certificate = GeneratedCertificate.objects.get(user__username=self.request.user, course_id = course_key)
 
-        #                         # LIST OF COURSES NA NATAPOS NA NI LEARNER
-        #                         completed = {
-        #                             'unique_id': unique_id,
-        #                             'micropathway_course': micropathway_course,
-        #                             'group': micropathway_course.group,
-        #                             'micropathway_id' : getmicro.id
-        #                         }
-        #                         course['verify_uuid'] = unique_certificate.verify_uuid
-        #                         completed_courses.append(completed)
+                                # LIST OF COURSES NA NATAPOS NA NI LEARNER
+                                completed = {
+                                    'unique_id': unique_id,
+                                    'micropathway_course': micropathway_course,
+                                    'group': micropathway_course.group,
+                                    'micropathway_id' : getmicro.id
+                                }
+                                course['verify_uuid'] = unique_certificate.verify_uuid
+                                completed_courses.append(completed)
 
-        #                     else:
-        #                         course['completed'] = False
-        #                 else:
-        #                     course['completed'] = False
-        #             else:
-        #                 course['completed'] = False
+                            else:
+                                course['completed'] = False
+                        else:
+                            course['completed'] = False
+                    else:
+                        course['completed'] = False
                     
-        #             # TO CHECK IF USER IS ENROLLED
-        #             enrollment = CourseEnrollment.is_enrolled(self.request.user, course_key)
-        #             if enrollment is True:
-        #                 course['enrollment_status'] = "enrolled"
-        #             else:
-        #                 course['enrollment_status'] = "not enrolled"  
+                    # TO CHECK IF USER IS ENROLLED
+                    enrollment = CourseEnrollment.is_enrolled(self.request.user, course_key)
+                    if enrollment is True:
+                        course['enrollment_status'] = "enrolled"
+                    else:
+                        course['enrollment_status'] = "not enrolled"  
 
-        #             courses.append(course)
+                    courses.append(course)
                 
-        #         # COUNTER KUNG ILANG COURSES MERON SA ISANG MICROPATHWAY AT KUNG ANONG ID NO'N
-        #         progress = {
-        #             'micropathway_id': getmicro.id,
-        #             'required_courses': counter_per_required,
-        #             'completed_courses' : counter_per_completed
-        #         }
-        #         learner_progress.append(progress)        
+                # COUNTER KUNG ILANG COURSES MERON SA ISANG MICROPATHWAY AT KUNG ANONG ID NO'N
+                progress = {
+                    'micropathway_id': getmicro.id,
+                    'required_courses': counter_per_required,
+                    'completed_courses' : counter_per_completed
+                }
+                learner_progress.append(progress)        
 
         try:
             extended_profile = ExtendedSpartaProfile.objects.get(user=self.request.user)
