@@ -5,7 +5,8 @@ from .models import (
     EducationProfile, EmploymentProfile, TrainingProfile,
     Event, APIToken,
     SpartaCoupon, StudentCouponRecord,
-    SpartaReEnrollment,MicroPathway,MicroCourse,MicroGroup
+    SpartaReEnrollment,MicroCourse,MicroGroup
+    # ,MicroPathway
 )
 
 @admin.register(Pathway)
@@ -96,9 +97,9 @@ class SpartaReEnrollmentAdmin(admin.ModelAdmin):
 class SpartaEnrollmentAdmin(admin.ModelAdmin):
     readonly_fields = ('enrollment', 'enroll_date')
 
-@admin.register(MicroPathway)
-class MicroPathwayAdmin(admin.ModelAdmin):
-    pass
+# @admin.register(MicroPathway)
+# class MicroPathwayAdmin(admin.ModelAdmin):
+#     pass
 @admin.register(MicroCourse)
 class MicroCourseAdmin(admin.ModelAdmin):
     list_display = ('micropathway', 'course_id')
