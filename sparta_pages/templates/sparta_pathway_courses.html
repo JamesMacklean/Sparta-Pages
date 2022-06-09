@@ -48,7 +48,7 @@
                 <a class="btn btn-primary" target="_blank" href="{% url 'about_course' course_id=course.courseoverview.id %}">
                   View Course
                 </a>
-                <a class="btn btn-primary course-ongoing" target="_blank" href="">
+                <a class="btn btn-primary btn-disabled" target="_blank">
                   View Certificate
                 </a>
               {% else %}
@@ -123,7 +123,7 @@
             <a class="btn btn-primary" target="_blank" href="{% url 'about_course' course_id=course.courseoverview.id %}">
               View Course
             </a>
-            <a class="btn btn-primary course-ongoing" target="_blank">
+            <a class="btn btn-primary btn-disabled" target="_blank">
               View Certificate
             </a>
             {% else %}
