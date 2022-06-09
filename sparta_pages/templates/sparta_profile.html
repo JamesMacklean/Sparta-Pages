@@ -96,7 +96,7 @@
                             {% for course in courses %}
                               {% if course.micropathway_id == micropathway.id %}
                                 <tr>
-                                  <td>{{ course.course_code }}: {{ course.courseoverview.display_name }}</td>
+                                  <td style="vertical-align: middle;">{{ course.course_code }}: {{ course.courseoverview.display_name }}</td>
                                   <td>  
                                       <a class="btn btn-primary" target="_blank" href="{% url 'about_course' course_id=course.courseoverview.id %}">
                                         View Course
@@ -117,7 +117,7 @@
                           {% for course in courses %}
                             {% if course.micropathway_id == micropathway.id %}
                               <tr>
-                                <td>{{ course.course_code }}: {{ course.courseoverview.display_name }}</td>
+                                <td style="vertical-align: middle;">{{ course.course_code }}: {{ course.courseoverview.display_name }}</td>
                                 <td>
                                   <!-- IF COURSE IS COMPLETED -->
                                   {% if course.completed %}
@@ -205,8 +205,8 @@
           {% if applications %}
           {% for app in applications %}
           <tr>
-            <td>{{ app.pathway }}</td>
-            <td>{{ app.get_status_display }}</td>
+            <td style="vertical-align: middle;">{{ app.pathway }}</td>
+            <td style="vertical-align: middle;">{{ app.get_status_display }}</td>
             {% if app.status == 'AP' %}
             <td>
               <div class="dropdown show">
