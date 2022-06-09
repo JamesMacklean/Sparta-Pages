@@ -146,7 +146,10 @@ class SpartaProfile(models.Model):
     DTICIG = "DT"
     SPH = "SP"
     ISCF = "IC"
-    DAPCOSM = "Development Academy of the Philippines-COSM"
+    DAPCOSM = "DC"
+    FPANDAPH= "FP"
+    DOSTXII = "DX"
+    PHILSCA = "PA"
     NOT_INVOLVED = "NA"
     ORG_CHOICES = (
         (NOT_INVOLVED, "N/A"),
@@ -179,7 +182,10 @@ class SpartaProfile(models.Model):
 	(DTICIG,"Department of Trade and Industry-Competitiveness and Innovation Group"),
 	(SPH,"Shopee Philippines"),
 	(ISCF,"Iloilo State College of Fisheries"),
-        (DAPCOSM,"Development Academy of the Philippines-COSM")
+        (DAPCOSM,"Development Academy of the Philippines-COSM"),
+	(FPANDAPH,"foodpanda Philippines"),
+	(DOSTXII,"Department of Science and Technology XII"),
+	(PHILSCA,"Philippine State College of Aeronautics (PhilSCA)"),
     )
 
     ANZ = "AN"

@@ -15,7 +15,6 @@ from student.models import CourseEnrollment
 from util.views import ensure_valid_course_key
 from xmodule.modulestore.django import modulestore
 
-from sparta_pages.local_settings import LOCAL_STAFF_EMAIL
 from .helpers_utils import get_course_outline_block_tree
 
 import logging

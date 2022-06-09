@@ -30,8 +30,6 @@ from ..analytics import (
     get_average_completion_rate, get_student_enrollment_status,
     get_average_grade_percent,
 )
-from ..local_settings import LOCAL_REDOC_SCHEMA_URL
-from ..local_settings import LOCAL_SECRET_TOKEN as SECRET_TOKEN
 from ..models import (
     Pathway, SpartaCourse, SpartaProfile, PathwayApplication,
     EducationProfile, EmploymentProfile, TrainingProfile,

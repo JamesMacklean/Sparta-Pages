@@ -33,7 +33,9 @@
 
 <style>
   :root {
-      --sparta_bg    : #441116;      /*sparta official bg*/
+      --coursebank   : #17a2b8;     /*coursebank official bg*/
+      --sparta_bg    : #441116;     /*sparta official bg*/
+      --dict_bg      : #4ebce8;     /*dict official bg*/
   }
 
   * {box-sizing: border-box}
@@ -43,9 +45,18 @@
     text-align: right;
   }
   .table-course-actions .btn {
+    background-color: var(--coursebank);
+    border-color: var(--coursebank);
+    outline: none;
     width: 152px;
   }
-
+  .table-course-actions .btn:hover {
+    background-color: var(--dict_bg);
+    border-color: var(--coursebank);
+  }
+  .modal-card {
+     width: 100%;
+  }
   /* Style the tab */
   .tab {
     float: left;

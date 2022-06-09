@@ -37,7 +37,6 @@ from ..forms import (
     ExportAppsForm, FilterForm, ExportProfilesForm,
     ExportAnalyticsForm, ExportPathwayAnalyticsForm, GenerateCourseForm
 )
-from ..local_settings import LOCAL_TEST
 from ..models import (
     Pathway, SpartaCourse, SpartaProfile, ExtendedSpartaProfile,
     EducationProfile, EmploymentProfile, TrainingProfile,
