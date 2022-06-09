@@ -1205,7 +1205,10 @@ def enrollment_approve_application(request, username, course_key):
     # ENROLL COMMAND
     if username is not None:
         uname = User.objects.get(username=username)
-        _enroll_user(username=uname, email_address=uname.email, course_key=course_key, course_name=course_name, mode="verified")
+        if (course_key == "course-v1:DAP+SP101+2020_Q1"):
+            _enroll_user(username=uname, email_address=uname.email, course_key=course_key, course_name=course_name, mode="honor")
+        else:
+            _enroll_user(username=uname, email_address=uname.email, course_key=course_key, course_name=course_name, mode="verified")
 
     return redirect('sparta-profile')
 
