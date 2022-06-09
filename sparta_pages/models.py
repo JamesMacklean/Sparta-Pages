@@ -65,7 +65,7 @@ class SpartaCourse(models.Model):
         verbose_name_plural = "2. Sparta Courses"
 
     def __str__(self):
-        return "{}: {}".format(self.pathway.name, self.course_id)
+        return "{}: {}".format(self.pathway.name,self.course_id)
 
     @property
     def related_courses(self):
@@ -89,6 +89,8 @@ class CourseGroup(models.Model):
         null=True, blank=True,
         related_name="groups"
     )
+    type = models.CharField(max_length=2, choices=GROUP_TYPE, default=CORE)
+    name = models.CharField(max_length=255, null=True, blank=True)
     complete_at_least = models.PositiveSmallIntegerField(null=True, blank=True)
     is_active = models.BooleanField(default=True)
 
@@ -96,7 +98,7 @@ class CourseGroup(models.Model):
         verbose_name_plural = "2.2 Course Groups"
 
     def __str__(self):
-        return self.name or "{}: {}".format(self.pathway.name, self.type)
+        return self.name or "{}: {}".format(self.pathway.name,self.micropathway.name, self.type)
 
 
 class SpartaProfile(models.Model):
@@ -432,7 +434,6 @@ class PathwayApplication(models.Model):
             self.status = self.DENIED
             self.save()
 
-
 class EducationProfile(models.Model):
     """
     """
@@ -460,6 +461,7 @@ class EducationProfile(models.Model):
     address = models.TextField()
     started_at = models.DateField()
     graduated_at = models.DateField()
+
 
     class Meta:
         verbose_name_plural = "5. Education Profiles"
@@ -621,3 +623,89 @@ class SpartaReEnrollment(models.Model):
     """
     enrollment = models.ForeignKey(CourseEnrollment, on_delete=models.CASCADE)
     reenroll_date = models.DateTimeField(auto_now_add=True)
+
+class SpartaEnrollment(models.Model):
+    """
+    """
+    enrollment = models.ForeignKey(CourseEnrollment, on_delete=models.CASCADE)
+    enroll_date = models.DateTimeField(auto_now_add=True)
+
+class MicroPathway(models.Model):
+    """
+    """
+    name = models.CharField(max_length=255)
+    slug = models.SlugField(max_length=255)
+    short_description = models.CharField(max_length=255, blank=True, default="")
+    long_description = models.TextField(blank=True, default="")
+    card_description = models.TextField(blank=True, default="")
+    image_url = models.CharField(max_length=255)
+    order = models.PositiveSmallIntegerField(default=0)
+    is_active = models.BooleanField(default=True)
+
+    class Meta:
+        ordering = ['order']
+        verbose_name_plural = "1.2 Micro Pathways"
+
+    def get_absolute_url(self):
+        return reverse('sparta-micropathway', kwargs={'slug': self.slug})
+
+    def __str__(self):
+        return self.name
+
+class MicroCourse(models.Model):
+    """
+    """
+    course_id = models.CharField(max_length=255, null=True, blank=True)
+    micropathway = models.ForeignKey(
+        'MicroPathway',
+        on_delete=models.CASCADE,
+        null=True, blank=True,
+        related_name="courses"
+    )
+    short_description = models.CharField(max_length=255, blank=True, default="")
+    long_description = models.TextField(blank=True, default="")
+    image_url = models.CharField(max_length=255, default="https://coursebank-static-assets-tmtg.s3-ap-northeast-1.amazonaws.com/sparta+black.png")
+    order = models.PositiveSmallIntegerField(default=0)
+    display_order = models.CharField(max_length=255, blank=True, default="")
+    group = models.ForeignKey(
+        'MicroGroup',
+        on_delete=models.CASCADE,
+        null=True, blank=True,
+        related_name="courses"
+    )
+    is_active = models.BooleanField(default=True)
+
+    class Meta:
+        ordering = ['order']
+        verbose_name_plural = "1.3 Micropathway Courses"
+
+    def __str__(self):
+        return "{}: {}".format(self.micropathway.name,self.course_id)
+
+    @property
+    def related_courses(self):
+        pass
+
+class MicroGroup(models.Model):
+    """
+    """
+    MICRO = "MC"
+    GROUP_TYPE = (
+        (MICRO, "Micro"),
+    )
+    type = models.CharField(max_length=2, choices=GROUP_TYPE, default=MICRO)
+    name = models.CharField(max_length=255, null=True, blank=True)
+    micropathway = models.ForeignKey(
+        'MicroPathway',
+        on_delete=models.CASCADE,
+        null=True, blank=True,
+        related_name="groups"
+    )
+    complete_at_least = models.PositiveSmallIntegerField(null=True, blank=True)
+    is_active = models.BooleanField(default=True)
+
+    class Meta:
+        verbose_name_plural = "1.4 MicroPathway Groups"
+
+    def __str__(self):
+        return self.name or "{}: {}".format(self.micropathway.name, self.type)
