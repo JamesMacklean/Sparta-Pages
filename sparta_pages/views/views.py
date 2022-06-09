@@ -49,7 +49,8 @@ from ..models import (
     Pathway, SpartaCourse, SpartaProfile, ExtendedSpartaProfile,
     EducationProfile, EmploymentProfile, SpartaReEnrollment, TrainingProfile,
     PathwayApplication, Event,
-    SpartaCoupon, StudentCouponRecord,MicroPathway,MicroCourse,MicroGroup
+    SpartaCoupon, StudentCouponRecord,MicroCourse,MicroGroup
+    # ,MicroPathway
 )
 
 
