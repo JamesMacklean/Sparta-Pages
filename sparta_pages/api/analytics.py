@@ -16,7 +16,6 @@ from rest_framework import status, renderers
 from rest_framework.decorators import api_view, authentication_classes
 from rest_framework.response import Response
 
-from ..local_settings import LOCAL_SECRET_TOKEN as SECRET_TOKEN
 from .serializers import (
     PathwaySerializer, SpartaCourseSerializer,
     SpartaProfileSerializer, ExtendedSpartaProfileSerializer,

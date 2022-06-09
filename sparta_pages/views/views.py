@@ -51,7 +51,6 @@ from ..models import (
     PathwayApplication, Event,
     SpartaCoupon, StudentCouponRecord,MicroPathway,MicroCourse,MicroGroup
 )
-from ..local_settings import LOCAL_MAX_APPLIED
 
 
 def main(request):
