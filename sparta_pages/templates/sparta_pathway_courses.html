@@ -35,7 +35,7 @@
         {% for course in courses %}
         {% if course.group == "CO"  %}
         <tr>
-            <td>{{ course.courseoverview.display_name }}</td>
+            <td>{{ course.course_id }}: {{ course.courseoverview.display_name }}</td>
             <td>
               {% if course.completed %}
                 <a class="btn btn-primary" target="_blank" href="{% url 'about_course' course_id=course.courseoverview.id %}">

@@ -1063,11 +1063,13 @@ class StudentCouponRecordsView(TemplateView):
                     'pathway_course': pathway_course,
                     'group': group.type,
 
+
                 }
 
                 course_key = CourseKey.from_string(pathway_course.course_id)
                 courseoverview = CourseOverview.get_from_id(course_key)       
                 course['courseoverview'] = courseoverview  
+                course['course_id'] = course_key
 
                 # TO CHECK IF NATAPOS NA NI LEARNER ANG COURSE
                 cert_status = certificate_status_for_student(self.request.user, course_key)
