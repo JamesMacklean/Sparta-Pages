@@ -46,11 +46,10 @@
       <section class="container-container">
         <div class="card-container">
           <div class="card-image spartabg"></div>
-            <h2>SPARTA Scholarship</h2>
+            <!-- <h2>SPARTA Scholarship</h2> -->
             <p>Project SPARTA was launched in order to put in place the necessary online education, research and development mechanisms and infrastructure to not only enable the industry of data science and analytics but also to advance smart governance practices. It aims to train and graduate 30,000 learners in data science, analytics, and related fields through online learning.</p>
               <div class="buttons">
               <a href="{% url 'sparta-main' %}">Learn More</a>
-              <br>
               <a href="{% url 'sparta-application-page' %}">Select Pathway</a>
               </div>
         </div>
@@ -58,14 +57,14 @@
       <section class="container-container">
         <div class="card-container">
           <div class="card-image dictbg"></div>
-            <h2>DICT Scholarship</h2>
-            <p>The training programs within this initiative aim to upskill the Philippine workforce in various fields of study that are relevant to today’s technology driven landscape.
-              <br>
+            <!-- <h2>DICT Scholarship</h2> -->
+            <p>
+              The training programs within this initiative aim to upskill the Philippine workforce in various fields of study that are relevant to today’s technology driven landscape.
+              <br><br>
               The duration of courses that will be made available to learners is a mix of international courses from Coursera as well as local online courses from the DICT’s growing content library.
             </p>
             <div class="buttons">
               <a href="https://dict.coursebank.ph">Learn More</a>
-              <br>
               <a href="#">Apply</a>
             </div>
         </div>
@@ -270,9 +269,9 @@
     margin: 30px;
   }
   .card-container {
-    background-color: lightgray;
+    border: lightgray solid 1px;
     width: 700px;
-    height: 560px;
+    /* height: 560px; */
     margin-bottom: 15px;
     border-radius: 15px;
   }
@@ -287,7 +286,7 @@
   }
   .dictbg {
     background-image: url('https://coursebank-static-assets-tmtg.s3.ap-northeast-1.amazonaws.com/DICT-Logo-nobg.png');
-    background-color: #4EBCE8;
+    background-color: var(--dict_bg);
   }
   .micro-container-container {
     display: flex;
@@ -341,26 +340,34 @@
   .card-container h2 {
     text-align: center;
     color: black;
+    padding: 20px;
   }
   .card-container p {
     opacity: 100%;
     color: black;
     padding: 20px;
-    margin: 15px;
+    margin: 0;
+    text-align: justify;
   }
-  .buttons{
+  .buttons {
+    padding: 10px 20px;
     text-align: right;
-    margin-right: 15px;
+    /* margin-right: 15px; */
   }
-  .buttons a{
-    text-decoration: none;
+  .buttons a {
+    text-decoration: none !important;
     color: white !important;
     font-family: "Helvetica", Sans-serif;
-    background-color: #4EBCE8;
+    background-color: var(--dict_bg);
     border-radius: 11px 11px 11px 11px;
     padding: 10px 20px;
-    margin-bottom: 10px;
+    margin: 10px 5px;
     display:inline-flex;
+    justify-content: center;
+    width: 160px;
+  }
+   .buttons a:hover {
+    background-color: #17a2b8;
   }
 .modal-title {
   width: 100%;
