@@ -67,11 +67,11 @@ def main(request):
             pass
 
     pathways = Pathway.objects.filter(is_active=True)
-    micropathways = MicroPathway.objects.filter(is_active=True)
+    # micropathways = MicroPathway.objects.filter(is_active=True)
 
     context['pathways'] = pathways
     context['profile'] = profile
-    context['micropathways'] = micropathways
+    # context['micropathways'] = micropathways
     return render(request, template_name, context)
 
 
@@ -80,7 +80,7 @@ def micropathway(request, slug):
     template_name = "sparta_micropathway.html"
     context = {}
 
-    micropathway = get_object_or_404(MicroPathway, slug=slug)
+    # micropathway = get_object_or_404(MicroPathway, slug=slug)
     micropathway_courses = MicroCourse.objects.filter(is_active=True).filter(micropathway=micropathway)
 
     micro_courses = []
@@ -468,7 +468,7 @@ class ProfilePageView(TemplateView):
 
         ##################### MICROPATHWAYS #####################
         
-        get_micropathways = MicroPathway.objects.filter(is_active=True)
+        # get_micropathways = MicroPathway.objects.filter(is_active=True)
         get_microgroups = MicroGroup.objects.filter(is_active=True)
 
         micropathways = []
