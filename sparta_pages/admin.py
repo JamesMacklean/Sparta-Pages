@@ -1,11 +1,11 @@
 from django.contrib import admin
 from .models import (
-    Pathway, SpartaCourse, CourseGroup,
+    Pathway, SpartaCourse, CourseGroup, SpartaEnrollment,
     SpartaProfile, PathwayApplication, ExtendedSpartaProfile,
     EducationProfile, EmploymentProfile, TrainingProfile,
     Event, APIToken,
     SpartaCoupon, StudentCouponRecord,
-    SpartaReEnrollment
+    SpartaReEnrollment,MicroPathway,MicroCourse,MicroGroup
 )
 
 @admin.register(Pathway)
@@ -92,3 +92,21 @@ class StudentCouponRecordAdmin(admin.ModelAdmin):
 @admin.register(SpartaReEnrollment)
 class SpartaReEnrollmentAdmin(admin.ModelAdmin):
     readonly_fields = ('enrollment', 'reenroll_date')
+@admin.register(SpartaEnrollment)
+class SpartaEnrollmentAdmin(admin.ModelAdmin):
+    readonly_fields = ('enrollment', 'enroll_date')
+
+@admin.register(MicroPathway)
+class MicroPathwayAdmin(admin.ModelAdmin):
+    pass
+@admin.register(MicroCourse)
+class MicroCourseAdmin(admin.ModelAdmin):
+    list_display = ('micropathway', 'course_id')
+    list_filter = ('micropathway',)
+    search_fields = ['micropathway__name', 'course_id']
+
+@admin.register(MicroGroup)
+class MicroGroupAdmin(admin.ModelAdmin):
+    list_display = ('name', 'micropathway', 'type')
+    list_filter = ('micropathway', 'type')
+    search_fields = ['name', 'micropathway__name',]

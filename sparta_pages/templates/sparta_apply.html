@@ -8,14 +8,14 @@
 {% if has_approved_application %}
 <div class="card">
   <div class="card-body">
-    <h2>You already have an active Learning Pathway.</h2>
-    <p>For now, you are permitted only one Learning Pathway.</p>
+    <h2>You already have an active learning pathway.</h2>
+    <p>You are allowed to take only one (1) pathway at a time. You may apply for another once you’ve completed your current pathway.</p>
   </div>
 </div>
 {% else %}
 <div class="card">
   <div class="card-body">
-    <h2 class="card-title">Apply for a pathway</h2>
+    <h2 class="card-title"> Select a learning pathway</h2>
     <p><a target="blank" href="{% url 'sparta-main' %}">Click here for pathway details.</a></p>
 
     {% for pathway in pathways %}

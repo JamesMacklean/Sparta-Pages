@@ -1,0 +1,95 @@
+{% block sparta_base %}
+<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css"/>
+
+<style>
+    .swiper{
+        width: 900px;
+    }
+    .swiper-card{
+        position: relative;
+        height: 250px;
+    }
+    .swiperbg{
+        background-color: var(--sparta_bg) !important;
+        height: 145px !important;
+    }
+    .swiper-overlay {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 100%;
+        width: 100%;
+        opacity: 0;
+        transition: .5s ease;
+        background-color: white;
+    }
+
+    .swiper-card:hover .swiper-overlay {
+        opacity: 1;
+    }
+
+    .swiper-text {
+    color: maroon;
+    font-family: "Montserrat",sans-serif !important;
+    font-size: 20px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    text-align: center;
+    }
+
+</style>
+
+<section>
+    <div class="swiper mySwiper swiper-container">
+        <div class="swiper-wrapper swiper-content">
+            {% for micropathway in micropathways %}
+            <div class="swiper-slide swiper-card">
+            <a href="{% url 'sparta-micropathway' slug=micropathway.slug %}">
+                <div class="swiperbg {{ micropathway.slug }}_image">
+                    <h1 class="heading-1" style="text-align: left; padding-top: 30px !important; font-size: 25px !important;">{{ micropathway.name }}</h1>
+                </div>
+                <div class="swiper-overlay">
+                    <div class="swiper-text">{{ micropathway.card_description|safe }}</div>
+                </div>
+                <div class="rule rule-1">
+                    <hr>
+                </div>
+            </a>
+            </div>
+            {% endfor %}
+        </div>
+
+    <div class="swiper-button-next"></div>
+    <div class="swiper-button-prev"></div>
+    <div class="swiper-pagination"></div>
+    </div>
+</section>
+
+<!-- Swiper JS -->
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+
+<!-- Initialize Swiper -->
+<script>
+  var swiper = new Swiper(".mySwiper", {
+    slidesPerView: 3,
+    spaceBetween: 30,
+    slidesPerGroup: 3,
+    loop: true,
+    loopFillGroupWithBlank: true,
+    pagination: {
+      el: ".swiper-pagination",
+      clickable: true,
+    },
+    navigation: {
+      nextEl: ".swiper-button-next",
+      prevEl: ".swiper-button-prev",
+    },
+  });
+</script>
+{% endblock %}
