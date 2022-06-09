@@ -36,7 +36,7 @@
         {% if course.group == "CO"  %}
         <tr>
             <td>{{ course.course_code }}: {{ course.courseoverview.display_name }}</td>
-            <td>
+            <td style="vertical-align: middle;">
               {% if course.completed %}
                 <a class="btn btn-primary" target="_blank" href="{% url 'about_course' course_id=course.courseoverview.id %}">
                   View Course
@@ -111,7 +111,7 @@
         {% if course.group == "EL" %}
         <tr>
           <td>{{ course.course_code }}: {{ course.courseoverview.display_name }}</td>
-          <td>
+          <td style="vertical-align: middle;">
             {% if course.completed %}
             <a class="btn btn-primary" target="_blank" href="{% url 'about_course' course_id=course.courseoverview.id %}">
               View Course
