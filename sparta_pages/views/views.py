@@ -1050,10 +1050,11 @@ class StudentCouponRecordsView(TemplateView):
         elective_courses = []
         graduate_course = []
         courses = []
+        counter=0
+        
         for group in pathway.groups.all().filter(is_active=True):
             pathway_courses = sparta_courses.filter(group=group)
             
-            counter=0
             for pathway_course in pathway_courses:
                 counter = counter+1
                 
