@@ -150,6 +150,7 @@ class SpartaProfile(models.Model):
     FPANDAPH= "FP"
     DOSTXII = "DX"
     PHILSCA = "PA"
+    STMI = "SI"
     NOT_INVOLVED = "NA"
     ORG_CHOICES = (
         (NOT_INVOLVED, "N/A"),
@@ -179,13 +180,14 @@ class SpartaProfile(models.Model):
         (PCCI, "Philippine Chamber of Commerce and Industry (PCCI)"),
         (VSU, "Visayas State University (VSU)"),
         (SMC, "St. Martin of Tours Credit and Development Cooperative (St. Martin Coop)"),
-	(DTICIG,"Department of Trade and Industry-Competitiveness and Innovation Group"),
-	(SPH,"Shopee Philippines"),
-	(ISCF,"Iloilo State College of Fisheries"),
+	    (DTICIG,"Department of Trade and Industry-Competitiveness and Innovation Group"),
+	    (SPH,"Shopee Philippines"),
+	    (ISCF,"Iloilo State College of Fisheries"),
         (DAPCOSM,"Development Academy of the Philippines-COSM"),
-	(FPANDAPH,"foodpanda Philippines"),
-	(DOSTXII,"Department of Science and Technology XII"),
-	(PHILSCA,"Philippine State College of Aeronautics (PhilSCA)"),
+	    (FPANDAPH,"foodpanda Philippines"),
+	    (DOSTXII,"Department of Science and Technology XII"),
+	    (PHILSCA,"Philippine State College of Aeronautics (PhilSCA)"),
+        (STMI,"STMicroelectronics, Inc."),
     )
 
     ANZ = "AN"
