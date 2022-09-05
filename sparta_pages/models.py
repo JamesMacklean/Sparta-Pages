@@ -151,6 +151,7 @@ class SpartaProfile(models.Model):
     DOSTXII = "DX"
     PHILSCA = "PA"
     STMI = "SI"
+    TNTI = "TI"
     NOT_INVOLVED = "NA"
     ORG_CHOICES = (
         (NOT_INVOLVED, "N/A"),
@@ -188,6 +189,7 @@ class SpartaProfile(models.Model):
 	    (DOSTXII,"Department of Science and Technology XII"),
 	    (PHILSCA,"Philippine State College of Aeronautics (PhilSCA)"),
         (STMI,"STMicroelectronics, Inc."),
+        (TNTI,"Trends & Technologies Inc"),
     )
 
     ANZ = "AN"
