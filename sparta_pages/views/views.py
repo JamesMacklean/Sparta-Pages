@@ -1118,10 +1118,9 @@ class StudentCouponRecordsView(TemplateView):
                 core_courses.append(data)
         
         # CAPSTONE COURSES
-
         if pathway == "Data Analyst":
             try:
-                # counter = counter+1                
+                counter = counter+1                
                 cap_course = {
                     'unique_id': counter,
                     'pathway_course': "Data Analyst",
@@ -1168,7 +1167,7 @@ class StudentCouponRecordsView(TemplateView):
         
         elif pathway == "Data Associate":
             try:
-                # counter = counter+1                
+                counter = counter+1                
                 cap_course = {
                     'unique_id': counter,
                     'pathway_course': "Data Associate",
@@ -1215,7 +1214,7 @@ class StudentCouponRecordsView(TemplateView):
         
         elif pathway == "Data Steward":
             try:
-                # counter = counter+1                
+                counter = counter+1                
                 cap_course = {
                     'unique_id': counter,
                     'pathway_course': "Data Analyst",
@@ -1262,7 +1261,7 @@ class StudentCouponRecordsView(TemplateView):
         
         elif pathway == "Data Engineer":
             try:
-                # counter = counter+1                
+                counter = counter+1                
                 cap_course = {
                     'unique_id': counter,
                     'pathway_course': "Data Engineer",
@@ -1309,7 +1308,7 @@ class StudentCouponRecordsView(TemplateView):
         
         elif pathway == "Data Scientist":
             try:
-                # counter = counter+1                
+                counter = counter+1                
                 cap_course = {
                     'unique_id': counter,
                     'pathway_course': "Data Scientist",
@@ -1356,7 +1355,7 @@ class StudentCouponRecordsView(TemplateView):
         
         elif pathway == "Analytics Manager":
             try:
-                # counter = counter+1                
+                counter = counter+1                
                 cap_course = {
                     'unique_id': counter,
                     'pathway_course': "Analytics Manager",
