@@ -1120,7 +1120,7 @@ class StudentCouponRecordsView(TemplateView):
         # CAPSTONE COURSES
         if pathway == "Data Analyst":
             try:
-                counter = counter+1                
+                # counter = counter+1                
                 cap_course = {
                     'unique_id': counter,
                     'pathway_course': "Data Analyst",
@@ -1167,7 +1167,7 @@ class StudentCouponRecordsView(TemplateView):
         
         elif pathway == "Data Associate":
             try:
-                counter = counter+1                
+                # counter = counter+1                
                 cap_course = {
                     'unique_id': counter,
                     'pathway_course': "Data Associate",
@@ -1214,7 +1214,7 @@ class StudentCouponRecordsView(TemplateView):
         
         elif pathway == "Data Steward":
             try:
-                counter = counter+1                
+                # counter = counter+1                
                 cap_course = {
                     'unique_id': counter,
                     'pathway_course': "Data Analyst",
@@ -1261,7 +1261,7 @@ class StudentCouponRecordsView(TemplateView):
         
         elif pathway == "Data Engineer":
             try:
-                counter = counter+1                
+                # counter = counter+1                
                 cap_course = {
                     'unique_id': counter,
                     'pathway_course': "Data Engineer",
@@ -1308,7 +1308,7 @@ class StudentCouponRecordsView(TemplateView):
         
         elif pathway == "Data Scientist":
             try:
-                counter = counter+1                
+                # counter = counter+1                
                 cap_course = {
                     'unique_id': counter,
                     'pathway_course': "Data Scientist",
@@ -1355,7 +1355,7 @@ class StudentCouponRecordsView(TemplateView):
         
         elif pathway == "Analytics Manager":
             try:
-                counter = counter+1                
+                # counter = counter+1                
                 cap_course = {
                     'unique_id': counter,
                     'pathway_course': "Analytics Manager",
@@ -1363,7 +1363,7 @@ class StudentCouponRecordsView(TemplateView):
                     'course_code': "",
                 }
 
-                cap_course_key = CourseKey.from_string("course-v1:DAP+SPCapstone006+2021_Q3")
+                cap_course_key = CourseKey.from_string("course-v1:IIAP+BNL101+2020_Q3")
                 cap_courseoverview = CourseOverview.get_from_id(cap_course_key)       
                 cap_course['courseoverview'] = cap_courseoverview  
 
