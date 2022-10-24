@@ -186,7 +186,7 @@
         {% for course in courses %}
         {% if course.group == "Capstone"  %}
         <tr>
-            <td style="vertical-align: middle;">{{ course.course_code }}: {{ course.courseoverview.display_name }}</td>
+            <td style="vertical-align: middle;">{{ course.courseoverview.display_name }}</td>
             <td>
               {% if course.completed %}
                 <a class="btn btn-primary" target="_blank" href="{% url 'about_course' course_id=course.courseoverview.id %}">

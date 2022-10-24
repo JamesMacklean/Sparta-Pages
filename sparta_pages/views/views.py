@@ -1118,54 +1118,7 @@ class StudentCouponRecordsView(TemplateView):
                 core_courses.append(data)
         
         # CAPSTONE COURSES
-        if pathway == "Data Analyst":
-            try:
-                # counter = counter+1                
-                cap_course = {
-                    'unique_id': counter,
-                    'pathway_course': "Data Analyst",
-                    'group': "Capstone",
-                    'course_code': "",
-                }
-
-                cap_course_key = CourseKey.from_string("course-v1:DAP+SPCapstone001+2021_Q2")
-                cap_courseoverview = CourseOverview.get_from_id(cap_course_key)       
-                cap_course['courseoverview'] = cap_courseoverview  
-
-                # TO CHECK IF NATAPOS NA NI LEARNER ANG COURSE
-                cert_status = certificate_status_for_student(self.request.user, cap_course_key)
-                if cert_status:
-                    if cert_status['mode'] == 'verified' or cert_status['mode'] == 'honor':
-
-                        if cert_status['status'] not in  ['unavailable', 'notpassing', 'restricted', 'unverified']:
-                            
-                            # CODE TO FETCH LEARNER'S CERTIFICATE
-                            unique_certificate = GeneratedCertificate.objects.get(user__username=self.request.user, course_id = cap_course_key)
-
-                            cap_course['verify_uuid'] = unique_certificate.verify_uuid
-                            cap_course['completed'] = True
-
-                        else:
-                            cap_course['completed'] = False
-                    else:
-                        cap_course['completed'] = False
-                else:
-                    cap_course['completed'] = False
-
-                # To check if user is enrolled
-                enrollment = CourseEnrollment.is_enrolled(self.request.user, cap_course_key)
-                if enrollment is True:
-                    cap_course['enrollment_status'] = "enrolled"
-                else:
-                    cap_course['enrollment_status'] = "not enrolled"
-
-                courses.append(cap_course)
-                context['graduate_course'] = {'courseoverview': cap_courseoverview}
-
-            except CourseOverview.DoesNotExist:
-                context['graduate_course'] = None
-        
-        elif pathway == "Data Associate":
+        if self.kwargs['pathway_id'] == "1":
             try:
                 # counter = counter+1                
                 cap_course = {
@@ -1212,17 +1165,17 @@ class StudentCouponRecordsView(TemplateView):
             except CourseOverview.DoesNotExist:
                 context['graduate_course'] = None
         
-        elif pathway == "Data Steward":
+        elif self.kwargs['pathway_id'] == "2":
             try:
                 # counter = counter+1                
                 cap_course = {
                     'unique_id': counter,
-                    'pathway_course': "Data Analyst",
+                    'pathway_course': "Data Steward",
                     'group': "Capstone",
                     'course_code': "",
                 }
 
-                cap_course_key = CourseKey.from_string("course-v1:DAP+SPCapstone003+2021_Q4")
+                cap_course_key = CourseKey.from_string("course-v1:DAP+SPCapstone005+2021_Q3")
                 cap_courseoverview = CourseOverview.get_from_id(cap_course_key)       
                 cap_course['courseoverview'] = cap_courseoverview  
 
@@ -1259,7 +1212,7 @@ class StudentCouponRecordsView(TemplateView):
             except CourseOverview.DoesNotExist:
                 context['graduate_course'] = None
         
-        elif pathway == "Data Engineer":
+        elif self.kwargs['pathway_id'] == "3":
             try:
                 # counter = counter+1                
                 cap_course = {
@@ -1306,7 +1259,7 @@ class StudentCouponRecordsView(TemplateView):
             except CourseOverview.DoesNotExist:
                 context['graduate_course'] = None
         
-        elif pathway == "Data Scientist":
+        elif self.kwargs['pathway_id'] == "4":
             try:
                 # counter = counter+1                
                 cap_course = {
@@ -1316,7 +1269,54 @@ class StudentCouponRecordsView(TemplateView):
                     'course_code': "",
                 }
 
-                cap_course_key = CourseKey.from_string("course-v1:DAP+SPCapstone002+2021_Q3")
+                cap_course_key = CourseKey.from_string("ourse-v1:DAP+SPCapstone002+2021_Q3")
+                cap_courseoverview = CourseOverview.get_from_id(cap_course_key)       
+                cap_course['courseoverview'] = cap_courseoverview  
+
+                # TO CHECK IF NATAPOS NA NI LEARNER ANG COURSE
+                cert_status = certificate_status_for_student(self.request.user, cap_course_key)
+                if cert_status:
+                    if cert_status['mode'] == 'verified' or cert_status['mode'] == 'honor':
+
+                        if cert_status['status'] not in  ['unavailable', 'notpassing', 'restricted', 'unverified']:
+                            
+                            # CODE TO FETCH LEARNER'S CERTIFICATE
+                            unique_certificate = GeneratedCertificate.objects.get(user__username=self.request.user, course_id = cap_course_key)
+
+                            cap_course['verify_uuid'] = unique_certificate.verify_uuid
+                            cap_course['completed'] = True
+
+                        else:
+                            cap_course['completed'] = False
+                    else:
+                        cap_course['completed'] = False
+                else:
+                    cap_course['completed'] = False
+
+                # To check if user is enrolled
+                enrollment = CourseEnrollment.is_enrolled(self.request.user, cap_course_key)
+                if enrollment is True:
+                    cap_course['enrollment_status'] = "enrolled"
+                else:
+                    cap_course['enrollment_status'] = "not enrolled"
+
+                courses.append(cap_course)
+                context['graduate_course'] = {'courseoverview': cap_courseoverview}
+
+            except CourseOverview.DoesNotExist:
+                context['graduate_course'] = None
+        
+        elif self.kwargs['pathway_id'] == "5":
+            try:
+                # counter = counter+1                
+                cap_course = {
+                    'unique_id': counter,
+                    'pathway_course': "Data Analyst",
+                    'group': "Capstone",
+                    'course_code': "",
+                }
+
+                cap_course_key = CourseKey.from_string("course-v1:DAP+SPCapstone001+2021_Q2 ")
                 cap_courseoverview = CourseOverview.get_from_id(cap_course_key)       
                 cap_course['courseoverview'] = cap_courseoverview  
 
@@ -1363,7 +1363,7 @@ class StudentCouponRecordsView(TemplateView):
                     'course_code': "",
                 }
 
-                cap_course_key = CourseKey.from_string("course-v1:CirroLytix+CX101+2019_T4")
+                cap_course_key = CourseKey.from_string("course-v1:DAP+SPCapstone006+2021_Q3")
                 cap_courseoverview = CourseOverview.get_from_id(cap_course_key)       
                 cap_course['courseoverview'] = cap_courseoverview  
 
