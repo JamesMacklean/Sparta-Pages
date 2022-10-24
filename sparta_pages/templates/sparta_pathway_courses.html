@@ -184,7 +184,7 @@
       <tbody>
         {% if pathway_is_approved %}
         {% for course in courses %}
-        {% if course.group == "Capstone"  %}
+        
         <tr>
             <td style="vertical-align: middle;">{{ course.course_code }}: {{ course.courseoverview.display_name }}</td>
             <td>
@@ -234,10 +234,9 @@
             </div>
           </div>
         </tr>
-        {% endif %}
         
         {% endfor %}
-        
+
         {% else %}
         <tr>
           <td>-</td>
