@@ -1269,7 +1269,7 @@ class StudentCouponRecordsView(TemplateView):
                     'course_code': "",
                 }
 
-                cap_course_key = CourseKey.from_string("ourse-v1:DAP+SPCapstone002+2021_Q3")
+                cap_course_key = CourseKey.from_string("course-v1:DAP+SPCapstone002+2021_Q3")
                 cap_courseoverview = CourseOverview.get_from_id(cap_course_key)       
                 cap_course['courseoverview'] = cap_courseoverview  
 
