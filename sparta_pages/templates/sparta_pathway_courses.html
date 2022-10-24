@@ -186,6 +186,7 @@
         {% for course in courses %}
         
         <tr>
+            <td style="vertical-align: middle;">{{ pathway }}</td>
             <td style="vertical-align: middle;">{{ course.course_code }}: {{ course.courseoverview.display_name }}</td>
             <td>
               {% if course.completed %}
