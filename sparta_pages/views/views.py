@@ -1353,7 +1353,7 @@ class StudentCouponRecordsView(TemplateView):
             except CourseOverview.DoesNotExist:
                 context['graduate_course'] = None
         
-        elif pathway == "Analytics Manager":
+        elif self.kwargs['pathway_id'] == "6":
             try:
                 # counter = counter+1                
                 cap_course = {
