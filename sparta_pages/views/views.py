@@ -1363,7 +1363,7 @@ class StudentCouponRecordsView(TemplateView):
                     'course_code': "",
                 }
 
-                cap_course_key = CourseKey.from_string("course-v1:IIAP+BNL101+2020_Q3")
+                cap_course_key = CourseKey.from_string("course-v1:CirroLytix+CX101+2019_T4")
                 cap_courseoverview = CourseOverview.get_from_id(cap_course_key)       
                 cap_course['courseoverview'] = cap_courseoverview  
 
