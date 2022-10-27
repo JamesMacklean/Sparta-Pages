@@ -1122,7 +1122,7 @@ class StudentCouponRecordsView(TemplateView):
             try:
                 # counter = counter+1                
                 cap_course = {
-                    'unique_id': counter,
+                    'unique_id': counter+100,
                     'pathway_course': "Data Associate",
                     'group': "Capstone",
                     'course_code': "",
@@ -1169,7 +1169,7 @@ class StudentCouponRecordsView(TemplateView):
             try:
                 # counter = counter+1                
                 cap_course = {
-                    'unique_id': counter,
+                    'unique_id': counter+100,
                     'pathway_course': "Data Steward",
                     'group': "Capstone",
                     'course_code': "",
@@ -1216,7 +1216,7 @@ class StudentCouponRecordsView(TemplateView):
             try:
                 # counter = counter+1                
                 cap_course = {
-                    'unique_id': counter,
+                    'unique_id': counter+100,
                     'pathway_course': "Data Engineer",
                     'group': "Capstone",
                     'course_code': "",
@@ -1263,7 +1263,7 @@ class StudentCouponRecordsView(TemplateView):
             try:
                 # counter = counter+1                
                 cap_course = {
-                    'unique_id': counter,
+                    'unique_id': counter+100,
                     'pathway_course': "Data Scientist",
                     'group': "Capstone",
                     'course_code': "",
@@ -1310,7 +1310,7 @@ class StudentCouponRecordsView(TemplateView):
             try:
                 # counter = counter+1                
                 cap_course = {
-                    'unique_id': counter,
+                    'unique_id': counter+100,
                     'pathway_course': "Data Analyst",
                     'group': "Capstone",
                     'course_code': "",
@@ -1357,7 +1357,7 @@ class StudentCouponRecordsView(TemplateView):
             try:
                 # counter = counter+1                
                 cap_course = {
-                    'unique_id': counter,
+                    'unique_id': counter+100,
                     'pathway_course': "Analytics Manager",
                     'group': "Capstone",
                     'course_code': "",
