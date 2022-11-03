@@ -152,6 +152,7 @@ class SpartaProfile(models.Model):
     PHILSCA = "PA"
     STMI = "SI"
     TNTI = "TI"
+    RCPA = "RC"
     NOT_INVOLVED = "NA"
     ORG_CHOICES = (
         (NOT_INVOLVED, "N/A"),
@@ -190,6 +191,7 @@ class SpartaProfile(models.Model):
 	    (PHILSCA,"Philippine State College of Aeronautics (PhilSCA)"),
         (STMI,"STMicroelectronics, Inc."),
         (TNTI,"Trends & Technologies Inc"),
+        (RCPA,"Reserve Command, Philippine Army (ResCom, PA)"),
     )
 
     ANZ = "AN"
