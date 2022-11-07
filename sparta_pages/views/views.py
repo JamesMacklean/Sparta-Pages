@@ -1454,7 +1454,13 @@ def enrollment_approve_application(request, username, course_key):
     # ENROLL COMMAND
     if username is not None:
         uname = User.objects.get(username=username)
-        if (course_key == "course-v1:DAP+SP101+2020_Q1"):
+        if (course_key == "course-v1:DAP+SP101+2020_Q1" or
+            course_key == "course-v1:DAP+SPCapstone001+2021_Q2" or
+            course_key == "course-v1:DAP+SPCapstone002+2021_Q3" or
+            course_key == "course-v1:DAP+SPCapstone003+2021_Q4" or
+            course_key == "course-v1:DAP+SPCapstone004+2022_Q1" or 
+            course_key == "course-v1:DAP+SPCapstone005+2021_Q3" or
+            course_key == "course-v1:DAP+SPCapstone006+2021_Q3"):
             _enroll_user(username=uname, email_address=uname.email, course_key=course_key, course_name=course_name, mode="honor")
         else:
             _enroll_user(username=uname, email_address=uname.email, course_key=course_key, course_name=course_name, mode="verified")
