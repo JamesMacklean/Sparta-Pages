@@ -310,7 +310,7 @@ class RegisterEducationProfileView(View):
         try:
             sprofile = SpartaProfile.objects.get(user=request.user)
         except SpartaProfile.DoesNotExist:
-            return redirect('sparta-register')
+            return redirect('sparta-end')
 
         educationFormset = self.educ_formset_class(request.POST)
         if educationFormset.is_valid():
