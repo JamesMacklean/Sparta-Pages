@@ -73,12 +73,6 @@ def main(request):
     context['micropathways'] = micropathways
     return render(request, template_name, context)
 
-def RegistrationEnd(request):
-    """"""
-    template_name = "sparta_end.html"
-    return render (request, template_name)
-
-
 def micropathway(request, slug):
     """"""
     template_name = "sparta_micropathway.html"
@@ -193,7 +187,7 @@ def pathway(request, slug):
 class RegistrationPageView(View):
     """
     """
-    # sparta_profile_form_class = SpartaProfileForm
+    sparta_profile_form_class = SpartaProfileForm
     template_name = "sparta_end.html"
 
     @method_decorator(login_required)
