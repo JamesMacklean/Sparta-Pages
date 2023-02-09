@@ -73,6 +73,11 @@ def main(request):
     context['micropathways'] = micropathways
     return render(request, template_name, context)
 
+def RegistrationEnd(request):
+    """"""
+    template_name = "sparta_end.html"
+    return render (request, template_name)
+
 
 def micropathway(request, slug):
     """"""
@@ -188,8 +193,8 @@ def pathway(request, slug):
 class RegistrationPageView(View):
     """
     """
-    sparta_profile_form_class = SpartaProfileForm
-    template_name = "sparta_register.html"
+    # sparta_profile_form_class = SpartaProfileForm
+    template_name = "sparta_end.html"
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
@@ -233,7 +238,7 @@ class RegistrationPageView(View):
             sprofile.lgu_sub = lgu_sub
             sprofile.save()
 
-            return redirect(reverse('sparta-register-extended'))
+            return redirect(reverse('sparta-end'))
         return render(request, self.template_name, {'sparta_profile_form': sparta_profile_form})
 
 
@@ -249,7 +254,7 @@ class ExtendedRegistrationPageView(View):
 
     def get(self, request, *args, **kwargs):
         if not SpartaProfile.objects.filter(user=request.user).exists():
-            return redirect('sparta-register')
+            return redirect('sparta-end')
         if ExtendedSpartaProfile.objects.filter(user=request.user).exists():
             return redirect('sparta-profile')
         sparta_profile_form = self.sparta_profile_form_class()
@@ -297,7 +302,7 @@ class RegisterEducationProfileView(View):
 
     def get(self, request, *args, **kwargs):
         if not SpartaProfile.objects.filter(user=request.user).exists():
-            return redirect('sparta-register')
+            return redirect('sparta-end')
         educationFormset = self.educ_formset_class(request.GET or None)
         return render(request, self.template_name, {'educationFormset': educationFormset})
 
@@ -342,7 +347,7 @@ class RegisterEmploymentProfileView(View):
 
     def get(self, request, *args, **kwargs):
         if not SpartaProfile.objects.filter(user=request.user).exists():
-            return redirect('sparta-register')
+            return redirect('sparta-end')
 
         employmentFormset = self.employ_formset_class(request.GET or None)
         return render(request, self.template_name, {'employmentFormset': employmentFormset})
@@ -351,7 +356,7 @@ class RegisterEmploymentProfileView(View):
         try:
             sprofile = SpartaProfile.objects.get(user=request.user)
         except SpartaProfile.DoesNotExist:
-            return redirect('sparta-register')
+            return redirect('sparta-end')
 
         employmentFormset = self.employ_formset_class(request.POST)
         if employmentFormset.is_valid():
@@ -390,7 +395,7 @@ class RegisterTrainingProfileView(View):
 
     def get(self, request, *args, **kwargs):
         if not SpartaProfile.objects.filter(user=request.user).exists():
-            return redirect('sparta-register')
+            return redirect('sparta-end')
         trainingFormset = self.train_formset_class(request.GET or None)
         return render(request, self.template_name, {'trainingFormset': trainingFormset})
 
@@ -398,7 +403,7 @@ class RegisterTrainingProfileView(View):
         try:
             sprofile = SpartaProfile.objects.get(user=request.user)
         except SpartaProfile.DoesNotExist:
-            return redirect('sparta-register')
+            return redirect('sparta-end')
 
         trainingFormset = self.train_formset_class(request.POST)
         if trainingFormset.is_valid():
@@ -453,7 +458,7 @@ def upload_to_s3(user, proof_of_education_file, proof_of_agreement_file=None):
 
 def register_success_page(request):
     """ /sparta/register/success/ """
-    template_name = "sparta_register_success.html"
+    template_name = "sparta_end.html"
     context = {}
 
     return render(request, template_name, context)
@@ -809,7 +814,7 @@ class ExtendedRegistrationCreateView(View):
 
     def get(self, request, *args, **kwargs):
         if not SpartaProfile.objects.filter(is_active=True).filter(user=request.user).exists() or ExtendedSpartaProfile.objects.filter(user=request.user).exists():
-            return redirect('sparta-register')
+            return redirect('sparta-end')
         sparta_profile_form = self.sparta_profile_form_class()
         return render(request, self.template_name, {'sparta_profile_form': sparta_profile_form})
 
@@ -855,7 +860,7 @@ class EducationProfileCreateView(CreateView):
 
     def get(self, request, *args, **kwargs):
         if not SpartaProfile.objects.filter(is_active=True).filter(user=request.user).exists():
-            return redirect('sparta-register')
+            return redirect('sparta-end')
         educationFormset = self.educ_formset_class(request.GET or None)
         return render(request, self.template_name, {'educationFormset': educationFormset})
 
@@ -863,7 +868,7 @@ class EducationProfileCreateView(CreateView):
         try:
             sprofile = SpartaProfile.objects.get(user=request.user)
         except SpartaProfile.DoesNotExist:
-            return redirect('sparta-register')
+            return redirect('sparta-end')
 
         educationFormset = self.educ_formset_class(request.POST)
         if educationFormset.is_valid():
@@ -900,7 +905,7 @@ class EmploymentProfileCreateView(CreateView):
 
     def get(self, request, *args, **kwargs):
         if not SpartaProfile.objects.filter(is_active=True).filter(user=request.user).exists():
-            return redirect('sparta-register')
+            return redirect('sparta-end')
 
         employmentFormset = self.employ_formset_class(request.GET or None)
         return render(request, self.template_name, {'employmentFormset': employmentFormset})
@@ -909,7 +914,7 @@ class EmploymentProfileCreateView(CreateView):
         try:
             sprofile = SpartaProfile.objects.get(user=request.user)
         except SpartaProfile.DoesNotExist:
-            return redirect('sparta-register')
+            return redirect('sparta-end')
 
         employmentFormset = self.employ_formset_class(request.POST)
         if employmentFormset.is_valid():
@@ -948,7 +953,7 @@ class TrainingProfileCreateView(CreateView):
 
     def get(self, request, *args, **kwargs):
         if not SpartaProfile.objects.filter(is_active=True).filter(user=request.user).exists():
-            return redirect('sparta-register')
+            return redirect('sparta-end')
         trainingFormset = self.train_formset_class(request.GET or None)
         return render(request, self.template_name, {'trainingFormset': trainingFormset})
 
@@ -956,7 +961,7 @@ class TrainingProfileCreateView(CreateView):
         try:
             sprofile = SpartaProfile.objects.get(user=request.user)
         except SpartaProfile.DoesNotExist:
-            return redirect('sparta-register')
+            return redirect('sparta-end')
 
         trainingFormset = self.train_formset_class(request.POST)
         if trainingFormset.is_valid():

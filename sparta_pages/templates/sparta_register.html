@@ -39,9 +39,9 @@
     <div class="card">
       <div class="card-body">
       {% if sparta_profile_form.is_multipart %}
-        <form enctype="multipart/form-data" method="post" action="{% url 'sparta-register' %}">
+        <form enctype="multipart/form-data" method="post" action="{% url 'sparta-end' %}">
       {% else %}
-        <form method="post" action="{% url 'sparta-register' %}">
+        <form method="post" action="{% url 'sparta-end' %}">
       {% endif %}
         <div class="form-group">
           {% csrf_token %}
